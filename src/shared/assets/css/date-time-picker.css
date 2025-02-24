@@ -1,0 +1,112 @@
+/*!* DatePicker 인풋 스타일 *!*/
+/*.react-datepicker__input-container input {*/
+/*    !* 스타일 규칙 *!*/
+/*    border: 0;*/
+/*    width: 100%;*/
+/*    height: 36px;*/
+/*    box-sizing: border-box;*/
+/*    border-radius: 5px;*/
+/*    padding-left: 32px;*/
+/*    padding-top: 7px;*/
+/*}*/
+
+/*.react-datepicker__input-container input:focus {*/
+/*    border: 2px solid #a1db9a !important;*/
+/*    border-radius: 5px;*/
+/*    outline:none;*/
+/*}*/
+
+/*.react-datepicker-time {*/
+/*    min-width: 328px;*/
+/*    border: 1px solid #ddd;*/
+/*    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);*/
+/*}*/
+
+/*.react-datepicker-none-time {*/
+/*    border: 1px solid #ddd;*/
+/*    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);*/
+/*}*/
+
+/*.react-datepicker__day--outside-month {*/
+/*    color: #cccccc !important;*/
+/*}*/
+
+/*!* 헤더 스타일 *!*/
+/*.react-datepicker__header {*/
+/*    background-color: #f0f0f0;*/
+/*    border-bottom: 1px solid #ddd;*/
+/*}*/
+
+/*!* 날짜 셀 스타일 *!*/
+/*.react-datepicker__day {*/
+/*    color: #333;*/
+/*    border-radius: 50%;*/
+/*}*/
+
+/*.react-datepicker__day:hover {*/
+/*    background-color: #e9e9e9;*/
+/*}*/
+
+/*!* 오늘 날짜 스타일 *!*/
+/*.react-datepicker__day--today {*/
+/*    font-weight: bold;*/
+/*    color: #ff4500;*/
+/*}*/
+
+/*!* 선택된 날짜 스타일 *!*/
+/*.react-datepicker__day--selected {*/
+/*    background-color: #007bff;*/
+/*    color: white;*/
+/*}*/
+
+/*!* 선택된 날짜 호버 스타일 *!*/
+/*.react-datepicker__day--selected:hover {*/
+/*    background-color: #0056b3;*/
+/*}*/
+
+/*!* 날짜 비활성화 스타일 *!*/
+/*.react-datepicker__day--disabled {*/
+/*    color: #ccc;*/
+/*}*/
+
+/*!* 월/년 드롭다운 스타일 *!*/
+/*.react-datepicker__month-read-view,*/
+/*.react-datepicker__year-read-view {*/
+/*    color: #333;*/
+/*}*/
+
+/*.react_datepicker_light {*/
+/*    !* 밝은 모드에 대한 스타일 *!*/
+/*    background-color: #EAEAEE;*/
+/*    color: black;*/
+/*}*/
+
+/*.react_datepicker_dark {*/
+/*    !* 어두운 모드에 대한 스타일 *!*/
+/*    background-color: #32383E;*/
+/*    color: white;*/
+/*}*/
+
+/*.react-datepicker__portal {*/
+/*    height: 130svh;*/
+/*}*/
+
+/*#datepicker__select-container {*/
+/*    margin: 10px;*/
+/*    height: 25px;*/
+/*    display: flex;*/
+/*    justify-content: space-between;*/
+/*}*/
+
+/*#datepicker__select-year {*/
+/*    width: 49%;*/
+/*    color: black;*/
+/*}*/
+/*#datepicker__select-month {*/
+/*    width: 49%;*/
+/*    color: black;*/
+/*}*/
+
+/*.react-datepicker__portal .react-datepicker-time__header {*/
+/*    font-size: 15px*/
+/*}*/
