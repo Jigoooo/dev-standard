@@ -1,5 +1,5 @@
 import { ChangeEventHandler } from 'react';
-import { CustomedFormControl, OutlinedInput } from '@/shared/ui';
+import { CustomedFormControl, Input } from '@/shared/ui';
 
 export function FormInput({
   label,
@@ -14,7 +14,7 @@ export function FormInput({
 }) {
   return (
     <CustomedFormControl sx={{ flex: 1 }} label={label} required={required}>
-      <OutlinedInput sx={{ height: 38 }} value={value} onChange={onChange} />
+      <Input style={{ height: 38 }} value={value} onChange={onChange} />
     </CustomedFormControl>
   );
 }

@@ -15,11 +15,10 @@ import {
 } from 'date-fns';
 import { ko } from 'date-fns/locale';
 
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
-import { OutlinedInput } from '@/shared/ui';
+import { Input } from '@/shared/ui';
 import { colors } from '@/shared/constants';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
 
@@ -67,7 +66,9 @@ const useDatePicker = ({
   onChange?: (dateString: string) => void;
   dateFormat: string;
 }) => {
-  const [selectedDate, setSelectedDate] = useState<Date>(dateString ? new Date(dateString) : new Date());
+  const [selectedDate, setSelectedDate] = useState<Date>(
+    dateString ? new Date(dateString) : new Date(),
+  );
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [currentDate, setCurrentDate] = useState(new Date());
 
@@ -157,7 +158,11 @@ export function DatePicker({
   });
 
   const handleInputClick = () => {
-    isRange ? setShowFromToDatePicker((prev) => !prev) : setShowDatePicker((prev) => !prev);
+    if (isRange) {
+      setShowFromToDatePicker((prev) => !prev);
+    } else {
+      setShowDatePicker((prev) => !prev);
+    }
   };
 
   const inputSelectedDateString = selectedDate ? format(selectedDate, dateFormat) : '';
@@ -166,12 +171,11 @@ export function DatePicker({
 
   return (
     <Stack ref={datePickerRef} sx={{ position: 'relative', width }}>
-      <OutlinedInput
+      <Input
         value={isRange ? `${inputFromDateString} ~ ${inputToDateString}` : inputSelectedDateString}
         onClick={handleInputClick}
         readOnly
-        focusWithin={false}
-        endDecorator={<CalendarMonthIcon />}
+        // endDecorator={<CalendarMonthIcon />}
       />
       {isRange && showFromToDatePicker && (
         <Box sx={{ display: 'flex' }}>
@@ -261,7 +265,8 @@ function Picker({
   };
   const getBackgroundColor = (day: Date | null) => {
     if (!day) return 'transparent';
-    if (selectedDate && selectedDate.toDateString() === day.toDateString()) return colors.primary[500];
+    if (selectedDate && selectedDate.toDateString() === day.toDateString())
+      return colors.primary[500];
     return '#ffffff';
   };
 
@@ -315,7 +320,9 @@ function Picker({
       <Grid container columns={7} rowSpacing={1.4}>
         {days.map((day, index) => {
           const isDisabled =
-            !!day && ((minDate ? isBefore(day, minDate) : false) || (maxDate ? isAfter(day, maxDate) : false));
+            !!day &&
+            ((minDate ? isBefore(day, minDate) : false) ||
+              (maxDate ? isAfter(day, maxDate) : false));
           const isCurrentMonth = !!day && isSameMonth(day);
           const dayBorderRadius = getBorderRadius(day);
           const dayBackgroundColor = getBackgroundColor(day);

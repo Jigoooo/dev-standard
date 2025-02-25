@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Router } from '@/entities/router';
 import { dialogActions, DialogType } from '@/shared/components';
 import { menus } from '@/entities/menu';
-import { Button, Checkbox, FlexDiv, Form, Input, InputStyle } from '@/shared/ui';
+import { Button, Checkbox, FlexDiv, Form, Input } from '@/shared/ui';
 import { useToggle } from '@/shared/hooks';
 import { getFormValues } from '@/shared/lib';
 

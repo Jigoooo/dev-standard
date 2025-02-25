@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Box, Stack, Typography } from '@mui/joy';
-import { OutlinedInput } from '@/shared/ui';
+import { Input } from '@/shared/ui';
 
 export function EditableText({
   label,
@@ -15,7 +15,7 @@ export function EditableText({
   isEditing: boolean;
   toggleEditing: () => void;
 }) {
-  const inputRef = useRef<HTMLDivElement | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const handleClickOutside = (event: MouseEvent) => {
     if (inputRef.current && !inputRef.current.contains(event.target as Node)) {
@@ -42,15 +42,15 @@ export function EditableText({
         }}
       >
         {isEditing ? (
-          <OutlinedInput
+          <Input
             ref={inputRef}
             autoFocus={true}
-            sx={{
+            style={{
               minHeight: 0,
               height: 30,
               fontSize: '0.92rem',
               fontWeight: 600,
-              pl: 0.8,
+              paddingLeft: 6,
             }}
             value={value}
             onChange={(event) => onChange(event.target.value)}

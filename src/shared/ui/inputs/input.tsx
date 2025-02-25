@@ -1,4 +1,4 @@
-import { CSSProperties, InputHTMLAttributes, RefObject } from 'react';
+import { CSSProperties, InputHTMLAttributes, Ref } from 'react';
 
 import { colors } from '@/shared/constants';
 import { motion, MotionProps } from 'framer-motion';
@@ -41,7 +41,7 @@ const inputStyles: Record<InputStyle, CSSProperties> = {
 
 type InputProps = MotionProps &
   InputHTMLAttributes<HTMLInputElement> & {
-    ref?: RefObject<HTMLInputElement>;
+    ref?: Ref<HTMLInputElement> | null;
     inputStyle?: InputStyle;
   };
 
