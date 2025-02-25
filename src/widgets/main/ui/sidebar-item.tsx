@@ -13,7 +13,6 @@ export function SidebarItem({
 }) {
   return (
     <Box
-      key={menu.router}
       sx={{
         display: 'flex',
         width: '100%',
@@ -30,6 +29,8 @@ export function SidebarItem({
         transition: 'all 0.1s',
       }}
       onClick={() => {
+        if (isSelected) return;
+
         menuActions.setSelectedMenu(menu);
         onClickMenu(menu);
       }}

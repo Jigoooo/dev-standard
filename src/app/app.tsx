@@ -6,7 +6,6 @@ import { browserRouter } from '@/app/router';
 import {
   LoadingProvider,
   ThemeProvider,
-  ErrorProvider,
   AlertProvider,
   QueryProvider,
   ModalProvider,
@@ -14,17 +13,15 @@ import {
 
 function App() {
   return (
-    <ErrorProvider>
-      <QueryProvider>
-        <ThemeProvider>
-          <ModalProvider>
-            <RouterProvider router={browserRouter} />
-            <LoadingProvider />
-            <AlertProvider />
-          </ModalProvider>
-        </ThemeProvider>
-      </QueryProvider>
-    </ErrorProvider>
+    <QueryProvider>
+      <ThemeProvider>
+        <ModalProvider>
+          <RouterProvider router={browserRouter} />
+          <LoadingProvider />
+          <AlertProvider />
+        </ModalProvider>
+      </ThemeProvider>
+    </QueryProvider>
   );
 }
 

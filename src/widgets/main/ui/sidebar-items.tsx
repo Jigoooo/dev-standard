@@ -18,15 +18,10 @@ export function SidebarItems({ menus }: { menus: TMenu[] }) {
         const isSelected = location.pathname.includes(menu.router);
 
         return (
-          <>
-            <SidebarItem
-              key={menu.router}
-              isSelected={isSelected}
-              menu={menu}
-              onClickMenu={onClickMenu}
-            />
+          <div key={menu.router}>
+            <SidebarItem isSelected={isSelected} menu={menu} onClickMenu={onClickMenu} />
             {menuIndex < menus.length - 1 && <Divider sx={{ backgroundColor: '#424242' }} />}
-          </>
+          </div>
         );
       })}
     </Stack>
