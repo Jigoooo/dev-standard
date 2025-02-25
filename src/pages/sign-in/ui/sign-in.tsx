@@ -95,12 +95,12 @@ export function SignIn() {
             <Input
               name={signInFields.id}
               defaultValue={saveId}
-              style={{ width: '100%' }}
+              style={{ width: '100%', height: 48 }}
               placeholder={'아이디'}
             />
             <Input
               name={signInFields.password}
-              style={{ width: '100%' }}
+              style={{ width: '100%', height: 48 }}
               type={'password'}
               placeholder={'비밀번호'}
             />
@@ -116,7 +116,7 @@ export function SignIn() {
               />
             </FlexDiv>
           </FlexDiv>
-          <Button type={'submit'} style={{ width: '100%' }}>
+          <Button type={'submit'} style={{ width: '100%', height: 48 }}>
             <span>로그인</span>
           </Button>
         </Form>

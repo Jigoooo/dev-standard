@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { Stack, Grid, Box, IconButton, Typography } from '@mui/joy';
 import {
   addMonths,
   subMonths,
@@ -17,8 +16,9 @@ import { ko } from 'date-fns/locale';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
-import { Input } from '@/shared/ui';
+import { Button, FlexDiv, Input } from '@/shared/ui';
 import { colors } from '@/shared/constants';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
 
@@ -170,15 +170,15 @@ export function DatePicker({
   const inputToDateString = selectedToDate ? format(selectedToDate, dateFormat) : '';
 
   return (
-    <Stack ref={datePickerRef} sx={{ position: 'relative', width }}>
+    <FlexDiv ref={datePickerRef} flexDirection={'column'} style={{ position: 'relative', width }}>
       <Input
         value={isRange ? `${inputFromDateString} ~ ${inputToDateString}` : inputSelectedDateString}
         onClick={handleInputClick}
         readOnly
-        // endDecorator={<CalendarMonthIcon />}
+        endDecorator={<CalendarMonthIcon style={{ fontSize: '1.2rem' }} />}
       />
       {isRange && showFromToDatePicker && (
-        <Box sx={{ display: 'flex' }}>
+        <FlexDiv>
           <Picker
             rangeDate={{ from: selectedFromDate, to: selectedToDate }}
             handleDateClick={handleFromDateClick}
@@ -201,7 +201,7 @@ export function DatePicker({
             maxDate={maxDate}
             offsetX={150}
           />
-        </Box>
+        </FlexDiv>
       )}
       {!isRange && showDatePicker && (
         <Picker
@@ -215,7 +215,7 @@ export function DatePicker({
           offsetX={0}
         />
       )}
-    </Stack>
+    </FlexDiv>
   );
 }
 
@@ -285,39 +285,46 @@ function Picker({
   };
 
   return (
-    <Box
-      sx={{
+    <div
+      style={{
         position: 'absolute',
         top: '100%',
         left: offsetX,
         zIndex: 1,
-        mt: 1,
-        p: 2,
+        marginTop: 8,
+        padding: 16,
         backgroundColor: '#ffffff',
         borderRadius: 10,
         boxShadow: '0 2px 10px rgba(0, 0, 0, 0.2)',
         width: 300,
       }}
     >
-      <Stack direction='row' justifyContent='space-between' alignItems='center' mb={2}>
-        <IconButton onClick={handlePrevMonth}>
+      <FlexDiv style={{ justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+        <Button style={{ height: 38, backgroundColor: '#ffffff' }} onClick={handlePrevMonth}>
           <ArrowBackIcon />
-        </IconButton>
-        <Typography sx={{ fontSize: '1.1rem', fontWeight: 700, lineHeight: 2 }}>
+        </Button>
+        <span style={{ fontSize: '1.1rem', fontWeight: 700, lineHeight: 2 }}>
           {format(currentDate, 'yyyy년 MMMM', { locale: ko })}
-        </Typography>
-        <IconButton onClick={handleNextMonth}>
+        </span>
+        <Button style={{ height: 38, backgroundColor: '#ffffff' }} onClick={handleNextMonth}>
           <ArrowForwardIcon />
-        </IconButton>
-      </Stack>
-      <Box sx={{ display: 'flex', width: '100%', justifyContent: 'space-around', mb: 1 }}>
+        </Button>
+      </FlexDiv>
+      <FlexDiv style={{ width: '100%', justifyContent: 'space-around', marginBottom: 8 }}>
         {weekDays.map((weekDay) => (
-          <Box key={weekDay}>
-            <Typography sx={{ fontSize: '1rem', fontWeight: 700 }}>{weekDay}</Typography>
-          </Box>
+          <div key={weekDay}>
+            <span style={{ fontSize: '1rem', fontWeight: 700 }}>{weekDay}</span>
+          </div>
         ))}
-      </Box>
-      <Grid container columns={7} rowSpacing={1.4}>
+      </FlexDiv>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(7, 1fr)',
+          rowGap: 14,
+          columnGap: 0,
+        }}
+      >
         {days.map((day, index) => {
           const isDisabled =
             !!day &&
@@ -330,8 +337,8 @@ function Picker({
           const overlayColor = getOverlayColor(day);
 
           return (
-            <Grid key={index} xs={1}>
-              <Box
+            <div key={index} style={{ gridColumn: 'span 1' }}>
+              <div
                 onClick={() => {
                   if (day && !isDisabled) {
                     if (isCurrentMonth) {
@@ -341,11 +348,10 @@ function Picker({
                     }
                   }
                 }}
-                sx={{
+                style={{
                   textAlign: 'center',
                   cursor: day && !isDisabled ? 'pointer' : undefined,
-                  px: 1.2,
-                  py: 0.8,
+                  paddingBlock: 6,
                   borderRadius: dayBorderRadius,
                   backgroundColor: dayBackgroundColor,
                   color: dayColor,
@@ -353,8 +359,8 @@ function Picker({
                 }}
               >
                 {day ? format(day, 'd') : ''}
-                <Box
-                  sx={{
+                <div
+                  style={{
                     position: 'absolute',
                     top: 0,
                     left: 0,
@@ -364,11 +370,11 @@ function Picker({
                     borderRadius: dayBorderRadius,
                   }}
                 />
-              </Box>
-            </Grid>
+              </div>
+            </div>
           );
         })}
-      </Grid>
-    </Box>
+      </div>
+    </div>
   );
 }
