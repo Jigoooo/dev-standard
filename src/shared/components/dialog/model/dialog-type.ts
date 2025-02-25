@@ -17,7 +17,7 @@ export interface DialogInfoStates {
   onConfirm?: () => void;
   onCancel?: () => void;
   withCancel?: boolean;
-  color?: OverridableStringUnion<ColorPaletteProp, SnackbarPropsColorOverrides>;
+  color?: DialogType;
 }
 export interface DialogStates {
   dialogOpen: boolean;
@@ -32,4 +32,11 @@ interface DialogActions {
 
 export interface DialogStoreInterface extends DialogStates {
   actions: DialogActions;
+}
+
+export enum DialogType {
+  INFO = 'info',
+  SUCCESS = 'success',
+  WARNING = 'warning',
+  ERROR = 'error',
 }

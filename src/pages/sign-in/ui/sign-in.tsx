@@ -1,80 +1,95 @@
-import { useState } from 'react';
-
 import { useNavigate } from 'react-router-dom';
+
 import { Router } from '@/entities/router';
-import { openDialog } from '@/shared/components';
+import { dialogActions, DialogType } from '@/shared/components';
 import { menus } from '@/entities/menu';
-import { Button, ButtonStyle, Checkbox, FlexDiv } from '@/shared/ui';
+import { Button, Checkbox, FlexDiv, Form, Input, InputStyle } from '@/shared/ui';
+import { useToggle } from '@/shared/hooks';
+import { getFormValues } from '@/shared/lib';
+
+const signInFields: Record<
+  keyof {
+    id: string;
+    password: string;
+  },
+  string
+> = {
+  id: 'id',
+  password: 'password',
+};
 
 export function SignIn() {
   const navigate = useNavigate();
 
-  const [signInForm, setSignInForm] = useState({
-    id: '',
-    password: '',
-    autoLogin: false,
-  });
-  const handleSignInForm = (key: string, value: string | boolean) => {
-    setSignInForm((prevState) => {
-      return {
-        ...prevState,
-        [key]: value,
-      };
-    });
-  };
+  const [autoLogin, toggleAutoLogin] = useToggle(false);
 
-  const signIn = async () => {
+  const signIn = async ({ id, password }: { id: string; password: string }) => {
+    console.log('id: ', id);
+    console.log('password: ', password);
     navigate(`${Router.MAIN}/${menus[0].router}`, { viewTransition: true });
   };
 
-  const signInPress = () => {
-    if (!signInForm.id) {
-      return openDialog({
-        color: 'warning',
+  const handleSubmit = (formData: FormData) => {
+    const { id, password } = getFormValues(formData, signInFields);
+
+    if (!id) {
+      return dialogActions.openDialog({
+        color: DialogType.WARNING,
         contents: '아이디를 입력해 주세요.',
       });
     }
 
-    if (!signInForm.password) {
-      return openDialog({
-        color: 'warning',
+    if (!password) {
+      return dialogActions.openDialog({
+        color: DialogType.WARNING,
         contents: '비밀번호를 입력해 주세요.',
       });
     }
 
-    signIn();
-  };
-
-  const [check, setCheck] = useState(false);
-
-  const handleCheck = () => {
-    setCheck(!check);
+    signIn({ id, password });
   };
 
   return (
-    <FlexDiv
-      style={{ display: 'flex', width: '100vw', height: '100vh', backgroundColor: '#f9f9f9' }}
-    >
-      <FlexDiv
-        style={{ display: 'flex', width: '100%', alignItems: 'center', justifyContent: 'center' }}
-      >
-        <FlexDiv
+    <FlexDiv style={{ width: '100vw', height: '100vh', backgroundColor: '#f9f9f9' }}>
+      <FlexDiv style={{ width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+        <Form
           style={{
             display: 'flex',
-            width: 300,
-            height: 300,
+            flexDirection: 'column',
+            width: 500,
             backgroundColor: '#ffffff',
             alignItems: 'center',
             justifyContent: 'center',
             borderRadius: 12,
             boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.06)',
+            padding: 60,
+            gap: 26,
           }}
+          handleSubmit={handleSubmit}
         >
-          <Checkbox checked={check} onClick={handleCheck} label={'test'} />
-          <Button style={{ width: '100%' }} buttonStyle={ButtonStyle.SOLID} onClick={() => {}}>
-            버튼
+          <FlexDiv
+            flexDirection={'column'}
+            style={{
+              width: '100%',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 16,
+            }}
+          >
+            <Input name={signInFields.id} style={{ width: '100%' }} />
+            <Input name={signInFields.password} style={{ width: '100%' }} type={'password'} />
+            <FlexDiv
+              style={{
+                width: '100%',
+              }}
+            >
+              <Checkbox checked={autoLogin} onClick={toggleAutoLogin} label={'아이디 저장'} />
+            </FlexDiv>
+          </FlexDiv>
+          <Button type={'submit'} style={{ width: '100%' }}>
+            <span>로그인</span>
           </Button>
-        </FlexDiv>
+        </Form>
       </FlexDiv>
     </FlexDiv>
   );

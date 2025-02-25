@@ -15,9 +15,13 @@ const defaultButtonStyle: CSSProperties = {
   justifyContent: 'center',
   alignItems: 'center',
   paddingInline: 12,
-  paddingBlock: 8,
+  paddingBlock: 4,
   borderRadius: 6,
   cursor: 'pointer',
+  fontSize: '1rem',
+  fontWeight: 600,
+  height: 46,
+  lineHeight: 0,
 } as const;
 
 const buttonStyles: Record<ButtonStyle, CSSProperties> = {
@@ -29,7 +33,7 @@ const buttonStyles: Record<ButtonStyle, CSSProperties> = {
   [ButtonStyle.OUTLINED]: {
     backgroundColor: '#ffffff',
     color: colors.primary[400],
-    border: '1px solid #2563eb',
+    border: `1px solid ${colors.primary[400]}`,
   },
 } as const;
 
@@ -75,14 +79,15 @@ export function Button({
   style,
   ...props
 }: ButtonProps) {
-  const backgroundColor = buttonStyles[buttonStyle].backgroundColor ?? colors.primary[400];
-  const color = buttonStyles[buttonStyle].color ?? colors.primary[400];
+  const backgroundColor = style?.backgroundColor ?? colors.primary[400];
+  const color = style?.color ?? colors.primary[400];
   const animationColor = buttonStyle === ButtonStyle.OUTLINED ? color : backgroundColor;
 
   const animationBackgroundColor = getAnimationBackgroundColor(buttonStyle, animationColor);
 
   return (
     <motion.button
+      className={'selection-none'}
       style={{ ...defaultButtonStyle, ...buttonStyles[buttonStyle], ...style }}
       whileHover={{ backgroundColor: animationBackgroundColor.hoverBackgroundColor }}
       whileTap={{ backgroundColor: animationBackgroundColor.tapBackgroundColor, scale: 0.98 }}

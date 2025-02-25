@@ -25,7 +25,7 @@ export function Checkbox({
     <FlexDiv
       style={{
         alignItems: 'center',
-        gap: 1.5,
+        gap: 6,
         cursor: 'pointer',
       }}
       onClick={(e) => !disabled && onClick(e)}
@@ -103,7 +103,16 @@ export function Checkbox({
           )}
         </AnimatePresence>
       </motion.div>
-      <span style={{ userSelect: 'none' }}>{label}</span>
+      <span
+        style={{
+          userSelect: 'none',
+          fontSize: '0.9rem',
+          color: disabled ? '#999999' : '#666666',
+          fontWeight: 500,
+        }}
+      >
+        {label}
+      </span>
     </FlexDiv>
   );
 }

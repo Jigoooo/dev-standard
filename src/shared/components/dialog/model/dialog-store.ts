@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 
-import { DialogInfoStates, DialogStates, DialogStoreInterface } from './dialog-interfaces.ts';
+import { DialogStates, DialogStoreInterface, DialogType } from './dialog-type.ts';
 
 const dialogInitialState: DialogStates = {
   dialogOpen: false,
@@ -11,7 +11,7 @@ const dialogInitialState: DialogStates = {
     confirmText: '확인',
     cancelText: '취소',
     withCancel: false,
-    color: 'primary',
+    color: DialogType.INFO,
     onConfirm: () => {},
     onCancel: () => {},
   },
@@ -29,7 +29,7 @@ const useDialog = create<DialogStoreInterface>()((setState, getState) => {
         onConfirm = () => {},
         onCancel = () => {},
         withCancel = false,
-        color = 'primary',
+        color = DialogType.INFO,
       }) => {
         setState((state) => ({
           ...state,
@@ -60,7 +60,7 @@ const useDialog = create<DialogStoreInterface>()((setState, getState) => {
         onConfirm = () => {},
         onCancel = () => {},
         withCancel = false,
-        color = 'primary',
+        color = DialogType.INFO,
       }) =>
         new Promise((resolve) => {
           setState((state) => ({
@@ -96,8 +96,4 @@ const useDialog = create<DialogStoreInterface>()((setState, getState) => {
 
 export const useDialogOpen = () => useDialog((state) => state.dialogOpen);
 export const useDialogInfos = () => useDialog(useShallow((state) => state.dialogInfos));
-export const openDialog = (dialogInfos: DialogInfoStates) =>
-  useDialog.getState().actions.openDialog(dialogInfos);
-export const openDialogAsync = (dialogInfos: DialogInfoStates) =>
-  useDialog.getState().actions.openDialogAsync(dialogInfos);
-export const closeDialog = () => useDialog.getState().actions.closeDialog();
+export const dialogActions = useDialog.getState().actions;

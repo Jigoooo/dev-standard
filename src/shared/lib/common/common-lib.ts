@@ -1,5 +1,6 @@
 import { endOfYear, format, subYears } from 'date-fns';
-import { openDialog } from '@/shared/components';
+
+import { dialogActions, DialogType } from '@/shared/components';
 
 export const currentYear = new Date().getFullYear();
 
@@ -160,9 +161,9 @@ export function openTMap({
   if (isMobile) {
     window.location.href = `tmap://search?name=${encodeURIComponent(placeName)}&lon=${longitude}&lat=${latitude}`;
   } else {
-    openDialog({
+    dialogActions.openDialog({
       contents: '모바일에서만 지원됩니다.',
-      color: 'warning',
+      color: DialogType.WARNING,
     });
   }
 }
@@ -220,4 +221,14 @@ export function isLightColor(color: string): boolean {
 
   // 밝기 기준(0.5)으로 판단
   return luminance > 0.5;
+}
+
+export function getFormValues<T extends Record<string, string | null>>(
+  formData: FormData,
+  fields: Record<keyof T, string>,
+): T {
+  return Object.keys(fields).reduce((acc, key) => {
+    acc[key as keyof T] = formData.get(fields[key as keyof T]) as T[keyof T];
+    return acc;
+  }, {} as Partial<T>) as T;
 }

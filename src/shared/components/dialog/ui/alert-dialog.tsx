@@ -1,23 +1,31 @@
-import { Box, Stack, Typography } from '@mui/joy';
-
-import { closeDialog, useDialogInfos, useDialogOpen } from '@/shared/components';
-import { Button, ButtonStyle } from '@/shared/ui';
+import { dialogActions, DialogType, useDialogInfos, useDialogOpen } from '@/shared/components';
+import { Button, ButtonStyle, FlexDiv } from '@/shared/ui';
 import { useModalClose } from '@/shared/hooks';
+import { colors } from '@/shared/constants';
 
 /* todo 모바일버전 만들어야 함 */
+
+const dialogColors: Record<DialogType, string> = {
+  [DialogType.INFO]: colors.primary[400],
+  [DialogType.SUCCESS]: colors.success[400],
+  [DialogType.WARNING]: colors.warning[500],
+  [DialogType.ERROR]: colors.error[400],
+} as const;
 
 export function AlertDialog() {
   const dialogOpen = useDialogOpen();
   const dialogInfos = useDialogInfos();
 
-  useModalClose(dialogOpen, closeDialog);
+  useModalClose(dialogOpen, dialogActions.closeDialog);
+  const dialogColor = dialogColors[dialogInfos.color as DialogType];
 
   return (
     <>
       {dialogOpen && (
         <>
-          <Stack
-            sx={{
+          <FlexDiv
+            flexDirection={'column'}
+            style={{
               position: 'fixed',
               top: '50%',
               left: '50%',
@@ -27,36 +35,37 @@ export function AlertDialog() {
               maxWidth: 600,
               maxHeight: 400,
               background: '#ffffff',
-              px: 2.6,
-              py: 2.2,
+              paddingInline: 21,
+              paddingBlock: 18,
               borderRadius: 8,
               justifyContent: 'space-between',
             }}
           >
-            <Box
-              sx={{
-                display: 'flex',
+            <FlexDiv
+              style={{
                 justifyContent: 'space-between',
                 width: '100%',
                 alignItems: 'center',
               }}
             >
-              <Typography sx={{ fontSize: '1.3rem', fontWeight: 700, whiteSpace: 'pre-line' }}>
+              <span style={{ fontSize: '1.3rem', fontWeight: 700, whiteSpace: 'pre-line' }}>
                 {dialogInfos.title}
-              </Typography>
-            </Box>
+              </span>
+            </FlexDiv>
             {!!dialogInfos.contents ? (
-              <Stack sx={{ pt: 1, pb: 3, whiteSpace: 'pre-line' }}>
-                <Typography sx={{ fontSize: '1.05rem', fontWeight: 500, pr: 1.4 }}>
+              <FlexDiv
+                flexDirection={'column'}
+                style={{ paddingTop: 8, paddingBottom: 24, whiteSpace: 'pre-line' }}
+              >
+                <span style={{ fontSize: '1.05rem', fontWeight: 500, paddingRight: 12 }}>
                   {dialogInfos.contents}
-                </Typography>
-              </Stack>
+                </span>
+              </FlexDiv>
             ) : (
-              <Box sx={{ height: 20 }}></Box>
+              <div style={{ height: 20 }}></div>
             )}
-            <Box
-              sx={{
-                display: 'flex',
+            <FlexDiv
+              style={{
                 gap: 1,
                 width: '100%',
                 alignItems: 'center',
@@ -82,19 +91,24 @@ export function AlertDialog() {
                 </Button>
               )}
               <Button
-                style={{ height: 35, minWidth: 80, fontSize: '0.9rem', fontWeight: 500 }}
+                style={{
+                  height: 35,
+                  minWidth: 80,
+                  fontSize: '0.9rem',
+                  fontWeight: 500,
+                  backgroundColor: dialogColor,
+                }}
                 onClick={() => {
                   window.history.back();
                   setTimeout(() => dialogInfos?.onConfirm?.(), 10);
                 }}
-                color={dialogInfos.color}
               >
                 {dialogInfos.confirmText}
               </Button>
-            </Box>
-          </Stack>
-          <Box
-            sx={{
+            </FlexDiv>
+          </FlexDiv>
+          <div
+            style={{
               position: 'fixed',
               top: 0,
               left: 0,
@@ -104,7 +118,7 @@ export function AlertDialog() {
               zIndex: 99,
             }}
             onClick={() => {
-              closeDialog();
+              dialogActions.closeDialog();
               window.history.back();
             }}
           />
