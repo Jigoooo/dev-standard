@@ -1,8 +1,6 @@
 import { create } from 'zustand';
 
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-import RoomIcon from '@mui/icons-material/Room';
-import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
 
 import { TMenuState, TMenuStore } from '@/entities/menu/model/menu-type.ts';
 import { TMenu } from '@/entities/menu';
@@ -14,16 +12,6 @@ export const menus: TMenu[] = [
     name: '홈',
     icon: HomeOutlinedIcon,
     router: Router.HOME,
-  },
-  {
-    name: '위치관리',
-    icon: RoomIcon,
-    router: Router.LOCATION_MANAGEMENT,
-  },
-  {
-    name: '물품관리',
-    icon: ArticleOutlinedIcon,
-    router: Router.OBJECT_MANAGEMENT,
   },
 ] as const;
 

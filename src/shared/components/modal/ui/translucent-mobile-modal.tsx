@@ -5,8 +5,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import { SxProps } from '@mui/joy/styles/types';
 
 import { MODAL_Z_INDEX } from '@/shared/constants';
-import { IconButton } from '@/shared/ui';
 import { useModalClose } from '@/shared/hooks/navigation/use-modal-close.ts';
+import { Button } from '@/shared/ui';
 
 type ModalType = {
   isOpen: boolean;
@@ -127,7 +127,7 @@ function ModalHeader({
       {title && title !== '' ? title : <Box />}
       {isCloseButtonVisible && (
         <Tooltip title={'닫기'} placement={'top'}>
-          <IconButton
+          <Button
             onClick={() => {
               onClose();
               window.history.back();
@@ -135,7 +135,7 @@ function ModalHeader({
             color={'neutral'}
           >
             <CloseIcon style={{ color: closeIconColor, fontSize: 28 }} />
-          </IconButton>
+          </Button>
         </Tooltip>
       )}
     </Box>

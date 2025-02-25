@@ -1,8 +1,8 @@
 import { Box, Stack, Typography } from '@mui/joy';
 
 import { closeDialog, useDialogInfos, useDialogOpen } from '@/shared/components';
-import { OutlinedButton, SolidButton } from '@/shared/ui';
-import { useModalClose } from '@/shared/hooks/navigation/use-modal-close.ts';
+import { Button, ButtonStyle } from '@/shared/ui';
+import { useModalClose } from '@/shared/hooks';
 
 /* todo 모바일버전 만들어야 함 */
 
@@ -64,25 +64,25 @@ export function AlertDialog() {
               }}
             >
               {dialogInfos.withCancel && (
-                <OutlinedButton
-                  sx={{
+                <Button
+                  buttonStyle={ButtonStyle.OUTLINED}
+                  style={{
                     height: 35,
                     minWidth: 80,
-                    color: '#000000',
+                    color: '#bbbbbb',
                     fontSize: '0.9rem',
                     fontWeight: 500,
                   }}
-                  buttonColor={'#bbbbbb'}
                   onClick={() => {
                     window.history.back();
                     dialogInfos?.onCancel?.();
                   }}
                 >
                   {dialogInfos.cancelText}
-                </OutlinedButton>
+                </Button>
               )}
-              <SolidButton
-                sx={{ height: 35, minWidth: 80, fontSize: '0.9rem', fontWeight: 500 }}
+              <Button
+                style={{ height: 35, minWidth: 80, fontSize: '0.9rem', fontWeight: 500 }}
                 onClick={() => {
                   window.history.back();
                   setTimeout(() => dialogInfos?.onConfirm?.(), 10);
@@ -90,7 +90,7 @@ export function AlertDialog() {
                 color={dialogInfos.color}
               >
                 {dialogInfos.confirmText}
-              </SolidButton>
+              </Button>
             </Box>
           </Stack>
           <Box

@@ -5,4 +5,3 @@ export * from './error';
 export * from './loading';
 export * from './address';
 export * from './table';
-export * from './file';

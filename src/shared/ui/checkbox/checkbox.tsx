@@ -1,62 +1,62 @@
-import { Box, Typography } from '@mui/joy';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MouseEventHandler } from 'react';
 
 import CheckSolid from '@/shared/assets/images/check-solid.svg?react';
 
 import { colors } from '@/shared/constants';
+import { FlexDiv } from '@/shared/ui';
 
 export function Checkbox({
   label = '',
   checked,
+  color = colors.primary[400],
   isPartial = false,
   onClick,
   disabled = false,
 }: {
   label?: string;
   checked: boolean;
+  color?: string;
   isPartial?: boolean;
   onClick: MouseEventHandler;
   disabled?: boolean;
 }) {
   return (
-    <Box
-      sx={{
-        display: 'flex',
+    <FlexDiv
+      style={{
         alignItems: 'center',
         gap: 1.5,
         cursor: 'pointer',
       }}
       onClick={(e) => !disabled && onClick(e)}
     >
-      <Box
-        component='input'
-        type='checkbox'
-        checked={checked}
-        onChange={() => {}}
-        sx={{ display: 'none' }}
-      />
-      <Box
-        sx={{
+      <input type='checkbox' checked={checked} onChange={() => {}} style={{ display: 'none' }} />
+      <motion.div
+        style={{
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
           width: 20,
           height: 20,
-          border: `1px solid ${!disabled && checked ? colors.primary[400] : '#cccccc'}`,
+          border: `1px solid ${!disabled && checked ? color : '#cccccc'}`,
           borderRadius: 4,
-          backgroundColor: disabled ? '#f5f5f5' : checked ? colors.primary[400] : '#ffffff',
-          '&:hover': {
-            borderColor: checked ? 'none' : colors.primary[400],
-            backgroundColor: checked ? 'none' : '#ffffff',
+          backgroundColor: disabled ? '#f5f5f5' : checked ? color : '#ffffff',
+        }}
+        variants={{
+          hover: {
+            borderColor: color,
+            backgroundColor: '#ffffff',
           },
-          transition: 'all 0.2s',
+          none: {},
+        }}
+        whileHover={checked ? 'none' : 'hover'}
+        transition={{
+          duration: 0.2,
         }}
       >
         <AnimatePresence mode={'wait'}>
           {!disabled && checked && (
-            <Box
-              component={motion.div}
+            <motion.div
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}
@@ -65,7 +65,7 @@ export function Checkbox({
                 stiffness: 260,
                 damping: 20,
               }}
-              sx={{
+              style={{
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -80,11 +80,10 @@ export function Checkbox({
                   strokeWidth: 30,
                 }}
               />
-            </Box>
+            </motion.div>
           )}
           {isPartial && (
-            <Box
-              component={motion.div}
+            <motion.div
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}
@@ -93,18 +92,18 @@ export function Checkbox({
                 stiffness: 260,
                 damping: 20,
               }}
-              sx={{
+              style={{
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
               }}
             >
-              <Box sx={{ width: 10, height: 10, backgroundColor: colors.primary[400] }} />
-            </Box>
+              <div style={{ width: 10, height: 10, backgroundColor: color }} />
+            </motion.div>
           )}
         </AnimatePresence>
-      </Box>
-      <Typography sx={{ userSelect: 'none' }}>{label}</Typography>
-    </Box>
+      </motion.div>
+      <span style={{ userSelect: 'none' }}>{label}</span>
+    </FlexDiv>
   );
 }

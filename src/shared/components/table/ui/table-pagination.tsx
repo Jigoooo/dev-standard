@@ -7,7 +7,7 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
-import { IconButton, OutlinedButton, PlainButton, Select } from '@/shared/ui';
+import { Button, ButtonStyle, Select } from '@/shared/ui';
 
 export function TablePagination({ table, minWidth }: { table: Table<any>; minWidth: number }) {
   return (
@@ -44,30 +44,31 @@ export function TablePagination({ table, minWidth }: { table: Table<any>; minWid
           />
         </Box>
         <Box sx={{ display: 'flex' }}>
-          <IconButton
+          <Button
             color={'neutral'}
             onClick={() => table.setPageIndex(0)}
             disabled={table.getRowModel().rows.length === 0 || !table.getCanPreviousPage()}
           >
             <FirstPageIcon />
-          </IconButton>
-          <IconButton
+          </Button>
+          <Button
             color={'neutral'}
             onClick={() => table.previousPage()}
             disabled={table.getRowModel().rows.length === 0 || !table.getCanPreviousPage()}
           >
             <KeyboardArrowLeftIcon />
-          </IconButton>
+          </Button>
         </Box>
         {Array.from({ length: table.getPageCount() }, (_, i) => (i + 1).toString()).map((page) => {
           return (
             <Box key={page} sx={{ display: 'flex', alignItems: 'center' }}>
               {(table.getState().pagination.pageIndex + 1).toString() === page ? (
-                <OutlinedButton
+                <Button
+                  buttonStyle={ButtonStyle.OUTLINED}
                   onClick={() => {
                     table.setPageIndex(Number(page) - 1);
                   }}
-                  sx={{
+                  style={{
                     borderRadius: 18,
                     minHeight: 0,
                     height: 35,
@@ -75,13 +76,13 @@ export function TablePagination({ table, minWidth }: { table: Table<any>; minWid
                   }}
                 >
                   {page}
-                </OutlinedButton>
+                </Button>
               ) : (
-                <PlainButton
+                <Button
                   onClick={() => {
                     table.setPageIndex(Number(page) - 1);
                   }}
-                  sx={{
+                  style={{
                     borderRadius: 18,
                     minHeight: 0,
                     height: 35,
@@ -90,26 +91,26 @@ export function TablePagination({ table, minWidth }: { table: Table<any>; minWid
                   color='neutral'
                 >
                   {page}
-                </PlainButton>
+                </Button>
               )}
             </Box>
           );
         })}
         <Box sx={{ display: 'flex' }}>
-          <IconButton
+          <Button
             color={'neutral'}
             onClick={() => table.nextPage()}
             disabled={table.getRowModel().rows.length === 0 || !table.getCanNextPage()}
           >
             <KeyboardArrowRightIcon />
-          </IconButton>
-          <IconButton
+          </Button>
+          <Button
             color={'neutral'}
             onClick={() => table.setPageIndex(table.getPageCount() - 1)}
             disabled={table.getRowModel().rows.length === 0 || !table.getCanNextPage()}
           >
             <LastPageIcon />
-          </IconButton>
+          </Button>
         </Box>
       </Box>
     </Box>

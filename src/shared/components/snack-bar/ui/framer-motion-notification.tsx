@@ -11,7 +11,7 @@ import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 import { SNACK_BAR_Z_INDEX, colors } from '@/shared/constants';
-import { IconButton } from '@/shared/ui';
+import { Button } from '@/shared/ui';
 import { hideDesktopSnackBar, useNotificationInfos } from '@/shared/components/snack-bar';
 
 export function FramerMotionNotification() {
@@ -90,12 +90,12 @@ export function FramerMotionNotification() {
                     </Typography>
                   </Stack>
                 </Stack>
-                <IconButton
-                  sx={{ position: 'absolute', top: 2, right: 3, color: 'white' }}
+                <Button
+                  style={{ position: 'absolute', top: 2, right: 3, color: 'white' }}
                   onClick={() => hideDesktopSnackBar(notification.idx)}
                 >
                   <CloseRoundedIcon style={{ fontSize: 32 }} />
-                </IconButton>
+                </Button>
               </motion.li>
             );
           })}
