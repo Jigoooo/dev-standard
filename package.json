@@ -1,5 +1,5 @@
 {
-  "name": "home-manager",
+  "name": "dev-standard",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -64,9 +64,6 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@eslint/js": "^8.57.0",
     "@tanstack/eslint-plugin-query": "^5.66.1",
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.2.0",
-    "@testing-library/user-event": "^14.6.1",
     "@types/file-saver": "^2.0.7",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.13.4",

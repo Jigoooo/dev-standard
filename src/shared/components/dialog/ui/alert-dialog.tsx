@@ -2,6 +2,7 @@ import { dialogActions, DialogType, useDialogInfos, useDialogOpen } from '@/shar
 import { Button, ButtonStyle, FlexDiv } from '@/shared/ui';
 import { useModalClose } from '@/shared/hooks';
 import { colors } from '@/shared/constants';
+import { useEffect, useRef } from 'react';
 
 /* todo 모바일버전 만들어야 함 */
 
@@ -15,15 +16,41 @@ const dialogColors: Record<DialogType, string> = {
 export function AlertDialog() {
   const dialogOpen = useDialogOpen();
   const dialogInfos = useDialogInfos();
+  const modalRef = useRef<HTMLDivElement | null>(null);
 
   useModalClose(dialogOpen, dialogActions.closeDialog);
   const dialogColor = dialogColors[dialogInfos.color as DialogType];
+
+  useEffect(() => {
+    if (dialogOpen) {
+      setTimeout(() => {
+        modalRef.current?.focus();
+      }, 50);
+
+      const handleKeyDown = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+          event.preventDefault();
+        }
+        if (event.key === 'Tab') {
+          event.preventDefault();
+          modalRef.current?.focus();
+        }
+      };
+
+      document.addEventListener('keydown', handleKeyDown);
+      return () => {
+        document.removeEventListener('keydown', handleKeyDown);
+      };
+    }
+  }, [dialogOpen]);
 
   return (
     <>
       {dialogOpen && (
         <>
           <FlexDiv
+            ref={modalRef}
+            tabIndex={-1}
             flexDirection={'column'}
             style={{
               position: 'fixed',
@@ -39,6 +66,7 @@ export function AlertDialog() {
               paddingBlock: 18,
               borderRadius: 8,
               justifyContent: 'space-between',
+              outline: 'none',
             }}
           >
             <FlexDiv

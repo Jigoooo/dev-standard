@@ -1,16 +1,19 @@
-import { CSSProperties, HTMLAttributes, ReactNode } from 'react';
+import { CSSProperties, HTMLAttributes, ReactNode, Ref } from 'react';
 
 export function FlexDiv({
+  ref,
   flexDirection = 'row',
-  children,
   style,
+  children,
   ...props
 }: HTMLAttributes<HTMLDivElement> & {
+  ref?: Ref<HTMLDivElement> | null;
   flexDirection?: 'row' | 'column' | 'row-reverse' | 'column-reverse';
   children: ReactNode;
 }) {
   return (
     <div
+      ref={ref}
       style={{
         display: 'flex',
         flexDirection,

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { geoLocationActions } from '@/entities/geo-location';
+import { geoLocationActions } from '@/shared/geo-location';
 
 export function useGeoLocation(options = {}) {
   const [location, setLocation] = useState<{ latitude: number; longitude: number }>();

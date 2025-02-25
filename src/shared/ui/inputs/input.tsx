@@ -13,9 +13,9 @@ const defaultInputStyle: CSSProperties = {
   paddingInline: 8,
   paddingBlock: 10,
   borderRadius: 4,
-  fontSize: '1rem',
+  fontSize: '0.94rem',
   fontWeight: 500,
-  height: 46,
+  height: 48,
   outline: 'none',
 } as const;
 
@@ -26,7 +26,7 @@ const inputStyles: Record<InputStyle, CSSProperties> = {
   },
   [InputStyle.OUTLINED]: {
     backgroundColor: '#ffffff',
-    boxShadow: `inset 0 0 0 1px rgba(0,27,55,0.2)`,
+    boxShadow: `inset 0 0 0 0.8px rgba(0,27,55,0.2)`,
     border: 'none',
   },
   [InputStyle.UNDERLINE]: {
@@ -63,7 +63,6 @@ export function Input({
         },
         none: {},
       }}
-      whileHover={inputStyle === InputStyle.OUTLINED ? 'hover' : 'none'}
       whileFocus={inputStyle === InputStyle.OUTLINED ? 'focus' : 'none'}
       transition={{ duration: 0.1 }}
       style={{

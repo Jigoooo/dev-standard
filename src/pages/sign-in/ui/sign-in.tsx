@@ -1,11 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 
+import TriphosLogo from '@/shared/assets/images/triphos_logo.png';
+
 import { Router } from '@/entities/router';
 import { dialogActions, DialogType } from '@/shared/components';
 import { menus } from '@/entities/menu';
 import { Button, Checkbox, FlexDiv, Form, Input } from '@/shared/ui';
 import { useToggle } from '@/shared/hooks';
 import { getFormValues } from '@/shared/lib';
+import { localStorageKey } from '@/shared/constants';
 
 const signInFields: Record<
   keyof {
@@ -20,16 +23,11 @@ const signInFields: Record<
 
 export function SignIn() {
   const navigate = useNavigate();
+  const saveId = localStorage.getItem(localStorageKey.ID) ?? '';
 
-  const [autoLogin, toggleAutoLogin] = useToggle(false);
+  const [saveIdChecked, toggleSaveIdChecked] = useToggle(!!saveId);
 
-  const signIn = async ({ id, password }: { id: string; password: string }) => {
-    console.log('id: ', id);
-    console.log('password: ', password);
-    navigate(`${Router.MAIN}/${menus[0].router}`, { viewTransition: true });
-  };
-
-  const handleSubmit = (formData: FormData) => {
+  const signIn = (formData: FormData) => {
     const { id, password } = getFormValues(formData, signInFields);
 
     if (!id) {
@@ -46,44 +44,76 @@ export function SignIn() {
       });
     }
 
-    signIn({ id, password });
+    console.log('id: ', id);
+    console.log('password: ', password);
+
+    if (saveIdChecked) {
+      localStorage.setItem(localStorageKey.ID, id);
+    } else {
+      localStorage.removeItem(localStorageKey.ID);
+    }
+
+    navigate(`${Router.MAIN}/${menus[0].router}`, { viewTransition: true });
   };
 
   return (
-    <FlexDiv style={{ width: '100vw', height: '100vh', backgroundColor: '#f9f9f9' }}>
+    <FlexDiv style={{ width: '100vw', height: '100vh', backgroundColor: '#f8f8f8' }}>
       <FlexDiv style={{ width: '100%', alignItems: 'center', justifyContent: 'center' }}>
         <Form
           style={{
             display: 'flex',
             flexDirection: 'column',
-            width: 500,
+            width: 530,
             backgroundColor: '#ffffff',
             alignItems: 'center',
             justifyContent: 'center',
             borderRadius: 12,
-            boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.06)',
+            boxShadow: '2px 2px 10px rgba(0, 0, 0, 0.06)',
             padding: 60,
-            gap: 26,
+            gap: 30,
           }}
-          handleSubmit={handleSubmit}
+          action={signIn}
         >
+          <FlexDiv
+            className={'selection-none'}
+            flexDirection={'column'}
+            style={{
+              height: 60,
+            }}
+          >
+            <img src={TriphosLogo} alt={'로고'} />
+          </FlexDiv>
           <FlexDiv
             flexDirection={'column'}
             style={{
               width: '100%',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: 16,
+              gap: 12,
             }}
           >
-            <Input name={signInFields.id} style={{ width: '100%' }} />
-            <Input name={signInFields.password} style={{ width: '100%' }} type={'password'} />
+            <Input
+              name={signInFields.id}
+              defaultValue={saveId}
+              style={{ width: '100%' }}
+              placeholder={'아이디'}
+            />
+            <Input
+              name={signInFields.password}
+              style={{ width: '100%' }}
+              type={'password'}
+              placeholder={'비밀번호'}
+            />
             <FlexDiv
               style={{
                 width: '100%',
               }}
             >
-              <Checkbox checked={autoLogin} onClick={toggleAutoLogin} label={'아이디 저장'} />
+              <Checkbox
+                checked={saveIdChecked}
+                onClick={toggleSaveIdChecked}
+                label={'아이디 저장'}
+              />
             </FlexDiv>
           </FlexDiv>
           <Button type={'submit'} style={{ width: '100%' }}>

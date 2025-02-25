@@ -9,6 +9,7 @@ export {
   HEADER_Z_INDEX,
   MODAL_Z_INDEX,
   INFINITE_Z_INDEX,
-} from './common';
-export { colors } from './colors';
-export { PROXY_CONVERT_URL_PREFIX } from './api';
+} from './common.ts';
+export { colors } from './colors.ts';
+export { PROXY_CONVERT_URL_PREFIX } from './api.ts';
+export { localStorageKey } from './storage-key.ts';
