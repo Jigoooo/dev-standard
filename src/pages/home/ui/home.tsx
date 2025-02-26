@@ -10,7 +10,7 @@ export function Home() {
       <FlexDiv
         style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}
       >
-        <DateFromToPicker minDate={new Date('2025-02-01')} maxDate={new Date('2025-03-10')} />
+        <DateFromToPicker minDate={new Date('2025-01-01')} maxDate={new Date('2025-04-10')} />
       </FlexDiv>
     </MainLayout>
   );

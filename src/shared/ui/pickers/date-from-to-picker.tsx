@@ -1,17 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
-  addMonths,
-  subMonths,
-  format,
-  startOfMonth,
-  endOfMonth,
-  eachDayOfInterval,
-  isBefore,
-  isAfter,
-  getDay,
-  subDays,
   addDays,
+  addMonths,
+  eachDayOfInterval,
+  endOfMonth,
+  format,
+  getDay,
+  isAfter,
+  isBefore,
   isEqual,
+  startOfMonth,
+  subDays,
+  subMonths,
 } from 'date-fns';
 import { ko } from 'date-fns/locale';
 
@@ -157,7 +157,9 @@ function useDateFromToPicker({
 }
 
 type FromToPickerProps = {
+  pickerType: 'from' | 'to';
   selectedFromToDate: FromToDates;
+  currentFromToDate: FromToCurrentDates;
   handleDateClick: (date: Date) => void;
   handlePrevMonth: () => void;
   handleNextMonth: () => void;
@@ -233,7 +235,9 @@ function getCellTextColor(
 
 // Picker 컴포넌트: 달력 렌더링
 function FromToPicker({
+  pickerType,
   selectedFromToDate,
+  currentFromToDate,
   handleDateClick,
   handlePrevMonth,
   handleNextMonth,
@@ -247,6 +251,24 @@ function FromToPicker({
   const days = generateDaysArray(year, month);
   const isSameMonth = (date: Date) => date.getMonth() === month;
 
+  let disablePrev = false;
+  let disableNext = false;
+  if (pickerType === 'from') {
+    if (minDate && isBefore(subMonths(currentFromToDate.from, 1), minDate)) {
+      disablePrev = true;
+    }
+    if (!isBefore(addMonths(currentFromToDate.from, 1), currentFromToDate.to)) {
+      disableNext = true;
+    }
+  } else {
+    if (maxDate && isAfter(currentFromToDate.to, maxDate)) {
+      disableNext = true;
+    }
+    if (!isAfter(subMonths(currentFromToDate.to, 1), currentFromToDate.from)) {
+      disablePrev = true;
+    }
+  }
+
   const handlePaddingDateClick = (date: Date) => {
     if (isBefore(date, startOfMonth(new Date(year, month)))) {
       handlePrevMonth();
@@ -258,6 +280,7 @@ function FromToPicker({
 
   return (
     <div
+      className={'selection-none'}
       style={{
         marginTop: 8,
         padding: 16,
@@ -268,14 +291,22 @@ function FromToPicker({
       }}
     >
       <FlexDiv style={{ justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-        <Button style={{ height: 38, backgroundColor: '#ffffff' }} onClick={handlePrevMonth}>
-          <ArrowBackIcon />
+        <Button
+          style={{ height: 38, backgroundColor: '#ffffff' }}
+          onClick={handlePrevMonth}
+          disabled={disablePrev}
+        >
+          <ArrowBackIcon style={{ color: disablePrev ? 'lightgrey' : 'black' }} />
         </Button>
         <span style={{ fontSize: '1.1rem', fontWeight: 700, lineHeight: 2 }}>
           {format(currentDate, 'yyyy년 MMMM', { locale: ko })}
         </span>
-        <Button style={{ height: 38, backgroundColor: '#ffffff' }} onClick={handleNextMonth}>
-          <ArrowForwardIcon />
+        <Button
+          style={{ height: 38, backgroundColor: '#ffffff' }}
+          onClick={handleNextMonth}
+          disabled={disableNext}
+        >
+          <ArrowForwardIcon style={{ color: disableNext ? 'lightgrey' : 'black' }} />
         </Button>
       </FlexDiv>
       <FlexDiv style={{ width: '100%', justifyContent: 'space-around', marginBottom: 8 }}>
@@ -391,7 +422,9 @@ export function DateFromToPicker({
           }}
         >
           <FromToPicker
+            pickerType={'from'}
             selectedFromToDate={selectedFromToDate}
+            currentFromToDate={currentFromToDate}
             handleDateClick={handleDateClick}
             handlePrevMonth={handlePrevFromMonth}
             handleNextMonth={handleNextFromMonth}
@@ -401,7 +434,9 @@ export function DateFromToPicker({
             maxDate={maxDate}
           />
           <FromToPicker
+            pickerType={'to'}
             selectedFromToDate={selectedFromToDate}
+            currentFromToDate={currentFromToDate}
             handleDateClick={handleDateClick}
             handlePrevMonth={handlePrevToMonth}
             handleNextMonth={handleNextToMonth}

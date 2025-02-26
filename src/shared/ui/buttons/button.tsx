@@ -37,6 +37,20 @@ const buttonStyles: Record<ButtonStyle, CSSProperties> = {
   },
 } as const;
 
+const buttonDisabledStyle: Record<ButtonStyle, CSSProperties> = {
+  [ButtonStyle.SOLID]: {
+    cursor: 'not-allowed',
+    backgroundColor: '#eeeeee',
+    color: '#aaaaaa',
+  },
+  [ButtonStyle.OUTLINED]: {
+    cursor: 'not-allowed',
+    backgroundColor: '#eeeeee',
+    borderColor: '#bebebe',
+    color: '#bbbbbb',
+  },
+} as const;
+
 const getAnimationBackgroundColor = (
   buttonStyle: ButtonStyle,
   animationColor: string,
@@ -88,9 +102,19 @@ export function Button({
   return (
     <motion.button
       className={'selection-none'}
-      style={{ ...defaultButtonStyle, ...buttonStyles[buttonStyle], ...style }}
-      whileHover={{ backgroundColor: animationBackgroundColor.hoverBackgroundColor }}
-      whileTap={{ backgroundColor: animationBackgroundColor.tapBackgroundColor, scale: 0.98 }}
+      style={{
+        ...defaultButtonStyle,
+        ...buttonStyles[buttonStyle],
+        ...(props.disabled ? buttonDisabledStyle[buttonStyle] : {}),
+        ...style,
+      }}
+      variants={{
+        hover: { backgroundColor: animationBackgroundColor.hoverBackgroundColor },
+        tap: { backgroundColor: animationBackgroundColor.tapBackgroundColor, scale: 0.98 },
+        none: {},
+      }}
+      whileHover={props.disabled ? 'none' : 'hover'}
+      whileTap={props.disabled ? 'none' : 'tap'}
       {...props}
     >
       {children}
