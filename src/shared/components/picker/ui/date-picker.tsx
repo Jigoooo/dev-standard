@@ -18,12 +18,13 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
-import { FlexRow, Input, Button } from '@/shared/components';
+import { FlexRow, Input, Button, FlexColumn } from '@/shared/components';
 import { colors } from '@/shared/constants';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
 
 type TDatePicker = {
   width?: number | string;
+  isInputMode?: boolean;
   dateString?: string;
   onChange?: (dateString: string) => void;
   dateFormat?: string;
@@ -240,6 +241,7 @@ function Picker({
 // DatePicker 컴포넌트
 export function DatePicker({
   width = 'auto',
+  isInputMode = false,
   dateString,
   onChange,
   dateFormat = 'yyyy-MM-dd',
@@ -263,13 +265,22 @@ export function DatePicker({
   const inputSelectedDateString = selectedDate ? format(selectedDate, dateFormat) : '';
 
   return (
-    <FlexRow ref={datePickerRef} flexDirection='column' style={{ position: 'relative', width }}>
-      <Input
-        value={inputSelectedDateString}
-        onClick={handleInputClick}
-        readOnly
-        endDecorator={<CalendarMonthIcon style={{ fontSize: '1.2rem' }} />}
-      />
+    <FlexColumn ref={datePickerRef} style={{ position: 'relative', width }}>
+      {!isInputMode ? (
+        <Input
+          style={{ width: 140 }}
+          value={inputSelectedDateString}
+          onClick={handleInputClick}
+          readOnly
+          endDecorator={<CalendarMonthIcon style={{ fontSize: '1.2rem' }} />}
+        />
+      ) : (
+        <FlexRow style={{ width: 160, borderRadius: 4, height: 38 }}>
+          <Input />
+          <Input />
+          <Input />
+        </FlexRow>
+      )}
       {showDatePicker && (
         <Picker
           handleDateClick={handleDateClick}
@@ -282,6 +293,6 @@ export function DatePicker({
           offsetX={0}
         />
       )}
-    </FlexRow>
+    </FlexColumn>
   );
 }

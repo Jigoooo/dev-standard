@@ -103,12 +103,12 @@ export function Input({
         whileFocus={inputStyle === InputStyle.UNDERLINE ? 'focusUnderline' : 'focus'}
         transition={{ duration: 0.1 }}
         style={{
+          width: 'auto',
           ...defaultInputStyle,
           ...inputStyles[inputStyle],
-          ...style,
-          width: '100%',
           paddingLeft: startDecorator ? extraPadding : defaultInputStyle.paddingInline,
           paddingRight: endDecorator ? extraPadding : defaultInputStyle.paddingInline,
+          ...style,
           ...(props.disabled ? inputDisabledStyles[inputStyle] : {}),
         }}
         {...props}

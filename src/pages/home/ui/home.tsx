@@ -20,7 +20,7 @@ export function Home() {
           gap: 16,
         }}
       >
-        <DatePicker />
+        <DatePicker isInputMode={true} />
         <DateFromToPicker />
         <Select
           label={'드롭다운'}

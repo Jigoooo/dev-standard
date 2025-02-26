@@ -399,12 +399,14 @@ export function DateFromToPicker({
     <FlexColumn ref={datePickerRef} style={{ position: 'relative', width }}>
       <FlexRow style={{ gap: 6 }}>
         <Input
+          style={{ width: 140 }}
           value={inputSelectedFromDateString}
           onClick={handleInputClick}
           readOnly
           endDecorator={<CalendarMonthIcon style={{ fontSize: '1.2rem' }} />}
         />
         <Input
+          style={{ width: 140 }}
           value={inputSelectedToDateString}
           onClick={handleInputClick}
           readOnly
