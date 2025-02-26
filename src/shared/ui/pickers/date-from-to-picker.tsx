@@ -177,10 +177,11 @@ function getCellBorderRadius(
   if (selectedDate && isEqual(day, selectedDate)) {
     return 6;
   }
-  if (selectedFromToDate?.from && selectedFromToDate?.to) {
-    if (isEqual(day, selectedFromToDate.from) || isEqual(day, selectedFromToDate.to)) {
-      return 6;
-    }
+  if (
+    (selectedFromToDate?.from && isEqual(day, selectedFromToDate.from)) ||
+    (selectedFromToDate?.to && isEqual(day, selectedFromToDate.to))
+  ) {
+    return 6;
   }
   return 0;
 }
@@ -193,13 +194,19 @@ function getCellBackgroundColor(
   if (selectedDate && isEqual(day, selectedDate)) {
     return colors.primary[500];
   }
-  if (selectedFromToDate?.from && selectedFromToDate?.to) {
-    if (isAfter(day, selectedFromToDate.from) && isBefore(day, selectedFromToDate.to)) {
-      return 'rgba(67, 122, 220, 0.1)';
-    }
-    if (isEqual(day, selectedFromToDate.from) || isEqual(day, selectedFromToDate.to)) {
-      return colors.primary[500];
-    }
+  if (
+    selectedFromToDate?.from &&
+    selectedFromToDate?.to &&
+    isAfter(day, selectedFromToDate.from) &&
+    isBefore(day, selectedFromToDate.to)
+  ) {
+    return 'rgba(67, 122, 220, 0.1)';
+  }
+  if (
+    (selectedFromToDate?.from && isEqual(day, selectedFromToDate.from)) ||
+    (selectedFromToDate?.to && isEqual(day, selectedFromToDate.to))
+  ) {
+    return colors.primary[500];
   }
   return '#ffffff';
 }
@@ -215,10 +222,11 @@ function getCellTextColor(
   if (selectedDate && isEqual(day, selectedDate)) {
     return 'white';
   }
-  if (selectedFromToDate?.from && selectedFromToDate?.to) {
-    if (isEqual(day, selectedFromToDate.from) || isEqual(day, selectedFromToDate.to)) {
-      return 'white';
-    }
+  if (
+    (selectedFromToDate?.from && isEqual(day, selectedFromToDate.from)) ||
+    (selectedFromToDate?.to && isEqual(day, selectedFromToDate.to))
+  ) {
+    return 'white';
   }
   return isCurrentMonth ? '#333333' : 'lightgrey';
 }
