@@ -1,6 +1,7 @@
 import { CSSProperties, InputHTMLAttributes, ReactNode, Ref } from 'react';
-import { colors } from '@/shared/constants';
 import { motion, MotionProps } from 'framer-motion';
+
+import { colors } from '@/shared/constants';
 
 export enum InputStyle {
   SOFT = 'soft',
@@ -25,7 +26,7 @@ const inputStyles: Record<InputStyle, CSSProperties> = {
   },
   [InputStyle.OUTLINED]: {
     backgroundColor: '#ffffff',
-    boxShadow: `inset 0 0 0 0.8px rgba(0,27,55,0.2)`,
+    boxShadow: `inset 0 0 0 0.8px rgba(0,27,55,0.3)`,
     border: 'none',
   },
   [InputStyle.UNDERLINE]: {
