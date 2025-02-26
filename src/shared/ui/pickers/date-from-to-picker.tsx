@@ -11,6 +11,7 @@ import {
   getDay,
   subDays,
   addDays,
+  isEqual,
 } from 'date-fns';
 import { ko } from 'date-fns/locale';
 
@@ -167,9 +168,21 @@ type FromToPickerProps = {
 };
 
 // 날짜 셀의 스타일 계산 헬퍼 함수들
-function getCellBorderRadius(day: Date | null, selectedDate: Date | null): number {
+function getCellBorderRadius(
+  day: Date | null,
+  selectedDate: Date | null,
+  selectedFromToDate: FromToDates,
+): number {
   if (!day) return 0;
-  return selectedDate && selectedDate.toDateString() === day.toDateString() ? 6 : 0;
+  if (selectedDate && isEqual(day, selectedDate)) {
+    return 6;
+  }
+  if (selectedFromToDate?.from && selectedFromToDate?.to) {
+    if (isEqual(day, selectedFromToDate.from) || isEqual(day, selectedFromToDate.to)) {
+      return 6;
+    }
+  }
+  return 0;
 }
 function getCellBackgroundColor(
   day: Date | null,
@@ -177,25 +190,36 @@ function getCellBackgroundColor(
   selectedFromToDate: FromToDates,
 ): string {
   if (!day) return 'transparent';
+  if (selectedDate && isEqual(day, selectedDate)) {
+    return colors.primary[500];
+  }
   if (selectedFromToDate?.from && selectedFromToDate?.to) {
     if (isAfter(day, selectedFromToDate.from) && isBefore(day, selectedFromToDate.to)) {
       return 'rgba(67, 122, 220, 0.1)';
     }
-  }
-  if (selectedDate && selectedDate.toDateString() === day.toDateString()) {
-    return colors.primary[500];
+    if (isEqual(day, selectedFromToDate.from) || isEqual(day, selectedFromToDate.to)) {
+      return colors.primary[500];
+    }
   }
   return '#ffffff';
 }
 function getCellTextColor(
   day: Date | null,
   selectedDate: Date | null,
+  selectedFromToDate: FromToDates,
   isCurrentMonth: boolean,
   isDisabled: boolean,
 ): string {
   if (!day) return 'transparent';
   if (isDisabled) return 'grey';
-  if (selectedDate && selectedDate.toDateString() === day.toDateString()) return 'white';
+  if (selectedDate && isEqual(day, selectedDate)) {
+    return 'white';
+  }
+  if (selectedFromToDate?.from && selectedFromToDate?.to) {
+    if (isEqual(day, selectedFromToDate.from) || isEqual(day, selectedFromToDate.to)) {
+      return 'white';
+    }
+  }
   return isCurrentMonth ? '#333333' : 'lightgrey';
 }
 
@@ -260,9 +284,15 @@ function FromToPicker({
             ((minDate ? isBefore(day, minDate) : false) ||
               (maxDate ? isAfter(day, maxDate) : false));
           const currentMonth = !!day && isSameMonth(day);
-          const borderRadius = getCellBorderRadius(day, selectedDate);
+          const borderRadius = getCellBorderRadius(day, selectedDate, selectedFromToDate);
           const backgroundColor = getCellBackgroundColor(day, selectedDate, selectedFromToDate);
-          const textColor = getCellTextColor(day, selectedDate, currentMonth, isDisabled);
+          const textColor = getCellTextColor(
+            day,
+            selectedDate,
+            selectedFromToDate,
+            currentMonth,
+            isDisabled,
+          );
           return (
             <div key={index} style={{ gridColumn: 'span 1' }}>
               <div
