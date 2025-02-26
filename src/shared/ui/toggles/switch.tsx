@@ -10,6 +10,7 @@ interface FramerMotionSwitchProps {
   onClick: () => void;
   width?: number;
   height?: number;
+  disabled?: boolean;
 }
 
 export function Switch({
@@ -20,6 +21,7 @@ export function Switch({
   onClick,
   width = 38,
   height = 22,
+  disabled = false,
 }: FramerMotionSwitchProps) {
   const padding = height * 0.15;
   const circleSize = height * 0.7;
@@ -41,7 +43,7 @@ export function Switch({
             ...{
               userSelect: 'none',
               fontSize: '0.9rem',
-              color: '#666666',
+              color: disabled ? '#9f9f9f' : '#666666',
               fontWeight: 500,
             },
             ...labelStyle,
@@ -56,13 +58,13 @@ export function Switch({
           width,
           height,
           borderRadius,
-          backgroundColor: isOn ? colors.primary[400] : '#999999',
+          backgroundColor: disabled ? '#e0e0e0' : isOn ? colors.primary[400] : '#999999',
           padding,
-          cursor: 'pointer',
+          cursor: disabled ? 'not-allowed' : 'pointer',
           justifyContent: isOn ? 'flex-end' : 'flex-start',
           alignItems: 'center',
         }}
-        onClick={onClick}
+        onClick={disabled ? undefined : onClick}
       >
         <motion.div
           layout
