@@ -57,8 +57,8 @@ function useDatePicker({
   onChange?: (dateString: string) => void;
   dateFormat: string;
 }) {
-  const [selectedDate, setSelectedDate] = useState<Date>(
-    dateString ? new Date(dateString) : new Date(),
+  const [selectedDate, setSelectedDate] = useState<Date | null>(
+    dateString ? new Date(dateString) : null,
   );
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -71,7 +71,7 @@ function useDatePicker({
 
   useEffect(() => {
     if (!showDatePicker) {
-      setCurrentDate(selectedDate);
+      setCurrentDate(selectedDate || new Date());
     }
   }, [selectedDate, showDatePicker]);
 
@@ -107,7 +107,7 @@ type PickerProps = {
   handleDateClick: (date: Date) => void;
   handlePrevMonth: () => void;
   handleNextMonth: () => void;
-  selectedDate: Date;
+  selectedDate: Date | null;
   currentDate: Date;
   minDate?: Date;
   maxDate?: Date;
@@ -277,7 +277,7 @@ export function DatePicker({
           handleNextMonth={handleNextMonth}
           selectedDate={selectedDate}
           currentDate={currentDate}
-          minDate={minDate}
+          minDate={minDate ? subDays(minDate, 1) : undefined}
           maxDate={maxDate}
           offsetX={0}
         />

@@ -32,7 +32,7 @@ type FromToCurrentDates = Record<keyof FromToDateString, Date>;
 
 type TDatePicker = {
   width?: number | string;
-  fromToDateString: FromToDateString;
+  fromToDateString?: FromToDateString;
   onChange?: (fromToDateString: FromToDateString) => void;
   dateFormat?: string;
   minDate?: Date;
@@ -156,6 +156,7 @@ function useDateFromToPicker({
 }
 
 type FromToPickerProps = {
+  selectedFromToDate: FromToDates;
   handleDateClick: (date: Date) => void;
   handlePrevMonth: () => void;
   handleNextMonth: () => void;
@@ -170,11 +171,21 @@ function getCellBorderRadius(day: Date | null, selectedDate: Date | null): numbe
   if (!day) return 0;
   return selectedDate && selectedDate.toDateString() === day.toDateString() ? 6 : 0;
 }
-function getCellBackgroundColor(day: Date | null, selectedDate: Date | null): string {
+function getCellBackgroundColor(
+  day: Date | null,
+  selectedDate: Date | null,
+  selectedFromToDate: FromToDates,
+): string {
   if (!day) return 'transparent';
-  return selectedDate && selectedDate.toDateString() === day.toDateString()
-    ? colors.primary[500]
-    : '#ffffff';
+  if (selectedFromToDate?.from && selectedFromToDate?.to) {
+    if (isAfter(day, selectedFromToDate.from) && isBefore(day, selectedFromToDate.to)) {
+      return 'rgba(67, 122, 220, 0.1)';
+    }
+  }
+  if (selectedDate && selectedDate.toDateString() === day.toDateString()) {
+    return colors.primary[500];
+  }
+  return '#ffffff';
 }
 function getCellTextColor(
   day: Date | null,
@@ -190,6 +201,7 @@ function getCellTextColor(
 
 // Picker 컴포넌트: 달력 렌더링
 function FromToPicker({
+  selectedFromToDate,
   handleDateClick,
   handlePrevMonth,
   handleNextMonth,
@@ -249,7 +261,7 @@ function FromToPicker({
               (maxDate ? isAfter(day, maxDate) : false));
           const currentMonth = !!day && isSameMonth(day);
           const borderRadius = getCellBorderRadius(day, selectedDate);
-          const backgroundColor = getCellBackgroundColor(day, selectedDate);
+          const backgroundColor = getCellBackgroundColor(day, selectedDate, selectedFromToDate);
           const textColor = getCellTextColor(day, selectedDate, currentMonth, isDisabled);
           return (
             <div key={index} style={{ gridColumn: 'span 1' }}>
@@ -337,24 +349,27 @@ export function DateFromToPicker({
             top: '100%',
             left: 0,
             zIndex: 1,
+            gap: 8,
           }}
         >
           <FromToPicker
+            selectedFromToDate={selectedFromToDate}
             handleDateClick={handleDateClick}
             handlePrevMonth={handlePrevFromMonth}
             handleNextMonth={handleNextFromMonth}
             selectedDate={selectedFromToDate.from}
             currentDate={currentFromToDate.from}
-            minDate={minDate}
+            minDate={minDate ? subDays(minDate, 1) : undefined}
             maxDate={maxDate}
           />
           <FromToPicker
+            selectedFromToDate={selectedFromToDate}
             handleDateClick={handleDateClick}
             handlePrevMonth={handlePrevToMonth}
             handleNextMonth={handleNextToMonth}
             selectedDate={selectedFromToDate.to}
             currentDate={currentFromToDate.to}
-            minDate={minDate}
+            minDate={minDate ? subDays(minDate, 1) : undefined}
             maxDate={maxDate}
           />
         </FlexDiv>
