@@ -22,10 +22,18 @@ import { Button, FlexDiv, Input } from '@/shared/ui';
 import { colors } from '@/shared/constants';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
 
+type FromToDateString = {
+  from: string;
+  to: string;
+};
+
+type FromToDates = Record<keyof FromToDateString, Date | null>;
+type FromToCurrentDates = Record<keyof FromToDateString, Date>;
+
 type TDatePicker = {
   width?: number | string;
-  dateString?: string;
-  onChange?: (dateString: string) => void;
+  fromToDateString: FromToDateString;
+  onChange?: (fromToDateString: FromToDateString) => void;
   dateFormat?: string;
   minDate?: Date;
   maxDate?: Date;
@@ -48,70 +56,113 @@ function generateDaysArray(year: number, month: number): Date[] {
 const weekDays = ['일', '월', '화', '수', '목', '금', '토'];
 
 // 날짜 피커 훅 (선택 날짜, 현재 표시 월 등 관리)
-function useDatePicker({
-  dateString,
+function useDateFromToPicker({
+  fromToDateString,
   onChange,
   dateFormat,
 }: {
-  dateString?: string;
-  onChange?: (dateString: string) => void;
+  fromToDateString?: FromToDateString;
+  onChange?: (fromToDateString: FromToDateString) => void;
   dateFormat: string;
 }) {
-  const [selectedDate, setSelectedDate] = useState<Date>(
-    dateString ? new Date(dateString) : new Date(),
-  );
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const [selectedFromToDate, setSelectedFromToDate] = useState<FromToDates>({
+    from: fromToDateString ? new Date(fromToDateString.from) : null,
+    to: fromToDateString ? new Date(fromToDateString.to) : null,
+  });
+
+  const [showFromToDatePicker, setShowFromToDatePicker] = useState(false);
+  const [currentFromToDate, setCurrentFromToDate] = useState<FromToCurrentDates>({
+    from: fromToDateString ? new Date(fromToDateString.from) : new Date(),
+    to: fromToDateString ? new Date(fromToDateString.to) : addMonths(new Date(), 1),
+  });
 
   useEffect(() => {
-    if (dateString) {
-      setSelectedDate(new Date(dateString));
+    if (fromToDateString) {
+      setSelectedFromToDate({
+        from: new Date(fromToDateString.from),
+        to: new Date(fromToDateString.to),
+      });
     }
-  }, [dateString]);
-
-  useEffect(() => {
-    if (!showDatePicker) {
-      setCurrentDate(selectedDate);
-    }
-  }, [selectedDate, showDatePicker]);
+  }, [fromToDateString]);
 
   const handleDateClick = (date: Date) => {
-    setShowDatePicker(false);
-    if (onChange) {
-      onChange(format(date, dateFormat));
+    if (!selectedFromToDate.from || (selectedFromToDate.from && selectedFromToDate.to)) {
+      setSelectedFromToDate({ from: date, to: null });
+      onChange?.({
+        from: selectedFromToDate.from ? format(selectedFromToDate.from, dateFormat) : '',
+        to: '',
+      });
+    } else {
+      if (isBefore(date, selectedFromToDate.from)) {
+        setSelectedFromToDate({ from: date, to: null });
+        onChange?.({
+          from: selectedFromToDate.from ? format(selectedFromToDate.from, dateFormat) : '',
+          to: fromToDateString?.to ?? '',
+        });
+      } else {
+        setShowFromToDatePicker(false);
+
+        setSelectedFromToDate((prevState) => ({ ...prevState, to: date }));
+        onChange?.({
+          from: fromToDateString?.from ?? '',
+          to: selectedFromToDate?.to ? format(selectedFromToDate.to, dateFormat) : '',
+        });
+      }
     }
-    setSelectedDate(date);
   };
 
-  const handlePrevMonth = () => {
-    setCurrentDate(subMonths(currentDate, 1));
+  const handlePrevFromMonth = () => {
+    setCurrentFromToDate((prevState) => ({
+      ...prevState,
+      from: subMonths(prevState.from, 1),
+    }));
   };
 
-  const handleNextMonth = () => {
-    setCurrentDate(addMonths(currentDate, 1));
+  const handleNextFromMonth = () => {
+    const newFrom = addMonths(currentFromToDate.from, 1);
+
+    if (!isBefore(newFrom, currentFromToDate.to)) {
+      return;
+    }
+
+    setCurrentFromToDate((prevState) => ({ ...prevState, from: newFrom }));
+  };
+
+  // 달력 이동 핸들러 (to 달력)
+  const handlePrevToMonth = () => {
+    const newTo = subMonths(currentFromToDate.to, 1);
+    if (!isAfter(newTo, currentFromToDate.from)) {
+      return;
+    }
+
+    setCurrentFromToDate((prevState) => ({ ...prevState, to: newTo }));
+  };
+
+  const handleNextToMonth = () => {
+    setCurrentFromToDate((prevState) => ({ ...prevState, to: addMonths(prevState.to, 1) }));
   };
 
   return {
-    selectedDate,
-    showDatePicker,
-    setShowDatePicker,
-    currentDate,
+    selectedFromToDate,
+    showFromToDatePicker,
+    setShowFromToDatePicker,
+    currentFromToDate,
     handleDateClick,
-    handlePrevMonth,
-    handleNextMonth,
+    handlePrevFromMonth,
+    handlePrevToMonth,
+    handleNextFromMonth,
+    handleNextToMonth,
   };
 }
 
-// Picker 컴포넌트의 prop 타입 정리
-type PickerProps = {
+type FromToPickerProps = {
   handleDateClick: (date: Date) => void;
   handlePrevMonth: () => void;
   handleNextMonth: () => void;
-  selectedDate: Date;
+  selectedDate: Date | null;
   currentDate: Date;
   minDate?: Date;
   maxDate?: Date;
-  offsetX: number;
 };
 
 // 날짜 셀의 스타일 계산 헬퍼 함수들
@@ -138,7 +189,7 @@ function getCellTextColor(
 }
 
 // Picker 컴포넌트: 달력 렌더링
-function Picker({
+function FromToPicker({
   handleDateClick,
   handlePrevMonth,
   handleNextMonth,
@@ -146,8 +197,7 @@ function Picker({
   currentDate,
   minDate,
   maxDate,
-  offsetX,
-}: PickerProps) {
+}: FromToPickerProps) {
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
   const days = generateDaysArray(year, month);
@@ -165,10 +215,6 @@ function Picker({
   return (
     <div
       style={{
-        position: 'absolute',
-        top: '100%',
-        left: offsetX,
-        zIndex: 1,
         marginTop: 8,
         padding: 16,
         backgroundColor: '#ffffff',
@@ -237,50 +283,81 @@ function Picker({
   );
 }
 
-// DatePicker 컴포넌트
-export function DatePicker({
+export function DateFromToPicker({
   width = 'auto',
-  dateString,
+  fromToDateString,
   onChange,
   dateFormat = 'yyyy-MM-dd',
   minDate,
   maxDate,
 }: TDatePicker) {
   const {
-    selectedDate,
-    showDatePicker,
-    setShowDatePicker,
-    currentDate,
+    selectedFromToDate,
+    showFromToDatePicker,
+    setShowFromToDatePicker,
+    currentFromToDate,
     handleDateClick,
-    handlePrevMonth,
-    handleNextMonth,
-  } = useDatePicker({ dateString, onChange, dateFormat });
+    handlePrevFromMonth,
+    handlePrevToMonth,
+    handleNextFromMonth,
+    handleNextToMonth,
+  } = useDateFromToPicker({ fromToDateString, onChange, dateFormat });
   const datePickerRef = useHandleClickOutsideRef({
-    condition: showDatePicker,
-    outsideClickAction: () => setShowDatePicker(false),
+    condition: showFromToDatePicker,
+    outsideClickAction: () => setShowFromToDatePicker(false),
   });
-  const handleInputClick = () => setShowDatePicker((prev) => !prev);
-  const inputSelectedDateString = selectedDate ? format(selectedDate, dateFormat) : '';
+  const handleInputClick = () => setShowFromToDatePicker((prev) => !prev);
+  const inputSelectedFromDateString = selectedFromToDate.from
+    ? format(selectedFromToDate.from, dateFormat)
+    : '';
+  const inputSelectedToDateString = selectedFromToDate.to
+    ? format(selectedFromToDate.to, dateFormat)
+    : '';
 
   return (
     <FlexDiv ref={datePickerRef} flexDirection='column' style={{ position: 'relative', width }}>
-      <Input
-        value={inputSelectedDateString}
-        onClick={handleInputClick}
-        readOnly
-        endDecorator={<CalendarMonthIcon style={{ fontSize: '1.2rem' }} />}
-      />
-      {showDatePicker && (
-        <Picker
-          handleDateClick={handleDateClick}
-          handlePrevMonth={handlePrevMonth}
-          handleNextMonth={handleNextMonth}
-          selectedDate={selectedDate}
-          currentDate={currentDate}
-          minDate={minDate}
-          maxDate={maxDate}
-          offsetX={0}
+      <FlexDiv style={{ gap: 6 }}>
+        <Input
+          value={inputSelectedFromDateString}
+          onClick={handleInputClick}
+          readOnly
+          endDecorator={<CalendarMonthIcon style={{ fontSize: '1.2rem' }} />}
         />
+        <Input
+          value={inputSelectedToDateString}
+          onClick={handleInputClick}
+          readOnly
+          endDecorator={<CalendarMonthIcon style={{ fontSize: '1.2rem' }} />}
+        />
+      </FlexDiv>
+      {showFromToDatePicker && (
+        <FlexDiv
+          style={{
+            position: 'absolute',
+            top: '100%',
+            left: 0,
+            zIndex: 1,
+          }}
+        >
+          <FromToPicker
+            handleDateClick={handleDateClick}
+            handlePrevMonth={handlePrevFromMonth}
+            handleNextMonth={handleNextFromMonth}
+            selectedDate={selectedFromToDate.from}
+            currentDate={currentFromToDate.from}
+            minDate={minDate}
+            maxDate={maxDate}
+          />
+          <FromToPicker
+            handleDateClick={handleDateClick}
+            handlePrevMonth={handlePrevToMonth}
+            handleNextMonth={handleNextToMonth}
+            selectedDate={selectedFromToDate.to}
+            currentDate={currentFromToDate.to}
+            minDate={minDate}
+            maxDate={maxDate}
+          />
+        </FlexDiv>
       )}
     </FlexDiv>
   );

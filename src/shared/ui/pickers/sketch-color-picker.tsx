@@ -1,7 +1,7 @@
 import { CSSProperties } from 'react';
-import Circle from '@uiw/react-color-circle';
+import { Sketch } from '@uiw/react-color';
 
-export function FuturCircleColorPicker({
+export function SketchColorPicker({
   style,
   hex,
   setHex,
@@ -11,15 +11,9 @@ export function FuturCircleColorPicker({
   setHex: (hex: string) => void;
 }) {
   return (
-    <Circle
-      style={style}
-      colors={[]}
+    <Sketch
+      style={{ ...{ marginLeft: 20 }, ...style }}
       color={hex}
-      pointProps={{
-        style: {
-          marginRight: 20,
-        },
-      }}
       onChange={(color) => {
         setHex(color.hex);
       }}
