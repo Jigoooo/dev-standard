@@ -13,20 +13,31 @@ type ExtendedTextareaProps = MotionProps &
   };
 
 const defaultTextareaStyle: CSSProperties = {
+  paddingInline: 8,
+  paddingBlock: 10,
   width: '100%',
   height: 100,
   borderRadius: 4,
+  fontSize: '0.94rem',
+  fontWeight: 500,
   boxShadow: `inset 0 0 0 0.8px rgba(0,27,55,0.3)`,
   border: 'none',
   outline: 'none',
 } as const;
 
-export function Textarea({ ...props }: Readonly<ExtendedTextareaProps>) {
+const textareaDisabledStyle: CSSProperties = {
+  backgroundColor: '#fafafa',
+};
+
+export function Textarea({ ref, style, ...props }: Readonly<ExtendedTextareaProps>) {
   return (
     <motion.textarea
+      ref={ref}
       className='selection-none'
       style={{
         ...defaultTextareaStyle,
+        ...(props.disabled ? textareaDisabledStyle : {}),
+        ...style,
       }}
       variants={{
         focus: {

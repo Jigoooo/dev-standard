@@ -60,7 +60,6 @@ type ExtendedInputProps = MotionProps &
   };
 
 export function Input({
-  ref,
   style,
   type = 'text',
   inputStyle = InputStyle.OUTLINED,
@@ -90,7 +89,6 @@ export function Input({
         </div>
       )}
       <motion.input
-        ref={ref}
         className='selection-none'
         type={type}
         variants={{
