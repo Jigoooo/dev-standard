@@ -163,7 +163,7 @@ export function openTMap({
   } else {
     dialogActions.openDialog({
       contents: '모바일에서만 지원됩니다.',
-      color: DialogType.WARNING,
+      dialogType: DialogType.WARNING,
     });
   }
 }

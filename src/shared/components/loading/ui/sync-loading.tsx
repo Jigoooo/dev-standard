@@ -1,27 +1,24 @@
 import { SyncLoader } from 'react-spinners';
-import Typography from '@mui/joy/Typography';
-import Box from '@mui/joy/Box';
 
 import { loadingStyles } from './loading-styles.ts';
-import { LoadingType, useLoading, useSyncLoadingText } from '@/shared/components';
+import { useLoading } from '@/shared/components';
 
 export function SyncLoading() {
-  const loadingState = useLoading(LoadingType.SYNC_LOADING);
-  const syncLoadingText = useSyncLoadingText();
+  const loadingState = useLoading();
 
   return (
     <>
-      {loadingState && (
-        <Box className={'selection-none'} sx={loadingStyles.loader}>
+      {loadingState.isLoading && (
+        <div className={'selection-none'} style={loadingStyles.loader}>
           <SyncLoader
             color={'#6495ED'}
             size={18}
             style={{ alignItems: 'center', justifyContent: 'center', marginBottom: '12px' }}
           />
-          <Typography level='h4' component='h1' textColor={'white'}>
-            {syncLoadingText}
-          </Typography>
-        </Box>
+          <span style={{ color: '#ffffff', fontSize: '1rem', fontWeight: 500 }}>
+            {loadingState.loadingText}
+          </span>
+        </div>
       )}
     </>
   );

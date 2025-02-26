@@ -32,14 +32,14 @@ export function SignIn() {
 
     if (!id) {
       return dialogActions.openDialog({
-        color: DialogType.WARNING,
+        dialogType: DialogType.WARNING,
         contents: '아이디를 입력해 주세요.',
       });
     }
 
     if (!password) {
       return dialogActions.openDialog({
-        color: DialogType.WARNING,
+        dialogType: DialogType.WARNING,
         contents: '비밀번호를 입력해 주세요.',
       });
     }

@@ -11,7 +11,7 @@ const dialogInitialState: DialogStates = {
     confirmText: '확인',
     cancelText: '취소',
     withCancel: false,
-    color: DialogType.INFO,
+    dialogType: DialogType.INFO,
     onConfirm: () => {},
     onCancel: () => {},
   },
@@ -29,7 +29,7 @@ const useDialog = create<DialogStoreInterface>()((setState, getState) => {
         onConfirm = () => {},
         onCancel = () => {},
         withCancel = false,
-        color = DialogType.INFO,
+        dialogType = DialogType.INFO,
       }) => {
         setState((state) => ({
           ...state,
@@ -48,7 +48,7 @@ const useDialog = create<DialogStoreInterface>()((setState, getState) => {
               getState().actions.closeDialog();
             },
             withCancel,
-            color,
+            dialogType,
           },
         }));
       },
@@ -60,7 +60,7 @@ const useDialog = create<DialogStoreInterface>()((setState, getState) => {
         onConfirm = () => {},
         onCancel = () => {},
         withCancel = false,
-        color = DialogType.INFO,
+        dialogType = DialogType.INFO,
       }) =>
         new Promise((resolve) => {
           setState((state) => ({
@@ -83,7 +83,7 @@ const useDialog = create<DialogStoreInterface>()((setState, getState) => {
                 resolve(false);
               },
               withCancel,
-              color,
+              dialogType,
             },
           }));
         }),

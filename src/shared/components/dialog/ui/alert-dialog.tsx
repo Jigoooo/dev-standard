@@ -19,7 +19,7 @@ export function AlertDialog() {
   const modalRef = useRef<HTMLDivElement | null>(null);
 
   useModalClose(dialogOpen, dialogActions.closeDialog);
-  const dialogColor = dialogColors[dialogInfos.color as DialogType];
+  const dialogColor = dialogColors[dialogInfos.dialogType as DialogType];
 
   useEffect(() => {
     if (dialogOpen) {
