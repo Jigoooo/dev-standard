@@ -9,6 +9,7 @@ export {
   HEADER_Z_INDEX,
   MODAL_Z_INDEX,
   INFINITE_Z_INDEX,
+  TOOLTIP_Z_INDEX,
 } from './common.ts';
 export { colors } from './colors.ts';
 export { PROXY_CONVERT_URL_PREFIX } from './api.ts';

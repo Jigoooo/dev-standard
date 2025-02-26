@@ -1,8 +1,10 @@
 import { ReactNode, useMemo, useState } from 'react';
-import { Box, Divider, Stack, Typography } from '@mui/joy';
+
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { colors, SELECT_BOX_ITEM_Z_INDEX } from '@/shared/constants';
+
+import { SELECT_BOX_ITEM_Z_INDEX } from '@/shared/constants';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
+import { FlexRow } from '@/shared/components';
 
 type SelectOption<ValueType extends string | number> = {
   label: ReactNode;
@@ -15,8 +17,8 @@ export function Select<ValueType extends string | number>({
   onChange,
   options,
   containerWidth,
-  containerMinWidth = 50,
-  containerHeight = 40,
+  containerMinWidth = 160,
+  containerHeight = 38,
 }: {
   label?: string;
   value: ValueType;
@@ -41,9 +43,9 @@ export function Select<ValueType extends string | number>({
   const toggleSelectBox = () => setIsOpen(!isOpen);
 
   return (
-    <Box
+    <div
       ref={ref}
-      sx={{
+      style={{
         position: 'relative',
         minWidth: containerMinWidth,
         width: containerWidth || 'auto',
@@ -62,12 +64,12 @@ export function Select<ValueType extends string | number>({
           options={options}
           selectedValue={value}
           selectValue={(newValue) => {
-            onChange(newValue); // 외부 상태 변경
-            setIsOpen(false); // 닫기
+            onChange(newValue);
+            setIsOpen(false);
           }}
         />
       )}
-    </Box>
+    </div>
   );
 }
 
@@ -85,15 +87,14 @@ function SelectContainer({
   containerHeight: number;
 }) {
   return (
-    <Stack
-      sx={{
-        display: 'flex',
-        flexDirection: 'row',
+    <FlexRow
+      style={{
         justifyContent: 'space-between',
         alignItems: 'center',
-        gap: 1,
-        px: label ? 1.2 : 0.4,
-        py: 0.5,
+        gap: 8,
+        paddingLeft: label ? 12 : 6,
+        paddingRight: 6,
+        paddingBlock: 4,
         height: containerHeight,
         backgroundColor: '#ffffff',
         boxShadow: '0 0 3px rgba(50, 50, 50, 0.1)',
@@ -103,21 +104,17 @@ function SelectContainer({
       }}
       onClick={toggleSelectBox}
     >
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+      <FlexRow style={{ alignItems: 'center', gap: 8 }}>
         {label && (
           <>
-            <Typography sx={{ fontSize: '0.8rem', fontWeight: 400, color: '#333333' }}>
-              {label}
-            </Typography>
-            <Divider
-              orientation='vertical'
-              sx={{ height: 20, alignSelf: 'center', backgroundColor: '#cccccc' }}
-            />
+            <span style={{ fontSize: '0.9rem', fontWeight: 400, color: '#333333' }}>{label}</span>
+            <div
+              style={{ height: 20, width: 1, alignSelf: 'center', backgroundColor: '#cccccc' }}
+            ></div>
           </>
         )}
-        <Box
-          component='span'
-          sx={{
+        <span
+          style={{
             padding: '3px 9px',
             borderRadius: 4,
             fontWeight: 500,
@@ -125,20 +122,19 @@ function SelectContainer({
           }}
         >
           {selectedLabel}
-        </Box>
-      </Box>
-      <Box
-        sx={{
-          display: 'flex',
+        </span>
+      </FlexRow>
+      <FlexRow
+        style={{
           alignItems: 'center',
           justifyContent: 'center',
           transition: 'transform 0.3s ease',
           transform: isOpen ? 'rotate(-180deg)' : 'rotate(0deg)',
         }}
       >
-        <KeyboardArrowDownIcon style={{ fontSize: '1.6rem' }} />
-      </Box>
-    </Stack>
+        <KeyboardArrowDownIcon style={{ fontSize: '1.4rem' }} />
+      </FlexRow>
+    </FlexRow>
   );
 }
 
@@ -152,16 +148,16 @@ function SelectItems<ValueType extends string | number>({
   options: SelectOption<ValueType>[];
 }) {
   return (
-    <Box
+    <div
       className='shadow-scroll'
-      sx={{
+      style={{
         position: 'absolute',
         top: '115%',
         left: 0,
         width: '100%',
         backgroundColor: 'white',
         border: '1px solid #ddd',
-        borderRadius: 6,
+        borderRadius: 4,
         boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
         maxHeight: 300,
         overflowY: 'auto',
@@ -169,30 +165,28 @@ function SelectItems<ValueType extends string | number>({
       }}
     >
       {options.map((option) => (
-        <Stack
+        <FlexRow
           key={option.value}
-          direction='row'
-          alignItems='center'
-          sx={{
-            height: 40,
+          style={{
+            alignItems: 'center',
+            height: 38,
             cursor: 'pointer',
-            backgroundColor: selectedValue === option.value ? colors.primary[500] : 'transparent',
+            backgroundColor: selectedValue === option.value ? '#e9e9e9' : 'transparent',
           }}
           onClick={() => selectValue(option.value)}
         >
-          <Box
-            component='span'
-            sx={{
-              ml: 0.6,
+          <span
+            style={{
+              marginLeft: 4,
               padding: '2px 8px',
               borderRadius: 4,
-              color: selectedValue === option.value ? '#ffffff' : '#000000',
+              color: '#000000',
             }}
           >
             {option.label}
-          </Box>
-        </Stack>
+          </span>
+        </FlexRow>
       ))}
-    </Box>
+    </div>
   );
 }

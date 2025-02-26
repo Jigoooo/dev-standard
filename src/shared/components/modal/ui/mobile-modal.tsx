@@ -1,11 +1,11 @@
 import { MouseEvent, ReactNode } from 'react';
-import { Box, Divider, Typography, IconButton, Tooltip } from '@mui/joy';
 import { AnimatePresence, motion } from 'framer-motion';
 import CloseIcon from '@mui/icons-material/Close';
 // import { Resizable } from 're-resizable';
 
 import { MODAL_Z_INDEX } from '@/shared/constants';
 import { useDraggable } from '@/shared/hooks/common/use-draggable.ts';
+import { Button, FlexRow, Tooltip } from '@/shared/components';
 
 type ModalType = {
   isOpen: boolean;
@@ -58,14 +58,14 @@ export function MobileModal({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
           />
-          <motion.div
+          <FlexRow
+            as={motion.div}
             style={{
               position: 'fixed',
               top: position?.y ?? 0,
               left: position?.x ?? 0,
               width: '100%',
               height: '100%',
-              display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
               zIndex: MODAL_Z_INDEX,
@@ -89,26 +89,26 @@ export function MobileModal({
             {/*    position: 'relative',*/}
             {/*  }}*/}
             {/*>*/}
-            <Box
-              sx={{
-                px: 3,
-                pb: 3,
+            <div
+              style={{
+                paddingInline: 24,
+                paddingBottom: 24,
                 height: '100%',
               }}
             >
               <ModalHeader title={title} onClose={onClose} onMouseDown={handleMouseDown} />
-              <Divider />
-              <Box
-                sx={{
+              <div style={{ height: 1, width: '100%', backgroundColor: '#e0e0e0' }}></div>
+              <div
+                style={{
                   overflow: 'auto',
                   height: `calc(100% - ${modalHeaderHeight}px)`,
                 }}
               >
                 {children}
-              </Box>
-            </Box>
+              </div>
+            </div>
             {/*</Resizable>*/}
-          </motion.div>
+          </FlexRow>
         </>
       )}
     </AnimatePresence>
@@ -125,24 +125,23 @@ function ModalHeader({
   onMouseDown: (event: MouseEvent) => void;
 }) {
   return (
-    <Box
-      sx={{
+    <FlexRow
+      style={{
         cursor: 'pointer',
-        pt: 3,
-        pb: 1.4,
-        display: 'flex',
+        paddingTop: 24,
+        paddingBottom: 12,
         justifyContent: 'space-between',
         alignItems: 'center',
         height: modalHeaderHeight,
       }}
       onMouseDown={onMouseDown}
     >
-      <Typography sx={{ fontSize: '1.6rem', fontWeight: 700 }}>{title}</Typography>
-      <Tooltip title={'닫기'} placement={'top'}>
-        <IconButton onClick={onClose} color={'neutral'}>
+      <span style={{ fontSize: '1.6rem', fontWeight: 700 }}>{title}</span>
+      <Tooltip content={'닫기'} position={'top'}>
+        <Button onClick={onClose} style={{ backgroundColor: '#ffffff' }}>
           <CloseIcon style={{ fontSize: 32 }} />
-        </IconButton>
+        </Button>
       </Tooltip>
-    </Box>
+    </FlexRow>
   );
 }

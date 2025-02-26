@@ -1,8 +1,7 @@
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Box } from '@mui/joy';
 
-import { ModalContext } from '@/shared/components';
+import { FlexRow, ModalContext } from '@/shared/components';
 import { MODAL_Z_INDEX } from '@/shared/constants';
 
 export function ModalContextWrapper({ children }: { children: ReactNode }) {
@@ -37,13 +36,13 @@ export function ModalContextWrapper({ children }: { children: ReactNode }) {
       {children}
       <AnimatePresence>
         {isOpen && modalRender && (
-          <Box
-            component={motion.div}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+          <motion.div
+            key='modal-overlay'
+            initial={{ opacity: 0, pointerEvents: 'none' }}
+            animate={{ opacity: 1, pointerEvents: 'auto' }}
+            exit={{ opacity: 0, pointerEvents: 'none' }}
             transition={{ duration: 0.1 }}
-            sx={{
+            style={{
               position: 'fixed',
               top: 0,
               left: 0,
@@ -57,8 +56,8 @@ export function ModalContextWrapper({ children }: { children: ReactNode }) {
               if (isPossibleOverlayClose) close();
             }}
           >
-            <Box
-              component={motion.div}
+            <FlexRow
+              as={motion.div}
               initial={{ y: '5%' }}
               animate={{ y: '0%' }}
               exit={{ y: '5%' }}
@@ -68,7 +67,7 @@ export function ModalContextWrapper({ children }: { children: ReactNode }) {
                 damping: 25,
                 duration: 0.1,
               }}
-              sx={{
+              style={{
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -80,8 +79,8 @@ export function ModalContextWrapper({ children }: { children: ReactNode }) {
               }}
             >
               {modalRender({ isOpen, close })}
-            </Box>
-          </Box>
+            </FlexRow>
+          </motion.div>
         )}
       </AnimatePresence>
     </ModalContext>
