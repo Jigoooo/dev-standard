@@ -3,7 +3,13 @@ import { createContext, ReactNode, use } from 'react';
 import { colors } from '@/shared/constants';
 
 const RadioGroupContext = createContext<
-  { name: string; selectedRadio: string; handleSelectedRadio: (value: string) => void } | undefined
+  | {
+      name: string;
+      selectedRadio: string;
+      handleSelectedRadio: (value: string) => void;
+      groupDisabled: boolean;
+    }
+  | undefined
 >(undefined);
 
 function useRadioGroupContext() {
@@ -18,31 +24,54 @@ export function RadioGroup({
   name,
   selectedRadio,
   handleSelectedRadio,
+  groupDisabled = false,
   children,
 }: {
   name: string;
   selectedRadio: string;
   handleSelectedRadio: (value: string) => void;
+  groupDisabled?: boolean;
   children: ReactNode;
 }) {
   return (
-    <RadioGroupContext value={{ name, selectedRadio, handleSelectedRadio }}>
+    <RadioGroupContext value={{ name, selectedRadio, handleSelectedRadio, groupDisabled }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>{children}</div>
     </RadioGroupContext>
   );
 }
 
-export function Radio({ label, value }: { label: string; value: string }) {
-  const { name, selectedRadio, handleSelectedRadio } = useRadioGroupContext();
+export function Radio({
+  label,
+  value,
+  disabled = false,
+}: {
+  label: string;
+  value: string;
+  disabled?: boolean;
+}) {
+  const { name, selectedRadio, handleSelectedRadio, groupDisabled } = useRadioGroupContext();
+
+  const disabledValue = disabled || groupDisabled;
 
   return (
-    <label key={value} style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
+    <label
+      key={value}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 8,
+        cursor: disabledValue ? 'not-allowed' : 'pointer',
+      }}
+    >
       <input
         type='radio'
         name={name}
         value={value}
         checked={selectedRadio === value}
-        onChange={() => handleSelectedRadio(value)}
+        onChange={() => {
+          handleSelectedRadio(value);
+        }}
+        disabled={disabledValue}
         style={{
           position: 'absolute',
           opacity: 0,
@@ -60,7 +89,11 @@ export function Radio({ label, value }: { label: string; value: string }) {
           justifyContent: 'center',
         }}
         animate={{
-          borderColor: selectedRadio === value ? colors.primary[400] : '#ccc',
+          borderColor: disabledValue
+            ? '#cccccc'
+            : selectedRadio === value
+              ? colors.primary[400]
+              : '#cccccc',
         }}
         transition={{ duration: 0.2 }}
       >
@@ -70,7 +103,7 @@ export function Radio({ label, value }: { label: string; value: string }) {
               width: 11,
               height: 11,
               borderRadius: '50%',
-              backgroundColor: colors.primary[400],
+              backgroundColor: disabledValue ? '#cccccc' : colors.primary[400],
             }}
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
@@ -78,7 +111,9 @@ export function Radio({ label, value }: { label: string; value: string }) {
           />
         )}
       </motion.div>
-      <span style={{ fontSize: '0.9rem' }}>{label}</span>
+      <span style={{ fontSize: '0.9rem', color: disabledValue ? '#cccccc' : '#333333' }}>
+        {label}
+      </span>
     </label>
   );
 }
