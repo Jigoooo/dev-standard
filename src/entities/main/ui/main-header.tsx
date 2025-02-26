@@ -1,9 +1,7 @@
-import { Box, Typography } from '@mui/joy';
-
 export function MainHeader({ title }: { title: string }) {
   return (
-    <Box
-      sx={{
+    <div
+      style={{
         position: 'sticky',
         top: 0,
         left: 0,
@@ -14,9 +12,7 @@ export function MainHeader({ title }: { title: string }) {
         alignItems: 'center',
       }}
     >
-      <Typography sx={{ color: '#000000', fontSize: '1.6rem', fontWeight: 700 }}>
-        {title}
-      </Typography>
-    </Box>
+      <span style={{ color: '#000000', fontSize: '1.6rem', fontWeight: 700 }}>{title}</span>
+    </div>
   );
 }

@@ -28,7 +28,7 @@ type ModalType = {
 
 const modalHeaderHeight = 80;
 
-export function Modal({
+export function MobileModal({
   isOpen,
   onClose,
   title,

@@ -5,7 +5,7 @@ import TriphosLogo from '@/shared/assets/images/triphos_logo.png';
 import { Router } from '@/entities/router';
 import { dialogActions, DialogType } from '@/shared/components';
 import { menus } from '@/entities/menu';
-import { Button, Checkbox, FlexDiv, Form, Input } from '@/shared/ui';
+import { Button, Checkbox, FlexColumn, FlexRow, Form, Input } from '@/shared/ui';
 import { useToggle } from '@/shared/hooks';
 import { getFormValues } from '@/shared/lib';
 import { localStorageKey } from '@/shared/constants';
@@ -57,8 +57,8 @@ export function SignIn() {
   };
 
   return (
-    <FlexDiv style={{ width: '100vw', height: '100vh', backgroundColor: '#f8f8f8' }}>
-      <FlexDiv style={{ width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+    <FlexRow style={{ width: '100vw', height: '100vh', backgroundColor: '#f8f8f8' }}>
+      <FlexRow style={{ width: '100%', alignItems: 'center', justifyContent: 'center' }}>
         <Form
           style={{
             display: 'flex',
@@ -74,17 +74,15 @@ export function SignIn() {
           }}
           action={signIn}
         >
-          <FlexDiv
+          <FlexColumn
             className={'selection-none'}
-            flexDirection={'column'}
             style={{
               height: 60,
             }}
           >
             <img src={TriphosLogo} alt={'로고'} />
-          </FlexDiv>
-          <FlexDiv
-            flexDirection={'column'}
+          </FlexColumn>
+          <FlexColumn
             style={{
               width: '100%',
               alignItems: 'center',
@@ -104,7 +102,7 @@ export function SignIn() {
               type={'password'}
               placeholder={'비밀번호'}
             />
-            <FlexDiv
+            <FlexRow
               style={{
                 width: '100%',
               }}
@@ -114,13 +112,13 @@ export function SignIn() {
                 onClick={toggleSaveIdChecked}
                 label={'아이디 저장'}
               />
-            </FlexDiv>
-          </FlexDiv>
+            </FlexRow>
+          </FlexColumn>
           <Button type={'submit'} style={{ width: '100%', height: 48 }}>
             <span>로그인</span>
           </Button>
         </Form>
-      </FlexDiv>
-    </FlexDiv>
+      </FlexRow>
+    </FlexRow>
   );
 }

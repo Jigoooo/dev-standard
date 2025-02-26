@@ -1,4 +1,3 @@
-export { FuturAutoCompleteBox } from './futur-auto-complete-box.tsx';
 export { SketchColorPicker } from './sketch-color-picker.tsx';
 export { MultiSelect } from './multi-select.tsx';
 export { Select } from './select.tsx';

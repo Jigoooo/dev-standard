@@ -4,12 +4,12 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { colors, SELECT_BOX_ITEM_Z_INDEX } from '@/shared/constants';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
 
-type SelectOption = {
+type SelectOption<ValueType extends string | number> = {
   label: ReactNode;
-  value: string | number;
+  value: ValueType;
 };
 
-export function Select({
+export function Select<ValueType extends string | number>({
   label = '',
   value,
   onChange,
@@ -19,9 +19,9 @@ export function Select({
   containerHeight = 40,
 }: {
   label?: string;
-  value: string | number;
-  onChange: (value: string | number) => void;
-  options: SelectOption[];
+  value: ValueType;
+  onChange: (value: ValueType) => void;
+  options: SelectOption<ValueType>[];
   containerWidth?: string | number;
   containerMinWidth?: string | number;
   containerHeight?: number;
@@ -142,14 +142,14 @@ function SelectContainer({
   );
 }
 
-function SelectItems({
+function SelectItems<ValueType extends string | number>({
   selectValue,
   selectedValue,
   options,
 }: {
-  selectValue: (value: string | number) => void;
-  selectedValue: string | number;
-  options: SelectOption[];
+  selectValue: (value: ValueType) => void;
+  selectedValue: ValueType;
+  options: SelectOption<ValueType>[];
 }) {
   return (
     <Box

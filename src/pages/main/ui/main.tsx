@@ -1,44 +1,43 @@
-import { Box, Stack, Typography } from '@mui/joy';
 import { Outlet } from 'react-router-dom';
 
 import { menus } from '@/entities/menu';
 import { MainMenuController, SidebarItems } from '@/widgets/main';
+import { FlexColumn, FlexRow } from '@/shared/ui';
 
 export function Main() {
   return (
-    <Box
-      sx={{
-        display: 'flex',
+    <FlexRow
+      style={{
         width: '100vw',
         height: '100vh',
         minHeight: 600,
         backgroundColor: '#ffffff',
       }}
     >
-      <Box sx={{ minWidth: 250, width: 250, height: '100%' }}>
-        <Stack
-          sx={{
+      <div style={{ minWidth: 250, width: 250, height: '100%' }}>
+        <FlexColumn
+          style={{
             position: 'relative',
             backgroundColor: '#1e232e',
             height: '100%',
-            py: 2,
-            gap: 1.6,
+            paddingBlock: 16,
+            gap: 15,
           }}
         >
-          <Box sx={{ px: 1.2, pb: 2 }}>
-            <Typography sx={{ fontSize: '1.1rem', fontWeight: 700, color: '#ffffff' }}>
+          <div style={{ paddingInline: 10, paddingBottom: 16 }}>
+            <span style={{ fontSize: '1.1rem', fontWeight: 700, color: '#ffffff' }}>
               Home Manager
-            </Typography>
-          </Box>
+            </span>
+          </div>
           <SidebarItems menus={menus} />
-        </Stack>
-      </Box>
+        </FlexColumn>
+      </div>
 
-      <Stack sx={{ flexGrow: 1, height: '100%', overflowX: 'auto' }}>
+      <FlexColumn style={{ flexGrow: 1, height: '100%', overflowX: 'auto', paddingInline: 16 }}>
         <Outlet />
-      </Stack>
+      </FlexColumn>
 
       <MainMenuController />
-    </Box>
+    </FlexRow>
   );
 }

@@ -4,7 +4,7 @@ import { MouseEventHandler } from 'react';
 import CheckSolid from '@/shared/assets/images/check-solid.svg?react';
 
 import { colors } from '@/shared/constants';
-import { FlexDiv } from '@/shared/ui';
+import { FlexRow } from '@/shared/ui';
 
 export function Checkbox({
   label = '',
@@ -22,7 +22,7 @@ export function Checkbox({
   disabled?: boolean;
 }) {
   return (
-    <FlexDiv
+    <FlexRow
       style={{
         alignItems: 'center',
         gap: 6,
@@ -31,7 +31,8 @@ export function Checkbox({
       onClick={(e) => !disabled && onClick(e)}
     >
       <input type='checkbox' checked={checked} onChange={() => {}} style={{ display: 'none' }} />
-      <motion.div
+      <FlexRow
+        as={motion.div}
         style={{
           display: 'flex',
           justifyContent: 'center',
@@ -102,7 +103,7 @@ export function Checkbox({
             </motion.div>
           )}
         </AnimatePresence>
-      </motion.div>
+      </FlexRow>
       <span
         style={{
           userSelect: 'none',
@@ -113,6 +114,6 @@ export function Checkbox({
       >
         {label}
       </span>
-    </FlexDiv>
+    </FlexRow>
   );
 }

@@ -18,7 +18,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
-import { Button, FlexDiv, Input } from '@/shared/ui';
+import { Button, FlexRow, Input } from '@/shared/ui';
 import { colors } from '@/shared/constants';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
 
@@ -177,7 +177,7 @@ function Picker({
         width: 300,
       }}
     >
-      <FlexDiv style={{ justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+      <FlexRow style={{ justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
         <Button style={{ height: 38, backgroundColor: '#ffffff' }} onClick={handlePrevMonth}>
           <ArrowBackIcon />
         </Button>
@@ -187,14 +187,14 @@ function Picker({
         <Button style={{ height: 38, backgroundColor: '#ffffff' }} onClick={handleNextMonth}>
           <ArrowForwardIcon />
         </Button>
-      </FlexDiv>
-      <FlexDiv style={{ width: '100%', justifyContent: 'space-around', marginBottom: 8 }}>
+      </FlexRow>
+      <FlexRow style={{ width: '100%', justifyContent: 'space-around', marginBottom: 8 }}>
         {weekDays.map((day) => (
           <div key={day}>
             <span style={{ fontSize: '1rem', fontWeight: 700 }}>{day}</span>
           </div>
         ))}
-      </FlexDiv>
+      </FlexRow>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', rowGap: 14 }}>
         {days.map((day, index) => {
           const isDisabled =
@@ -263,7 +263,7 @@ export function DatePicker({
   const inputSelectedDateString = selectedDate ? format(selectedDate, dateFormat) : '';
 
   return (
-    <FlexDiv ref={datePickerRef} flexDirection='column' style={{ position: 'relative', width }}>
+    <FlexRow ref={datePickerRef} flexDirection='column' style={{ position: 'relative', width }}>
       <Input
         value={inputSelectedDateString}
         onClick={handleInputClick}
@@ -282,6 +282,6 @@ export function DatePicker({
           offsetX={0}
         />
       )}
-    </FlexDiv>
+    </FlexRow>
   );
 }

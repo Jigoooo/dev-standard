@@ -1,5 +1,5 @@
 import { dialogActions, DialogType, useDialogInfos, useDialogOpen } from '@/shared/components';
-import { Button, ButtonStyle, FlexDiv } from '@/shared/ui';
+import { Button, ButtonStyle, FlexColumn, FlexRow } from '@/shared/ui';
 import { useModalClose } from '@/shared/hooks';
 import { colors } from '@/shared/constants';
 import { useEffect, useRef } from 'react';
@@ -48,10 +48,9 @@ export function AlertDialog() {
     <>
       {dialogOpen && (
         <>
-          <FlexDiv
+          <FlexColumn
             ref={modalRef}
             tabIndex={-1}
-            flexDirection={'column'}
             style={{
               position: 'fixed',
               top: '50%',
@@ -69,7 +68,7 @@ export function AlertDialog() {
               outline: 'none',
             }}
           >
-            <FlexDiv
+            <FlexRow
               style={{
                 justifyContent: 'space-between',
                 width: '100%',
@@ -79,20 +78,17 @@ export function AlertDialog() {
               <span style={{ fontSize: '1.3rem', fontWeight: 700, whiteSpace: 'pre-line' }}>
                 {dialogInfos.title}
               </span>
-            </FlexDiv>
+            </FlexRow>
             {!!dialogInfos.contents ? (
-              <FlexDiv
-                flexDirection={'column'}
-                style={{ paddingTop: 8, paddingBottom: 24, whiteSpace: 'pre-line' }}
-              >
+              <FlexColumn style={{ paddingTop: 8, paddingBottom: 24, whiteSpace: 'pre-line' }}>
                 <span style={{ fontSize: '1.05rem', fontWeight: 500, paddingRight: 12 }}>
                   {dialogInfos.contents}
                 </span>
-              </FlexDiv>
+              </FlexColumn>
             ) : (
               <div style={{ height: 20 }}></div>
             )}
-            <FlexDiv
+            <FlexRow
               style={{
                 gap: 1,
                 width: '100%',
@@ -133,8 +129,8 @@ export function AlertDialog() {
               >
                 {dialogInfos.confirmText}
               </Button>
-            </FlexDiv>
-          </FlexDiv>
+            </FlexRow>
+          </FlexColumn>
           <div
             style={{
               position: 'fixed',

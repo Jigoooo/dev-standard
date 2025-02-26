@@ -1,22 +1,21 @@
-import { ReactNode } from 'react';
-import { Stack } from '@mui/joy';
-import { SxProps } from '@mui/joy/styles/types';
+import { CSSProperties, ReactNode } from 'react';
 
 import { MainHeader } from './main-header.tsx';
+import { FlexColumn } from '@/shared/ui';
 
 export function MainLayout({
-  layoutSx,
+  layoutStyle,
   headerTitle,
   children,
 }: {
-  layoutSx?: SxProps;
+  layoutStyle?: CSSProperties;
   headerTitle: string;
   children: ReactNode;
 }) {
   return (
-    <Stack
-      sx={[
-        {
+    <FlexColumn
+      style={{
+        ...{
           position: 'relative',
           backgroundColor: '#ffffff',
           width: '100%',
@@ -25,11 +24,11 @@ export function MainLayout({
           py: 1,
           overflowX: 'auto',
         },
-        ...(Array.isArray(layoutSx) ? layoutSx : [layoutSx]),
-      ]}
+        ...layoutStyle,
+      }}
     >
       <MainHeader title={headerTitle} />
       {children}
-    </Stack>
+    </FlexColumn>
   );
 }
