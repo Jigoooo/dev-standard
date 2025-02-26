@@ -1,7 +1,7 @@
 import { CSSProperties, ReactNode } from 'react';
 
 import { MainHeader } from './main-header.tsx';
-import { FlexColumn } from '@/shared/ui';
+import { FlexColumn } from '@/shared/components';
 
 export function MainLayout({
   layoutStyle,

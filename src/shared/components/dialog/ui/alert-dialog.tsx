@@ -1,5 +1,13 @@
-import { dialogActions, DialogType, useDialogInfos, useDialogOpen } from '@/shared/components';
-import { Button, ButtonStyle, FlexColumn, FlexRow } from '@/shared/ui';
+import {
+  Button,
+  ButtonStyle,
+  dialogActions,
+  DialogType,
+  useDialogInfos,
+  useDialogOpen,
+  FlexColumn,
+  FlexRow,
+} from '@/shared/components';
 import { useModalClose } from '@/shared/hooks';
 import { colors } from '@/shared/constants';
 import { useEffect, useRef } from 'react';

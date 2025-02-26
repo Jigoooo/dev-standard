@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import TriphosLogo from '@/shared/assets/images/triphos_logo.png';
 
 import { Router } from '@/entities/router';
-import { dialogActions, DialogType } from '@/shared/components';
+import { Form, Input, Checkbox, Button, dialogActions, DialogType } from '@/shared/components';
 import { menus } from '@/entities/menu';
-import { Button, Checkbox, FlexColumn, FlexRow, Form, Input } from '@/shared/ui';
+import { FlexColumn, FlexRow } from '@/shared/components';
 import { useToggle } from '@/shared/hooks';
 import { getFormValues } from '@/shared/lib';
 import { localStorageKey } from '@/shared/constants';

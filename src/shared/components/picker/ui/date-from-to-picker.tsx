@@ -19,7 +19,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
-import { Button, FlexRow, Input } from '@/shared/ui';
+import { FlexRow, Input, Button, FlexColumn } from '@/shared/components';
 import { colors } from '@/shared/constants';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
 
@@ -396,7 +396,7 @@ export function DateFromToPicker({
     : '';
 
   return (
-    <FlexRow ref={datePickerRef} flexDirection='column' style={{ position: 'relative', width }}>
+    <FlexColumn ref={datePickerRef} style={{ position: 'relative', width }}>
       <FlexRow style={{ gap: 6 }}>
         <Input
           value={inputSelectedFromDateString}
@@ -447,6 +447,6 @@ export function DateFromToPicker({
           />
         </FlexRow>
       )}
-    </FlexRow>
+    </FlexColumn>
   );
 }

@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 
 import { menuActions, TMenu } from '@/entities/menu';
-import { FlexRow } from '@/shared/ui';
+import { FlexRow } from '@/shared/components';
 
 export function SidebarItem({
   isSelected,

@@ -4,7 +4,7 @@ import { Box, Divider, Stack, Typography } from '@mui/joy';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import ClearIcon from '@mui/icons-material/Clear';
 
-import { Checkbox } from '@/shared/ui';
+import { Checkbox } from '@/shared/components';
 import { colors, SELECT_BOX_ITEM_Z_INDEX } from '@/shared/constants';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
 

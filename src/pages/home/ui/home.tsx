@@ -2,8 +2,7 @@ import { useState } from 'react';
 
 import { useMenuState } from '@/entities/menu';
 import { MainLayout } from '@/entities/main';
-import { Button, FlexRow, Select } from '@/shared/ui';
-import { useModal } from '@/shared/components';
+import { FlexRow, Select, Button, useModal } from '@/shared/components';
 
 export function Home() {
   const menuState = useMenuState();

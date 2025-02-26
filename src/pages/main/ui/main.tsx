@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom';
 
 import { menus } from '@/entities/menu';
 import { MainMenuController, SidebarItems } from '@/widgets/main';
-import { FlexColumn, FlexRow } from '@/shared/ui';
+import { FlexColumn, FlexRow } from '@/shared/components';
 
 export function Main() {
   return (

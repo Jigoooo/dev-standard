@@ -5,8 +5,7 @@ import { use } from 'react';
 import ExpandLessOutlinedIcon from '@mui/icons-material/ExpandLessOutlined';
 import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 
-import { Checkbox } from '@/shared/ui';
-import { calculateTableFixedValues, TableContext } from '@/shared/components';
+import { Checkbox, calculateTableFixedValues, TableContext } from '@/shared/components';
 import { colors, TABLE_Z_INDEX, TABLE_FIXED_HEADER_Z_INDEX } from '@/shared/constants';
 
 // const TABLE_HEADER_BASE_COLOR = lighten(0.006, colors.primary[50]);

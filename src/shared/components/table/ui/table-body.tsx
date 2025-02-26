@@ -3,9 +3,13 @@ import { darken } from 'polished';
 import { Usable, use, useRef } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 
-import { Checkbox } from '@/shared/ui';
 import { colors, TABLE_Z_INDEX } from '@/shared/constants';
-import { calculateTableFixedValues, TableContext, TTableContext } from '@/shared/components';
+import {
+  Checkbox,
+  calculateTableFixedValues,
+  TableContext,
+  TTableContext,
+} from '@/shared/components';
 import { NoData } from '@/entities/main';
 
 const TABLE_HEADER_BASE_COLOR = '#f8f8f8';

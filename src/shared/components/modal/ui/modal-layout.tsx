@@ -1,4 +1,4 @@
-import { FlexColumn } from '@/shared/ui';
+import { FlexColumn } from '@/shared/components';
 
 export function ModalLayout() {
   return (

@@ -11,8 +11,7 @@ import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 import { SNACK_BAR_Z_INDEX, colors } from '@/shared/constants';
-import { Button } from '@/shared/ui';
-import { hideDesktopSnackBar, useNotificationInfos } from '@/shared/components/snack-bar';
+import { Button, hideDesktopSnackBar, useNotificationInfos } from '@/shared/components';
 
 export function FramerMotionNotification() {
   const notifications = useNotificationInfos();

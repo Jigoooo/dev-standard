@@ -4,7 +4,7 @@ import { MouseEventHandler } from 'react';
 import CheckSolid from '@/shared/assets/images/check-solid.svg?react';
 
 import { colors } from '@/shared/constants';
-import { FlexRow } from '@/shared/ui';
+import { FlexRow } from '@/shared/components';
 
 export function Checkbox({
   label = '',
