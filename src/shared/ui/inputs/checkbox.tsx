@@ -34,7 +34,6 @@ export function Checkbox({
       <FlexRow
         as={motion.div}
         style={{
-          display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
           width: 20,
@@ -57,7 +56,8 @@ export function Checkbox({
       >
         <AnimatePresence mode={'wait'}>
           {!disabled && checked && (
-            <motion.div
+            <FlexRow
+              as={motion.div}
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}
@@ -67,7 +67,6 @@ export function Checkbox({
                 damping: 20,
               }}
               style={{
-                display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
               }}
@@ -81,10 +80,11 @@ export function Checkbox({
                   strokeWidth: 30,
                 }}
               />
-            </motion.div>
+            </FlexRow>
           )}
           {isPartial && (
-            <motion.div
+            <FlexRow
+              as={motion.div}
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}
@@ -94,13 +94,12 @@ export function Checkbox({
                 damping: 20,
               }}
               style={{
-                display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
               }}
             >
               <div style={{ width: 10, height: 10, backgroundColor: color }} />
-            </motion.div>
+            </FlexRow>
           )}
         </AnimatePresence>
       </FlexRow>

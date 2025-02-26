@@ -1,18 +1,19 @@
 import { ElementType, HTMLAttributes, ReactNode } from 'react';
-import { MotionProps } from 'framer-motion';
+import { ForwardRefComponent, MotionProps } from 'framer-motion';
 
-interface FlexDivProps<E extends ElementType = 'div'> extends HTMLAttributes<HTMLElement> {
-  as?: E;
-  children: ReactNode;
-}
+type FlexColumnProps<E extends ElementType> =
+  E extends ForwardRefComponent<any, any>
+    ? HTMLAttributes<HTMLElement> & MotionProps & { as: E; children: ReactNode }
+    : HTMLAttributes<HTMLElement> & { as?: E; children: ReactNode };
 
 export function FlexColumn<E extends ElementType = 'div'>({
   as,
   style,
   children,
   ...props
-}: FlexDivProps<E> & MotionProps) {
+}: FlexColumnProps<E>) {
   const Component = as || 'div';
+
   return (
     <Component style={{ display: 'flex', flexDirection: 'column', ...style }} {...props}>
       {children}
