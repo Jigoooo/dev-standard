@@ -1,17 +1,9 @@
 import { useMenuState } from '@/entities/menu';
 import { MainLayout } from '@/entities/main';
 import { FlexDiv } from '@/shared/ui';
-import { useEffect } from 'react';
-import { loadingAction } from '@/shared/components';
 
 export function Home() {
   const menuState = useMenuState();
-
-  useEffect(() => {
-    loadingAction.showLoading({
-      loadingText: 'Loading...',
-    });
-  }, []);
 
   return (
     <MainLayout headerTitle={menuState.selectedMenu.name}>
