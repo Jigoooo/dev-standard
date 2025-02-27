@@ -17,7 +17,7 @@ const snackBarInitialState: SnackBarStates = {
     message: '',
     duration: 3000,
     type: SnackBarType.SUCCESS,
-    variant: 'soft',
+    // variant: 'soft',
   },
   desktopSnackBarInfos: [],
 };
@@ -35,7 +35,7 @@ const useSnackBarStore = create<SnackBarStoreInterface>()((setState, getState) =
         message = '',
         duration = 3000,
         type = SnackBarType.SUCCESS,
-        variant = 'soft',
+        // variant = 'soft',
       }) => {
         setState((state) => {
           return {
@@ -45,7 +45,7 @@ const useSnackBarStore = create<SnackBarStoreInterface>()((setState, getState) =
               message,
               duration,
               type,
-              variant,
+              // variant,
             },
           };
         });
@@ -56,7 +56,7 @@ const useSnackBarStore = create<SnackBarStoreInterface>()((setState, getState) =
         message = '',
         duration = 5000,
         type = SnackBarType.SUCCESS,
-        variant = 'soft',
+        // variant = 'soft',
       }) => {
         setState((state) => {
           return {
@@ -69,7 +69,7 @@ const useSnackBarStore = create<SnackBarStoreInterface>()((setState, getState) =
                 message,
                 duration,
                 type,
-                variant,
+                // variant,
               },
             ],
           };

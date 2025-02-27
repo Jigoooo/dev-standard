@@ -1,7 +1,7 @@
 import { motion, MotionProps } from 'framer-motion';
 import { CSSProperties, ReactNode, Ref, TextareaHTMLAttributes } from 'react';
 
-import { InputStyle } from '@/shared/ui';
+import { InputStyle } from '@/shared/components';
 import { colors } from '@/shared/constants';
 
 type ExtendedTextareaProps = MotionProps &
