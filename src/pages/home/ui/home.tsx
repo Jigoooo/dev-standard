@@ -1,14 +1,9 @@
-import { useState } from 'react';
-
 import { useMenuState } from '@/entities/menu';
 import { MainLayout } from '@/entities/main';
-import { FlexColumn, Select, RootTable, TableHeader, TableBody } from '@/shared/components';
+import { FlexColumn, RootTable, TableHeader, TableBody } from '@/shared/components';
 
 export function Home() {
   const menuState = useMenuState();
-
-  const [test, setTest] = useState(['11111']);
-  const [selectValue, setSelectValue] = useState('1');
 
   return (
     <MainLayout headerTitle={menuState.selectedMenu.name}>
@@ -21,17 +16,6 @@ export function Home() {
           gap: 16,
         }}
       >
-        <Select
-          value={selectValue}
-          onChange={setSelectValue}
-          options={[
-            { value: '1', label: '11111' },
-            { value: '2', label: '22222' },
-            { value: '3', label: '22333' },
-            { value: '4', label: '33333' },
-          ]}
-          isAutocomplete={true}
-        />
         <RootTable
           isSorting={true}
           visibleCheckbox={true}
