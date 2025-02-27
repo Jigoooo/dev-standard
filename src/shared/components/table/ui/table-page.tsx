@@ -1,4 +1,3 @@
-import { Box, Stack, Typography } from '@mui/joy';
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -9,7 +8,7 @@ import KeyboardDoubleArrowRightOutlinedIcon from '@mui/icons-material/KeyboardDo
 import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 
 import { colors, SELECT_BOX_ITEM_Z_INDEX } from '@/shared/constants';
-import { TTablePagination } from '@/shared/components';
+import { FlexColumn, FlexRow, TTablePagination } from '@/shared/components';
 import { useToggle } from '@/shared/hooks';
 
 const PAGE_SIZE_OPTIONS = [10, 20, 50, 100];
@@ -100,10 +99,9 @@ export function TablePage({
   };
 
   return (
-    <Box
+    <FlexRow
       className={'selection-none'}
-      sx={{
-        display: 'flex',
+      style={{
         width: tableLayoutWidth,
         minWidth: tableContentsWidth / 2,
         maxWidth:
@@ -112,16 +110,16 @@ export function TablePage({
             : tableContentsWidth,
         alignItems: 'center',
         justifyContent: 'space-between',
-        py: 2,
+        paddingBlock: 16,
       }}
     >
-      <Box sx={{ display: 'flex', alignItems: 'flex-start', alignSelf: 'flex-start', px: 2 }}>
-        <Typography sx={{ fontSize: '0.9rem', fontWeight: 300 }}>
-          전체 <Typography sx={{ fontWeight: 700 }}>{totalSize}</Typography>
-        </Typography>
-      </Box>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.8 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.6, px: 2 }}>
+      <FlexRow style={{ alignItems: 'flex-start', alignSelf: 'flex-start', paddingInline: 16 }}>
+        <span style={{ fontSize: '0.9rem', fontWeight: 300 }}>
+          전체 <span style={{ fontWeight: 700 }}>{totalSize}</span>
+        </span>
+      </FlexRow>
+      <FlexRow style={{ alignItems: 'center', gap: 6 }}>
+        <FlexRow style={{ alignItems: 'center', gap: 6, paddingInline: 16 }}>
           {totalPages > 10 && (
             <PageIconButton
               onClick={() => {
@@ -164,12 +162,12 @@ export function TablePage({
             const isCurrentPage = page === pagination.currentPage;
 
             return (
-              <Box key={pageIndex}>
+              <div key={pageIndex}>
                 {typeof page === 'number' ? (
-                  <Box
+                  <FlexRow
+                    as={motion.div}
                     onClick={() => handlePageChange(page)}
-                    sx={{
-                      display: 'flex',
+                    style={{
                       alignItems: 'center',
                       justifyContent: 'center',
                       width: 32,
@@ -177,26 +175,29 @@ export function TablePage({
                       backgroundColor: 'transparent',
                       border: isCurrentPage ? `1px solid ${colors.primary[400]}` : 'none',
                       borderRadius: 6,
-                      '&:hover': {
-                        backgroundColor: isCurrentPage ? 'none' : '#f6f6f6',
-                      },
                       transition: 'all 0.1s',
                       cursor: 'pointer',
                     }}
+                    variants={{
+                      hover: {
+                        backgroundColor: '#f6f6f6',
+                      },
+                      none: {},
+                    }}
+                    whileHover={isCurrentPage ? 'none' : 'hover'}
                   >
-                    <Typography
-                      sx={{
+                    <span
+                      style={{
                         fontWeight: isCurrentPage ? 600 : 400,
                         color: isCurrentPage ? colors.primary[400] : '#000000',
                       }}
                     >
                       {page}
-                    </Typography>
-                  </Box>
+                    </span>
+                  </FlexRow>
                 ) : (
-                  <Box
-                    sx={{
-                      display: 'flex',
+                  <FlexRow
+                    style={{
                       alignItems: 'center',
                       justifyContent: 'center',
                       width: 32,
@@ -204,10 +205,10 @@ export function TablePage({
                       backgroundColor: 'transparent',
                     }}
                   >
-                    <Typography sx={{ color: '#888888' }}>{page}</Typography>
-                  </Box>
+                    <span style={{ color: '#888888' }}>{page}</span>
+                  </FlexRow>
                 )}
-              </Box>
+              </div>
             );
           })}
           <PageIconButton
@@ -248,33 +249,32 @@ export function TablePage({
               />
             </PageIconButton>
           )}
-        </Box>
-        <Stack ref={selectBoxRef} sx={{ position: 'relative' }}>
-          <Box
-            sx={{
-              display: 'flex',
+        </FlexRow>
+        <FlexColumn ref={selectBoxRef} style={{ position: 'relative' }}>
+          <FlexRow
+            style={{
               alignItems: 'center',
               justifyContent: 'space-between',
-              gap: 0.8,
+              gap: 6,
               minWidth: 100,
               border: '1px solid #cccccc',
               borderRadius: 6,
-              pl: 1.4,
-              pr: 0.4,
+              paddingLeft: 10,
+              paddingRight: 4,
               height: 32,
               cursor: 'pointer',
             }}
             onClick={togglePageSizeSelectBox}
           >
-            <Typography sx={{ fontSize: '0.9rem', fontWeight: 600, color: '#000000' }}>
+            <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#000000' }}>
               {pagination.pageSize} / page
-            </Typography>
+            </span>
             <ExpandMoreOutlinedIcon sx={{ fontSize: '1.4rem' }} />
-          </Box>
+          </FlexRow>
           <AnimatePresence>
             {isOpenPageSizeSelectBox && (
-              <Stack
-                component={motion.div}
+              <FlexColumn
+                as={motion.div}
                 initial={{ scaleY: 0, opacity: 0 }}
                 animate={{ scaleY: 1, opacity: 1 }}
                 exit={{ scaleY: 0, opacity: 0 }}
@@ -284,7 +284,7 @@ export function TablePage({
                   damping: 20,
                   duration: 0.05,
                 }}
-                sx={{
+                style={{
                   zIndex: SELECT_BOX_ITEM_Z_INDEX,
                   transformOrigin,
                   position: 'absolute',
@@ -294,7 +294,7 @@ export function TablePage({
                   minWidth: 100,
                   borderRadius: 6,
                   backgroundColor: '#ffffff',
-                  p: 0.6,
+                  padding: 6,
                   boxShadow: `
       0 6px 16px 0 rgba(0, 0, 0, 0.08),
       0 3px 6px -4px rgba(0, 0, 0, 0.12),
@@ -304,46 +304,52 @@ export function TablePage({
               >
                 {PAGE_SIZE_OPTIONS.map((pageSize) => {
                   return (
-                    <Box
+                    <FlexRow
                       key={pageSize}
-                      sx={{
-                        display: 'flex',
+                      as={motion.div}
+                      style={{
                         alignItems: 'center',
-                        gap: 0.8,
+                        gap: 6,
                         height: 32,
-                        px: 0.8,
+                        paddingInline: 6,
                         cursor: 'pointer',
                         borderRadius: 6,
                         backgroundColor:
-                          pageSize === pagination.pageSize ? colors.primary[50] : 'transparent',
-                        '&:hover': {
-                          backgroundColor: pageSize === pagination.pageSize ? 'none' : '#f4f4f4',
-                        },
+                          pageSize === pagination.pageSize
+                            ? colors.primary[50]
+                            : 'rgba(244, 244, 244, 0)',
                         transition: 'all 0.3s',
                       }}
+                      variants={{
+                        hover: {
+                          backgroundColor: '#f4f4f4',
+                        },
+                        none: {},
+                      }}
+                      whileHover={pageSize === pagination.pageSize ? 'none' : 'hover'}
                       onClick={() => {
                         togglePageSizeSelectBox();
                         handlePageSizeChange(pageSize);
                       }}
                     >
-                      <Typography
-                        sx={{
+                      <span
+                        style={{
                           fontSize: '0.9rem',
                           fontWeight: pageSize === pagination.pageSize ? 600 : 400,
                           color: '#000000',
                         }}
                       >
                         {pageSize} / page
-                      </Typography>
-                    </Box>
+                      </span>
+                    </FlexRow>
                   );
                 })}
-              </Stack>
+              </FlexColumn>
             )}
           </AnimatePresence>
-        </Stack>
-      </Box>
-    </Box>
+        </FlexColumn>
+      </FlexRow>
+    </FlexRow>
   );
 }
 
@@ -357,24 +363,28 @@ function PageIconButton({
   children: ReactNode;
 }) {
   return (
-    <Box
+    <FlexRow
+      as={motion.div}
       onClick={onClick}
-      sx={{
-        display: 'flex',
+      style={{
         alignItems: 'center',
         justifyContent: 'center',
         width: 32,
         height: 32,
         backgroundColor: '#ffffff',
         borderRadius: 6,
-        '&:hover': {
-          backgroundColor: disabled ? 'none' : '#f6f6f6',
-        },
         transition: 'all 0.1s',
         cursor: disabled ? 'not-allowed' : 'pointer',
       }}
+      variants={{
+        hover: {
+          backgroundColor: '#f6f6f6',
+        },
+        none: {},
+      }}
+      whileHover={disabled ? 'none' : 'hover'}
     >
       {children}
-    </Box>
+    </FlexRow>
   );
 }

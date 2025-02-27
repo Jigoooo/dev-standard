@@ -1,7 +1,12 @@
 import { createContext, ReactNode, useEffect, useRef, useState } from 'react';
-import { Box, Stack } from '@mui/joy';
 
-import { TTableContext, TTableHeader, useTablePaging, useTableSorting } from '@/shared/components';
+import {
+  FlexColumn,
+  TTableContext,
+  TTableHeader,
+  useTablePaging,
+  useTableSorting,
+} from '@/shared/components';
 import { TablePage } from './table-page.tsx';
 
 export const TableContext = createContext<TTableContext<unknown> | null>(null);
@@ -123,18 +128,17 @@ export function RootTable<T>({
         pagination,
       }}
     >
-      <Stack
+      <FlexColumn
         ref={tableRef}
-        component={'main'}
-        sx={{
+        style={{
           width: tableLayoutWidth,
           minWidth: tableContentsWidth / 2,
-          pb: 0.6,
+          paddingBottom: 4,
           overflowX: 'auto',
         }}
       >
-        <Box
-          sx={{
+        <div
+          style={{
             width:
               typeof tableLayoutWidth === 'number' && tableLayoutWidth > tableContentsWidth
                 ? '100%'
@@ -142,8 +146,8 @@ export function RootTable<T>({
           }}
         >
           {children}
-        </Box>
-      </Stack>
+        </div>
+      </FlexColumn>
       {isPaging && (
         <TablePage
           pagination={pagination}

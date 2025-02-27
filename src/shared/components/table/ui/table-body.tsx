@@ -1,4 +1,3 @@
-import { Box, Link, Stack, Typography } from '@mui/joy';
 import { darken } from 'polished';
 import { Usable, use, useRef } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
@@ -9,8 +8,12 @@ import {
   calculateTableFixedValues,
   TableContext,
   TTableContext,
+  FlexColumn,
+  FlexRow,
+  Link,
 } from '@/shared/components';
 import { NoData } from '@/entities/main';
+import { motion } from 'framer-motion';
 
 const TABLE_HEADER_BASE_COLOR = '#f8f8f8';
 const TABLE_HEADER_SORTED_COLOR = '#f8f8f8';
@@ -72,19 +75,19 @@ export function TableBody<T>({
   return (
     <>
       {dataList.length === 0 ? (
-        <Box
-          sx={{
+        <div
+          style={{
             width: '100%',
             height: TABLE_BODY_DEFAULT_HEIGHT,
             backgroundColor: '#fbfbfb',
           }}
         >
           <NoData emptyMessage={emptyMessage} />
-        </Box>
+        </div>
       ) : (
-        <Stack
+        <FlexColumn
           ref={tableBodyRef}
-          sx={{
+          style={{
             height: rowVirtualizer.getTotalSize(),
             width: '100%',
           }}
@@ -99,20 +102,29 @@ export function TableBody<T>({
             const globalIndex = currentPageStartIndex + rowIndex + 1;
 
             return (
-              <Box
+              <FlexRow
                 key={keyLabelString}
-                sx={{
-                  display: 'flex',
+                as={motion.div}
+                style={{
                   width: '100%',
                   minHeight: TABLE_ROW_HEIGHT,
                   height: TABLE_ROW_HEIGHT,
                   cursor: visibleCheckbox ? 'pointer' : 'auto',
                   backgroundColor: isChecked ? TABLE_BODY_CHECKED_COLOR : TABLE_BODY_BASE_COLOR,
-                  '&:hover': {
-                    backgroundColor: isChecked ? TABLE_BODY_HOVER_COLOR : TABLE_HEADER_BASE_COLOR,
-                  },
                   transition: TRANSITION,
                 }}
+                variants={{
+                  checkedHover: {
+                    backgroundColor: TABLE_BODY_HOVER_COLOR,
+                  },
+                  hover: {
+                    backgroundColor: TABLE_HEADER_BASE_COLOR,
+                  },
+                }}
+                transition={{
+                  duration: 0.1,
+                }}
+                whileHover={isChecked ? 'checkedHover' : 'hover'}
                 onClick={() => {
                   const keyHeader = headers.find((header) => header.id === keyLabel);
 
@@ -127,8 +139,9 @@ export function TableBody<T>({
                 }}
               >
                 {visibleCheckbox && (
-                  <Box
-                    sx={{
+                  <FlexRow
+                    as={motion.div}
+                    style={{
                       display: 'flex',
                       justifyContent: 'center',
                       alignItems: 'center',
@@ -138,9 +151,12 @@ export function TableBody<T>({
                       zIndex: fixed ? TABLE_Z_INDEX : 'auto',
                       borderBottom: `1px solid ${TABLE_BODY_BORDER_COLOR}`,
                       backgroundColor: isChecked || fixed ? 'inherit' : 'transparent',
-                      '&:hover': {
-                        backgroundColor: 'inherit',
-                      },
+                    }}
+                    transition={{
+                      duration: 0.1,
+                    }}
+                    whileHover={{
+                      backgroundColor: 'inherit',
                     }}
                     onClick={(e) => {
                       e.stopPropagation();
@@ -154,11 +170,12 @@ export function TableBody<T>({
                         handleCheck(keyLabelString);
                       }}
                     />
-                  </Box>
+                  </FlexRow>
                 )}
                 {visibleIndex && (
-                  <Box
-                    sx={{
+                  <FlexRow
+                    as={motion.div}
+                    style={{
                       display: 'flex',
                       justifyContent: 'center',
                       alignItems: 'center',
@@ -170,13 +187,13 @@ export function TableBody<T>({
                       zIndex: fixed ? TABLE_Z_INDEX : 'auto',
                       borderBottom: `1px solid ${TABLE_BODY_BORDER_COLOR}`,
                       backgroundColor: isChecked || fixed ? 'inherit' : 'transparent',
-                      '&:hover': {
-                        backgroundColor: 'inherit',
-                      },
+                    }}
+                    whileHover={{
+                      backgroundColor: 'inherit',
                     }}
                   >
-                    <Typography sx={{ color: TABLE_COLUMN_VALUE_COLOR }}>{globalIndex}</Typography>
-                  </Box>
+                    <span style={{ color: TABLE_COLUMN_VALUE_COLOR }}>{globalIndex}</span>
+                  </FlexRow>
                 )}
                 {headers.map((header, headerIndex) => {
                   const value = data[header.id as keyof T];
@@ -207,15 +224,14 @@ export function TableBody<T>({
                     !isChecked && header.sorter.sortable && header.sorter.direction !== null;
 
                   return (
-                    <Box
+                    <FlexRow
                       key={header.id}
-                      sx={{
+                      style={{
                         flex: header?.width ? 'none' : 1,
                         flexShrink: 0,
-                        display: 'flex',
                         width: header?.width ?? 'auto',
                         alignItems: 'center',
-                        px: 2.4,
+                        paddingInline: 20,
                         borderBottom: `1px solid ${TABLE_BODY_BORDER_COLOR}`,
                         backgroundColor: isSortedHeaderAndNotChecked
                           ? TABLE_HEADER_SORTED_COLOR
@@ -233,8 +249,8 @@ export function TableBody<T>({
                             : 'none',
                       }}
                     >
-                      <Typography
-                        sx={{
+                      <span
+                        style={{
                           fontSize: '0.94rem',
                           fontWeight: 400,
                           color: TABLE_COLUMN_VALUE_COLOR,
@@ -242,7 +258,7 @@ export function TableBody<T>({
                       >
                         {keyLabelString === value ? (
                           <Link
-                            sx={{ fontWeight: 500 }}
+                            style={{ fontWeight: 500, color: colors.primary[400] }}
                             onClick={(e) => {
                               e.stopPropagation();
                               onClickKey?.(keyLabelString);
@@ -253,14 +269,14 @@ export function TableBody<T>({
                         ) : (
                           value
                         )}
-                      </Typography>
-                    </Box>
+                      </span>
+                    </FlexRow>
                   );
                 })}
-              </Box>
+              </FlexRow>
             );
           })}
-        </Stack>
+        </FlexColumn>
       )}
     </>
   );

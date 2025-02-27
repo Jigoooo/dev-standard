@@ -1,11 +1,18 @@
-import { Stack, Box, Divider, Typography } from '@mui/joy';
 import { darken } from 'polished';
+import { motion } from 'framer-motion';
 import { use } from 'react';
 
 import ExpandLessOutlinedIcon from '@mui/icons-material/ExpandLessOutlined';
 import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 
-import { Checkbox, calculateTableFixedValues, TableContext } from '@/shared/components';
+import {
+  Checkbox,
+  calculateTableFixedValues,
+  TableContext,
+  FlexRow,
+  FlexColumn,
+  Divider,
+} from '@/shared/components';
 import { colors, TABLE_Z_INDEX, TABLE_FIXED_HEADER_Z_INDEX } from '@/shared/constants';
 
 // const TABLE_HEADER_BASE_COLOR = lighten(0.006, colors.primary[50]);
@@ -41,9 +48,8 @@ export function TableHeader({
   const { headers, dataList, handleSort, visibleCheckbox, visibleIndex, fixed } = tableContext;
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
+    <FlexRow
+      style={{
         height: TABLE_HEADER_HEIGHT,
         borderTopLeftRadius: TABLE_HEADER_BORDER_RADIUS,
         borderTopRightRadius: TABLE_HEADER_BORDER_RADIUS,
@@ -53,9 +59,8 @@ export function TableHeader({
       }}
     >
       {visibleCheckbox && (
-        <Box
-          sx={{
-            display: 'flex',
+        <FlexRow
+          style={{
             justifyContent: 'center',
             alignItems: 'center',
             width: TABLE_CHECKBOX_INDEX_WIDTH,
@@ -72,12 +77,11 @@ export function TableHeader({
             isPartial={checkedState.isPartiallyChecked}
             onClick={handleCheckAll}
           />
-        </Box>
+        </FlexRow>
       )}
       {visibleIndex && (
-        <Box
-          sx={{
-            display: 'flex',
+        <FlexRow
+          style={{
             justifyContent: 'center',
             alignItems: 'center',
             width: TABLE_CHECKBOX_INDEX_WIDTH,
@@ -90,7 +94,7 @@ export function TableHeader({
           }}
         >
           #
-        </Box>
+        </FlexRow>
       )}
       {headers.map((header, headerIndex) => {
         if (header.hidden) {
@@ -119,28 +123,23 @@ export function TableHeader({
         const sortDownFill = header.sorter.direction === 'desc' ? colors.primary[400] : '#bbbbbb';
 
         return (
-          <Box
+          <FlexRow
             key={header.id}
-            sx={{
+            as={motion.div}
+            style={{
               flex: header?.width ? 'none' : 1,
               flexShrink: 0,
               display: 'flex',
               width: header?.width ?? 'auto',
               alignItems: 'center',
-              gap: 2,
-              pl: 2.4,
+              gap: 16,
+              paddingLeft: 18,
               cursor: header.sorter.sortable ? 'pointer' : 'auto',
               borderBottom: `1px solid ${TABLE_HEADER_BORDER_COLOR}`,
               backgroundColor:
                 header.sorter.sortable && !!header.sorter.direction
                   ? TABLE_HEADER_SORTED_COLOR
                   : TABLE_HEADER_BASE_COLOR,
-              '&:hover': {
-                backgroundColor:
-                  header.sorter.sortable && !header.sorter.direction
-                    ? TABLE_HEADER_SORTED_COLOR
-                    : 'none',
-              },
               transition: TRANSITION,
               position: isHeaderFixed ? 'sticky' : 'static',
               right: isRightFixed ? fixedRightValue : 'auto',
@@ -153,21 +152,25 @@ export function TableHeader({
                   : 'none',
             }}
             onClick={() => handleSort(header.id)}
+            variants={{
+              hover: {
+                backgroundColor: TABLE_HEADER_SORTED_COLOR,
+              },
+              none: {},
+            }}
+            whileHover={header.sorter.sortable && !header.sorter.direction ? 'none' : 'hover'}
           >
-            <Typography
-              sx={{ fontWeight: 600, fontSize: '0.94rem', color: TABLE_HEADER_LABEL_COLOR }}
-            >
+            <span style={{ fontWeight: 600, fontSize: '0.94rem', color: TABLE_HEADER_LABEL_COLOR }}>
               {header.label}
-            </Typography>
-            <Box
-              sx={{
-                display: 'flex',
+            </span>
+            <FlexRow
+              style={{
                 alignItems: 'center',
-                gap: 2,
+                gap: 16,
               }}
             >
               {header.sorter.sortable && (
-                <Stack sx={{ position: 'relative' }}>
+                <FlexColumn style={{ position: 'relative' }}>
                   <ExpandLessOutlinedIcon
                     sx={{
                       position: 'absolute',
@@ -194,24 +197,25 @@ export function TableHeader({
                       strokeWidth: 2,
                     }}
                   />
-                </Stack>
+                </FlexColumn>
               )}
               {headerIndex !== headers.length - 1 && (
                 <Divider
-                  sx={{
-                    my: 0.4,
-                    backgroundColor:
-                      !isRightEdgeOfLeftFixed && !isLeftEdgeOfRightFixed
-                        ? '#e1e1e1'
-                        : 'transparent',
+                  style={{
+                    ...{
+                      backgroundColor:
+                        !isRightEdgeOfLeftFixed && !isLeftEdgeOfRightFixed
+                          ? '#e1e1e1'
+                          : 'transparent',
+                    },
                   }}
-                  orientation='vertical'
+                  direction='vertical'
                 />
               )}
-            </Box>
-          </Box>
+            </FlexRow>
+          </FlexRow>
         );
       })}
-    </Box>
+    </FlexRow>
   );
 }
