@@ -21,6 +21,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { FlexRow, Input, Button, FlexColumn } from '@/shared/components';
 import { colors } from '@/shared/constants';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
+import { DateInputField } from './date-input-field';
 
 type TDatePicker = {
   width?: number | string;
@@ -238,7 +239,6 @@ function Picker({
   );
 }
 
-// DatePicker 컴포넌트
 export function DatePicker({
   width = 'auto',
   isInputMode = false,
@@ -275,11 +275,13 @@ export function DatePicker({
           endDecorator={<CalendarMonthIcon style={{ fontSize: '1.2rem' }} />}
         />
       ) : (
-        <FlexRow style={{ width: 160, borderRadius: 4, height: 38 }}>
-          <Input />
-          <Input />
-          <Input />
-        </FlexRow>
+        <DateInputField
+          selectedDate={selectedDate}
+          handleDateClick={handleDateClick}
+          handleInputClick={handleInputClick}
+          minDate={minDate}
+          maxDate={maxDate}
+        />
       )}
       {showDatePicker && (
         <Picker

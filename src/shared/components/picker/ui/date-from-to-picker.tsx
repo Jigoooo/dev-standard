@@ -9,6 +9,8 @@ import {
   isAfter,
   isBefore,
   isEqual,
+  isValid,
+  parse,
   startOfMonth,
   subDays,
   subMonths,
@@ -22,6 +24,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { FlexRow, Input, Button, FlexColumn } from '@/shared/components';
 import { colors } from '@/shared/constants';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
+import { DateInputField } from '@/shared/components/picker/ui/date-input-field.tsx';
 
 type FromToDateString = {
   from: string;
@@ -33,6 +36,7 @@ type FromToCurrentDates = Record<keyof FromToDateString, Date>;
 
 type TDatePicker = {
   width?: number | string;
+  isInputMode?: boolean;
   fromToDateString?: FromToDateString;
   onChange?: (fromToDateString: FromToDateString) => void;
   dateFormat?: string;
@@ -112,6 +116,37 @@ function useDateFromToPicker({
     }
   };
 
+  const handleDateInput = (pickerType: 'from' | 'to', newDateString: string) => {
+    const parsedDate = parse(newDateString, dateFormat, new Date());
+    if (!isValid(parsedDate)) {
+      console.error('유효하지 않은 날짜 형식입니다.');
+      // 여기서 별도의 피드백을 주거나, 입력 필드를 기존 날짜로 복원하도록 할 수 있습니다.
+      return;
+    }
+    if (pickerType === 'from') {
+      if (selectedFromToDate.to && isAfter(parsedDate, selectedFromToDate.to)) {
+        console.error('시작 날짜는 종료 날짜보다 클 수 없습니다.');
+        return;
+      }
+      setSelectedFromToDate((prev) => ({ ...prev, from: parsedDate }));
+      onChange?.({
+        from: format(parsedDate, dateFormat),
+        to: selectedFromToDate.to ? format(selectedFromToDate.to, dateFormat) : '',
+      });
+    } else {
+      // pickerType === 'to'
+      if (selectedFromToDate.from && isBefore(parsedDate, selectedFromToDate.from)) {
+        console.error('종료 날짜는 시작 날짜보다 작을 수 없습니다.');
+        return;
+      }
+      setSelectedFromToDate((prev) => ({ ...prev, to: parsedDate }));
+      onChange?.({
+        from: selectedFromToDate.from ? format(selectedFromToDate.from, dateFormat) : '',
+        to: format(parsedDate, dateFormat),
+      });
+    }
+  };
+
   const handlePrevFromMonth = () => {
     setCurrentFromToDate((prevState) => ({
       ...prevState,
@@ -149,6 +184,7 @@ function useDateFromToPicker({
     setShowFromToDatePicker,
     currentFromToDate,
     handleDateClick,
+    handleDateInput,
     handlePrevFromMonth,
     handlePrevToMonth,
     handleNextFromMonth,
@@ -366,6 +402,7 @@ function FromToPicker({
 
 export function DateFromToPicker({
   width = 'auto',
+  isInputMode = false,
   fromToDateString,
   onChange,
   dateFormat = 'yyyy-MM-dd',
@@ -378,6 +415,7 @@ export function DateFromToPicker({
     setShowFromToDatePicker,
     currentFromToDate,
     handleDateClick,
+    handleDateInput,
     handlePrevFromMonth,
     handlePrevToMonth,
     handleNextFromMonth,
@@ -397,22 +435,49 @@ export function DateFromToPicker({
 
   return (
     <FlexColumn ref={datePickerRef} style={{ position: 'relative', width }}>
-      <FlexRow style={{ gap: 6 }}>
-        <Input
-          style={{ width: 140 }}
-          value={inputSelectedFromDateString}
-          onClick={handleInputClick}
-          readOnly
-          endDecorator={<CalendarMonthIcon style={{ fontSize: '1.2rem' }} />}
-        />
-        <Input
-          style={{ width: 140 }}
-          value={inputSelectedToDateString}
-          onClick={handleInputClick}
-          readOnly
-          endDecorator={<CalendarMonthIcon style={{ fontSize: '1.2rem' }} />}
-        />
-      </FlexRow>
+      {!isInputMode ? (
+        <FlexRow style={{ gap: 6 }}>
+          <Input
+            style={{ width: 140 }}
+            value={inputSelectedFromDateString}
+            onClick={handleInputClick}
+            readOnly
+            endDecorator={<CalendarMonthIcon style={{ fontSize: '1.2rem' }} />}
+            isFocusEffect={false}
+          />
+          <Input
+            style={{ width: 140 }}
+            value={inputSelectedToDateString}
+            onClick={handleInputClick}
+            readOnly
+            endDecorator={<CalendarMonthIcon style={{ fontSize: '1.2rem' }} />}
+            isFocusEffect={false}
+          />
+        </FlexRow>
+      ) : (
+        <FlexRow style={{ gap: 6 }}>
+          <DateInputField
+            selectedDate={selectedFromToDate.from}
+            handleDateClick={(date) => {
+              console.log('from: ', date);
+              handleDateInput('from', format(date, dateFormat));
+            }}
+            handleInputClick={handleInputClick}
+            minDate={minDate}
+            maxDate={maxDate}
+          />
+          <DateInputField
+            selectedDate={selectedFromToDate.to}
+            handleDateClick={(date) => {
+              console.log('to: ', date);
+              handleDateInput('to', format(date, dateFormat));
+            }}
+            handleInputClick={handleInputClick}
+            minDate={minDate}
+            maxDate={maxDate}
+          />
+        </FlexRow>
+      )}
       {showFromToDatePicker && (
         <FlexRow
           style={{

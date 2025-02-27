@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { useMenuState } from '@/entities/menu';
 import { MainLayout } from '@/entities/main';
-import { Select, FlexColumn, DatePicker, DateFromToPicker } from '@/shared/components';
+import { Select, FlexColumn } from '@/shared/components';
 
 export function Home() {
   const menuState = useMenuState();
@@ -20,8 +20,6 @@ export function Home() {
           gap: 16,
         }}
       >
-        <DatePicker isInputMode={true} />
-        <DateFromToPicker />
         <Select
           label={'드롭다운'}
           value={test}

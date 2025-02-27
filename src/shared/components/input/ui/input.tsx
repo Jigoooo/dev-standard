@@ -57,6 +57,7 @@ type ExtendedInputProps = MotionProps &
     inputStyle?: InputStyle;
     startDecorator?: ReactNode;
     endDecorator?: ReactNode;
+    isFocusEffect?: boolean;
   };
 
 export function Input({
@@ -65,6 +66,7 @@ export function Input({
   inputStyle = InputStyle.OUTLINED,
   startDecorator,
   endDecorator,
+  isFocusEffect = true,
   ...props
 }: ExtendedInputProps) {
   const extraPadding = 28;
@@ -72,7 +74,7 @@ export function Input({
     <div
       style={{
         position: 'relative',
-        width: '100%',
+        width: 'auto',
       }}
     >
       {startDecorator && (
@@ -100,7 +102,9 @@ export function Input({
           },
           none: {},
         }}
-        whileFocus={inputStyle === InputStyle.UNDERLINE ? 'focusUnderline' : 'focus'}
+        whileFocus={
+          !isFocusEffect ? 'none' : inputStyle === InputStyle.UNDERLINE ? 'focusUnderline' : 'focus'
+        }
         transition={{ duration: 0.1 }}
         style={{
           width: 'auto',
