@@ -1,4 +1,4 @@
-import { useMemo, useState, KeyboardEvent } from 'react';
+import { useMemo, useState } from 'react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { colors, SELECT_BOX_ITEM_Z_INDEX } from '@/shared/constants';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
@@ -30,7 +30,7 @@ export function Select<ValueType extends string | number>({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [filterText, setFilterText] = useState('');
-  const [highlightedIndex, setHighlightedIndex] = useState(0);
+  const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null);
 
   const ref = useHandleClickOutsideRef({
     condition: isOpen,
@@ -45,7 +45,7 @@ export function Select<ValueType extends string | number>({
   const toggleSelectBox = () => {
     if (!isOpen && isAutocomplete) {
       setFilterText('');
-      setHighlightedIndex(0);
+      setHighlightedIndex(null);
     }
     setIsOpen(!isOpen);
   };
@@ -55,7 +55,7 @@ export function Select<ValueType extends string | number>({
     if (!isOpen) {
       setIsOpen(true);
     }
-    setHighlightedIndex(0);
+    setHighlightedIndex(null);
   };
 
   const filteredOptions = useMemo(() => {
@@ -67,44 +67,46 @@ export function Select<ValueType extends string | number>({
     );
   }, [options, filterText, isAutocomplete]);
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    if (!isOpen) {
-      if (e.key === 'ArrowDown' || e.key === 'Enter') {
-        setIsOpen(true);
-      }
-      return;
-    }
-    if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      if (highlightedIndex === filteredOptions.length - 1) {
-        setHighlightedIndex(0);
-      } else {
-        setHighlightedIndex((prev) => Math.min(prev + 1, filteredOptions.length - 1));
-      }
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      if (highlightedIndex === 0) {
-        setHighlightedIndex(filteredOptions.length - 1);
-      } else {
-        setHighlightedIndex((prev) => Math.max(prev - 1, 0));
-      }
-    } else if (e.key === 'Enter') {
-      e.preventDefault();
-      if (filteredOptions[highlightedIndex]) {
-        onChange(filteredOptions[highlightedIndex].value);
-      }
-      setIsOpen(false);
-      setFilterText('');
-    } else if (e.key === 'Escape') {
-      setIsOpen(false);
-    }
-  };
+  // const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+  //   if (!isOpen) {
+  //     if (e.key === 'ArrowDown' || e.key === 'Enter') {
+  //       setIsOpen(true);
+  //     }
+  //     return;
+  //   }
+  //   if (e.key === 'ArrowDown') {
+  //     e.preventDefault();
+  //     if (highlightedIndex === null) {
+  //       setHighlightedIndex(0);
+  //     } else {
+  //       setHighlightedIndex((prev) =>
+  //         prev !== null ? Math.min(prev + 1, filteredOptions.length - 1) : 0,
+  //       );
+  //     }
+  //   } else if (e.key === 'ArrowUp') {
+  //     e.preventDefault();
+  //     if (highlightedIndex === 0) {
+  //       setHighlightedIndex(filteredOptions.length - 1);
+  //     } else {
+  //       setHighlightedIndex((prev) => (prev !== null ? Math.max(prev - 1, 0) : 0));
+  //     }
+  //   } else if (e.key === 'Enter') {
+  //     e.preventDefault();
+  //     if (highlightedIndex && filteredOptions[highlightedIndex]) {
+  //       onChange(filteredOptions[highlightedIndex].value);
+  //     }
+  //     setIsOpen(false);
+  //     setFilterText('');
+  //   } else if (e.key === 'Escape') {
+  //     setIsOpen(false);
+  //   }
+  // };
 
   return (
     <div
       ref={ref}
-      onKeyDown={handleKeyDown}
-      tabIndex={0}
+      // onKeyDown={handleKeyDown}
+      // tabIndex={0}
       style={{
         position: 'relative',
         minWidth: containerMinWidth,
@@ -243,7 +245,7 @@ function SelectItems<ValueType extends string | number>({
   selectValue: (value: ValueType) => void;
   selectedValue: ValueType;
   options: SelectOption<ValueType>[];
-  highlightedIndex: number;
+  highlightedIndex: number | null;
 }) {
   return (
     <div
@@ -272,7 +274,7 @@ function SelectItems<ValueType extends string | number>({
             backgroundColor:
               selectedValue === option.value
                 ? colors.primary[50]
-                : highlightedIndex === index
+                : highlightedIndex && highlightedIndex === index
                   ? '#f0f0f0'
                   : 'transparent',
           }}

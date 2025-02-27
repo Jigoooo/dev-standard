@@ -125,8 +125,6 @@ function SelectContainer({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  console.log(optionsContainerWidth);
-
   return (
     <FlexRow
       style={{
