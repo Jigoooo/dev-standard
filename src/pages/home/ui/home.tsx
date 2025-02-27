@@ -21,6 +21,7 @@ export function Home() {
         }}
       >
         <MultiSelect
+          label={'멀티셀렉트 테스트'}
           values={test}
           onChange={(values) => setTest(values)}
           options={[

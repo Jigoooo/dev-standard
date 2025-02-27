@@ -43,6 +43,8 @@ export function MultiSelect<ValuesType extends (string | number)[]>({
 
   const toggleSelectBox = () => setIsOpen(!isOpen);
 
+  const isAllSelected = selectedOptions.length === 0 || selectedOptions.length === options.length;
+
   return (
     <div
       ref={ref}
@@ -60,6 +62,7 @@ export function MultiSelect<ValuesType extends (string | number)[]>({
         deleteValue={(option) => {
           onChange(values.filter((value) => value !== option.value) as ValuesType);
         }}
+        isAllSelected={isAllSelected}
         toggleSelectBox={toggleSelectBox}
         containerHeight={containerHeight}
       />
@@ -81,6 +84,7 @@ function SelectContainer({
   isOpen,
   selectedOptions = [],
   deleteValue,
+  isAllSelected,
   toggleSelectBox,
   containerHeight,
 }: {
@@ -88,6 +92,7 @@ function SelectContainer({
   isOpen: boolean;
   selectedOptions: SelectOption[];
   deleteValue: (option: SelectOption) => void;
+  isAllSelected: boolean;
   toggleSelectBox: () => void;
   containerHeight: number;
 }) {
@@ -109,50 +114,88 @@ function SelectContainer({
       }}
       onClick={toggleSelectBox}
     >
-      <FlexRow style={{ alignItems: 'center', gap: 6 }}>
+      <FlexRow style={{ alignItems: 'center', gap: 6, flexGrow: 1 }}>
         {label && (
           <>
-            <span style={{ fontSize: '0.9rem', fontWeight: 400, color: '#333333' }}>{label}</span>
+            <span
+              style={{
+                fontSize: '0.9rem',
+                fontWeight: 400,
+                color: '#333333',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {label}
+            </span>
             <div
               style={{ height: 20, width: 1, alignSelf: 'center', backgroundColor: '#cccccc' }}
             ></div>
           </>
         )}
-        {selectedOptions.map((selectedOption, index) => {
-          return (
-            <FlexRow
-              key={index}
+        {isAllSelected ? (
+          <FlexRow
+            style={{
+              flexGrow: 1,
+              width: '100%',
+              paddingBlock: 2,
+              paddingInline: 6,
+              borderRadius: 4,
+              border: '1px solid #cccccc',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: colors.primary[300],
+              gap: 6,
+            }}
+          >
+            <span
               style={{
-                paddingBlock: 2,
-                paddingInline: 6,
-                minWidth: 30,
-                borderRadius: 4,
-                border: '1px solid #cccccc',
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: colors.primary[300],
-                gap: 6,
+                fontWeight: 500,
+                fontSize: '1rem',
+                color: '#ffffff',
               }}
             >
-              <span
-                style={{
-                  fontWeight: 500,
-                  fontSize: '1rem',
-                  color: '#ffffff',
-                }}
-              >
-                {selectedOption.label}
-              </span>
-              <CloseIcon
-                style={{ fontSize: '1rem', color: '#ffffff', cursor: 'pointer' }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  deleteValue(selectedOption);
-                }}
-              />
-            </FlexRow>
-          );
-        })}
+              전체
+            </span>
+          </FlexRow>
+        ) : (
+          <>
+            {selectedOptions.map((selectedOption, index) => {
+              return (
+                <FlexRow
+                  key={index}
+                  style={{
+                    paddingBlock: 2,
+                    paddingInline: 6,
+                    minWidth: 30,
+                    borderRadius: 4,
+                    border: '1px solid #cccccc',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: colors.primary[300],
+                    gap: 6,
+                  }}
+                >
+                  <span
+                    style={{
+                      fontWeight: 500,
+                      fontSize: '1rem',
+                      color: '#ffffff',
+                    }}
+                  >
+                    {selectedOption.label}
+                  </span>
+                  <CloseIcon
+                    style={{ fontSize: '1rem', color: '#ffffff', cursor: 'pointer' }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      deleteValue(selectedOption);
+                    }}
+                  />
+                </FlexRow>
+              );
+            })}
+          </>
+        )}
       </FlexRow>
       <FlexRow
         style={{
@@ -201,7 +244,7 @@ function SelectItems<ValuesType extends (string | number)[]>({
             alignItems: 'center',
             height: 38,
             cursor: 'pointer',
-            backgroundColor: selectedValues.includes(option.value) ? '#e9e9e9' : 'transparent',
+            backgroundColor: selectedValues.includes(option.value) ? '#ececec' : 'transparent',
           }}
           onClick={() => {
             if (selectedValues.includes(option.value)) {
