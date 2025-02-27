@@ -2,12 +2,13 @@ import { useState } from 'react';
 
 import { useMenuState } from '@/entities/menu';
 import { MainLayout } from '@/entities/main';
-import { MultiSelect, FlexColumn } from '@/shared/components';
+import { MultiSelect, FlexColumn, Select } from '@/shared/components';
 
 export function Home() {
   const menuState = useMenuState();
 
   const [test, setTest] = useState(['11111']);
+  const [selectValue, setSelectValue] = useState('1');
 
   return (
     <MainLayout headerTitle={menuState.selectedMenu.name}>
@@ -20,9 +21,18 @@ export function Home() {
           gap: 16,
         }}
       >
+        <Select
+          value={selectValue}
+          options={[
+            { label: '11111', value: '1' },
+            { label: '22222', value: '2' },
+          ]}
+          onChange={setSelectValue}
+        />
         <MultiSelect
           label={'멀티셀렉트 테스트'}
           values={test}
+          containerWidth={300}
           onChange={(values) => setTest(values)}
           options={[
             { label: '11111', value: '1' },

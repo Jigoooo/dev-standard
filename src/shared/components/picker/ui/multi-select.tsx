@@ -1,11 +1,11 @@
-import { ReactNode, useMemo, useState } from 'react';
+import { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import CloseIcon from '@mui/icons-material/Close';
 
 import { colors, SELECT_BOX_ITEM_Z_INDEX } from '@/shared/constants';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
-import { FlexRow } from '@/shared/components';
+import { Checkbox, FlexRow } from '@/shared/components';
 
 type SelectOption = {
   label: ReactNode;
@@ -45,6 +45,12 @@ export function MultiSelect<ValuesType extends (string | number)[]>({
 
   const isAllSelected = selectedOptions.length === 0 || selectedOptions.length === options.length;
 
+  useEffect(() => {
+    if (isAllSelected) {
+      onChange([...options.map((option) => option.value)] as ValuesType);
+    }
+  }, [isAllSelected]);
+
   return (
     <div
       ref={ref}
@@ -61,9 +67,14 @@ export function MultiSelect<ValuesType extends (string | number)[]>({
         selectedOptions={selectedOptions}
         deleteValue={(option) => {
           onChange(values.filter((value) => value !== option.value) as ValuesType);
+
+          if (values.length === 0) {
+            onChange([...options.map((option) => option.value)] as ValuesType);
+          }
         }}
         isAllSelected={isAllSelected}
         toggleSelectBox={toggleSelectBox}
+        containerWidth={containerWidth}
         containerHeight={containerHeight}
       />
       {isOpen && (
@@ -86,6 +97,7 @@ function SelectContainer({
   deleteValue,
   isAllSelected,
   toggleSelectBox,
+  containerWidth,
   containerHeight,
 }: {
   label?: string;
@@ -94,8 +106,27 @@ function SelectContainer({
   deleteValue: (option: SelectOption) => void;
   isAllSelected: boolean;
   toggleSelectBox: () => void;
+  containerWidth?: string | number;
   containerHeight: number;
 }) {
+  const selectedOptionsContainerRef = useRef<HTMLDivElement>(null);
+  const [optionsContainerWidth, setOptionsContainerWidth] = useState(0);
+
+  useEffect(() => {
+    if (selectedOptionsContainerRef.current) {
+      setOptionsContainerWidth(selectedOptionsContainerRef.current.offsetWidth);
+    }
+    const handleResize = () => {
+      if (selectedOptionsContainerRef.current) {
+        setOptionsContainerWidth(selectedOptionsContainerRef.current.offsetWidth);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  console.log(optionsContainerWidth);
+
   return (
     <FlexRow
       style={{
@@ -111,10 +142,14 @@ function SelectContainer({
         border: '1px solid #cccccc',
         borderRadius: 4,
         cursor: 'pointer',
+        overflow: 'hidden',
       }}
       onClick={toggleSelectBox}
     >
-      <FlexRow style={{ alignItems: 'center', gap: 6, flexGrow: 1 }}>
+      <FlexRow
+        ref={selectedOptionsContainerRef}
+        style={{ alignItems: 'center', gap: 6, flexGrow: 1 }}
+      >
         {label && (
           <>
             <span
@@ -158,7 +193,17 @@ function SelectContainer({
             </span>
           </FlexRow>
         ) : (
-          <>
+          <FlexRow
+            className={'no-scrollbar'}
+            style={{
+              overflowX: 'auto',
+              overflowY: 'hidden',
+              maxWidth:
+                containerWidth && optionsContainerWidth
+                  ? `${optionsContainerWidth - 120}px`
+                  : '100%',
+            }}
+          >
             {selectedOptions.map((selectedOption, index) => {
               return (
                 <FlexRow
@@ -166,7 +211,6 @@ function SelectContainer({
                   style={{
                     paddingBlock: 2,
                     paddingInline: 6,
-                    minWidth: 30,
                     borderRadius: 4,
                     border: '1px solid #cccccc',
                     alignItems: 'center',
@@ -194,7 +238,7 @@ function SelectContainer({
                 </FlexRow>
               );
             })}
-          </>
+          </FlexRow>
         )}
       </FlexRow>
       <FlexRow
@@ -244,7 +288,10 @@ function SelectItems<ValuesType extends (string | number)[]>({
             alignItems: 'center',
             height: 38,
             cursor: 'pointer',
-            backgroundColor: selectedValues.includes(option.value) ? '#ececec' : 'transparent',
+            paddingLeft: 10,
+            paddingRight: 6,
+            paddingBlock: 2,
+            // backgroundColor: selectedValues.includes(option.value) ? '#ececec' : 'transparent',
           }}
           onClick={() => {
             if (selectedValues.includes(option.value)) {
@@ -252,11 +299,18 @@ function SelectItems<ValuesType extends (string | number)[]>({
             } else {
               selectValue([...selectedValues, option.value] as ValuesType);
             }
+
+            if (selectedValues.length === 0) {
+              selectValue([...options.map((option) => option.value)] as ValuesType);
+            }
           }}
         >
+          <Checkbox
+            checked={selectedValues.includes(option.value)}
+            onClick={(e) => e.preventDefault()}
+          />
           <span
             style={{
-              marginLeft: 4,
               padding: '2px 8px',
               borderRadius: 4,
               color: '#000000',

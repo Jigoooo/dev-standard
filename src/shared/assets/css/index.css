@@ -1,31 +1,30 @@
-html, body {
-  overscroll-behavior: none;
+* {
+  -webkit-touch-callout: none;
 }
 
-/*@media (max-width: 325px) {*/
-/*  html {*/
-/*    font-size: 13px;*/
-/*  }*/
-/*}*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
-body {
+html, body {
+  overscroll-behavior: none;
   margin: 0;
+  padding: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+body {
   overflow-x: hidden;
   font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  font-family: Pretendard, serif;
+  line-height: 1.5;
+  background-color: white;
+  color: #212121;
 }
-
-body {
-  /*-webkit-tap-highlight-color:rgba(0,0,0,0);*/
-}
-
-/*:focus {*/
-/*  outline: 0;*/
-/*  border:none;*/
-/*  color: rgba(0, 0, 0, 0);*/
-/*}*/
 
 /* 자동완성 시 배경색 및 글자색 지정 */
 input:-webkit-autofill,
@@ -42,9 +41,6 @@ textarea:-webkit-autofill:focus,
 select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
-  /*border: 1px solid #ced4da; !* 입력 필드의 테두리 색상을 지정 *!*/
-  /*-webkit-text-fill-color: #fff; !* 입력된 텍스트 색상을 지정 *!*/
-  /*-webkit-box-shadow: 0 0 0px 1000px #ffffff inset; !* 입력 필드의 배경색을 흰색으로 설정 *!*/
   transition: background-color 5000s ease-in-out 0s; /* 배경색 변경 효과를 지연시킴 */
 }
 
@@ -53,19 +49,10 @@ select:-webkit-autofill:focus {
   -webkit-user-select: none;
 }
 
-/*::-webkit-scrollbar {*/
-/*  !*display: none;*!*/
-/*  scrollbar-width: thin;*/
-/*}*/
-
-/*::-webkit-scrollbar-track {*/
-/*  !*background: #ddd;*!*/
-/*  background-color: rgba(0,0,0,0);*/
-/*}*/
-
-/*::-webkit-scrollbar-thumb {*/
-/*  background: rgba(128,128,128,0.2);*/
-/*}*/
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
 
 ::-webkit-scrollbar {
   width: 6px;
@@ -97,6 +84,29 @@ select:-webkit-autofill:focus {
   display: none;
 }
 
-* {
-  -webkit-touch-callout: none;
+/* 이미지, 비디오 등의 요소의 최대 너비 제한 */
+img,
+video,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+/* 목록 기본 스타일 제거 */
+ul, ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* 링크의 기본 스타일 제거 */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* 테이블 기본 스타일 재정의 */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
 }

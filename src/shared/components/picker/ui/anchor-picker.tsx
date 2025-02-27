@@ -1,34 +1,31 @@
-import { ReactNode } from 'react';
-import { Box } from '@mui/joy';
-import { SxProps } from '@mui/joy/styles/types';
+import { CSSProperties, ReactNode } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 export function AnchorPicker({
   open,
   onClose,
-  sx,
+  style,
   contents,
   children,
 }: {
   open: boolean;
   onClose: () => void;
-  sx?: SxProps;
+  style?: CSSProperties;
   contents: ReactNode;
   children: ReactNode;
 }) {
   return (
-    <Box sx={[{ position: 'relative' }, ...(Array.isArray(sx) ? sx : [sx])]}>
+    <div style={{ ...{ position: 'relative' }, ...style }}>
       {children}
       <AnimatePresence>
         {open && (
           <>
-            <Box
-              component={motion.div}
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.14, ease: 'easeInOut' }}
-              sx={{
+              style={{
                 position: 'fixed',
                 top: 0,
                 left: 0,
@@ -39,13 +36,12 @@ export function AnchorPicker({
               }}
               onTap={onClose}
             />
-            <Box
-              component={motion.div}
+            <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
               transition={{ duration: 0.14, ease: 'easeInOut' }}
-              sx={{
+              style={{
                 position: 'absolute',
                 top: '100%',
                 left: 0,
@@ -54,10 +50,10 @@ export function AnchorPicker({
               }}
             >
               {contents}
-            </Box>
+            </motion.div>
           </>
         )}
       </AnimatePresence>
-    </Box>
+    </div>
   );
 }

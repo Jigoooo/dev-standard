@@ -1,14 +1,16 @@
-import { OverridableStringUnion } from '@mui/types';
-import { ColorPaletteProp, VariantProp } from '@mui/joy/styles/types';
-import { SnackbarPropsColorOverrides } from '@mui/joy/Snackbar/SnackbarProps';
-import { SnackbarPropsVariantOverrides } from '@mui/joy/Snackbar';
+export enum SnackBarType {
+  INFO = 'info',
+  SUCCESS = 'success',
+  WARNING = 'warning',
+  ERROR = 'error',
+  LOADING = 'loading',
+}
 
 export interface SnackBarInfo {
   title?: string;
   message: string;
   duration?: number;
-  color?: OverridableStringUnion<ColorPaletteProp, SnackbarPropsColorOverrides> | 'loading';
-  variant?: OverridableStringUnion<VariantProp, SnackbarPropsVariantOverrides>;
+  type?: SnackBarType;
 }
 
 export interface DesktopSnackBarInfo extends SnackBarInfo {

@@ -40,7 +40,7 @@ export function ModalLayout({
       >
         <span style={{ fontSize: '1.2rem', fontWeight: 600 }}>{title}</span>
         <Button onClick={close} style={{ backgroundColor: '#ffffff', height: 36, width: 36 }}>
-          <CloseIcon style={{ fontSize: '1.4rem' }} />
+          <CloseIcon style={{ fontSize: '1.4rem', color: '#212121' }} />
         </Button>
       </FlexRow>
       <Divider />

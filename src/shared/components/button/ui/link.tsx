@@ -1,6 +1,10 @@
-import { CSSProperties, useState } from 'react';
+import { CSSProperties, HTMLAttributes, useState } from 'react';
 
-export function Link({ style, children }: { style?: CSSProperties; children: string }) {
+export function Link({
+  style,
+  children,
+  ...props
+}: HTMLAttributes<HTMLSpanElement> & { style?: CSSProperties; children: string }) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -15,6 +19,7 @@ export function Link({ style, children }: { style?: CSSProperties; children: str
         },
         ...style,
       }}
+      {...props}
     >
       {children}
     </span>

@@ -1,6 +1,6 @@
 import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
-import { Link } from '@mui/joy';
 import { useNavigate } from 'react-router-dom';
+import { Link } from '@/shared/components';
 
 export function PageBackWithHeader() {
   const navigate = useNavigate();
@@ -19,10 +19,7 @@ export function PageBackWithHeader() {
       }}
     >
       <ArrowBackOutlinedIcon sx={{ color: '#777777', strokeWidth: 1, stroke: '#777777' }} />
-      <Link
-        sx={{ color: '#777777', textDecorationColor: '#777777', fontWeight: 700 }}
-        onClick={back}
-      >
+      <Link style={{ color: '#777777', fontWeight: 700 }} onClick={back}>
         뒤로가기
       </Link>
     </div>

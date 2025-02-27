@@ -74,7 +74,7 @@ export function Input({
     <div
       style={{
         position: 'relative',
-        width: 'auto',
+        width: style?.width || 'auto',
       }}
     >
       {startDecorator && (

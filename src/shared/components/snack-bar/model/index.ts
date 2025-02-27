@@ -9,3 +9,4 @@ export {
   useNotificationInfos,
   useSnackBarOpenState,
 } from './snack-bar-store.ts';
+export { SnackBarType } from './snack-bar-type.ts';

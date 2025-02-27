@@ -1,13 +1,10 @@
-import { AlertDialog, SnackBar, FramerMotionNotification } from '@/shared/components';
-import { useMediaQueryWidth } from '@/shared/hooks';
+import { AlertDialog } from '@/shared/components';
 
 export function AlertProvider() {
-  const mobileSizeMatches = useMediaQueryWidth(380);
-
   return (
     <>
       <AlertDialog />
-      {mobileSizeMatches ? <SnackBar /> : <FramerMotionNotification />}
+      {/*{mobileSizeMatches ? <SnackBar /> : <FramerMotionNotification />}*/}
     </>
   );
 }

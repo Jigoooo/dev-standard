@@ -1,7 +1,13 @@
 import { create } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 
-import { SnackBarStates, SnackBarStoreInterface, SnackBarInfo, DesktopSnackBarInfo } from './snack-bar-interfaces.ts';
+import {
+  DesktopSnackBarInfo,
+  SnackBarInfo,
+  SnackBarStates,
+  SnackBarStoreInterface,
+  SnackBarType,
+} from './snack-bar-type.ts';
 import { timeoutAction } from '@/shared/lib';
 
 const snackBarInitialState: SnackBarStates = {
@@ -10,7 +16,7 @@ const snackBarInitialState: SnackBarStates = {
   snackBarInfo: {
     message: '',
     duration: 3000,
-    color: 'success',
+    type: SnackBarType.SUCCESS,
     variant: 'soft',
   },
   desktopSnackBarInfos: [],
@@ -25,7 +31,12 @@ const useSnackBarStore = create<SnackBarStoreInterface>()((setState, getState) =
           return { ...state, targetSizeMode };
         });
       },
-      showSnackBar: ({ message = '', duration = 3000, color = 'success', variant = 'soft' }) => {
+      showSnackBar: ({
+        message = '',
+        duration = 3000,
+        type = SnackBarType.SUCCESS,
+        variant = 'soft',
+      }) => {
         setState((state) => {
           return {
             ...state,
@@ -33,13 +44,20 @@ const useSnackBarStore = create<SnackBarStoreInterface>()((setState, getState) =
             snackBarInfo: {
               message,
               duration,
-              color,
+              type,
               variant,
             },
           };
         });
       },
-      showDesktopSnackBar: ({ idx, title, message = '', duration = 5000, color = 'success', variant = 'soft' }) => {
+      showDesktopSnackBar: ({
+        idx,
+        title,
+        message = '',
+        duration = 5000,
+        type = SnackBarType.SUCCESS,
+        variant = 'soft',
+      }) => {
         setState((state) => {
           return {
             ...state,
@@ -50,14 +68,16 @@ const useSnackBarStore = create<SnackBarStoreInterface>()((setState, getState) =
                 title,
                 message,
                 duration,
-                color,
+                type,
                 variant,
               },
             ],
           };
         });
 
-        duration !== 0 && timeoutAction(() => getState().actions.hideDesktopSnackBar(idx), duration);
+        if (duration !== 0) {
+          timeoutAction(() => getState().actions.hideDesktopSnackBar(idx), duration);
+        }
       },
       showNotification: (info) => {
         const maxIdx = Math.max(...getState().desktopSnackBarInfos.map((info) => info.idx));
@@ -85,7 +105,9 @@ const useSnackBarStore = create<SnackBarStoreInterface>()((setState, getState) =
         setState((state) => {
           return {
             ...state,
-            desktopSnackBarInfos: state.desktopSnackBarInfos.filter((notificationInfo) => notificationInfo.idx !== idx),
+            desktopSnackBarInfos: state.desktopSnackBarInfos.filter(
+              (notificationInfo) => notificationInfo.idx !== idx,
+            ),
           };
         });
       },
@@ -95,11 +117,15 @@ const useSnackBarStore = create<SnackBarStoreInterface>()((setState, getState) =
 
 export const useSnackBarOpenState = () => useSnackBarStore(useShallow((state) => state.open));
 export const useSnackBarInfo = () => useSnackBarStore(useShallow((state) => state.snackBarInfo));
-export const useNotificationInfos = () => useSnackBarStore(useShallow((state) => state.desktopSnackBarInfos));
-export const showSnackBar = (info: SnackBarInfo) => useSnackBarStore.getState().actions.showSnackBar(info);
+export const useNotificationInfos = () =>
+  useSnackBarStore(useShallow((state) => state.desktopSnackBarInfos));
+export const showSnackBar = (info: SnackBarInfo) =>
+  useSnackBarStore.getState().actions.showSnackBar(info);
 export const showDesktopSnackBar = (notificationInfo: DesktopSnackBarInfo) =>
   useSnackBarStore.getState().actions.showDesktopSnackBar(notificationInfo);
-export const showNotification = (info: SnackBarInfo) => useSnackBarStore.getState().actions.showNotification(info);
+export const showNotification = (info: SnackBarInfo) =>
+  useSnackBarStore.getState().actions.showNotification(info);
 export const hideSnackBar = () => useSnackBarStore.getState().actions.hideSnackBar();
-export const hideDesktopSnackBar = (idx: number) => useSnackBarStore.getState().actions.hideDesktopSnackBar(idx);
+export const hideDesktopSnackBar = (idx: number) =>
+  useSnackBarStore.getState().actions.hideDesktopSnackBar(idx);
 export const snackBarActions = useSnackBarStore.getState().actions;
