@@ -24,11 +24,11 @@ export function Home() {
           values={test}
           onChange={(values) => setTest(values)}
           options={[
-            { label: '1', value: '11111' },
-            { label: '2', value: '22222' },
-            { label: '3', value: '33333' },
-            { label: '4', value: '44444' },
-            { label: '5', value: '55555' },
+            { label: '11111', value: '1' },
+            { label: '22222', value: '2' },
+            { label: '33333', value: '3' },
+            { label: '44444', value: '4' },
+            { label: '55555', value: '5' },
           ]}
         />
       </FlexColumn>

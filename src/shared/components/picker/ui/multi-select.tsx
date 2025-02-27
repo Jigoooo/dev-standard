@@ -1,42 +1,34 @@
-import { ReactNode, useState } from 'react';
-import { Box, Divider, Stack, Typography } from '@mui/joy';
+import { ReactNode, useMemo, useState } from 'react';
 
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import ClearIcon from '@mui/icons-material/Clear';
+import CloseIcon from '@mui/icons-material/Close';
 
-import { Checkbox } from '@/shared/components';
 import { colors, SELECT_BOX_ITEM_Z_INDEX } from '@/shared/constants';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
+import { FlexRow } from '@/shared/components';
 
 type SelectOption = {
-  key: string | number;
-  value: ReactNode;
+  label: ReactNode;
+  value: string | number;
 };
 
-export function MultiSelect({
+export function MultiSelect<ValuesType extends (string | number)[]>({
   label = '',
-  value,
+  values,
   onChange,
   options,
+  containerWidth,
+  containerMinWidth = 160,
   containerHeight = 38,
 }: {
   label?: string;
-  value?: (string | number)[];
-  onChange?: (value: (string | number)[]) => void;
+  values: ValuesType;
+  onChange: (value: ValuesType) => void;
   options: SelectOption[];
+  containerWidth?: string | number;
+  containerMinWidth?: string | number;
   containerHeight?: number;
 }) {
-  const [selectedAreas, setSelectedAreas] = useState<(string | number)[]>(() =>
-    options
-      .map((area) => area.key)
-      .filter((area) => {
-        if (value) {
-          return value.includes(area);
-        }
-        return area;
-      }),
-  );
-
   const [isOpen, setIsOpen] = useState(false);
 
   const ref = useHandleClickOutsideRef({
@@ -44,194 +36,158 @@ export function MultiSelect({
     outsideClickAction: () => setIsOpen(false),
   });
 
-  const toggleSelectBox = () => {
-    setIsOpen(!isOpen);
-  };
+  const selectedOptions = useMemo(
+    () => options.filter((option) => values.includes(option.value)).map((option) => option),
+    [options, values],
+  );
 
-  const toggleArea = (key: string | number) => {
-    setSelectedAreas((prevState) => {
-      const newState = prevState.includes(key)
-        ? prevState.filter((area) => area !== key)
-        : [...prevState, key];
-      if (onChange) {
-        onChange(newState);
-      }
-      return newState;
-    });
-  };
-
-  const clearAreas = () => {
-    if (selectedAreas.length > 0) {
-      setSelectedAreas([]);
-      if (onChange) {
-        onChange([]);
-      }
-      if (isOpen) {
-        toggleSelectBox();
-      }
-    }
-  };
+  const toggleSelectBox = () => setIsOpen(!isOpen);
 
   return (
-    <Box ref={ref} sx={{ position: 'relative', minWidth: 100 }} className={'selection-none'}>
-      <MultiSelectContainer
+    <div
+      ref={ref}
+      style={{
+        position: 'relative',
+        minWidth: containerMinWidth,
+        width: containerWidth || 'auto',
+      }}
+      className='selection-none'
+    >
+      <SelectContainer
         label={label}
         isOpen={isOpen}
-        options={options}
-        selectedAreas={selectedAreas}
-        clearAreas={clearAreas}
+        selectedOptions={selectedOptions}
+        deleteValue={(option) => {
+          onChange(values.filter((value) => value !== option.value) as ValuesType);
+        }}
         toggleSelectBox={toggleSelectBox}
         containerHeight={containerHeight}
       />
       {isOpen && (
-        <MultiSelectItems options={options} selectedAreas={selectedAreas} toggleArea={toggleArea} />
+        <SelectItems
+          options={options}
+          selectedValues={values}
+          selectValue={(newValues) => {
+            onChange(newValues);
+          }}
+        />
       )}
-    </Box>
+    </div>
   );
 }
 
-function MultiSelectContainer({
+function SelectContainer({
   label,
   isOpen,
-  options,
-  selectedAreas,
-  clearAreas,
+  selectedOptions = [],
+  deleteValue,
   toggleSelectBox,
   containerHeight,
 }: {
-  label: string;
+  label?: string;
   isOpen: boolean;
-  options: SelectOption[];
-  selectedAreas: (string | number)[];
-  clearAreas: () => void;
+  selectedOptions: SelectOption[];
+  deleteValue: (option: SelectOption) => void;
   toggleSelectBox: () => void;
   containerHeight: number;
 }) {
   return (
-    <Stack
-      sx={{
-        display: 'flex',
-        flexDirection: 'row',
+    <FlexRow
+      style={{
         justifyContent: 'space-between',
         alignItems: 'center',
-        gap: 1,
-        pl: 1.2,
-        pr: 0.5,
-        py: 0.5,
+        gap: 8,
+        paddingLeft: label ? 12 : 6,
+        paddingRight: 6,
+        paddingBlock: 4,
         height: containerHeight,
         backgroundColor: '#ffffff',
         boxShadow: '0 0 3px rgba(50, 50, 50, 0.1)',
-        border: '1px solid #ddd',
+        border: '1px solid #cccccc',
         borderRadius: 4,
         cursor: 'pointer',
       }}
       onClick={toggleSelectBox}
     >
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+      <FlexRow style={{ alignItems: 'center', gap: 6 }}>
         {label && (
           <>
-            <Typography sx={{ fontSize: '0.8rem', fontWeight: 400, color: '#333333' }}>
-              {label}
-            </Typography>
-            <Divider
-              orientation={'vertical'}
-              sx={{ height: 20, alignSelf: 'center', backgroundColor: '#cccccc' }}
-            />
+            <span style={{ fontSize: '0.9rem', fontWeight: 400, color: '#333333' }}>{label}</span>
+            <div
+              style={{ height: 20, width: 1, alignSelf: 'center', backgroundColor: '#cccccc' }}
+            ></div>
           </>
         )}
-        {selectedAreas.length === options.length || selectedAreas.length === 0 ? (
-          <>
-            <Box
-              component='span'
-              sx={{
-                padding: '3px 9px',
+        {selectedOptions.map((selectedOption, index) => {
+          return (
+            <FlexRow
+              key={index}
+              style={{
+                paddingBlock: 2,
+                paddingInline: 6,
+                minWidth: 30,
                 borderRadius: 4,
-                backgroundColor: colors.primary[100],
-                color: colors.primary[500],
-                fontWeight: 500,
-                fontSize: '0.9rem',
+                border: '1px solid #cccccc',
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: colors.primary[300],
+                gap: 6,
               }}
             >
-              전체
-            </Box>
-            <Typography sx={{ fontSize: '1rem' }}> 선택됨</Typography>
-          </>
-        ) : selectedAreas.length > 4 ? (
-          <>
-            <Box
-              component='span'
-              sx={{
-                padding: '3px 9px',
-                borderRadius: 4,
-                backgroundColor: colors.primary[100],
-                color: colors.primary[500],
-                fontWeight: 500,
-                fontSize: '0.9rem',
-              }}
-            >
-              {selectedAreas.length}
-            </Box>
-            <Typography sx={{ fontSize: '1rem' }}> 선택됨</Typography>
-          </>
-        ) : (
-          selectedAreas.map((key) => (
-            <Box key={key} component={'span'}>
-              {options.find((option) => option.key === key)?.value}
-            </Box>
-          ))
-        )}
-      </Box>
-      {selectedAreas.length > 0 && selectedAreas.length !== options.length && (
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            px: 0.8,
-          }}
-          onClick={(event) => {
-            event.stopPropagation();
-            clearAreas();
-          }}
-        >
-          <ClearIcon sx={{ fontSize: '1rem' }} />
-        </Box>
-      )}
-      <Box
-        sx={{
-          display: 'flex',
+              <span
+                style={{
+                  fontWeight: 500,
+                  fontSize: '1rem',
+                  color: '#ffffff',
+                }}
+              >
+                {selectedOption.label}
+              </span>
+              <CloseIcon
+                style={{ fontSize: '1rem', color: '#ffffff', cursor: 'pointer' }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  deleteValue(selectedOption);
+                }}
+              />
+            </FlexRow>
+          );
+        })}
+      </FlexRow>
+      <FlexRow
+        style={{
           alignItems: 'center',
           justifyContent: 'center',
           transition: 'transform 0.3s ease',
           transform: isOpen ? 'rotate(-180deg)' : 'rotate(0deg)',
         }}
       >
-        <KeyboardArrowDownIcon style={{ fontSize: '1.6rem' }} />
-      </Box>
-    </Stack>
+        <KeyboardArrowDownIcon style={{ fontSize: '1.4rem' }} />
+      </FlexRow>
+    </FlexRow>
   );
 }
 
-function MultiSelectItems({
-  toggleArea,
-  selectedAreas,
+function SelectItems<ValuesType extends (string | number)[]>({
+  selectValue,
+  selectedValues,
   options,
 }: {
+  selectValue: (value: ValuesType) => void;
+  selectedValues: ValuesType;
   options: SelectOption[];
-  selectedAreas: (string | number)[];
-  toggleArea: (key: string | number) => void;
 }) {
   return (
-    <Box
-      className={'shadow-scroll'}
-      sx={{
+    <div
+      className='shadow-scroll'
+      style={{
         position: 'absolute',
         top: '115%',
         left: 0,
         width: '100%',
         backgroundColor: 'white',
         border: '1px solid #ddd',
-        borderRadius: 10,
+        borderRadius: 4,
         boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
         maxHeight: 300,
         overflowY: 'auto',
@@ -239,55 +195,34 @@ function MultiSelectItems({
       }}
     >
       {options.map((option) => (
-        <Stack
-          key={option.key}
-          direction='row'
-          alignItems='center'
-          sx={{ p: 1, cursor: 'pointer' }}
-          onClick={() => toggleArea(option.key)}
+        <FlexRow
+          key={option.value}
+          style={{
+            alignItems: 'center',
+            height: 38,
+            cursor: 'pointer',
+            backgroundColor: selectedValues.includes(option.value) ? '#e9e9e9' : 'transparent',
+          }}
+          onClick={() => {
+            if (selectedValues.includes(option.value)) {
+              selectValue(selectedValues.filter((value) => value !== option.value) as ValuesType);
+            } else {
+              selectValue([...selectedValues, option.value] as ValuesType);
+            }
+          }}
         >
-          <Checkbox
-            checked={selectedAreas.includes(option.key)}
-            onClick={() => {
-              toggleArea(option.key);
-            }}
-          />
-          <Box
-            component='span'
-            sx={{
-              ml: 1,
+          <span
+            style={{
+              marginLeft: 4,
               padding: '2px 8px',
               borderRadius: 4,
+              color: '#000000',
             }}
           >
-            {option.value}
-          </Box>
-        </Stack>
+            {option.label}
+          </span>
+        </FlexRow>
       ))}
-      {/*<Stack*/}
-      {/*  alignItems='center'*/}
-      {/*  sx={{*/}
-      {/*    py: 1,*/}
-      {/*    cursor: 'pointer',*/}
-      {/*    position: 'sticky',*/}
-      {/*    bottom: 0,*/}
-      {/*    backgroundColor: 'white',*/}
-      {/*  }}*/}
-      {/*  onClick={clearAreas}*/}
-      {/*>*/}
-      {/*  <Divider />*/}
-      {/*  <Box*/}
-      {/*    component='span'*/}
-      {/*    sx={{*/}
-      {/*      padding: '2px 8px',*/}
-      {/*      borderRadius: 4,*/}
-      {/*      fontSize: '1rem',*/}
-      {/*      fontWeight: 500,*/}
-      {/*    }}*/}
-      {/*  >*/}
-      {/*    선택해제*/}
-      {/*  </Box>*/}
-      {/*</Stack>*/}
-    </Box>
+    </div>
   );
 }
