@@ -1,6 +1,8 @@
 import { useMenuState } from '@/entities/menu';
 import { MainLayout } from '@/entities/main';
 import { FlexColumn, Table, THeader } from '@/shared/components';
+import { useState } from 'react';
+import { testData } from '@/shared/components/table/ui/testData.ts';
 
 const tableHeaders: THeader[] = [
   {
@@ -114,6 +116,8 @@ const tableHeaders: THeader[] = [
 export function Home() {
   const menuState = useMenuState();
 
+  const [dataList] = useState(testData);
+
   return (
     <MainLayout headerTitle={menuState.selectedMenu.name}>
       <FlexColumn
@@ -122,7 +126,7 @@ export function Home() {
           gap: 16,
         }}
       >
-        <Table tableHeaders={tableHeaders} filterRowEnabled={true} />
+        <Table tableHeaders={tableHeaders} tableDataList={dataList} filterRowEnabled={true} />
       </FlexColumn>
     </MainLayout>
   );

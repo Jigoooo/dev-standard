@@ -3,7 +3,16 @@ import { useRef, useState } from 'react';
 import { THeader, TTableStyle } from '@/shared/components';
 import { TableHeader } from './table-header.tsx';
 import { TableBody } from './table-body.tsx';
-import { testData } from './testData.ts';
+
+/*
+ * todo
+ * 1. 컬럼필터링
+ * 2. 컬럼이동
+ * 3. 로우이동
+ * 4. 컬럼 숨기고 보이기
+ * 5. 컬럼 소팅
+ *
+ * */
 
 const defaultTableStyle: TTableStyle = {
   rootTableStyle: {},
@@ -21,13 +30,15 @@ const defaultTableStyle: TTableStyle = {
   tableBodyColor: 'rgba(0, 0, 0, 1)',
 };
 
-export function Table({
+export function Table<TData extends { index: string }>({
   tableStyle = {},
   tableHeaders,
+  tableDataList,
   filterRowEnabled = false,
 }: {
   tableStyle?: Partial<TTableStyle>;
   tableHeaders: THeader[];
+  tableDataList: TData[];
   filterRowEnabled?: boolean;
 }) {
   const applyTableStyle = {
@@ -67,8 +78,6 @@ export function Table({
     });
   };
 
-  const [dataList] = useState(testData);
-
   const totalWidth = headers.reduce((acc, cur) => acc + cur.width, 0) + 2;
 
   return (
@@ -80,7 +89,7 @@ export function Table({
             (filterRowEnabled
               ? applyTableStyle.tableHeaderHeight * 2
               : applyTableStyle.tableHeaderHeight) +
-            applyTableStyle.tableBodyHeight * dataList.length,
+            applyTableStyle.tableBodyHeight * tableDataList.length,
           width: totalWidth,
           maxWidth: 'calc(100vw - 300px)',
           border: applyTableStyle.tableBorder,
@@ -103,7 +112,7 @@ export function Table({
         onBodyScroll={onBodyScroll}
         tableStyle={applyTableStyle}
         headers={headers}
-        dataList={dataList}
+        dataList={tableDataList}
       />
     </div>
   );
