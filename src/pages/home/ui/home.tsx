@@ -22,8 +22,30 @@ const tableHeaders: THeader[] = [
     },
   },
   {
+    id: 'email',
+    pin: 'view',
+    align: 'left',
+    label: '이메일',
+    width: 200,
+    filter: {
+      filterType: 'text',
+      filterValue: '',
+    },
+  },
+  {
+    id: 'age',
+    pin: 'view',
+    align: 'left',
+    label: '나이',
+    width: 200,
+    filter: {
+      filterType: 'text',
+      filterValue: '',
+    },
+  },
+  {
     id: 'address',
-    pin: 'left',
+    pin: 'view',
     align: 'left',
     label: '주소',
     width: 150,
@@ -32,22 +54,9 @@ const tableHeaders: THeader[] = [
       filterValue: '',
     },
   },
-  ...Array.from({ length: 10 }, (_, index) => {
-    return {
-      id: `column${index}`,
-      pin: 'view',
-      align: 'left',
-      label: `컬럼${index}`,
-      width: 120,
-      filter: {
-        filterType: 'text',
-        filterValue: '',
-      },
-    } as const;
-  }),
   {
-    id: 'phoneNumber',
-    pin: 'right',
+    id: 'phone',
+    pin: 'view',
     align: 'left',
     label: '휴대폰번호',
     width: 150,
@@ -57,10 +66,43 @@ const tableHeaders: THeader[] = [
     },
   },
   {
-    id: 'note',
+    id: 'jobTitle',
+    pin: 'view',
+    align: 'left',
+    label: '직업',
+    width: 150,
+    filter: {
+      filterType: 'text',
+      filterValue: '',
+    },
+  },
+  {
+    id: 'department',
+    pin: 'view',
+    align: 'left',
+    label: '부서',
+    width: 150,
+    filter: {
+      filterType: 'text',
+      filterValue: '',
+    },
+  },
+  {
+    id: 'salary',
+    pin: 'view',
+    align: 'left',
+    label: '급여',
+    width: 150,
+    filter: {
+      filterType: 'text',
+      filterValue: '',
+    },
+  },
+  {
+    id: 'hireDate',
     pin: 'right',
     align: 'left',
-    label: '비고',
+    label: '고용일',
     width: 150,
     filter: {
       filterType: 'text',
@@ -76,14 +118,16 @@ export function Home() {
     <MainLayout headerTitle={menuState.selectedMenu.name}>
       <FlexColumn
         style={{
-          width: '100%',
           height: '100%',
           alignItems: 'center',
-          justifyContent: 'center',
           gap: 16,
         }}
       >
-        <Table tableHeaders={tableHeaders} filterRowEnabled={true} />
+        <Table
+          tableStyle={{ rootTableStyle: { maxHeight: 'calc(100vh - 300px)' } }}
+          tableHeaders={tableHeaders}
+          filterRowEnabled={true}
+        />
       </FlexColumn>
     </MainLayout>
   );

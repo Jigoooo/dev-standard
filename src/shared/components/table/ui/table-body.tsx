@@ -1,6 +1,8 @@
-import { FlexRow, THeader, TTableStyle } from '@/shared/components';
-import { RefObject, useRef } from 'react';
+import { RefObject, useEffect, useRef, useState } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
+import { motion, useScroll, useTransform } from 'framer-motion';
+
+import { FlexRow, THeader, TTableStyle } from '@/shared/components';
 
 function validateDataList<T>(dataList: unknown[], keys: (keyof T)[]): dataList is T[] {
   return dataList.every((item) =>
@@ -31,38 +33,49 @@ export function TableBody<TData extends { index: string }>({
     throw new Error(`dataList does not match the required type: ${JSON.stringify(requiredKeys)}`);
   }
 
+  const bodyRef = useRef<HTMLDivElement>(null);
+
   return (
-    <FlexRow
-      className={'table-body'}
-      style={{
-        backgroundColor: tableStyle.tableBodyBackgroundColor,
-        overflowY: 'auto',
-        overflowX: 'hidden',
-      }}
-    >
-      {/* 왼쪽 고정 영역 */}
-      <TableBodyPin
-        tableStyle={tableStyle}
-        position={'left'}
-        headers={leftPinHeaders}
-        dataList={dataList}
-      />
+    <FlexRow style={{ position: 'relative' }}>
+      <FlexRow
+        ref={bodyRef}
+        className={'table-body no-scrollbar'}
+        style={{
+          backgroundColor: tableStyle.tableBodyBackgroundColor,
+          overflowY: 'auto',
+          overflowX: 'hidden',
+          height: '100%',
+          maxHeight: tableStyle.rootTableStyle.maxHeight,
+        }}
+      >
+        {/* 왼쪽 고정 영역 */}
+        <TableBodyPin
+          tableStyle={tableStyle}
+          position={'left'}
+          headers={leftPinHeaders}
+          dataList={dataList}
+        />
 
-      {/* 중앙 영역 */}
-      <TableBodyView
-        ref={ref}
-        onBodyScroll={onBodyScroll}
-        tableStyle={tableStyle}
-        headers={viewHeaders}
-        dataList={dataList}
-      />
+        {/* 중앙 영역 */}
+        <TableBodyView
+          ref={ref}
+          onBodyScroll={onBodyScroll}
+          tableStyle={tableStyle}
+          headers={viewHeaders}
+          dataList={dataList}
+        />
 
-      {/* 오른쪽 고정 영역 */}
-      <TableBodyPin
-        tableStyle={tableStyle}
-        position={'right'}
-        headers={rightPinHeaders}
-        dataList={dataList}
+        {/* 오른쪽 고정 영역 */}
+        <TableBodyPin
+          tableStyle={tableStyle}
+          position={'right'}
+          headers={rightPinHeaders}
+          dataList={dataList}
+        />
+      </FlexRow>
+      <CustomVerticalScrollbar
+        ref={bodyRef}
+        totalContentHeight={tableStyle.tableBodyHeight * dataList.length}
       />
     </FlexRow>
   );
@@ -151,6 +164,7 @@ function TableBodyView<TData extends Record<string, any>>({
                       paddingInline: 12,
                       width: header.width,
                       height: tableStyle.tableBodyHeight - 1, // todo 보정해야 하는 이유 찾기
+                      // height: tableStyle.tableBodyHeight,
                       left: left,
                       backgroundColor:
                         header.id === 'index'
@@ -256,6 +270,7 @@ function TableBodyPin<TData extends Record<string, any>>({
                     paddingInline: 10,
                     left: left,
                     width: header.width - 1, // todo 보정해야 하는 이유 찾기
+                    // width: header.width,
                     height: '100%',
                     backgroundColor:
                       header.id === 'index'
@@ -282,5 +297,63 @@ function TableBodyLabel({ tableStyle, label }: { tableStyle: TTableStyle; label:
     <span style={{ fontSize: '0.88rem', fontWeight: 500, color: tableStyle.tableBodyColor }}>
       {label}
     </span>
+  );
+}
+
+type CustomVerticalScrollbarProps = {
+  ref: RefObject<HTMLDivElement | null>;
+  totalContentHeight: number;
+};
+
+export function CustomVerticalScrollbar({ ref, totalContentHeight }: CustomVerticalScrollbarProps) {
+  const { scrollYProgress } = useScroll({ container: ref });
+
+  const [containerHeight, setContainerHeight] = useState(0);
+
+  useEffect(() => {
+    if (ref.current) {
+      setContainerHeight(ref.current.clientHeight);
+    }
+  }, [ref]);
+
+  // thumb 높이 계산: 컨테이너 높이 * (컨테이너 높이 / 컨텐츠 전체 높이)
+  const thumbHeight = containerHeight * (containerHeight / totalContentHeight);
+
+  // 스크롤 진행도(scrollYProgress)를 이용해 thumb의 top 위치를 계산합니다.
+  // 최대 top 값은 containerHeight - thumbHeight입니다.
+  const thumbTop = useTransform(scrollYProgress, [0, 1], [0, containerHeight - thumbHeight]);
+
+  return (
+    <motion.div
+      style={{
+        position: 'absolute',
+        right: 0,
+        top: 0,
+        width: 16,
+        height: containerHeight,
+        backgroundColor: 'transparent',
+      }}
+    >
+      <motion.div
+        drag='y'
+        dragConstraints={{ top: 0, bottom: containerHeight - thumbHeight }}
+        onDrag={(_, info) => {
+          // thumb 드래그 시 컨테이너의 scrollTop을 업데이트
+          if (ref.current) {
+            ref.current.scrollTop = (info.point.y / containerHeight) * totalContentHeight;
+          }
+        }}
+        style={{
+          position: 'absolute',
+          left: 0,
+          width: '100%',
+          height: thumbHeight,
+          backgroundColor: '#cccccc',
+          borderRadius: 4,
+          top: thumbTop,
+          cursor: 'pointer',
+        }}
+      />
+    </motion.div>
   );
 }
