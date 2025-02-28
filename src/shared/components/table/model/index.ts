@@ -5,4 +5,5 @@ export type {
   TTableHeader,
   TTableContext,
   TTablePagination,
-} from './table-type.ts';
+} from './table-type-legacy.ts';
+export type { TTableStyle, THeader } from './table-type.ts';

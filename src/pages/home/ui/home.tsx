@@ -1,6 +1,65 @@
 import { useMenuState } from '@/entities/menu';
 import { MainLayout } from '@/entities/main';
-import { FlexColumn, Table } from '@/shared/components';
+import { FlexColumn, Table, THeader } from '@/shared/components';
+
+const tableHeaders: THeader[] = [
+  {
+    id: 'index',
+    pin: 'left',
+    label: '',
+    width: 60,
+  },
+  {
+    id: 'name',
+    pin: 'left',
+    label: 'Name',
+    width: 150,
+    filter: {
+      filterType: 'text',
+      filterValue: '',
+    },
+  },
+  {
+    id: 'address',
+    pin: 'left',
+    label: 'Address',
+    width: 150,
+    filter: {
+      filterType: 'text',
+      filterValue: '',
+    },
+  },
+  ...Array.from({ length: 10 }, (_, index) => ({
+    id: `column${index}`,
+    pin: 'view' as const,
+    label: `column${index}`,
+    width: 120,
+    filter: {
+      filterType: 'text',
+      filterValue: '',
+    } as const,
+  })),
+  {
+    id: 'phoneNumber',
+    pin: 'right',
+    label: 'Phone',
+    width: 150,
+    filter: {
+      filterType: 'text',
+      filterValue: '',
+    },
+  },
+  {
+    id: 'note',
+    pin: 'right',
+    label: 'Note',
+    width: 150,
+    filter: {
+      filterType: 'text',
+      filterValue: '',
+    },
+  },
+];
 
 export function Home() {
   const menuState = useMenuState();
@@ -16,7 +75,7 @@ export function Home() {
           gap: 16,
         }}
       >
-        <Table filterRowEnabled={true} />
+        <Table tableHeaders={tableHeaders} filterRowEnabled={true} />
         {/*<RootTable*/}
         {/*  isSorting={true}*/}
         {/*  visibleCheckbox={true}*/}
