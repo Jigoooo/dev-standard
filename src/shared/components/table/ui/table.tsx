@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 
-import { THeader, TTableStyle } from '@/shared/components';
+import { FlexRow, THeader, TTableStyle } from '@/shared/components';
 import { TableHeader } from './table-header.tsx';
 import { TableBody } from './table-body.tsx';
 
@@ -11,12 +11,13 @@ import { TableBody } from './table-body.tsx';
  * 3. 로우이동
  * 4. 컬럼 숨기고 보이기
  * 5. 컬럼 소팅
- *
+ * 6. 컬럼 수정
+ * 7. 체크박스
+ * 8. 하단 페이징 또는 로우수 정보
  * */
 
 const defaultTableStyle: TTableStyle = {
-  rootTableStyle: {},
-  bodyTableStyle: {},
+  tableMaxHeight: undefined,
   tableResizeColor: '#cecece',
   tableBorderColor: '#bdc3c7',
   tableBorder: '1px solid #bdc3c7',
@@ -28,6 +29,7 @@ const defaultTableStyle: TTableStyle = {
   tableBodyOddBackgroundColor: '#fcfdfe',
   tableHeaderColor: 'rgba(0, 0, 0, 0.6)',
   tableBodyColor: 'rgba(0, 0, 0, 1)',
+  tableFooterHeight: 40,
 };
 
 export function Table<TData extends { index: string }>({
@@ -79,6 +81,9 @@ export function Table<TData extends { index: string }>({
   };
 
   const totalWidth = headers.reduce((acc, cur) => acc + cur.width, 0) + 2;
+  const headerHeight = filterRowEnabled
+    ? applyTableStyle.tableHeaderHeight * 2
+    : applyTableStyle.tableHeaderHeight;
 
   return (
     <div
@@ -86,16 +91,17 @@ export function Table<TData extends { index: string }>({
       style={{
         ...{
           height:
-            (filterRowEnabled
-              ? applyTableStyle.tableHeaderHeight * 2
-              : applyTableStyle.tableHeaderHeight) +
-            applyTableStyle.tableBodyHeight * tableDataList.length,
+            headerHeight +
+            applyTableStyle.tableBodyHeight * tableDataList.length +
+            applyTableStyle.tableFooterHeight,
           width: totalWidth,
           maxWidth: 'calc(100vw - 300px)',
           border: applyTableStyle.tableBorder,
           borderRadius: applyTableStyle.tableBorderRadius,
+          maxHeight:
+            applyTableStyle.tableMaxHeight &&
+            applyTableStyle.tableMaxHeight + applyTableStyle.tableFooterHeight + 2, // todo 보정값 원인 찾기
         },
-        ...applyTableStyle.rootTableStyle,
       }}
     >
       <TableHeader
@@ -113,7 +119,26 @@ export function Table<TData extends { index: string }>({
         tableStyle={applyTableStyle}
         headers={headers}
         dataList={tableDataList}
+        headerHeight={headerHeight}
       />
+
+      <FlexRow
+        style={{
+          width: '100%',
+          height: applyTableStyle.tableFooterHeight,
+          backgroundColor: '#ffffff',
+          borderTop: applyTableStyle.tableBorder,
+          alignItems: 'center',
+          paddingLeft: 12,
+        }}
+      >
+        <span style={{ fontSize: '0.86rem', color: '#999999', fontWeight: 500 }}>
+          Rows:{' '}
+          <span style={{ fontSize: '0.86rem', color: '#000000', fontWeight: 500 }}>
+            {tableDataList.length}
+          </span>
+        </span>
+      </FlexRow>
     </div>
   );
 }

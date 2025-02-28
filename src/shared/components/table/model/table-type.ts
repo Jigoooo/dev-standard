@@ -1,8 +1,5 @@
-import { CSSProperties } from 'react';
-
 export type TTableStyle = {
-  rootTableStyle: CSSProperties;
-  bodyTableStyle: CSSProperties;
+  tableMaxHeight?: number;
   tableResizeColor: string;
   tableBorderColor: string;
   tableBorder: string;
@@ -14,6 +11,7 @@ export type TTableStyle = {
   tableBodyOddBackgroundColor: string;
   tableHeaderColor: string;
   tableBodyColor: string;
+  tableFooterHeight: number;
 };
 
 export type THeader = {

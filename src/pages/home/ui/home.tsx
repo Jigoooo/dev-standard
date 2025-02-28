@@ -126,7 +126,12 @@ export function Home() {
           gap: 16,
         }}
       >
-        <Table tableHeaders={tableHeaders} tableDataList={dataList} filterRowEnabled={true} />
+        <Table
+          tableStyle={{ tableMaxHeight: 400 }}
+          tableHeaders={tableHeaders}
+          tableDataList={dataList}
+          filterRowEnabled={true}
+        />
       </FlexColumn>
     </MainLayout>
   );
