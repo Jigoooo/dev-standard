@@ -35,7 +35,7 @@ function validateDataList<T>(dataList: unknown[], keys: (keyof T)[]): dataList i
   );
 }
 
-export function TableBody<T>({
+export function TableBodyLegacy<T>({
   keyLabel,
   onClickKey,
   checkList = [],

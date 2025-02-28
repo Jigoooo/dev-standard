@@ -26,7 +26,7 @@ const inputStyles: Record<InputStyle, CSSProperties> = {
   },
   [InputStyle.OUTLINED]: {
     backgroundColor: '#ffffff',
-    boxShadow: `inset 0 0 0 0.8px rgba(0,27,55,0.3)`,
+    boxShadow: `inset 0 0 0 0.8px rgba(0,27,55,0.4)`,
     border: 'none',
   },
   [InputStyle.UNDERLINE]: {

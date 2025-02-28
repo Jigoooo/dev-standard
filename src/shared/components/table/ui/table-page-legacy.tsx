@@ -13,7 +13,7 @@ import { useToggle } from '@/shared/hooks';
 
 const PAGE_SIZE_OPTIONS = [10, 20, 50, 100];
 
-export function TablePage({
+export function TablePageLegacy({
   pagination,
   totalSize,
   totalPages,

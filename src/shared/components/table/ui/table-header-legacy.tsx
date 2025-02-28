@@ -29,7 +29,7 @@ const TABLE_HEADER_FIXED_LEFT_VALUE = 0;
 const SORTED_ICON_SIZE = 12;
 const TRANSITION = 'all 0.2s';
 
-export function TableHeader({
+export function TableHeaderLegacy({
   checkedState = { isAllChecked: false, isPartiallyChecked: false },
   handleCheckAll = () => {},
 }: {

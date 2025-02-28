@@ -7,7 +7,7 @@ import {
   useTablePaging,
   useTableSorting,
 } from '@/shared/components';
-import { TablePage } from './table-page.tsx';
+import { TablePageLegacy } from './table-page-legacy.tsx';
 
 export const TableContext = createContext<TTableContext<unknown> | null>(null);
 
@@ -149,7 +149,7 @@ export function RootTable<T>({
         </div>
       </FlexColumn>
       {isPaging && (
-        <TablePage
+        <TablePageLegacy
           pagination={pagination}
           totalPages={totalPages}
           totalSize={dataList.length}

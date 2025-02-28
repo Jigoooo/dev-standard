@@ -33,7 +33,15 @@ export function Main() {
         </FlexColumn>
       </div>
 
-      <FlexColumn style={{ flexGrow: 1, height: '100%', overflowX: 'auto', paddingInline: 16 }}>
+      <FlexColumn
+        style={{
+          flexGrow: 1,
+          height: '100%',
+          overflowX: 'auto',
+          paddingInline: 16,
+          paddingBottom: 16,
+        }}
+      >
         <Outlet />
       </FlexColumn>
 
