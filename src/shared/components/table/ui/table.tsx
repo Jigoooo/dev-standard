@@ -14,6 +14,7 @@ import { TableBody } from './table-body.tsx';
  * 6. 컬럼 수정
  * 7. 체크박스
  * 8. 하단 페이징 또는 로우수 정보
+ * 9. 스크롤 컨트롤
  * */
 
 const defaultTableStyle: TTableStyle = {
