@@ -26,7 +26,7 @@ const tableHeaders: THeader[] = [
     pin: 'view',
     align: 'left',
     label: '이메일',
-    width: 200,
+    width: 220,
     filter: {
       filterType: 'text',
       filterValue: '',
@@ -48,7 +48,7 @@ const tableHeaders: THeader[] = [
     pin: 'view',
     align: 'left',
     label: '주소',
-    width: 150,
+    width: 300,
     filter: {
       filterType: 'text',
       filterValue: '',
@@ -118,16 +118,11 @@ export function Home() {
     <MainLayout headerTitle={menuState.selectedMenu.name}>
       <FlexColumn
         style={{
-          height: '100%',
           alignItems: 'center',
           gap: 16,
         }}
       >
-        <Table
-          tableStyle={{ rootTableStyle: { maxHeight: 'calc(100vh - 300px)' } }}
-          tableHeaders={tableHeaders}
-          filterRowEnabled={true}
-        />
+        <Table tableHeaders={tableHeaders} filterRowEnabled={true} />
       </FlexColumn>
     </MainLayout>
   );

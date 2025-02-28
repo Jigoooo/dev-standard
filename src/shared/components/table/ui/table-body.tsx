@@ -163,8 +163,7 @@ function TableBodyView<TData extends Record<string, any>>({
                       alignItems: 'center',
                       paddingInline: 12,
                       width: header.width,
-                      height: tableStyle.tableBodyHeight - 1, // todo 보정해야 하는 이유 찾기
-                      // height: tableStyle.tableBodyHeight,
+                      height: '100%',
                       left: left,
                       backgroundColor:
                         header.id === 'index'
@@ -294,7 +293,16 @@ function TableBodyPin<TData extends Record<string, any>>({
 
 function TableBodyLabel({ tableStyle, label }: { tableStyle: TTableStyle; label: string }) {
   return (
-    <span style={{ fontSize: '0.88rem', fontWeight: 500, color: tableStyle.tableBodyColor }}>
+    <span
+      style={{
+        fontSize: '0.88rem',
+        fontWeight: 500,
+        color: tableStyle.tableBodyColor,
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+      }}
+    >
       {label}
     </span>
   );

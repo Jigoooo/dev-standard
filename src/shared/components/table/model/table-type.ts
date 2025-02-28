@@ -2,6 +2,7 @@ import { CSSProperties } from 'react';
 
 export type TTableStyle = {
   rootTableStyle: CSSProperties;
+  bodyTableStyle: CSSProperties;
   tableResizeColor: string;
   tableBorderColor: string;
   tableBorder: string;

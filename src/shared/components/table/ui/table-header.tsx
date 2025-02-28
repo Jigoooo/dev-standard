@@ -245,7 +245,16 @@ function TableHeaderPin({
 
 function TableHeaderLabel({ tableStyle, label }: { tableStyle: TTableStyle; label: string }) {
   return (
-    <span style={{ fontSize: '0.88rem', fontWeight: 600, color: tableStyle.tableHeaderColor }}>
+    <span
+      style={{
+        fontSize: '0.88rem',
+        fontWeight: 600,
+        color: tableStyle.tableHeaderColor,
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+      }}
+    >
       {label}
     </span>
   );
