@@ -1,53 +1,25 @@
-import { PaginationState } from '@tanstack/table-core';
-import { VisibilityState } from '@tanstack/react-table';
-
-export type ColumnValueFunction<T> = (row: T) => string;
-
-export type TableColumnConfig<TColumnData> = {
-  [key in keyof Partial<TColumnData>]: {
-    header: string;
-    size: number;
-    customRender?: (row: TColumnData) => string;
-  };
+export type TTableStyle = {
+  tableResizeColor: string;
+  tableBorderColor: string;
+  tableBorder: string;
+  tableBorderRadius: number;
+  tableHeaderHeight: number;
+  tableBodyHeight: number;
+  tableHeaderBackgroundColor: string;
+  tableBodyBackgroundColor: string;
+  tableBodyOddBackgroundColor: string;
+  tableHeaderColor: string;
+  tableBodyColor: string;
 };
 
-export interface UseTableInstanceProps<TColumnData> {
-  data: TColumnData[];
-  columnConfig: TableColumnConfig<TColumnData>;
-  pageCount?: number;
-  paginationOptions: PaginationState;
-  onPaginationChange: (newState: any) => void;
-  columnVisibility?: VisibilityState;
-  otherColumnWidth?: number;
-}
-
-export type TTableHeader = {
+export type THeader = {
   id: string;
   label: string;
-  width?: number;
-  fixed?: boolean;
-  hidden?: boolean;
-  filter: {
-    filterable: boolean;
-    filterValues: (string | number)[];
+  width: number;
+  pin: 'view' | 'left' | 'right';
+  align: 'left' | 'center' | 'right';
+  filter?: {
+    filterType: 'text' | 'select';
+    filterValue: string;
   };
-  sorter: {
-    sortable: boolean;
-    direction: 'asc' | 'desc' | null;
-  };
-};
-
-export type TTablePagination = {
-  currentPage: number;
-  pageSize: number;
-};
-
-export type TTableContext<T> = {
-  headers: TTableHeader[];
-  dataList: T[];
-  handleSort: (key: string) => void;
-  visibleCheckbox: boolean;
-  visibleIndex: boolean;
-  fixed: boolean;
-  pagination: TTablePagination;
 };

@@ -1,29 +1,50 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { THeader, TTableStyle } from '@/shared/components';
 import { TableHeader } from './table-header.tsx';
 import { TableBody } from '@/shared/components/table/ui/table-body.tsx';
 
-const tableStyle: TTableStyle = {
+const defaultTableStyle: TTableStyle = {
   tableResizeColor: '#cecece',
   tableBorderColor: '#bdc3c7',
   tableBorder: '1px solid #bdc3c7',
   tableBorderRadius: 2,
   tableHeaderHeight: 36,
   tableBodyHeight: 36,
-  tableHeaderBackgroundColor: '#f5f7f7',
+  tableHeaderBackgroundColor: '#f4f4f4',
   tableBodyBackgroundColor: '#ffffff',
   tableBodyOddBackgroundColor: '#fcfdfe',
-  tableHeaderColor: 'rgba(0, 0, 0, .54)',
+  tableHeaderColor: 'rgba(0, 0, 0, 0.6)',
   tableBodyColor: 'rgba(0, 0, 0, 1)',
 };
 
 export function Table({
+  tableStyle = {},
   tableHeaders,
   filterRowEnabled = false,
 }: {
+  tableStyle?: Partial<TTableStyle>;
   tableHeaders: THeader[];
   filterRowEnabled?: boolean;
 }) {
+  const applyTableStyle = {
+    ...defaultTableStyle,
+    ...tableStyle,
+  };
+  const headerRef = useRef<HTMLDivElement>(null);
+  const bodyRef = useRef<HTMLDivElement>(null);
+
+  const onHeaderScroll = () => {
+    if (headerRef.current && bodyRef.current) {
+      bodyRef.current.scrollLeft = headerRef.current.scrollLeft;
+    }
+  };
+
+  const onBodyScroll = () => {
+    if (headerRef.current && bodyRef.current) {
+      headerRef.current.scrollLeft = bodyRef.current.scrollLeft;
+    }
+  };
+
   const [headers, setHeaders] = useState<THeader[]>(tableHeaders);
   const onChangeFilterValue = (headerId: string, value: string) => {
     setHeaders((prevState) => {
@@ -83,20 +104,32 @@ export function Table({
     <div
       className={'table-root selection-none'}
       style={{
-        height: tableStyle.tableHeaderHeight * 2 + tableStyle.tableBodyHeight * dataList.length,
+        height:
+          (filterRowEnabled
+            ? applyTableStyle.tableHeaderHeight * 2
+            : applyTableStyle.tableHeaderHeight) +
+          applyTableStyle.tableBodyHeight * dataList.length,
         width: '100%',
-        border: tableStyle.tableBorder,
-        borderRadius: tableStyle.tableBorderRadius,
+        border: applyTableStyle.tableBorder,
+        borderRadius: applyTableStyle.tableBorderRadius,
       }}
     >
       <TableHeader
-        tableStyle={tableStyle}
+        ref={headerRef}
+        onHeaderScroll={onHeaderScroll}
+        tableStyle={applyTableStyle}
         headers={headers}
         filterRowEnabled={filterRowEnabled}
         onChangeFilterValue={onChangeFilterValue}
       />
 
-      <TableBody tableStyle={tableStyle} headers={headers} dataList={dataList} />
+      <TableBody
+        ref={bodyRef}
+        onBodyScroll={onBodyScroll}
+        tableStyle={applyTableStyle}
+        headers={headers}
+        dataList={dataList}
+      />
 
       {/*<div className={'table-body'}>*/}
       {/*  <div className={'table-body-left-pin'}></div>*/}

@@ -1,11 +1,16 @@
 import { FlexRow, Input, THeader, TTableStyle } from '@/shared/components';
+import { RefObject } from 'react';
 
 export function TableHeader({
+  ref,
+  onHeaderScroll,
   tableStyle,
   headers,
   filterRowEnabled,
   onChangeFilterValue,
 }: {
+  ref: RefObject<HTMLDivElement | null>;
+  onHeaderScroll: () => void;
   tableStyle: TTableStyle;
   headers: THeader[];
   filterRowEnabled: boolean;
@@ -36,6 +41,8 @@ export function TableHeader({
 
       {/* 중앙 영역 */}
       <TableHeaderView
+        ref={ref}
+        onHeaderScroll={onHeaderScroll}
         tableStyle={tableStyle}
         headers={viewHeaders}
         filterRowEnabled={filterRowEnabled}
@@ -55,11 +62,15 @@ export function TableHeader({
 }
 
 function TableHeaderView({
+  ref,
+  onHeaderScroll,
   tableStyle,
   headers,
   filterRowEnabled,
   onChangeFilterValue,
 }: {
+  ref: RefObject<HTMLDivElement | null>;
+  onHeaderScroll: () => void;
   tableStyle: TTableStyle;
   headers: THeader[];
   filterRowEnabled: boolean;
@@ -68,6 +79,8 @@ function TableHeaderView({
   const viewWidth = headers.reduce((acc, cur) => acc + cur.width, 0);
   return (
     <div
+      ref={ref}
+      onScroll={onHeaderScroll}
       className={'table-header-view'}
       style={{
         position: 'relative',

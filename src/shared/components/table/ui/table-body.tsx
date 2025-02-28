@@ -1,5 +1,5 @@
 import { FlexRow, THeader, TTableStyle } from '@/shared/components';
-import { useRef } from 'react';
+import { RefObject, useRef } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 
 function validateDataList<T>(dataList: unknown[], keys: (keyof T)[]): dataList is T[] {
@@ -9,10 +9,14 @@ function validateDataList<T>(dataList: unknown[], keys: (keyof T)[]): dataList i
 }
 
 export function TableBody<TData extends { index: string }>({
+  ref,
+  onBodyScroll,
   headers,
   dataList,
   tableStyle,
 }: {
+  ref: RefObject<HTMLDivElement | null>;
+  onBodyScroll: () => void;
   headers: THeader[];
   dataList: TData[];
   tableStyle: TTableStyle;
@@ -45,7 +49,13 @@ export function TableBody<TData extends { index: string }>({
       />
 
       {/* 중앙 영역 */}
-      <TableBodyView tableStyle={tableStyle} headers={viewHeaders} dataList={dataList} />
+      <TableBodyView
+        ref={ref}
+        onBodyScroll={onBodyScroll}
+        tableStyle={tableStyle}
+        headers={viewHeaders}
+        dataList={dataList}
+      />
 
       {/* 오른쪽 고정 영역 */}
       <TableBodyPin
@@ -59,28 +69,31 @@ export function TableBody<TData extends { index: string }>({
 }
 
 function TableBodyView<TData extends Record<string, any>>({
+  ref,
+  onBodyScroll,
   tableStyle,
   headers,
   dataList,
 }: {
+  ref: RefObject<HTMLDivElement | null>;
+  onBodyScroll: () => void;
   tableStyle: TTableStyle;
   headers: THeader[];
   dataList: TData[];
 }) {
   const viewWidth = headers.reduce((acc, cur) => acc + cur.width, 0);
 
-  const tableBodyRef = useRef<HTMLDivElement>(null);
-
   const rowVirtualizer = useVirtualizer({
     count: dataList.length,
-    getScrollElement: () => tableBodyRef.current,
+    getScrollElement: () => ref.current,
     estimateSize: () => tableStyle.tableBodyHeight,
     overscan: 10,
   });
 
   return (
     <div
-      ref={tableBodyRef}
+      ref={ref}
+      onScroll={onBodyScroll}
       className={'table-body-view'}
       style={{
         position: 'relative',
@@ -119,6 +132,12 @@ function TableBodyView<TData extends Record<string, any>>({
                   headerIndex === 0
                     ? 0
                     : array.slice(0, headerIndex).reduce((acc, cur) => acc + cur.width, 0);
+                const justifyContent =
+                  header.align === 'left'
+                    ? 'flex-start'
+                    : header.align === 'right'
+                      ? 'flex-end'
+                      : 'center';
 
                 return (
                   <FlexRow
@@ -127,14 +146,18 @@ function TableBodyView<TData extends Record<string, any>>({
                     style={{
                       boxSizing: 'border-box',
                       position: 'absolute',
+                      justifyContent,
                       alignItems: 'center',
                       paddingInline: 12,
                       width: header.width,
                       height: tableStyle.tableBodyHeight - 1, // todo 보정해야 하는 이유 찾기
                       left: left,
-                      backgroundColor: isOdd
-                        ? tableStyle.tableBodyOddBackgroundColor
-                        : tableStyle.tableBodyBackgroundColor,
+                      backgroundColor:
+                        header.id === 'index'
+                          ? tableStyle.tableHeaderBackgroundColor
+                          : isOdd
+                            ? tableStyle.tableBodyOddBackgroundColor
+                            : tableStyle.tableBodyBackgroundColor,
                       contain: 'paint',
                     }}
                   >
@@ -203,7 +226,6 @@ function TableBodyPin<TData extends Record<string, any>>({
               transform: 'translateY(' + virtualItem.start + 'px)',
               width: '100%',
               height: tableStyle.tableBodyHeight,
-
               borderBottom:
                 virtualIndex === rowVirtualizer.getTotalSize() - 1
                   ? 'none'
@@ -215,6 +237,12 @@ function TableBodyPin<TData extends Record<string, any>>({
                 headerIndex === 0
                   ? 0
                   : array.slice(0, headerIndex).reduce((acc, cur) => acc + cur.width, 0);
+              const justifyContent =
+                header.align === 'left'
+                  ? 'flex-start'
+                  : header.align === 'right'
+                    ? 'flex-end'
+                    : 'center';
 
               return (
                 <FlexRow
@@ -223,14 +251,18 @@ function TableBodyPin<TData extends Record<string, any>>({
                   style={{
                     boxSizing: 'border-box',
                     position: 'absolute',
+                    justifyContent,
                     alignItems: 'center',
                     paddingInline: 10,
                     left: left,
                     width: header.width - 1, // todo 보정해야 하는 이유 찾기
                     height: '100%',
-                    backgroundColor: isOdd
-                      ? tableStyle.tableBodyOddBackgroundColor
-                      : tableStyle.tableBodyBackgroundColor,
+                    backgroundColor:
+                      header.id === 'index'
+                        ? tableStyle.tableHeaderBackgroundColor
+                        : isOdd
+                          ? tableStyle.tableBodyOddBackgroundColor
+                          : tableStyle.tableBodyBackgroundColor,
                     contain: 'paint',
                   }}
                 >

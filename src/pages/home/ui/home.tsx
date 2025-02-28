@@ -6,13 +6,15 @@ const tableHeaders: THeader[] = [
   {
     id: 'index',
     pin: 'left',
+    align: 'right',
     label: '',
     width: 60,
   },
   {
     id: 'name',
     pin: 'left',
-    label: 'Name',
+    align: 'left',
+    label: '이름',
     width: 150,
     filter: {
       filterType: 'text',
@@ -22,27 +24,32 @@ const tableHeaders: THeader[] = [
   {
     id: 'address',
     pin: 'left',
-    label: 'Address',
+    align: 'left',
+    label: '주소',
     width: 150,
     filter: {
       filterType: 'text',
       filterValue: '',
     },
   },
-  ...Array.from({ length: 10 }, (_, index) => ({
-    id: `column${index}`,
-    pin: 'view' as const,
-    label: `column${index}`,
-    width: 120,
-    filter: {
-      filterType: 'text',
-      filterValue: '',
-    } as const,
-  })),
+  ...Array.from({ length: 10 }, (_, index) => {
+    return {
+      id: `column${index}`,
+      pin: 'view',
+      align: 'left',
+      label: `컬럼${index}`,
+      width: 120,
+      filter: {
+        filterType: 'text',
+        filterValue: '',
+      },
+    } as const;
+  }),
   {
     id: 'phoneNumber',
     pin: 'right',
-    label: 'Phone',
+    align: 'left',
+    label: '휴대폰번호',
     width: 150,
     filter: {
       filterType: 'text',
@@ -52,7 +59,8 @@ const tableHeaders: THeader[] = [
   {
     id: 'note',
     pin: 'right',
-    label: 'Note',
+    align: 'left',
+    label: '비고',
     width: 150,
     filter: {
       filterType: 'text',
@@ -76,70 +84,6 @@ export function Home() {
         }}
       >
         <Table tableHeaders={tableHeaders} filterRowEnabled={true} />
-        {/*<RootTable*/}
-        {/*  isSorting={true}*/}
-        {/*  visibleCheckbox={true}*/}
-        {/*  headers={[*/}
-        {/*    {*/}
-        {/*      id: 'column1',*/}
-        {/*      label: '컬럼1',*/}
-        {/*      // width: 300,*/}
-        {/*      // fixed: false,*/}
-        {/*      // hidden: false,*/}
-        {/*      // filter: {*/}
-        {/*      //   filterable: true,*/}
-        {/*      //   filterValues: ['1', '2', '3'],*/}
-        {/*      // },*/}
-        {/*      filter: {*/}
-        {/*        filterable: false,*/}
-        {/*        filterValues: [],*/}
-        {/*      },*/}
-        {/*      sorter: {*/}
-        {/*        sortable: true,*/}
-        {/*        direction: 'asc',*/}
-        {/*      },*/}
-        {/*    },*/}
-        {/*    {*/}
-        {/*      id: 'column2',*/}
-        {/*      label: '컬럼2',*/}
-        {/*      filter: {*/}
-        {/*        filterable: false,*/}
-        {/*        filterValues: [],*/}
-        {/*      },*/}
-        {/*      sorter: {*/}
-        {/*        sortable: true,*/}
-        {/*        direction: 'asc',*/}
-        {/*      },*/}
-        {/*    },*/}
-        {/*    {*/}
-        {/*      id: 'column3',*/}
-        {/*      label: '컬럼3',*/}
-        {/*      filter: {*/}
-        {/*        filterable: false,*/}
-        {/*        filterValues: [],*/}
-        {/*      },*/}
-        {/*      sorter: {*/}
-        {/*        sortable: true,*/}
-        {/*        direction: 'asc',*/}
-        {/*      },*/}
-        {/*    },*/}
-        {/*  ]}*/}
-        {/*  dataList={[*/}
-        {/*    {*/}
-        {/*      column1: '1',*/}
-        {/*      column2: '2',*/}
-        {/*      column3: '3',*/}
-        {/*    },*/}
-        {/*    {*/}
-        {/*      column1: '2',*/}
-        {/*      column2: '3',*/}
-        {/*      column3: '1',*/}
-        {/*    },*/}
-        {/*  ]}*/}
-        {/*>*/}
-        {/*  <TableHeaderLegacy />*/}
-        {/*  <TableBodyLegacy keyLabel={'column1'} />*/}
-        {/*</RootTable>*/}
       </FlexColumn>
     </MainLayout>
   );
