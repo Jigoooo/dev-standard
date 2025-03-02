@@ -6,15 +6,15 @@ import { TableBody } from './table-body.tsx';
 
 /*
  * todo
- * 1. 컬럼필터링
- * 2. 컬럼이동
- * 3. 로우이동
- * 4. 컬럼 숨기고 보이기
- * 5. 컬럼 소팅
- * 6. 컬럼 수정
- * 7. 체크박스
- * 8. 하단 페이징 또는 로우수 정보
- * 9. 스크롤 컨트롤
+ * - 컬럼필터링
+ * - 스크롤 컨트롤
+ * - 체크박스
+ * - 컬럼 소팅
+ * - 하단 페이징 또는 로우수 정보
+ * - 컬럼 수정
+ * - 컬럼 숨기고 보이기
+ * - 컬럼이동
+ * - 로우이동
  * */
 
 const defaultTableStyle: TTableStyle = {
@@ -31,6 +31,7 @@ const defaultTableStyle: TTableStyle = {
   tableHeaderColor: 'rgba(0, 0, 0, 0.6)',
   tableBodyColor: 'rgba(0, 0, 0, 1)',
   tableFooterHeight: 40,
+  tableBodyHoverBackgroundColor: '#eaeaea',
 };
 
 export function Table<TData extends { index: string }>({
@@ -91,6 +92,7 @@ export function Table<TData extends { index: string }>({
       className={'table-root selection-none'}
       style={{
         ...{
+          position: 'relative',
           height:
             headerHeight +
             applyTableStyle.tableBodyHeight * tableDataList.length +
@@ -102,6 +104,7 @@ export function Table<TData extends { index: string }>({
           maxHeight:
             applyTableStyle.tableMaxHeight &&
             applyTableStyle.tableMaxHeight + applyTableStyle.tableFooterHeight + 2, // todo 보정값 원인 찾기
+          overflow: 'hidden',
         },
       }}
     >
@@ -125,6 +128,8 @@ export function Table<TData extends { index: string }>({
 
       <FlexRow
         style={{
+          position: 'absolute',
+          bottom: 0,
           width: '100%',
           height: applyTableStyle.tableFooterHeight,
           backgroundColor: '#ffffff',

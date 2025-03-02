@@ -37,6 +37,8 @@ export function TableBody<TData extends { index: string }>({
 
   const bodyRef = useRef<HTMLDivElement>(null);
 
+  const [hoverIndex, setHoverIndex] = useState<string | null>(null);
+
   return (
     <FlexRow style={{ position: 'relative' }}>
       <FlexRow
@@ -58,6 +60,8 @@ export function TableBody<TData extends { index: string }>({
           position={'left'}
           headers={leftPinHeaders}
           dataList={dataList}
+          hoverIndex={hoverIndex}
+          setHoverIndex={setHoverIndex}
         />
 
         {/* 중앙 영역 */}
@@ -67,6 +71,8 @@ export function TableBody<TData extends { index: string }>({
           tableStyle={tableStyle}
           headers={viewHeaders}
           dataList={dataList}
+          hoverIndex={hoverIndex}
+          setHoverIndex={setHoverIndex}
         />
 
         {/* 오른쪽 고정 영역 */}
@@ -75,6 +81,8 @@ export function TableBody<TData extends { index: string }>({
           position={'right'}
           headers={rightPinHeaders}
           dataList={dataList}
+          hoverIndex={hoverIndex}
+          setHoverIndex={setHoverIndex}
         />
       </FlexRow>
       <CustomVerticalScrollbar
@@ -91,12 +99,16 @@ function TableBodyView<TData extends Record<string, any>>({
   tableStyle,
   headers,
   dataList,
+  hoverIndex,
+  setHoverIndex,
 }: {
   ref: RefObject<HTMLDivElement | null>;
   onBodyScroll: () => void;
   tableStyle: TTableStyle;
   headers: THeader[];
   dataList: TData[];
+  hoverIndex: string | null;
+  setHoverIndex: (index: string | null) => void;
 }) {
   const viewWidth = headers.reduce((acc, cur) => acc + cur.width, 0);
 
@@ -155,6 +167,7 @@ function TableBodyView<TData extends Record<string, any>>({
 
                 return (
                   <FlexRow
+                    as={motion.div}
                     key={header.id}
                     className={'table-body-cell'}
                     style={{
@@ -167,12 +180,21 @@ function TableBodyView<TData extends Record<string, any>>({
                       height: '100%',
                       left: left,
                       backgroundColor:
-                        header.id === 'index'
-                          ? tableStyle.tableHeaderBackgroundColor
-                          : isOdd
-                            ? tableStyle.tableBodyOddBackgroundColor
-                            : tableStyle.tableBodyBackgroundColor,
+                        hoverIndex === index
+                          ? tableStyle.tableBodyHoverBackgroundColor
+                          : header.id === 'index'
+                            ? tableStyle.tableHeaderBackgroundColor
+                            : isOdd
+                              ? tableStyle.tableBodyOddBackgroundColor
+                              : tableStyle.tableBodyBackgroundColor,
                       contain: 'paint',
+                      // transition: 'background-color 0.1s ease-in-out',
+                    }}
+                    onMouseEnter={() => {
+                      setHoverIndex(index);
+                    }}
+                    onMouseLeave={() => {
+                      setHoverIndex(null);
                     }}
                   >
                     <TableBodyLabel tableStyle={tableStyle} label={data[header.id]} />
@@ -192,11 +214,15 @@ function TableBodyPin<TData extends Record<string, any>>({
   position,
   headers,
   dataList,
+  hoverIndex,
+  setHoverIndex,
 }: {
   tableStyle: TTableStyle;
   position: 'left' | 'right';
   headers: THeader[];
   dataList: TData[];
+  hoverIndex: string | null;
+  setHoverIndex: (index: string | null) => void;
 }) {
   const pinHeaderWidth = headers.reduce((acc, cur) => acc + cur.width, 0);
 
@@ -257,6 +283,7 @@ function TableBodyPin<TData extends Record<string, any>>({
 
               return (
                 <FlexRow
+                  as={motion.div}
                   className={'table-body-cell'}
                   key={header.id}
                   style={{
@@ -270,12 +297,21 @@ function TableBodyPin<TData extends Record<string, any>>({
                     // width: header.width,
                     height: '100%',
                     backgroundColor:
-                      header.id === 'index'
-                        ? tableStyle.tableHeaderBackgroundColor
-                        : isOdd
-                          ? tableStyle.tableBodyOddBackgroundColor
-                          : tableStyle.tableBodyBackgroundColor,
+                      hoverIndex === index
+                        ? tableStyle.tableBodyHoverBackgroundColor
+                        : header.id === 'index'
+                          ? tableStyle.tableHeaderBackgroundColor
+                          : isOdd
+                            ? tableStyle.tableBodyOddBackgroundColor
+                            : tableStyle.tableBodyBackgroundColor,
                     contain: 'paint',
+                    // transition: 'background-color 0.1s ease-in-out',
+                  }}
+                  onMouseEnter={() => {
+                    setHoverIndex(index);
+                  }}
+                  onMouseLeave={() => {
+                    setHoverIndex(null);
                   }}
                 >
                   <TableBodyLabel tableStyle={tableStyle} label={data[header.id]} />

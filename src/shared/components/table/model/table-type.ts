@@ -12,6 +12,7 @@ export type TTableStyle = {
   tableHeaderColor: string;
   tableBodyColor: string;
   tableFooterHeight: number;
+  tableBodyHoverBackgroundColor: string;
 };
 
 export type THeader = {
@@ -22,6 +23,7 @@ export type THeader = {
   align: 'left' | 'center' | 'right';
   filter?: {
     filterType: 'text' | 'select';
+    filterCondition?: (filterValue: string) => boolean;
     filterValue: string;
   };
 };
