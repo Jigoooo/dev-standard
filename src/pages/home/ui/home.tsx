@@ -127,7 +127,7 @@ export function Home() {
         }}
       >
         <Table
-          tableStyle={{ tableMaxHeight: 400 }}
+          tableStyle={{ tableMaxHeight: 1000 }}
           tableHeaders={tableHeaders}
           tableDataList={dataList}
           filterRowEnabled={true}

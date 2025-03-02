@@ -136,7 +136,7 @@ function TableBodyView<TData extends Record<string, any>>({
         className={'table-body-container'}
         style={{ position: 'relative', width: viewWidth, height: '100%' }}
       >
-        {rowVirtualizer.getVirtualItems().map((virtualItem, virtualIndex, array) => {
+        {rowVirtualizer.getVirtualItems().map((virtualItem, virtualIndex) => {
           const data = dataList[virtualItem.index];
           const index = data['index'];
           const isOdd = virtualIndex % 2 === 0;
@@ -150,7 +150,7 @@ function TableBodyView<TData extends Record<string, any>>({
                 transform: 'translateY(' + virtualItem.start + 'px)',
                 width: viewWidth,
                 height: tableStyle.tableBodyHeight,
-                borderBottom: virtualIndex === array.length - 1 ? 'none' : tableStyle.tableBorder,
+                borderBottom: tableStyle.tableBorder,
               }}
             >
               {headers.map((header, headerIndex, array) => {
@@ -252,7 +252,7 @@ function TableBodyPin<TData extends Record<string, any>>({
         },
       }}
     >
-      {rowVirtualizer.getVirtualItems().map((virtualItem, virtualIndex, array) => {
+      {rowVirtualizer.getVirtualItems().map((virtualItem, virtualIndex) => {
         const data = dataList[virtualItem.index];
         const index = data['index'];
         const isOdd = virtualIndex % 2 === 0;
@@ -266,7 +266,7 @@ function TableBodyPin<TData extends Record<string, any>>({
               transform: 'translateY(' + virtualItem.start + 'px)',
               width: '100%',
               height: tableStyle.tableBodyHeight,
-              borderBottom: virtualIndex === array.length - 1 ? 'none' : tableStyle.tableBorder,
+              borderBottom: tableStyle.tableBorder,
             }}
           >
             {headers.map((header, headerIndex, array) => {

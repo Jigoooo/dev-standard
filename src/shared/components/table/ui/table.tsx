@@ -103,7 +103,7 @@ export function Table<TData extends { index: string }>({
           borderRadius: applyTableStyle.tableBorderRadius,
           maxHeight:
             applyTableStyle.tableMaxHeight &&
-            applyTableStyle.tableMaxHeight + applyTableStyle.tableFooterHeight + 2, // todo 보정값 원인 찾기
+            applyTableStyle.tableMaxHeight + applyTableStyle.tableFooterHeight,
           overflow: 'hidden',
         },
       }}
