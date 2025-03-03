@@ -1,6 +1,6 @@
 import { useMenuState } from '@/entities/menu';
 import { MainLayout } from '@/entities/main';
-import { FlexColumn, Table, THeader } from '@/shared/components';
+import { Table, THeader } from '@/shared/components';
 import { useState } from 'react';
 import { testData } from '@/shared/components/table/ui/testData.ts';
 
@@ -169,14 +169,21 @@ export function Home() {
 
   return (
     <MainLayout headerTitle={menuState.selectedMenu.name}>
-      <FlexColumn>
+      <div
+        style={{
+          height: '100%',
+          maxHeight: 'calc(100vh - 200px)',
+          maxWidth: 'calc(100vw - 300px)',
+          overflow: 'hidden',
+        }}
+      >
         <Table
-          tableStyle={{ tableMaxHeight: 1000 }}
+          // tableStyle={{ tableMaxHeight: 1000 }}
           tableHeaders={tableHeaders}
           tableDataList={dataList}
           filterRowEnabled={true}
         />
-      </FlexColumn>
+      </div>
     </MainLayout>
   );
 }

@@ -60,10 +60,18 @@ export function Table<TData extends { index: string } & Record<string, any>>({
     ...defaultTableStyle,
     ...tableStyle,
   };
+  const tableRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const bodyRef = useRef<HTMLDivElement>(null);
 
   useSyncScroll(headerRef, bodyRef);
+
+  const [tableHeight, setTableHeight] = useState(0);
+  useEffect(() => {
+    if (tableRef.current) {
+      setTableHeight(tableRef.current.clientHeight);
+    }
+  }, []);
 
   const [headers, setHeaders] = useState<THeader[]>(tableHeaders);
   const onChangeFilterValue = (headerId: string, value: string) => {
@@ -93,6 +101,8 @@ export function Table<TData extends { index: string } & Record<string, any>>({
     ? applyTableStyle.tableHeaderHeight * 2
     : applyTableStyle.tableHeaderHeight;
 
+  const bodyMaxHeight = tableHeight - headerHeight - applyTableStyle.tableFooterHeight;
+
   const filteredDataList = filterRowEnabled
     ? tableDataList.filter((data) => {
         return headers.every((header) => {
@@ -110,25 +120,17 @@ export function Table<TData extends { index: string } & Record<string, any>>({
     dataList: filteredDataList,
   });
 
-  console.log(sortedHeaders);
-
   return (
     <div
+      ref={tableRef}
       className={'table-root selection-none'}
       style={{
         ...{
           position: 'relative',
-          height:
-            headerHeight +
-            applyTableStyle.tableBodyHeight * tableDataList.length +
-            applyTableStyle.tableFooterHeight,
-          width: totalWidth,
-          maxWidth: 'calc(100vw - 300px)',
+          height: '100%',
+          maxWidth: totalWidth,
           border: applyTableStyle.tableBorder,
           borderRadius: applyTableStyle.tableBorderRadius,
-          maxHeight:
-            applyTableStyle.tableMaxHeight &&
-            applyTableStyle.tableMaxHeight + applyTableStyle.tableFooterHeight,
           overflow: 'hidden',
         },
       }}
@@ -149,7 +151,7 @@ export function Table<TData extends { index: string } & Record<string, any>>({
         tableStyle={applyTableStyle}
         headers={headers}
         dataList={sortedDataList}
-        headerHeight={headerHeight}
+        bodyMaxHeight={bodyMaxHeight}
         isChecked={isChecked}
         handleCheck={handleCheck}
       />

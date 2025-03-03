@@ -23,7 +23,7 @@ export function TableBody<TData extends { index: string }>({
   headers,
   dataList,
   tableStyle,
-  headerHeight,
+  bodyMaxHeight,
   isChecked,
   handleCheck,
 }: {
@@ -31,7 +31,7 @@ export function TableBody<TData extends { index: string }>({
   headers: THeader[];
   dataList: TData[];
   tableStyle: TTableStyle;
-  headerHeight: number;
+  bodyMaxHeight: number;
   isChecked?: (data: TData) => boolean;
   handleCheck?: (data: TData) => void;
 }) {
@@ -63,9 +63,7 @@ export function TableBody<TData extends { index: string }>({
           overflowY: 'auto',
           overflowX: 'hidden',
           height: '100%',
-          maxHeight: tableStyle.tableMaxHeight
-            ? tableStyle.tableMaxHeight - headerHeight
-            : undefined,
+          maxHeight: bodyMaxHeight,
         }}
       >
         {/* 왼쪽 고정 영역 */}
