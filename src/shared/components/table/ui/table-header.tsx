@@ -1,5 +1,9 @@
-import { Checkbox, FlexRow, Input, THeader, TTableStyle } from '@/shared/components';
 import { RefObject } from 'react';
+
+import NorthIcon from '@mui/icons-material/North';
+import SouthIcon from '@mui/icons-material/South';
+
+import { Checkbox, FlexRow, Input, THeader, TTableStyle } from '@/shared/components';
 
 export function TableHeader({
   ref,
@@ -292,6 +296,7 @@ function TableHeaderCell({
         width: header.width,
         height: tableStyle.tableHeaderHeight,
         contain: 'paint',
+        cursor: header.sorter.sortable ? 'pointer' : 'default',
       }}
       onClick={() => {
         if (header.id !== 'index' && header.id !== 'check' && header.sorter.sortable) {
@@ -307,18 +312,22 @@ function TableHeaderCell({
         />
       )}
       {header.label && (
-        <span
-          style={{
-            fontSize: '0.88rem',
-            fontWeight: 600,
-            color: tableStyle.tableHeaderColor,
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-          }}
-        >
-          {header.label}
-        </span>
+        <FlexRow style={{ fontSize: '0.88rem', alignItems: 'center', gap: 6 }}>
+          <span
+            style={{
+              fontSize: 'inherit',
+              fontWeight: 600,
+              color: tableStyle.tableHeaderColor,
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}
+          >
+            {header.label}
+          </span>
+          {header.sorter.direction === 'asc' && <NorthIcon style={{ fontSize: 'inherit' }} />}
+          {header.sorter.direction === 'desc' && <SouthIcon style={{ fontSize: 'inherit' }} />}
+        </FlexRow>
       )}
       {header.id !== 'index' && header.id !== 'check' && (
         <ResizeHandle tableStyle={tableStyle} position={'right'} />
