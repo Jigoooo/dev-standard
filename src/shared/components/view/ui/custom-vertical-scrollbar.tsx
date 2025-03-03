@@ -109,7 +109,7 @@ export function CustomVerticalScrollbar({
           position: 'absolute',
           left: 2.8,
           width: 8,
-          height: thumbHeight,
+          height: thumbHeight === Infinity ? 0 : thumbHeight,
           backgroundColor: '#cccccc',
           borderRadius: 4,
           top: thumbTop,

@@ -185,6 +185,7 @@ function TableBodyView<TData extends Record<string, any>>({
                 return (
                   <TableBodyCell
                     key={header.id}
+                    rowIndex={virtualIndex}
                     tableStyle={tableStyle}
                     data={data}
                     index={index}
@@ -275,6 +276,7 @@ function TableBodyPin<TData extends Record<string, any>>({
               return (
                 <TableBodyCell
                   key={header.id}
+                  rowIndex={virtualIndex}
                   tableStyle={tableStyle}
                   data={data}
                   index={index}
@@ -296,6 +298,7 @@ function TableBodyPin<TData extends Record<string, any>>({
 
 function TableBodyCell<TData extends Record<string, any>>({
   tableStyle,
+  rowIndex,
   data,
   index,
   isOdd,
@@ -306,6 +309,7 @@ function TableBodyCell<TData extends Record<string, any>>({
   handleCheck,
 }: {
   tableStyle: TTableStyle;
+  rowIndex: number;
   data: TData;
   index: string;
   isOdd: boolean;
@@ -379,7 +383,7 @@ function TableBodyCell<TData extends Record<string, any>>({
             textOverflow: 'ellipsis',
           }}
         >
-          {cellData}
+          {header.id === 'index' ? rowIndex + 1 : cellData}
         </span>
       )}
     </FlexRow>

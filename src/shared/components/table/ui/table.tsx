@@ -8,10 +8,11 @@ import { TableBody } from './table-body.tsx';
  * todo
  * - 컬럼필터링
  * - 컬럼 소팅
- * - 테이블 크기조절
  * - 하단 페이징 또는 로우수 정보
  *    체크박스 페이징 시 초기화
  *    기타 상태도 초기화
+ * - 테이블 크기조절
+ * - flex 레이아웃
  * --------------------------------
  * - 컬럼 수정
  * - 컬럼 숨기고 보이기
@@ -87,6 +88,18 @@ export function Table<TData extends { index: string }>({
     ? applyTableStyle.tableHeaderHeight * 2
     : applyTableStyle.tableHeaderHeight;
 
+  const filteredDataList = filterRowEnabled
+    ? tableDataList.filter((data) => {
+        return headers.every((header) => {
+          const filterValue = header.filter?.filterValue || '';
+
+          if (filterValue === '') return true;
+          const cellValue = String(data[header.id]).toLowerCase();
+          return cellValue.includes(filterValue.toLowerCase());
+        });
+      })
+    : tableDataList;
+
   return (
     <div
       className={'table-root selection-none'}
@@ -122,7 +135,7 @@ export function Table<TData extends { index: string }>({
         ref={bodyRef}
         tableStyle={applyTableStyle}
         headers={headers}
-        dataList={tableDataList}
+        dataList={filteredDataList}
         headerHeight={headerHeight}
         isChecked={isChecked}
         handleCheck={handleCheck}
@@ -142,6 +155,14 @@ export function Table<TData extends { index: string }>({
       >
         <span style={{ fontSize: '0.86rem', color: '#999999', fontWeight: 500 }}>
           Rows:{' '}
+          {filteredDataList.length !== tableDataList.length && (
+            <>
+              <span style={{ color: '#000000', fontWeight: 500 }}>{filteredDataList.length}</span>
+              &nbsp;
+              <span style={{ color: '#000000', fontWeight: 500 }}>of</span>
+              &nbsp;
+            </>
+          )}
           <span style={{ fontSize: '0.86rem', color: '#000000', fontWeight: 500 }}>
             {tableDataList.length}
           </span>
