@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { THeader } from '@/shared/components';
 
 export function useTableSorting<T>({
