@@ -29,6 +29,19 @@ export function CustomHorizontalScrollbar({
   }, [ref]);
 
   useEffect(() => {
+    if (!ref.current) return;
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setContainerWidth(entry.contentRect.width);
+      }
+    });
+    resizeObserver.observe(ref.current);
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [ref]);
+
+  useEffect(() => {
     if (!isTimeoutHiding) {
       setShowScrollbar(true);
       return;
@@ -67,7 +80,7 @@ export function CustomHorizontalScrollbar({
 
   return (
     <>
-      {leftOffset !== 0 && (
+      {isScrollbarNeeded && showScrollbar && leftOffset !== 0 && (
         <div
           style={{
             position: 'absolute',
@@ -117,7 +130,7 @@ export function CustomHorizontalScrollbar({
           }}
         />
       </motion.div>
-      {rightOffset !== 0 && (
+      {isScrollbarNeeded && showScrollbar && rightOffset !== 0 && (
         <div
           style={{
             position: 'absolute',

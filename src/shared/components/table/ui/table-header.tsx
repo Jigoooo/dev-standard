@@ -3,7 +3,6 @@ import { RefObject } from 'react';
 
 export function TableHeader({
   ref,
-  onHeaderScroll,
   tableStyle,
   headers,
   filterRowEnabled,
@@ -12,7 +11,6 @@ export function TableHeader({
   handleCheckAll,
 }: {
   ref: RefObject<HTMLDivElement | null>;
-  onHeaderScroll: () => void;
   tableStyle: TTableStyle;
   headers: THeader[];
   filterRowEnabled: boolean;
@@ -51,7 +49,6 @@ export function TableHeader({
       {/* 중앙 영역 */}
       <TableHeaderView
         ref={ref}
-        onHeaderScroll={onHeaderScroll}
         tableStyle={tableStyle}
         headers={viewHeaders}
         filterRowEnabled={filterRowEnabled}
@@ -76,7 +73,6 @@ export function TableHeader({
 
 function TableHeaderView({
   ref,
-  onHeaderScroll,
   tableStyle,
   headers,
   filterRowEnabled,
@@ -85,7 +81,6 @@ function TableHeaderView({
   handleCheckAll,
 }: {
   ref: RefObject<HTMLDivElement | null>;
-  onHeaderScroll: () => void;
   tableStyle: TTableStyle;
   headers: THeader[];
   filterRowEnabled: boolean;
@@ -100,7 +95,6 @@ function TableHeaderView({
   return (
     <div
       ref={ref}
-      onScroll={onHeaderScroll}
       className={'table-header-view'}
       style={{
         position: 'relative',

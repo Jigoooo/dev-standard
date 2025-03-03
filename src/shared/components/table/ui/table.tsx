@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { RefObject, useEffect, useRef, useState } from 'react';
 
 import { FlexRow, THeader, TTableStyle, useTableChecked } from '@/shared/components';
 import { TableHeader } from './table-header.tsx';
@@ -17,6 +17,7 @@ import { TableBody } from './table-body.tsx';
  * - 컬럼 숨기고 보이기
  * - 컬럼이동
  * - 로우이동
+ * - 가로스크롤 속도 최적화
  * */
 
 const defaultTableStyle: TTableStyle = {
@@ -56,17 +57,7 @@ export function Table<TData extends { index: string }>({
   const headerRef = useRef<HTMLDivElement>(null);
   const bodyRef = useRef<HTMLDivElement>(null);
 
-  const onHeaderScroll = () => {
-    if (headerRef.current && bodyRef.current) {
-      bodyRef.current.scrollLeft = headerRef.current.scrollLeft;
-    }
-  };
-
-  const onBodyScroll = () => {
-    if (headerRef.current && bodyRef.current) {
-      headerRef.current.scrollLeft = bodyRef.current.scrollLeft;
-    }
-  };
+  useSyncScroll(headerRef, bodyRef);
 
   const [headers, setHeaders] = useState<THeader[]>(tableHeaders);
   const onChangeFilterValue = (headerId: string, value: string) => {
@@ -119,7 +110,6 @@ export function Table<TData extends { index: string }>({
     >
       <TableHeader
         ref={headerRef}
-        onHeaderScroll={onHeaderScroll}
         tableStyle={applyTableStyle}
         headers={headers}
         filterRowEnabled={filterRowEnabled}
@@ -130,7 +120,6 @@ export function Table<TData extends { index: string }>({
 
       <TableBody
         ref={bodyRef}
-        onBodyScroll={onBodyScroll}
         tableStyle={applyTableStyle}
         headers={headers}
         dataList={tableDataList}
@@ -160,4 +149,52 @@ export function Table<TData extends { index: string }>({
       </FlexRow>
     </div>
   );
+}
+
+function useSyncScroll(
+  headerRef: RefObject<HTMLDivElement | null>,
+  bodyRef: RefObject<HTMLDivElement | null>,
+) {
+  useEffect(() => {
+    const headerEl = headerRef.current;
+    const bodyEl = bodyRef.current;
+    if (!headerEl || !bodyEl) return;
+
+    let isSyncingHeader = false;
+    let isSyncingBody = false;
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
+    const onBodyScroll = () => {
+      if (isSyncingBody) return;
+      isSyncingHeader = true;
+      requestAnimationFrame(() => {
+        headerEl.scrollLeft = bodyEl.scrollLeft;
+        if (timeoutId) clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+          isSyncingHeader = false;
+        }, 300);
+      });
+    };
+
+    const onHeaderScroll = () => {
+      if (isSyncingHeader) return;
+      isSyncingBody = true;
+      requestAnimationFrame(() => {
+        bodyEl.scrollLeft = headerEl.scrollLeft;
+        if (timeoutId) clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+          isSyncingBody = false;
+        }, 300);
+      });
+    };
+
+    bodyEl.addEventListener('scroll', onBodyScroll);
+    headerEl.addEventListener('scroll', onHeaderScroll);
+
+    return () => {
+      bodyEl.removeEventListener('scroll', onBodyScroll);
+      headerEl.removeEventListener('scroll', onHeaderScroll);
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, [headerRef, bodyRef]);
 }

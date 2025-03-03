@@ -19,7 +19,6 @@ function validateDataList<T>(dataList: unknown[], keys: (keyof T)[]): dataList i
 
 export function TableBody<TData extends { index: string }>({
   ref,
-  onBodyScroll,
   headers,
   dataList,
   tableStyle,
@@ -28,7 +27,6 @@ export function TableBody<TData extends { index: string }>({
   handleCheck,
 }: {
   ref: RefObject<HTMLDivElement | null>;
-  onBodyScroll: () => void;
   headers: THeader[];
   dataList: TData[];
   tableStyle: TTableStyle;
@@ -37,7 +35,7 @@ export function TableBody<TData extends { index: string }>({
   handleCheck?: (data: TData) => void;
 }) {
   const viewHeaders = headers.filter((header) => header.pin === 'view');
-  const viewWidth = headers.reduce((acc, cur) => acc + cur.width, 0);
+  const viewWidth = viewHeaders.reduce((acc, cur) => acc + cur.width, 0);
 
   const leftPinHeaders = headers.filter((header) => header.pin === 'left');
   const scrollLeftOffset = leftPinHeaders.reduce((acc, cur) => acc + cur.width, 0);
@@ -84,7 +82,6 @@ export function TableBody<TData extends { index: string }>({
         {/* 중앙 영역 */}
         <TableBodyView
           ref={ref}
-          onBodyScroll={onBodyScroll}
           tableStyle={tableStyle}
           headers={viewHeaders}
           dataList={dataList}
@@ -124,7 +121,6 @@ export function TableBody<TData extends { index: string }>({
 
 function TableBodyView<TData extends Record<string, any>>({
   ref,
-  onBodyScroll,
   tableStyle,
   headers,
   dataList,
@@ -134,7 +130,6 @@ function TableBodyView<TData extends Record<string, any>>({
   handleCheck,
 }: {
   ref: RefObject<HTMLDivElement | null>;
-  onBodyScroll: () => void;
   tableStyle: TTableStyle;
   headers: THeader[];
   dataList: TData[];
@@ -155,7 +150,6 @@ function TableBodyView<TData extends Record<string, any>>({
   return (
     <div
       ref={ref}
-      onScroll={onBodyScroll}
       className={'table-body-view'}
       style={{
         position: 'relative',

@@ -25,6 +25,19 @@ export function CustomVerticalScrollbar({
   }, [ref]);
 
   useEffect(() => {
+    if (!ref.current) return;
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setContainerHeight(entry.contentRect.height);
+      }
+    });
+    resizeObserver.observe(ref.current);
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [ref]);
+
+  useEffect(() => {
     if (!isTimeoutHiding) {
       setShowScrollbar(true);
       return;
