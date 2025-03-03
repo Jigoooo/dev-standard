@@ -100,7 +100,6 @@ export function CustomVerticalScrollbar({
       setTimeout(() => {
         effectiveProgress.set(0);
       }, 0);
-      console.log(effectiveProgress.get());
       prevTotalContentHeight.current = totalContentHeight;
     }
   }, [totalContentHeight]);
