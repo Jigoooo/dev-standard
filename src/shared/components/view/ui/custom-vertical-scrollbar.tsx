@@ -1,5 +1,11 @@
 import { RefObject, useEffect, useRef, useState } from 'react';
-import { motion, useMotionValueEvent, useScroll, useSpring, useTransform } from 'framer-motion';
+import {
+  motion,
+  useMotionValue,
+  useMotionValueEvent,
+  useScroll,
+  useTransform,
+} from 'framer-motion';
 
 type CustomVerticalScrollbarProps = {
   ref: RefObject<HTMLDivElement | null>;
@@ -83,7 +89,7 @@ export function CustomVerticalScrollbar({
 
   const prevTotalContentHeight = useRef(totalContentHeight);
 
-  const effectiveProgress = useSpring(0, { stiffness: 300, damping: 20 });
+  const effectiveProgress = useMotionValue(0);
   useMotionValueEvent(scrollYProgress, 'change', (latestValue) => {
     if (isScrollbarNeeded) {
       effectiveProgress.set(latestValue);

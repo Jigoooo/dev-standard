@@ -20,11 +20,12 @@ export function CustomHorizontalScrollbar({
   border = '1px solid #bdc3c7',
   backgroundColor = '#f1f1f1',
 }: CustomHorizontalScrollbarProps) {
-  const { scrollXProgress } = useScroll({ container: ref });
+  const { scrollXProgress, scrollX } = useScroll({ container: ref });
 
   const [containerWidth, setContainerWidth] = useState(0);
   const [showScrollbar, setShowScrollbar] = useState(false);
   const hideTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const initialScrollLeft = useRef(0);
 
   useEffect(() => {
     if (ref.current) {
@@ -117,9 +118,14 @@ export function CustomHorizontalScrollbar({
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={0}
           dragMomentum={false}
+          onDragStart={() => {
+            if (ref.current) {
+              initialScrollLeft.current = scrollX.get();
+            }
+          }}
           onDrag={(_, info) => {
             if (ref.current) {
-              ref.current.scrollLeft += info.offset.x;
+              ref.current.scrollLeft = initialScrollLeft.current + info.offset.x * 2.4;
             }
           }}
           style={{
