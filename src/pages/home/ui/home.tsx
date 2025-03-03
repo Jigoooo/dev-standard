@@ -13,6 +13,13 @@ const tableHeaders: THeader[] = [
     width: 60,
   },
   {
+    id: 'check',
+    pin: 'left',
+    align: 'center',
+    label: '',
+    width: 60,
+  },
+  {
     id: 'name',
     pin: 'left',
     align: 'left',
@@ -120,12 +127,7 @@ export function Home() {
 
   return (
     <MainLayout headerTitle={menuState.selectedMenu.name}>
-      <FlexColumn
-        style={{
-          alignItems: 'center',
-          gap: 16,
-        }}
-      >
+      <FlexColumn>
         <Table
           tableStyle={{ tableMaxHeight: 1000 }}
           tableHeaders={tableHeaders}

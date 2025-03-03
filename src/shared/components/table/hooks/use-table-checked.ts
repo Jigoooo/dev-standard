@@ -1,13 +1,21 @@
 import { useState } from 'react';
 
-export function useTableChecked<T>({ dataList, keyLabel }: { dataList: T[]; keyLabel: keyof T }) {
-  const [checkList, setCheckList] = useState<(string | number)[]>([]);
+export function useTableChecked<T, K extends keyof T>({
+  dataList,
+  dataKey,
+}: {
+  dataList: T[];
+  dataKey: K;
+}) {
+  const [checkList, setCheckList] = useState<T[K][]>([]);
 
-  const handleCheck = (key: string | number) => {
-    if (checkList.includes(key)) {
-      setCheckList(checkList.filter((item) => item !== key));
+  const isChecked = (data: T) => checkList.includes(data[dataKey]);
+
+  const handleCheck = (data: T) => {
+    if (checkList.includes(data[dataKey])) {
+      setCheckList(checkList.filter((item) => item !== data[dataKey]));
     } else {
-      setCheckList([...checkList, key]);
+      setCheckList([...checkList, data[dataKey]]);
     }
   };
 
@@ -17,7 +25,7 @@ export function useTableChecked<T>({ dataList, keyLabel }: { dataList: T[]; keyL
     } else {
       setCheckList(
         dataList.map((item) => {
-          return String(item[keyLabel]);
+          return item[dataKey];
         }),
       );
     }
@@ -33,6 +41,7 @@ export function useTableChecked<T>({ dataList, keyLabel }: { dataList: T[]; keyL
   };
 
   return {
+    isChecked,
     checkList,
     handleCheck,
     handleCheckAll,

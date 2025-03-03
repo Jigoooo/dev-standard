@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 
-import { FlexRow, THeader, TTableStyle } from '@/shared/components';
+import { FlexRow, THeader, TTableStyle, useTableChecked } from '@/shared/components';
 import { TableHeader } from './table-header.tsx';
 import { TableBody } from './table-body.tsx';
 
@@ -8,9 +8,12 @@ import { TableBody } from './table-body.tsx';
  * todo
  * - 컬럼필터링
  * - 스크롤 컨트롤
- * - 체크박스
  * - 컬럼 소팅
+ * - 테이블 크기조절
  * - 하단 페이징 또는 로우수 정보
+ *    체크박스 페이징 시 초기화
+ *    기타 상태도 초기화
+ * --------------------------------
  * - 컬럼 수정
  * - 컬럼 숨기고 보이기
  * - 컬럼이동
@@ -35,14 +38,16 @@ const defaultTableStyle: TTableStyle = {
 };
 
 export function Table<TData extends { index: string }>({
-  tableStyle = {},
   tableHeaders,
   tableDataList,
+  tableStyle = {},
+  dataKey = 'index',
   filterRowEnabled = false,
 }: {
-  tableStyle?: Partial<TTableStyle>;
   tableHeaders: THeader[];
   tableDataList: TData[];
+  tableStyle?: Partial<TTableStyle>;
+  dataKey?: keyof TData;
   filterRowEnabled?: boolean;
 }) {
   const applyTableStyle = {
@@ -82,6 +87,11 @@ export function Table<TData extends { index: string }>({
     });
   };
 
+  const { isChecked, handleCheck, handleCheckAll, checkedState } = useTableChecked({
+    dataList: tableDataList,
+    dataKey,
+  });
+
   const totalWidth = headers.reduce((acc, cur) => acc + cur.width, 0) + 2;
   const headerHeight = filterRowEnabled
     ? applyTableStyle.tableHeaderHeight * 2
@@ -115,6 +125,8 @@ export function Table<TData extends { index: string }>({
         headers={headers}
         filterRowEnabled={filterRowEnabled}
         onChangeFilterValue={onChangeFilterValue}
+        checkedState={checkedState}
+        handleCheckAll={handleCheckAll}
       />
 
       <TableBody
@@ -124,6 +136,8 @@ export function Table<TData extends { index: string }>({
         headers={headers}
         dataList={tableDataList}
         headerHeight={headerHeight}
+        isChecked={isChecked}
+        handleCheck={handleCheck}
       />
 
       <FlexRow

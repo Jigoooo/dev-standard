@@ -2,7 +2,7 @@ import { RefObject, useEffect, useRef, useState } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
-import { FlexRow, THeader, TTableStyle } from '@/shared/components';
+import { Checkbox, FlexRow, THeader, TTableStyle } from '@/shared/components';
 
 function validateDataList<T>(dataList: unknown[], keys: (keyof T)[]): dataList is T[] {
   return dataList.every((item) =>
@@ -17,6 +17,8 @@ export function TableBody<TData extends { index: string }>({
   dataList,
   tableStyle,
   headerHeight,
+  isChecked,
+  handleCheck,
 }: {
   ref: RefObject<HTMLDivElement | null>;
   onBodyScroll: () => void;
@@ -24,6 +26,8 @@ export function TableBody<TData extends { index: string }>({
   dataList: TData[];
   tableStyle: TTableStyle;
   headerHeight: number;
+  isChecked?: (data: TData) => boolean;
+  handleCheck?: (data: TData) => void;
 }) {
   const viewHeaders = headers.filter((header) => header.pin === 'view');
 
@@ -62,6 +66,8 @@ export function TableBody<TData extends { index: string }>({
           dataList={dataList}
           hoverIndex={hoverIndex}
           setHoverIndex={setHoverIndex}
+          isChecked={isChecked}
+          handleCheck={handleCheck}
         />
 
         {/* 중앙 영역 */}
@@ -73,6 +79,8 @@ export function TableBody<TData extends { index: string }>({
           dataList={dataList}
           hoverIndex={hoverIndex}
           setHoverIndex={setHoverIndex}
+          isChecked={isChecked}
+          handleCheck={handleCheck}
         />
 
         {/* 오른쪽 고정 영역 */}
@@ -83,6 +91,8 @@ export function TableBody<TData extends { index: string }>({
           dataList={dataList}
           hoverIndex={hoverIndex}
           setHoverIndex={setHoverIndex}
+          isChecked={isChecked}
+          handleCheck={handleCheck}
         />
       </FlexRow>
       <CustomVerticalScrollbar
@@ -101,6 +111,8 @@ function TableBodyView<TData extends Record<string, any>>({
   dataList,
   hoverIndex,
   setHoverIndex,
+  isChecked,
+  handleCheck,
 }: {
   ref: RefObject<HTMLDivElement | null>;
   onBodyScroll: () => void;
@@ -109,6 +121,8 @@ function TableBodyView<TData extends Record<string, any>>({
   dataList: TData[];
   hoverIndex: string | null;
   setHoverIndex: (index: string | null) => void;
+  isChecked?: (data: TData) => boolean;
+  handleCheck?: (data: TData) => void;
 }) {
   const viewWidth = headers.reduce((acc, cur) => acc + cur.width, 0);
 
@@ -154,51 +168,21 @@ function TableBodyView<TData extends Record<string, any>>({
               }}
             >
               {headers.map((header, headerIndex, array) => {
-                const left =
-                  headerIndex === 0
-                    ? 0
-                    : array.slice(0, headerIndex).reduce((acc, cur) => acc + cur.width, 0);
-                const justifyContent =
-                  header.align === 'left'
-                    ? 'flex-start'
-                    : header.align === 'right'
-                      ? 'flex-end'
-                      : 'center';
-
                 return (
-                  <FlexRow
-                    as={motion.div}
+                  <TableBodyCell
                     key={header.id}
-                    className={'table-body-cell'}
-                    style={{
-                      boxSizing: 'border-box',
-                      position: 'absolute',
-                      justifyContent,
-                      alignItems: 'center',
-                      paddingInline: 12,
-                      width: header.width,
-                      height: '100%',
-                      left: left,
-                      backgroundColor:
-                        hoverIndex === index
-                          ? tableStyle.tableBodyHoverBackgroundColor
-                          : header.id === 'index'
-                            ? tableStyle.tableHeaderBackgroundColor
-                            : isOdd
-                              ? tableStyle.tableBodyOddBackgroundColor
-                              : tableStyle.tableBodyBackgroundColor,
-                      contain: 'paint',
-                      // transition: 'background-color 0.1s ease-in-out',
-                    }}
-                    onMouseEnter={() => {
-                      setHoverIndex(index);
-                    }}
-                    onMouseLeave={() => {
-                      setHoverIndex(null);
-                    }}
-                  >
-                    <TableBodyLabel tableStyle={tableStyle} label={data[header.id]} />
-                  </FlexRow>
+                    tableStyle={tableStyle}
+                    data={data}
+                    index={index}
+                    isOdd={isOdd}
+                    header={header}
+                    headerIndex={headerIndex}
+                    array={array}
+                    hoverIndex={hoverIndex}
+                    setHoverIndex={setHoverIndex}
+                    isChecked={isChecked}
+                    handleCheck={handleCheck}
+                  />
                 );
               })}
             </div>
@@ -216,6 +200,8 @@ function TableBodyPin<TData extends Record<string, any>>({
   dataList,
   hoverIndex,
   setHoverIndex,
+  isChecked,
+  handleCheck,
 }: {
   tableStyle: TTableStyle;
   position: 'left' | 'right';
@@ -223,6 +209,8 @@ function TableBodyPin<TData extends Record<string, any>>({
   dataList: TData[];
   hoverIndex: string | null;
   setHoverIndex: (index: string | null) => void;
+  isChecked?: (data: TData) => boolean;
+  handleCheck?: (data: TData) => void;
 }) {
   const pinHeaderWidth = headers.reduce((acc, cur) => acc + cur.width, 0);
 
@@ -270,52 +258,21 @@ function TableBodyPin<TData extends Record<string, any>>({
             }}
           >
             {headers.map((header, headerIndex, array) => {
-              const left =
-                headerIndex === 0
-                  ? 0
-                  : array.slice(0, headerIndex).reduce((acc, cur) => acc + cur.width, 0);
-              const justifyContent =
-                header.align === 'left'
-                  ? 'flex-start'
-                  : header.align === 'right'
-                    ? 'flex-end'
-                    : 'center';
-
               return (
-                <FlexRow
-                  as={motion.div}
-                  className={'table-body-cell'}
+                <TableBodyCell
                   key={header.id}
-                  style={{
-                    boxSizing: 'border-box',
-                    position: 'absolute',
-                    justifyContent,
-                    alignItems: 'center',
-                    paddingInline: 10,
-                    left: left,
-                    width: header.width - 1, // todo 보정해야 하는 이유 찾기
-                    // width: header.width,
-                    height: '100%',
-                    backgroundColor:
-                      hoverIndex === index
-                        ? tableStyle.tableBodyHoverBackgroundColor
-                        : header.id === 'index'
-                          ? tableStyle.tableHeaderBackgroundColor
-                          : isOdd
-                            ? tableStyle.tableBodyOddBackgroundColor
-                            : tableStyle.tableBodyBackgroundColor,
-                    contain: 'paint',
-                    // transition: 'background-color 0.1s ease-in-out',
-                  }}
-                  onMouseEnter={() => {
-                    setHoverIndex(index);
-                  }}
-                  onMouseLeave={() => {
-                    setHoverIndex(null);
-                  }}
-                >
-                  <TableBodyLabel tableStyle={tableStyle} label={data[header.id]} />
-                </FlexRow>
+                  tableStyle={tableStyle}
+                  data={data}
+                  index={index}
+                  isOdd={isOdd}
+                  header={header}
+                  headerIndex={headerIndex}
+                  array={array}
+                  hoverIndex={hoverIndex}
+                  setHoverIndex={setHoverIndex}
+                  isChecked={isChecked}
+                  handleCheck={handleCheck}
+                />
               );
             })}
           </div>
@@ -339,6 +296,89 @@ function TableBodyLabel({ tableStyle, label }: { tableStyle: TTableStyle; label:
     >
       {label}
     </span>
+  );
+}
+
+function TableBodyCell<TData extends Record<string, any>>({
+  tableStyle,
+  data,
+  index,
+  isOdd,
+  header,
+  headerIndex,
+  array,
+  hoverIndex,
+  setHoverIndex,
+  isChecked,
+  handleCheck,
+}: {
+  tableStyle: TTableStyle;
+  data: TData;
+  index: string;
+  isOdd: boolean;
+  header: THeader;
+  headerIndex: number;
+  array: THeader[];
+  hoverIndex: string | null;
+  setHoverIndex: (index: string | null) => void;
+  isChecked?: (data: TData) => boolean;
+  handleCheck?: (data: TData) => void;
+}) {
+  if (header.id === 'check' && (isChecked === undefined || handleCheck === undefined)) {
+    throw new Error('checkedState is required for check header');
+  }
+
+  const left =
+    headerIndex === 0 ? 0 : array.slice(0, headerIndex).reduce((acc, cur) => acc + cur.width, 0);
+  const justifyContent =
+    header.align === 'left' ? 'flex-start' : header.align === 'right' ? 'flex-end' : 'center';
+
+  return (
+    <FlexRow
+      as={motion.div}
+      className={'table-body-cell'}
+      key={header.id}
+      style={{
+        boxSizing: 'border-box',
+        position: 'absolute',
+        justifyContent,
+        alignItems: 'center',
+        paddingInline: 10,
+        left: left,
+        width: header.width - 1, // todo 보정해야 하는 이유 찾기
+        // width: header.width,
+        height: '100%',
+        backgroundColor:
+          hoverIndex === index
+            ? tableStyle.tableBodyHoverBackgroundColor
+            : header.id === 'index'
+              ? tableStyle.tableHeaderBackgroundColor
+              : isOdd
+                ? tableStyle.tableBodyOddBackgroundColor
+                : tableStyle.tableBodyBackgroundColor,
+        contain: 'paint',
+      }}
+      onMouseEnter={() => {
+        setHoverIndex(index);
+      }}
+      onMouseLeave={() => {
+        setHoverIndex(null);
+      }}
+      onClick={() => {
+        handleCheck!(data);
+      }}
+    >
+      {header.id === 'check' && (
+        <Checkbox
+          checked={isChecked!(data)}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleCheck!(data);
+          }}
+        />
+      )}
+      <TableBodyLabel tableStyle={tableStyle} label={data[header.id]} />
+    </FlexRow>
   );
 }
 

@@ -1,4 +1,4 @@
-import { FlexRow, Input, THeader, TTableStyle } from '@/shared/components';
+import { Checkbox, FlexRow, Input, THeader, TTableStyle } from '@/shared/components';
 import { RefObject } from 'react';
 
 export function TableHeader({
@@ -8,6 +8,8 @@ export function TableHeader({
   headers,
   filterRowEnabled,
   onChangeFilterValue,
+  checkedState,
+  handleCheckAll,
 }: {
   ref: RefObject<HTMLDivElement | null>;
   onHeaderScroll: () => void;
@@ -15,6 +17,11 @@ export function TableHeader({
   headers: THeader[];
   filterRowEnabled: boolean;
   onChangeFilterValue: (headerId: string, value: string) => void;
+  checkedState?: {
+    isAllChecked: boolean;
+    isPartiallyChecked: boolean;
+  };
+  handleCheckAll?: () => void;
 }) {
   const viewHeaders = headers.filter((header) => header.pin === 'view');
 
@@ -37,6 +44,8 @@ export function TableHeader({
         headers={leftPinHeaders}
         filterRowEnabled={filterRowEnabled}
         onChangeFilterValue={onChangeFilterValue}
+        checkedState={checkedState}
+        handleCheckAll={handleCheckAll}
       />
 
       {/* 중앙 영역 */}
@@ -47,6 +56,8 @@ export function TableHeader({
         headers={viewHeaders}
         filterRowEnabled={filterRowEnabled}
         onChangeFilterValue={onChangeFilterValue}
+        checkedState={checkedState}
+        handleCheckAll={handleCheckAll}
       />
 
       {/* 오른쪽 고정 영역 */}
@@ -56,6 +67,8 @@ export function TableHeader({
         headers={rightPinHeaders}
         filterRowEnabled={filterRowEnabled}
         onChangeFilterValue={onChangeFilterValue}
+        checkedState={checkedState}
+        handleCheckAll={handleCheckAll}
       />
     </FlexRow>
   );
@@ -68,6 +81,8 @@ function TableHeaderView({
   headers,
   filterRowEnabled,
   onChangeFilterValue,
+  checkedState,
+  handleCheckAll,
 }: {
   ref: RefObject<HTMLDivElement | null>;
   onHeaderScroll: () => void;
@@ -75,6 +90,11 @@ function TableHeaderView({
   headers: THeader[];
   filterRowEnabled: boolean;
   onChangeFilterValue: (headerId: string, value: string) => void;
+  checkedState?: {
+    isAllChecked: boolean;
+    isPartiallyChecked: boolean;
+  };
+  handleCheckAll?: () => void;
 }) {
   const viewWidth = headers.reduce((acc, cur) => acc + cur.width, 0);
   return (
@@ -104,29 +124,16 @@ function TableHeaderView({
           }}
         >
           {headers.map((header, headerIndex, array) => {
-            const left =
-              headerIndex === 0
-                ? 0
-                : array.slice(0, headerIndex).reduce((acc, cur) => acc + cur.width, 0);
-
             return (
-              <FlexRow
+              <TableHeaderCell
                 key={header.id}
-                className={'table-header-cell'}
-                style={{
-                  boxSizing: 'border-box',
-                  position: 'absolute',
-                  alignItems: 'center',
-                  paddingInline: 12,
-                  width: header.width,
-                  height: tableStyle.tableHeaderHeight,
-                  left: left,
-                  contain: 'paint',
-                }}
-              >
-                <TableHeaderLabel tableStyle={tableStyle} label={header.label} />
-                <ResizeHandle tableStyle={tableStyle} position={'right'} />
-              </FlexRow>
+                tableStyle={tableStyle}
+                header={header}
+                headerIndex={headerIndex}
+                array={array}
+                checkedState={checkedState}
+                handleCheckAll={handleCheckAll}
+              />
             );
           })}
         </div>
@@ -167,12 +174,19 @@ function TableHeaderPin({
   headers,
   filterRowEnabled,
   onChangeFilterValue,
+  checkedState,
+  handleCheckAll,
 }: {
   tableStyle: TTableStyle;
   position: 'left' | 'right';
   headers: THeader[];
   filterRowEnabled: boolean;
   onChangeFilterValue: (headerId: string, value: string) => void;
+  checkedState?: {
+    isAllChecked: boolean;
+    isPartiallyChecked: boolean;
+  };
+  handleCheckAll?: () => void;
 }) {
   const pinHeaderWidth = headers.reduce((acc, cur) => acc + cur.width, 0);
 
@@ -209,6 +223,8 @@ function TableHeaderPin({
               header={header}
               headerIndex={headerIndex}
               array={array}
+              checkedState={checkedState}
+              handleCheckAll={handleCheckAll}
             />
           );
         })}
@@ -265,12 +281,23 @@ function TableHeaderCell({
   header,
   headerIndex,
   array,
+  checkedState,
+  handleCheckAll = () => {},
 }: {
   tableStyle: TTableStyle;
   header: THeader;
   headerIndex: number;
   array: THeader[];
+  checkedState?: {
+    isAllChecked: boolean;
+    isPartiallyChecked: boolean;
+  };
+  handleCheckAll?: () => void;
 }) {
+  if (header.id === 'check' && checkedState === undefined) {
+    throw new Error('checkedState is required for check header');
+  }
+
   const left =
     headerIndex === 0 ? 0 : array.slice(0, headerIndex).reduce((acc, cur) => acc + cur.width, 0);
 
@@ -281,6 +308,7 @@ function TableHeaderCell({
       style={{
         boxSizing: 'border-box',
         position: 'absolute',
+        justifyContent: header.id === 'check' ? 'center' : 'flex-start',
         alignItems: 'center',
         paddingInline: 12,
         width: header.width,
@@ -289,8 +317,17 @@ function TableHeaderCell({
         contain: 'paint',
       }}
     >
-      <TableHeaderLabel tableStyle={tableStyle} label={header.label} />
-      <ResizeHandle tableStyle={tableStyle} position={'right'} />
+      {header.id === 'check' && (
+        <Checkbox
+          checked={checkedState!.isAllChecked}
+          isPartial={checkedState!.isPartiallyChecked}
+          onClick={handleCheckAll}
+        />
+      )}
+      {header.label && <TableHeaderLabel tableStyle={tableStyle} label={header.label} />}
+      {header.id !== 'index' && header.id !== 'check' && (
+        <ResizeHandle tableStyle={tableStyle} position={'right'} />
+      )}
     </FlexRow>
   );
 }
@@ -340,11 +377,13 @@ function TableHeaderFilterCell({
           isFocusEffect={false}
         />
       )}
-      <ResizeHandle
-        tableStyle={tableStyle}
-        position={position === 'left' ? 'right' : 'left'}
-        disabled={true}
-      />
+      {header.id !== 'index' && header.id !== 'check' && (
+        <ResizeHandle
+          tableStyle={tableStyle}
+          position={position === 'left' ? 'right' : 'left'}
+          disabled={true}
+        />
+      )}
     </FlexRow>
   );
 }
@@ -352,7 +391,7 @@ function TableHeaderFilterCell({
 function ResizeHandle({
   tableStyle,
   position,
-  disabled = false,
+  disabled = true,
 }: {
   tableStyle: TTableStyle;
   position: 'left' | 'right';
