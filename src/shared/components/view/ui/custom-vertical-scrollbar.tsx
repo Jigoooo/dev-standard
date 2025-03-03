@@ -1,5 +1,5 @@
 import { RefObject, useEffect, useRef, useState } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useMotionValueEvent, useScroll, useSpring, useTransform } from 'framer-motion';
 
 type CustomVerticalScrollbarProps = {
   ref: RefObject<HTMLDivElement | null>;
@@ -79,10 +79,33 @@ export function CustomVerticalScrollbar({
 
   // thumb 높이 계산: 컨테이너 높이 * (컨테이너 높이 / 컨텐츠 전체 높이)
   const thumbHeight = containerHeight * (containerHeight / totalContentHeight);
+  const safeThumbHeight = thumbHeight === Infinity ? 1 : thumbHeight;
 
-  // 스크롤 진행도(scrollYProgress)를 이용해 thumb의 top 위치를 계산합니다.
-  // 최대 top 값은 containerHeight - thumbHeight입니다.
-  const thumbTop = useTransform(scrollYProgress, [0, 1], [0, containerHeight - thumbHeight]);
+  const prevTotalContentHeight = useRef(totalContentHeight);
+
+  const effectiveProgress = useSpring(0, { stiffness: 300, damping: 20 });
+  useMotionValueEvent(scrollYProgress, 'change', (latestValue) => {
+    if (isScrollbarNeeded) {
+      effectiveProgress.set(latestValue);
+    } else {
+      effectiveProgress.set(0);
+    }
+  });
+
+  useEffect(() => {
+    if (prevTotalContentHeight.current !== totalContentHeight) {
+      if (ref.current) {
+        ref.current.scrollTop = 0;
+      }
+      setTimeout(() => {
+        effectiveProgress.set(0);
+      }, 0);
+      console.log(effectiveProgress.get());
+      prevTotalContentHeight.current = totalContentHeight;
+    }
+  }, [totalContentHeight]);
+
+  const thumbTop = useTransform(effectiveProgress, [0, 1], [0, containerHeight - safeThumbHeight]);
 
   return (
     <motion.div
@@ -113,7 +136,7 @@ export function CustomVerticalScrollbar({
           position: 'absolute',
           left: 2.8,
           width: 8,
-          height: thumbHeight === Infinity ? 0 : thumbHeight,
+          height: safeThumbHeight,
           backgroundColor: '#cccccc',
           borderRadius: 4,
           top: thumbTop,

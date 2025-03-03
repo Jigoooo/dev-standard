@@ -38,6 +38,7 @@ export function TableBody<TData extends { index: string }>({
   handleCheck?: (data: TData) => void;
 }) {
   const viewHeaders = headers.filter((header) => header.pin === 'view');
+  const viewHeight = tableStyle.tableBodyHeight * dataList.length;
   const viewWidth = viewHeaders.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
 
   const leftPinHeaders = headers.filter((header) => header.pin === 'left');
@@ -108,10 +109,7 @@ export function TableBody<TData extends { index: string }>({
         />
       </FlexRow>
 
-      <CustomVerticalScrollbar
-        ref={bodyRef}
-        totalContentHeight={tableStyle.tableBodyHeight * dataList.length}
-      />
+      <CustomVerticalScrollbar ref={bodyRef} totalContentHeight={viewHeight} />
 
       <CustomHorizontalScrollbar
         ref={ref}
