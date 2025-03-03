@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 
 import {
   Checkbox,
+  CustomHorizontalScrollbar,
   CustomVerticalScrollbar,
   FlexRow,
   THeader,
@@ -36,9 +37,13 @@ export function TableBody<TData extends { index: string }>({
   handleCheck?: (data: TData) => void;
 }) {
   const viewHeaders = headers.filter((header) => header.pin === 'view');
+  const viewWidth = headers.reduce((acc, cur) => acc + cur.width, 0);
 
   const leftPinHeaders = headers.filter((header) => header.pin === 'left');
+  const scrollLeftOffset = leftPinHeaders.reduce((acc, cur) => acc + cur.width, 0);
+
   const rightPinHeaders = headers.filter((header) => header.pin === 'right');
+  const scrollRightOffset = rightPinHeaders.reduce((acc, cur) => acc + cur.width, 0);
 
   const requiredKeys = headers.map((header) => header.id) as (keyof TData)[];
   if (!validateDataList<TData>(dataList, requiredKeys)) {
@@ -105,6 +110,13 @@ export function TableBody<TData extends { index: string }>({
       <CustomVerticalScrollbar
         ref={bodyRef}
         totalContentHeight={tableStyle.tableBodyHeight * dataList.length}
+      />
+
+      <CustomHorizontalScrollbar
+        ref={ref}
+        totalContentWidth={viewWidth}
+        leftOffset={scrollLeftOffset}
+        rightOffset={scrollRightOffset}
       />
     </FlexRow>
   );
@@ -244,6 +256,7 @@ function TableBodyPin<TData extends Record<string, any>>({
           ...(position === 'left'
             ? { borderRight: tableStyle.tableBorder }
             : { borderLeft: tableStyle.tableBorder }),
+          marginBottom: 14,
         },
       }}
     >

@@ -79,6 +79,7 @@ export function CustomVerticalScrollbar({
         opacity: isScrollbarNeeded && showScrollbar ? 1 : 0,
         pointerEvents: isScrollbarNeeded && showScrollbar ? 'auto' : 'none',
         transition: 'opacity 0.16s',
+        borderLeft: '1px solid #bdc3c7',
       }}
     >
       <motion.div
@@ -93,7 +94,7 @@ export function CustomVerticalScrollbar({
         }}
         style={{
           position: 'absolute',
-          left: 4,
+          left: 2.8,
           width: 8,
           height: thumbHeight,
           backgroundColor: '#cccccc',
