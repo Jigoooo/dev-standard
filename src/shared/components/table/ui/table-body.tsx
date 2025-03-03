@@ -388,7 +388,13 @@ function TableBodyCell<TData extends Record<string, any>>({
         />
       )}
       {header.customCell && isValidElement(cellData) ? (
-        header.customCell({ cellData, rowData: data, handelDataList })
+        header.customCell({
+          cellData,
+          rowData: data,
+          setCellData: (value) => {
+            handelDataList(index, header.id, value);
+          },
+        })
       ) : (
         <span
           style={{

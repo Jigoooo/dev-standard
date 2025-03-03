@@ -23,11 +23,11 @@ export type THeader = {
   customCell?: ({
     cellData,
     rowData,
-    handelDataList,
+    setCellData,
   }: {
     cellData: any;
     rowData: Record<string, any>;
-    handelDataList: (index: string, key: string, value: any) => void;
+    setCellData: (value: any) => void;
   }) => ReactNode;
   pin: 'view' | 'left' | 'right';
   align: 'left' | 'center' | 'right';
