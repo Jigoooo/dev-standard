@@ -10,6 +10,7 @@ import {
   THeader,
   TTableStyle,
 } from '@/shared/components';
+import { colors } from '@/shared/constants';
 
 function validateDataList<T>(dataList: unknown[], keys: (keyof T)[]): dataList is T[] {
   return dataList.every((item) =>
@@ -342,13 +343,17 @@ function TableBodyCell<TData extends Record<string, any>>({
         width: header.width,
         height: '100%',
         backgroundColor:
-          hoverIndex === index
-            ? tableStyle.tableBodyHoverBackgroundColor
-            : header.id === 'index'
-              ? tableStyle.tableHeaderBackgroundColor
-              : isOdd
-                ? tableStyle.tableBodyOddBackgroundColor
-                : tableStyle.tableBodyBackgroundColor,
+          isChecked!(data) && hoverIndex === index
+            ? colors.primary[100]
+            : isChecked!(data)
+              ? colors.primary[50]
+              : hoverIndex === index
+                ? tableStyle.tableBodyHoverBackgroundColor
+                : header.id === 'index'
+                  ? tableStyle.tableHeaderBackgroundColor
+                  : isOdd
+                    ? tableStyle.tableBodyOddBackgroundColor
+                    : tableStyle.tableBodyBackgroundColor,
         contain: 'paint',
       }}
       onMouseEnter={() => {

@@ -12,8 +12,6 @@ import { TableBody } from './table-body.tsx';
 
 /*
  * todo
- * - 컬럼필터링
- * - 컬럼 소팅
  * - 하단 페이징 또는 로우수 정보
  *    체크박스 페이징 시 초기화
  *    기타 상태도 초기화
