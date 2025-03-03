@@ -3,10 +3,15 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 
 type CustomVerticalScrollbarProps = {
   ref: RefObject<HTMLDivElement | null>;
+  isTimeoutHiding?: boolean;
   totalContentHeight: number;
 };
 
-export function CustomVerticalScrollbar({ ref, totalContentHeight }: CustomVerticalScrollbarProps) {
+export function CustomVerticalScrollbar({
+  ref,
+  isTimeoutHiding = false,
+  totalContentHeight,
+}: CustomVerticalScrollbarProps) {
   const { scrollYProgress } = useScroll({ container: ref });
 
   const [containerHeight, setContainerHeight] = useState(0);
@@ -20,6 +25,11 @@ export function CustomVerticalScrollbar({ ref, totalContentHeight }: CustomVerti
   }, [ref]);
 
   useEffect(() => {
+    if (!isTimeoutHiding) {
+      setShowScrollbar(true);
+      return;
+    }
+
     const container = ref.current;
     if (!container) return;
 
@@ -63,9 +73,9 @@ export function CustomVerticalScrollbar({ ref, totalContentHeight }: CustomVerti
         position: 'absolute',
         right: 0,
         top: 0,
-        width: 10,
+        width: 14,
         height: containerHeight,
-        backgroundColor: 'transparent',
+        backgroundColor: '#f1f1f1',
         opacity: isScrollbarNeeded && showScrollbar ? 1 : 0,
         pointerEvents: isScrollbarNeeded && showScrollbar ? 'auto' : 'none',
         transition: 'opacity 0.16s',
@@ -83,13 +93,14 @@ export function CustomVerticalScrollbar({ ref, totalContentHeight }: CustomVerti
         }}
         style={{
           position: 'absolute',
-          left: 0,
-          width: '100%',
+          left: 4,
+          width: 8,
           height: thumbHeight,
-          backgroundColor: '#dfdfdf',
+          backgroundColor: '#cccccc',
           borderRadius: 4,
           top: thumbTop,
           cursor: 'pointer',
+          transition: 'top 0.2s ease-out',
         }}
       />
     </motion.div>

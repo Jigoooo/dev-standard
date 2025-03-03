@@ -101,6 +101,7 @@ export function TableBody<TData extends { index: string }>({
           handleCheck={handleCheck}
         />
       </FlexRow>
+
       <CustomVerticalScrollbar
         ref={bodyRef}
         totalContentHeight={tableStyle.tableBodyHeight * dataList.length}

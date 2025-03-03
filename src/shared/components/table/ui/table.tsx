@@ -7,7 +7,6 @@ import { TableBody } from './table-body.tsx';
 /*
  * todo
  * - 컬럼필터링
- * - 스크롤 컨트롤
  * - 컬럼 소팅
  * - 테이블 크기조절
  * - 하단 페이징 또는 로우수 정보
