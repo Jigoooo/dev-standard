@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 
 export type TTableStyle = {
-  tableMaxHeight?: number;
   tableResizeColor: string;
   tableBorderColor: string;
   tableBorder: string;

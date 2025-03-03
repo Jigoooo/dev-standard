@@ -27,7 +27,6 @@ import { TableBody } from './table-body.tsx';
  * */
 
 const defaultTableStyle: TTableStyle = {
-  tableMaxHeight: undefined,
   tableResizeColor: '#cecece',
   tableBorderColor: '#bdc3c7',
   tableBorder: '1px solid #bdc3c7',

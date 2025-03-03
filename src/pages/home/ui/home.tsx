@@ -177,12 +177,7 @@ export function Home() {
           overflow: 'hidden',
         }}
       >
-        <Table
-          // tableStyle={{ tableMaxHeight: 1000 }}
-          tableHeaders={tableHeaders}
-          tableDataList={dataList}
-          filterRowEnabled={true}
-        />
+        <Table tableHeaders={tableHeaders} tableDataList={dataList} filterRowEnabled={true} />
       </div>
     </MainLayout>
   );
