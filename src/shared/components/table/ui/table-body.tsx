@@ -1,8 +1,14 @@
-import { RefObject, useEffect, useRef, useState } from 'react';
+import { RefObject, useRef, useState } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 
-import { Checkbox, FlexRow, THeader, TTableStyle } from '@/shared/components';
+import {
+  Checkbox,
+  CustomVerticalScrollbar,
+  FlexRow,
+  THeader,
+  TTableStyle,
+} from '@/shared/components';
 
 function validateDataList<T>(dataList: unknown[], keys: (keyof T)[]): dataList is T[] {
   return dataList.every((item) =>
@@ -379,63 +385,5 @@ function TableBodyCell<TData extends Record<string, any>>({
       )}
       <TableBodyLabel tableStyle={tableStyle} label={data[header.id]} />
     </FlexRow>
-  );
-}
-
-type CustomVerticalScrollbarProps = {
-  ref: RefObject<HTMLDivElement | null>;
-  totalContentHeight: number;
-};
-
-export function CustomVerticalScrollbar({ ref, totalContentHeight }: CustomVerticalScrollbarProps) {
-  const { scrollYProgress } = useScroll({ container: ref });
-
-  const [containerHeight, setContainerHeight] = useState(0);
-
-  useEffect(() => {
-    if (ref.current) {
-      setContainerHeight(ref.current.clientHeight);
-    }
-  }, [ref]);
-
-  // thumb 높이 계산: 컨테이너 높이 * (컨테이너 높이 / 컨텐츠 전체 높이)
-  const thumbHeight = containerHeight * (containerHeight / totalContentHeight);
-
-  // 스크롤 진행도(scrollYProgress)를 이용해 thumb의 top 위치를 계산합니다.
-  // 최대 top 값은 containerHeight - thumbHeight입니다.
-  const thumbTop = useTransform(scrollYProgress, [0, 1], [0, containerHeight - thumbHeight]);
-
-  return (
-    <motion.div
-      style={{
-        position: 'absolute',
-        right: 0,
-        top: 0,
-        width: 16,
-        height: containerHeight,
-        backgroundColor: 'transparent',
-      }}
-    >
-      <motion.div
-        drag='y'
-        dragConstraints={{ top: 0, bottom: containerHeight - thumbHeight }}
-        onDrag={(_, info) => {
-          // thumb 드래그 시 컨테이너의 scrollTop을 업데이트
-          if (ref.current) {
-            ref.current.scrollTop = (info.point.y / containerHeight) * totalContentHeight;
-          }
-        }}
-        style={{
-          position: 'absolute',
-          left: 0,
-          width: '100%',
-          height: thumbHeight,
-          backgroundColor: '#cccccc',
-          borderRadius: 4,
-          top: thumbTop,
-          cursor: 'pointer',
-        }}
-      />
-    </motion.div>
   );
 }
