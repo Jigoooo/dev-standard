@@ -111,6 +111,8 @@ export function Table<TData extends { index: string } & Record<string, any>>({
     dataList: filteredDataList,
   });
 
+  console.log(sortedHeaders);
+
   return (
     <div
       className={'table-root selection-none'}

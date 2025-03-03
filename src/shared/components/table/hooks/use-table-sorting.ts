@@ -10,53 +10,51 @@ export function useTableSorting<T>({
   dataList: T[];
   isMultipleSorting?: boolean;
 }) {
-  const [sortedHeaders, setSortedHeaders] = useState(headers);
+  const [sortState, setSortState] = useState<Record<string, 'asc' | 'desc' | null>>({});
 
-  useEffect(() => {
-    setSortedHeaders(headers);
-  }, [headers]);
+  const sortedHeaders = headers.map((header) => ({
+    ...header,
+    sorter: {
+      ...header.sorter,
+      direction:
+        sortState[header.id] !== undefined
+          ? sortState[header.id]
+          : header.sorter?.direction || null,
+    },
+  }));
 
   const handleSort = (key: string) => {
-    const headerToSort = sortedHeaders.find((header) => header.id === key);
-    if (!headerToSort || !headerToSort.sorter.sortable) {
+    const targetHeader = headers.find((header) => header.id === key);
+    if (!targetHeader || !targetHeader.sorter?.sortable) {
       return;
     }
 
-    setSortedHeaders((prevHeaders) =>
-      prevHeaders.map((header) => {
-        if (header.id === key) {
-          return {
-            ...header,
-            sorter: {
-              ...header.sorter,
-              direction:
-                header.sorter.direction === 'asc'
-                  ? 'desc'
-                  : header.sorter.direction === 'desc'
-                    ? null
-                    : 'asc',
-            },
-          };
-        }
+    // 새로운 방향 계산: asc -> desc -> null -> asc
+    const newDirection: 'asc' | 'desc' | null =
+      sortState[key] === 'asc' ? 'desc' : sortState[key] === 'desc' ? null : 'asc';
 
-        if (isMultipleSorting) {
-          return {
-            ...header,
-            // sorter: { ...header.sorter, direction: null },
-          };
-        }
+    setSortState((prev) => ({
+      ...prev,
+      [key]: newDirection,
+    }));
 
-        return {
-          ...header,
-          sorter: { ...header.sorter, direction: null },
-        };
-      }),
-    );
+    if (isMultipleSorting) {
+      setSortState((prev) => ({
+        ...prev,
+        [key]: newDirection,
+      }));
+    } else {
+      const newState: Record<string, 'asc' | 'desc' | null> = {};
+      headers.forEach((header) => {
+        newState[header.id] = header.id === key ? newDirection : null;
+      });
+      setSortState(newState);
+    }
   };
 
   const sortedDataList = [...dataList].sort((a, b) => {
     const activeHeader = sortedHeaders.find(
-      (header) => header.sorter.sortable && header.sorter.direction !== null,
+      (header) => header.sorter?.sortable && header.sorter.direction !== null,
     );
 
     if (!activeHeader) return 0;
@@ -92,14 +90,7 @@ export function useTableSorting<T>({
   });
 
   const resetSort = () => {
-    setSortedHeaders((prevHeaders) =>
-      prevHeaders.map((header) => {
-        return {
-          ...header,
-          sorter: { ...header.sorter, direction: null },
-        };
-      }),
-    );
+    setSortState({});
   };
 
   return {
