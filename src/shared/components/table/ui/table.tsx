@@ -12,6 +12,7 @@ import { TableBody } from './table-body.tsx';
 
 /*
  * todo
+ * - 로우 수 변화 시 스크롤 위치 조절
  * - 하단 페이징 또는 로우수 정보
  *    체크박스 페이징 시 초기화
  *    기타 상태도 초기화
