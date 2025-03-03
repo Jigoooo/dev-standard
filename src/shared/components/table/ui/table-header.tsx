@@ -9,6 +9,7 @@ export function TableHeader({
   onChangeFilterValue,
   checkedState,
   handleCheckAll,
+  handleSort,
 }: {
   ref: RefObject<HTMLDivElement | null>;
   tableStyle: TTableStyle;
@@ -20,6 +21,7 @@ export function TableHeader({
     isPartiallyChecked: boolean;
   };
   handleCheckAll?: () => void;
+  handleSort: (key: string) => void;
 }) {
   const viewHeaders = headers.filter((header) => header.pin === 'view');
 
@@ -44,6 +46,7 @@ export function TableHeader({
         onChangeFilterValue={onChangeFilterValue}
         checkedState={checkedState}
         handleCheckAll={handleCheckAll}
+        handleSort={handleSort}
       />
 
       {/* 중앙 영역 */}
@@ -55,6 +58,7 @@ export function TableHeader({
         onChangeFilterValue={onChangeFilterValue}
         checkedState={checkedState}
         handleCheckAll={handleCheckAll}
+        handleSort={handleSort}
       />
 
       {/* 오른쪽 고정 영역 */}
@@ -66,6 +70,7 @@ export function TableHeader({
         onChangeFilterValue={onChangeFilterValue}
         checkedState={checkedState}
         handleCheckAll={handleCheckAll}
+        handleSort={handleSort}
       />
     </FlexRow>
   );
@@ -79,6 +84,7 @@ function TableHeaderView({
   onChangeFilterValue,
   checkedState,
   handleCheckAll,
+  handleSort,
 }: {
   ref: RefObject<HTMLDivElement | null>;
   tableStyle: TTableStyle;
@@ -90,6 +96,7 @@ function TableHeaderView({
     isPartiallyChecked: boolean;
   };
   handleCheckAll?: () => void;
+  handleSort: (key: string) => void;
 }) {
   const viewWidth = headers.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
   return (
@@ -126,6 +133,7 @@ function TableHeaderView({
                 header={header}
                 checkedState={checkedState}
                 handleCheckAll={handleCheckAll}
+                handleSort={handleSort}
               />
             );
           })}
@@ -168,6 +176,7 @@ function TableHeaderPin({
   onChangeFilterValue,
   checkedState,
   handleCheckAll,
+  handleSort,
 }: {
   tableStyle: TTableStyle;
   position: 'left' | 'right';
@@ -179,6 +188,7 @@ function TableHeaderPin({
     isPartiallyChecked: boolean;
   };
   handleCheckAll?: () => void;
+  handleSort: (key: string) => void;
 }) {
   const pinHeaderWidth = headers.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
 
@@ -216,6 +226,7 @@ function TableHeaderPin({
               header={header}
               checkedState={checkedState}
               handleCheckAll={handleCheckAll}
+              handleSort={handleSort}
             />
           );
         })}
@@ -254,6 +265,7 @@ function TableHeaderCell({
   header,
   checkedState,
   handleCheckAll = () => {},
+  handleSort,
 }: {
   tableStyle: TTableStyle;
   header: THeader;
@@ -262,6 +274,7 @@ function TableHeaderCell({
     isPartiallyChecked: boolean;
   };
   handleCheckAll?: () => void;
+  handleSort: (key: string) => void;
 }) {
   if (header.id === 'check' && checkedState === undefined) {
     throw new Error('checkedState is required for check header');
@@ -279,6 +292,11 @@ function TableHeaderCell({
         width: header.width,
         height: tableStyle.tableHeaderHeight,
         contain: 'paint',
+      }}
+      onClick={() => {
+        if (header.id !== 'index' && header.id !== 'check' && header.sorter.sortable) {
+          handleSort(header.id);
+        }
       }}
     >
       {header.id === 'check' && (

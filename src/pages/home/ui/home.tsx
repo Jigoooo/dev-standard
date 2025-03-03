@@ -11,6 +11,9 @@ const tableHeaders: THeader[] = [
     align: 'right',
     label: '',
     width: 60,
+    sorter: {
+      sortable: false,
+    },
   },
   {
     id: 'check',
@@ -18,6 +21,9 @@ const tableHeaders: THeader[] = [
     align: 'center',
     label: '',
     width: 60,
+    sorter: {
+      sortable: false,
+    },
   },
   {
     id: 'name',
@@ -25,6 +31,10 @@ const tableHeaders: THeader[] = [
     align: 'left',
     label: '이름',
     width: 150,
+    sorter: {
+      sortable: true,
+      direction: null,
+    },
     filter: {
       filterType: 'text',
       filterValue: '',
@@ -36,6 +46,10 @@ const tableHeaders: THeader[] = [
     align: 'left',
     label: '이메일',
     width: 220,
+    sorter: {
+      sortable: true,
+      direction: null,
+    },
     filter: {
       filterType: 'text',
       filterValue: '',
@@ -47,6 +61,10 @@ const tableHeaders: THeader[] = [
     align: 'left',
     label: '나이',
     width: 200,
+    sorter: {
+      sortable: true,
+      direction: null,
+    },
     filter: {
       filterType: 'text',
       filterValue: '',
@@ -58,6 +76,10 @@ const tableHeaders: THeader[] = [
     align: 'left',
     label: '주소',
     width: 300,
+    sorter: {
+      sortable: true,
+      direction: null,
+    },
     filter: {
       filterType: 'text',
       filterValue: '',
@@ -69,6 +91,10 @@ const tableHeaders: THeader[] = [
     align: 'left',
     label: '휴대폰번호',
     width: 150,
+    sorter: {
+      sortable: true,
+      direction: null,
+    },
     filter: {
       filterType: 'text',
       filterValue: '',
@@ -80,6 +106,10 @@ const tableHeaders: THeader[] = [
     align: 'left',
     label: '직업',
     width: 150,
+    sorter: {
+      sortable: true,
+      direction: null,
+    },
     filter: {
       filterType: 'text',
       filterValue: '',
@@ -91,6 +121,10 @@ const tableHeaders: THeader[] = [
     align: 'left',
     label: '부서',
     width: 150,
+    sorter: {
+      sortable: true,
+      direction: null,
+    },
     filter: {
       filterType: 'text',
       filterValue: '',
@@ -102,6 +136,10 @@ const tableHeaders: THeader[] = [
     align: 'left',
     label: '급여',
     width: 150,
+    sorter: {
+      sortable: true,
+      direction: null,
+    },
     filter: {
       filterType: 'text',
       filterValue: '',
@@ -113,6 +151,10 @@ const tableHeaders: THeader[] = [
     align: 'left',
     label: '고용일',
     width: 150,
+    sorter: {
+      sortable: true,
+      direction: null,
+    },
     filter: {
       filterType: 'text',
       filterValue: '',

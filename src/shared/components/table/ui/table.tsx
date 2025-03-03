@@ -1,6 +1,12 @@
 import { RefObject, useEffect, useRef, useState } from 'react';
 
-import { FlexRow, THeader, TTableStyle, useTableChecked } from '@/shared/components';
+import {
+  FlexRow,
+  THeader,
+  TTableStyle,
+  useTableChecked,
+  useTableSorting,
+} from '@/shared/components';
 import { TableHeader } from './table-header.tsx';
 import { TableBody } from './table-body.tsx';
 
@@ -38,7 +44,7 @@ const defaultTableStyle: TTableStyle = {
   tableBodyHoverBackgroundColor: '#eaeaea',
 };
 
-export function Table<TData extends { index: string }>({
+export function Table<TData extends { index: string } & Record<string, any>>({
   tableHeaders,
   tableDataList,
   tableStyle = {},
@@ -100,6 +106,11 @@ export function Table<TData extends { index: string }>({
       })
     : tableDataList;
 
+  const { sortedHeaders, sortedDataList, handleSort } = useTableSorting({
+    headers,
+    dataList: filteredDataList,
+  });
+
   return (
     <div
       className={'table-root selection-none'}
@@ -124,18 +135,19 @@ export function Table<TData extends { index: string }>({
       <TableHeader
         ref={headerRef}
         tableStyle={applyTableStyle}
-        headers={headers}
+        headers={sortedHeaders}
         filterRowEnabled={filterRowEnabled}
         onChangeFilterValue={onChangeFilterValue}
         checkedState={checkedState}
         handleCheckAll={handleCheckAll}
+        handleSort={handleSort}
       />
 
       <TableBody
         ref={bodyRef}
         tableStyle={applyTableStyle}
         headers={headers}
-        dataList={filteredDataList}
+        dataList={sortedDataList}
         headerHeight={headerHeight}
         isChecked={isChecked}
         handleCheck={handleCheck}

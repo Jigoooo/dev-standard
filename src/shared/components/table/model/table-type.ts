@@ -24,6 +24,10 @@ export type THeader = {
   customCell?: (cellData: any, rowData: Record<string, any>) => ReactNode;
   pin: 'view' | 'left' | 'right';
   align: 'left' | 'center' | 'right';
+  sorter: {
+    sortable: boolean;
+    direction?: 'asc' | 'desc' | null;
+  };
   filter?: {
     filterType: 'text' | 'select';
     filterCondition?: (filterValue: string) => boolean;

@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import { TTableHeader } from '@/shared/components';
+import { THeader } from '@/shared/components';
 
 export function useTableSorting<T>({
   headers,
   dataList,
   isMultipleSorting = false,
 }: {
-  headers: TTableHeader[];
+  headers: THeader[];
   dataList: T[];
   isMultipleSorting?: boolean;
 }) {
