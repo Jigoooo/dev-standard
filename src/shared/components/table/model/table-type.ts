@@ -20,7 +20,15 @@ export type THeader = {
   id: string;
   label: string;
   width: number;
-  customCell?: (cellData: any, rowData: Record<string, any>) => ReactNode;
+  customCell?: ({
+    cellData,
+    rowData,
+    handelDataList,
+  }: {
+    cellData: any;
+    rowData: Record<string, any>;
+    handelDataList: (index: string, key: string, value: any) => void;
+  }) => ReactNode;
   pin: 'view' | 'left' | 'right';
   align: 'left' | 'center' | 'right';
   sorter: {

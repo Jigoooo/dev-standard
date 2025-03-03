@@ -44,6 +44,7 @@ const defaultTableStyle: TTableStyle = {
 export function Table<TData extends { index: string } & Record<string, any>>({
   tableHeaders,
   tableDataList,
+  handelDataList,
   handleSyncCheckList,
   tableStyle = {},
   dataKey = 'index',
@@ -51,6 +52,7 @@ export function Table<TData extends { index: string } & Record<string, any>>({
 }: {
   tableHeaders: THeader[];
   tableDataList: TData[];
+  handelDataList: (index: string, key: string, value: any) => void;
   handleSyncCheckList?: (checkedList: string[]) => void;
   tableStyle?: Partial<TTableStyle>;
   dataKey?: keyof TData;
@@ -155,6 +157,7 @@ export function Table<TData extends { index: string } & Record<string, any>>({
         tableStyle={applyTableStyle}
         headers={headers}
         dataList={sortedDataList}
+        handelDataList={handelDataList}
         bodyMaxHeight={bodyMaxHeight}
         isChecked={isChecked}
         handleCheck={handleCheck}

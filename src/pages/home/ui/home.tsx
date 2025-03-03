@@ -165,7 +165,20 @@ const tableHeaders: THeader[] = [
 export function Home() {
   const menuState = useMenuState();
 
-  const [dataList] = useState(testData);
+  const [dataList, setDataList] = useState(testData);
+  const handelDataList = (index: string, key: string, value: any) => {
+    setDataList((prev) => {
+      return prev.map((item) => {
+        if (item.index === index) {
+          return {
+            ...item,
+            [key]: value,
+          };
+        }
+        return item;
+      });
+    });
+  };
 
   return (
     <MainLayout headerTitle={menuState.selectedMenu.name}>
@@ -180,6 +193,7 @@ export function Home() {
         <Table
           tableHeaders={tableHeaders}
           tableDataList={dataList}
+          handelDataList={handelDataList}
           handleSyncCheckList={(checkedList) => {
             console.log(checkedList);
           }}

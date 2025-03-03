@@ -1,4 +1,4 @@
-import { RefObject, useRef, useState } from 'react';
+import { isValidElement, RefObject, useRef, useState } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { motion } from 'framer-motion';
 
@@ -22,6 +22,7 @@ export function TableBody<TData extends { index: string }>({
   ref,
   headers,
   dataList,
+  handelDataList,
   tableStyle,
   bodyMaxHeight,
   isChecked,
@@ -30,6 +31,7 @@ export function TableBody<TData extends { index: string }>({
   ref: RefObject<HTMLDivElement | null>;
   headers: THeader[];
   dataList: TData[];
+  handelDataList: (index: string, key: string, value: any) => void;
   tableStyle: TTableStyle;
   bodyMaxHeight: number;
   isChecked?: (data: TData) => boolean;
@@ -72,6 +74,7 @@ export function TableBody<TData extends { index: string }>({
           position={'left'}
           headers={leftPinHeaders}
           dataList={dataList}
+          handelDataList={handelDataList}
           hoverIndex={hoverIndex}
           setHoverIndex={setHoverIndex}
           isChecked={isChecked}
@@ -84,6 +87,7 @@ export function TableBody<TData extends { index: string }>({
           tableStyle={tableStyle}
           headers={viewHeaders}
           dataList={dataList}
+          handelDataList={handelDataList}
           hoverIndex={hoverIndex}
           setHoverIndex={setHoverIndex}
           isChecked={isChecked}
@@ -96,6 +100,7 @@ export function TableBody<TData extends { index: string }>({
           position={'right'}
           headers={rightPinHeaders}
           dataList={dataList}
+          handelDataList={handelDataList}
           hoverIndex={hoverIndex}
           setHoverIndex={setHoverIndex}
           isChecked={isChecked}
@@ -124,6 +129,7 @@ function TableBodyView<TData extends Record<string, any>>({
   tableStyle,
   headers,
   dataList,
+  handelDataList,
   hoverIndex,
   setHoverIndex,
   isChecked,
@@ -133,6 +139,7 @@ function TableBodyView<TData extends Record<string, any>>({
   tableStyle: TTableStyle;
   headers: THeader[];
   dataList: TData[];
+  handelDataList: (index: string, key: string, value: any) => void;
   hoverIndex: string | null;
   setHoverIndex: (index: string | null) => void;
   isChecked?: (data: TData) => boolean;
@@ -188,6 +195,7 @@ function TableBodyView<TData extends Record<string, any>>({
                     rowIndex={virtualIndex}
                     tableStyle={tableStyle}
                     data={data}
+                    handelDataList={handelDataList}
                     index={index}
                     isOdd={isOdd}
                     header={header}
@@ -211,6 +219,7 @@ function TableBodyPin<TData extends Record<string, any>>({
   position,
   headers,
   dataList,
+  handelDataList,
   hoverIndex,
   setHoverIndex,
   isChecked,
@@ -220,6 +229,7 @@ function TableBodyPin<TData extends Record<string, any>>({
   position: 'left' | 'right';
   headers: THeader[];
   dataList: TData[];
+  handelDataList: (index: string, key: string, value: any) => void;
   hoverIndex: string | null;
   setHoverIndex: (index: string | null) => void;
   isChecked?: (data: TData) => boolean;
@@ -279,6 +289,7 @@ function TableBodyPin<TData extends Record<string, any>>({
                   rowIndex={virtualIndex}
                   tableStyle={tableStyle}
                   data={data}
+                  handelDataList={handelDataList}
                   index={index}
                   isOdd={isOdd}
                   header={header}
@@ -300,6 +311,7 @@ function TableBodyCell<TData extends Record<string, any>>({
   tableStyle,
   rowIndex,
   data,
+  handelDataList,
   index,
   isOdd,
   header,
@@ -311,6 +323,7 @@ function TableBodyCell<TData extends Record<string, any>>({
   tableStyle: TTableStyle;
   rowIndex: number;
   data: TData;
+  handelDataList: (index: string, key: string, value: any) => void;
   index: string;
   isOdd: boolean;
   header: THeader;
@@ -374,8 +387,8 @@ function TableBodyCell<TData extends Record<string, any>>({
           }}
         />
       )}
-      {header.customCell ? (
-        header.customCell(cellData, data)
+      {header.customCell && isValidElement(cellData) ? (
+        header.customCell({ cellData, rowData: data, handelDataList })
       ) : (
         <span
           style={{
