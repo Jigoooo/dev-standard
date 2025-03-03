@@ -35,13 +35,13 @@ export function TableBody<TData extends { index: string }>({
   handleCheck?: (data: TData) => void;
 }) {
   const viewHeaders = headers.filter((header) => header.pin === 'view');
-  const viewWidth = viewHeaders.reduce((acc, cur) => acc + cur.width, 0);
+  const viewWidth = viewHeaders.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
 
   const leftPinHeaders = headers.filter((header) => header.pin === 'left');
-  const scrollLeftOffset = leftPinHeaders.reduce((acc, cur) => acc + cur.width, 0);
+  const scrollLeftOffset = leftPinHeaders.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
 
   const rightPinHeaders = headers.filter((header) => header.pin === 'right');
-  const scrollRightOffset = rightPinHeaders.reduce((acc, cur) => acc + cur.width, 0);
+  const scrollRightOffset = rightPinHeaders.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
 
   const requiredKeys = headers.map((header) => header.id) as (keyof TData)[];
   if (!validateDataList<TData>(dataList, requiredKeys)) {
@@ -138,7 +138,7 @@ function TableBodyView<TData extends Record<string, any>>({
   isChecked?: (data: TData) => boolean;
   handleCheck?: (data: TData) => void;
 }) {
-  const viewWidth = headers.reduce((acc, cur) => acc + cur.width, 0);
+  const viewWidth = headers.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
 
   const rowVirtualizer = useVirtualizer({
     count: dataList.length,
@@ -169,10 +169,11 @@ function TableBodyView<TData extends Record<string, any>>({
           const isOdd = virtualIndex % 2 === 0;
 
           return (
-            <div
+            <FlexRow
               key={index}
               className={'table-body-row'}
               style={{
+                alignItems: 'center',
                 position: 'absolute',
                 transform: 'translateY(' + virtualItem.start + 'px)',
                 width: viewWidth,
@@ -180,7 +181,7 @@ function TableBodyView<TData extends Record<string, any>>({
                 borderBottom: tableStyle.tableBorder,
               }}
             >
-              {headers.map((header, headerIndex, array) => {
+              {headers.map((header) => {
                 return (
                   <TableBodyCell
                     key={header.id}
@@ -189,8 +190,6 @@ function TableBodyView<TData extends Record<string, any>>({
                     index={index}
                     isOdd={isOdd}
                     header={header}
-                    headerIndex={headerIndex}
-                    array={array}
                     hoverIndex={hoverIndex}
                     setHoverIndex={setHoverIndex}
                     isChecked={isChecked}
@@ -198,7 +197,7 @@ function TableBodyView<TData extends Record<string, any>>({
                   />
                 );
               })}
-            </div>
+            </FlexRow>
           );
         })}
       </div>
@@ -225,7 +224,7 @@ function TableBodyPin<TData extends Record<string, any>>({
   isChecked?: (data: TData) => boolean;
   handleCheck?: (data: TData) => void;
 }) {
-  const pinHeaderWidth = headers.reduce((acc, cur) => acc + cur.width, 0);
+  const pinHeaderWidth = headers.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
 
   const tableBodyRef = useRef<HTMLDivElement>(null);
 
@@ -260,10 +259,11 @@ function TableBodyPin<TData extends Record<string, any>>({
         const isOdd = virtualIndex % 2 === 0;
 
         return (
-          <div
+          <FlexRow
             key={index}
             className={'pin-body-row'}
             style={{
+              alignItems: 'center',
               position: 'absolute',
               transform: 'translateY(' + virtualItem.start + 'px)',
               width: '100%',
@@ -271,7 +271,7 @@ function TableBodyPin<TData extends Record<string, any>>({
               borderBottom: tableStyle.tableBorder,
             }}
           >
-            {headers.map((header, headerIndex, array) => {
+            {headers.map((header) => {
               return (
                 <TableBodyCell
                   key={header.id}
@@ -280,17 +280,14 @@ function TableBodyPin<TData extends Record<string, any>>({
                   index={index}
                   isOdd={isOdd}
                   header={header}
-                  headerIndex={headerIndex}
-                  array={array}
                   hoverIndex={hoverIndex}
                   setHoverIndex={setHoverIndex}
                   isChecked={isChecked}
                   handleCheck={handleCheck}
-                  leftOffset={position === 'left' ? -1 : 0}
                 />
               );
             })}
-          </div>
+          </FlexRow>
         );
       })}
     </div>
@@ -303,21 +300,16 @@ function TableBodyCell<TData extends Record<string, any>>({
   index,
   isOdd,
   header,
-  headerIndex,
-  array,
   hoverIndex,
   setHoverIndex,
   isChecked,
   handleCheck,
-  leftOffset = 0,
 }: {
   tableStyle: TTableStyle;
   data: TData;
   index: string;
   isOdd: boolean;
   header: THeader;
-  headerIndex: number;
-  array: THeader[];
   hoverIndex: string | null;
   setHoverIndex: (index: string | null) => void;
   isChecked?: (data: TData) => boolean;
@@ -328,8 +320,6 @@ function TableBodyCell<TData extends Record<string, any>>({
     throw new Error('checkedState is required for check header');
   }
 
-  const left =
-    headerIndex === 0 ? 0 : array.slice(0, headerIndex).reduce((acc, cur) => acc + cur.width, 0);
   const justifyContent =
     header.align === 'left' ? 'flex-start' : header.align === 'right' ? 'flex-end' : 'center';
 
@@ -342,12 +332,9 @@ function TableBodyCell<TData extends Record<string, any>>({
       key={header.id}
       style={{
         boxSizing: 'border-box',
-        position: 'absolute',
         justifyContent,
         alignItems: 'center',
         paddingInline: 12,
-        left: left + leftOffset,
-        // width: header.width - 1, // todo 보정해야 하는 이유 찾기
         width: header.width,
         height: '100%',
         backgroundColor:

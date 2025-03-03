@@ -20,7 +20,7 @@ export type TTableStyle = {
 export type THeader = {
   id: string;
   label: string;
-  width: number;
+  width?: number;
   customCell?: (cellData: any, rowData: Record<string, any>) => ReactNode;
   pin: 'view' | 'left' | 'right';
   align: 'left' | 'center' | 'right';

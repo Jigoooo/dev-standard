@@ -82,7 +82,7 @@ export function Table<TData extends { index: string }>({
     dataKey,
   });
 
-  const totalWidth = headers.reduce((acc, cur) => acc + cur.width, 0) + 2;
+  const totalWidth = headers.reduce((acc, cur) => acc + (cur?.width ?? 0), 0) + 2;
   const headerHeight = filterRowEnabled
     ? applyTableStyle.tableHeaderHeight * 2
     : applyTableStyle.tableHeaderHeight;

@@ -91,7 +91,7 @@ function TableHeaderView({
   };
   handleCheckAll?: () => void;
 }) {
-  const viewWidth = headers.reduce((acc, cur) => acc + cur.width, 0);
+  const viewWidth = headers.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
   return (
     <div
       ref={ref}
@@ -108,33 +108,33 @@ function TableHeaderView({
         className={'table-header-container'}
         style={{ position: 'relative', width: viewWidth, height: '100%' }}
       >
-        <div
+        <FlexRow
           className={'table-header-row'}
           style={{
+            alignItems: 'center',
             position: 'absolute',
             top: 0,
             width: viewWidth,
             height: tableStyle.tableHeaderHeight,
           }}
         >
-          {headers.map((header, headerIndex, array) => {
+          {headers.map((header) => {
             return (
               <TableHeaderCell
                 key={header.id}
                 tableStyle={tableStyle}
                 header={header}
-                headerIndex={headerIndex}
-                array={array}
                 checkedState={checkedState}
                 handleCheckAll={handleCheckAll}
               />
             );
           })}
-        </div>
+        </FlexRow>
         {filterRowEnabled && (
-          <div
+          <FlexRow
             className={'table-header-row'}
             style={{
+              alignItems: 'center',
               position: 'absolute',
               top: tableStyle.tableHeaderHeight,
               width: viewWidth,
@@ -142,20 +142,18 @@ function TableHeaderView({
               borderTop: tableStyle.tableBorder,
             }}
           >
-            {headers.map((header, headerIndex, array) => {
+            {headers.map((header) => {
               return (
                 <TableHeaderFilterCell
                   key={header.id}
                   tableStyle={tableStyle}
                   position={'right'}
                   header={header}
-                  headerIndex={headerIndex}
-                  array={array}
                   onChangeFilterValue={onChangeFilterValue}
                 />
               );
             })}
-          </div>
+          </FlexRow>
         )}
       </div>
     </div>
@@ -182,7 +180,7 @@ function TableHeaderPin({
   };
   handleCheckAll?: () => void;
 }) {
-  const pinHeaderWidth = headers.reduce((acc, cur) => acc + cur.width, 0);
+  const pinHeaderWidth = headers.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
 
   return (
     <div
@@ -200,33 +198,33 @@ function TableHeaderPin({
           : { borderLeft: tableStyle.tableBorder }),
       }}
     >
-      <div
+      <FlexRow
         className={'pin-header-row'}
         style={{
+          alignItems: 'center',
           position: 'absolute',
           top: 0,
           width: '100%',
           height: tableStyle.tableHeaderHeight,
         }}
       >
-        {headers.map((header, headerIndex, array) => {
+        {headers.map((header) => {
           return (
             <TableHeaderCell
               key={header.id}
               tableStyle={tableStyle}
               header={header}
-              headerIndex={headerIndex}
-              array={array}
               checkedState={checkedState}
               handleCheckAll={handleCheckAll}
             />
           );
         })}
-      </div>
+      </FlexRow>
       {filterRowEnabled && (
-        <div
+        <FlexRow
           className={'pin-filter-row'}
           style={{
+            alignItems: 'center',
             position: 'absolute',
             top: tableStyle.tableHeaderHeight,
             width: '100%',
@@ -234,54 +232,31 @@ function TableHeaderPin({
             borderTop: tableStyle.tableBorder,
           }}
         >
-          {headers.map((header, headerIndex, array) => {
+          {headers.map((header) => {
             return (
               <TableHeaderFilterCell
                 key={header.id}
                 tableStyle={tableStyle}
                 position={position}
                 header={header}
-                headerIndex={headerIndex}
-                array={array}
                 onChangeFilterValue={onChangeFilterValue}
               />
             );
           })}
-        </div>
+        </FlexRow>
       )}
     </div>
-  );
-}
-
-function TableHeaderLabel({ tableStyle, label }: { tableStyle: TTableStyle; label: string }) {
-  return (
-    <span
-      style={{
-        fontSize: '0.88rem',
-        fontWeight: 600,
-        color: tableStyle.tableHeaderColor,
-        whiteSpace: 'nowrap',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-      }}
-    >
-      {label}
-    </span>
   );
 }
 
 function TableHeaderCell({
   tableStyle,
   header,
-  headerIndex,
-  array,
   checkedState,
   handleCheckAll = () => {},
 }: {
   tableStyle: TTableStyle;
   header: THeader;
-  headerIndex: number;
-  array: THeader[];
   checkedState?: {
     isAllChecked: boolean;
     isPartiallyChecked: boolean;
@@ -292,22 +267,17 @@ function TableHeaderCell({
     throw new Error('checkedState is required for check header');
   }
 
-  const left =
-    headerIndex === 0 ? 0 : array.slice(0, headerIndex).reduce((acc, cur) => acc + cur.width, 0);
-
   return (
     <FlexRow
       key={header.id}
       className={'table-header-cell'}
       style={{
         boxSizing: 'border-box',
-        position: 'absolute',
         justifyContent: header.id === 'check' ? 'center' : 'flex-start',
         alignItems: 'center',
         paddingInline: 12,
         width: header.width,
         height: tableStyle.tableHeaderHeight,
-        left: left,
         contain: 'paint',
       }}
     >
@@ -318,7 +288,20 @@ function TableHeaderCell({
           onClick={handleCheckAll}
         />
       )}
-      {header.label && <TableHeaderLabel tableStyle={tableStyle} label={header.label} />}
+      {header.label && (
+        <span
+          style={{
+            fontSize: '0.88rem',
+            fontWeight: 600,
+            color: tableStyle.tableHeaderColor,
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+          }}
+        >
+          {header.label}
+        </span>
+      )}
       {header.id !== 'index' && header.id !== 'check' && (
         <ResizeHandle tableStyle={tableStyle} position={'right'} />
       )}
@@ -330,29 +313,20 @@ function TableHeaderFilterCell({
   tableStyle,
   position,
   header,
-  headerIndex,
-  array,
   onChangeFilterValue,
 }: {
   tableStyle: TTableStyle;
   position: 'left' | 'right';
   header: THeader;
-  headerIndex: number;
-  array: THeader[];
   onChangeFilterValue: (headerId: string, value: string) => void;
 }) {
-  const left =
-    headerIndex === 0 ? 0 : array.slice(0, headerIndex).reduce((acc, cur) => acc + cur.width, 0);
-
   return (
     <FlexRow
       key={header.id}
       className={'table-header-cell'}
       style={{
-        position: 'absolute',
         alignItems: 'center',
         paddingInline: 12,
-        left: left,
         width: header.width,
         height: '100%',
         contain: 'paint',
