@@ -17,6 +17,11 @@ export function useTableSorting<T>({
   }, [headers]);
 
   const handleSort = (key: string) => {
+    const headerToSort = sortedHeaders.find((header) => header.id === key);
+    if (!headerToSort || !headerToSort.sorter.sortable) {
+      return;
+    }
+
     setSortedHeaders((prevHeaders) =>
       prevHeaders.map((header) => {
         if (header.id === key) {
