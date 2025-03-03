@@ -5,12 +5,16 @@ type CustomVerticalScrollbarProps = {
   ref: RefObject<HTMLDivElement | null>;
   isTimeoutHiding?: boolean;
   totalContentHeight: number;
+  border?: string;
+  backgroundColor?: string;
 };
 
 export function CustomVerticalScrollbar({
   ref,
   isTimeoutHiding = false,
   totalContentHeight,
+  border = '1px solid #bdc3c7',
+  backgroundColor = '#f1f1f1',
 }: CustomVerticalScrollbarProps) {
   const { scrollYProgress } = useScroll({ container: ref });
 
@@ -88,11 +92,11 @@ export function CustomVerticalScrollbar({
         top: 0,
         width: 14,
         height: containerHeight,
-        backgroundColor: '#f1f1f1',
+        backgroundColor,
         opacity: isScrollbarNeeded && showScrollbar ? 1 : 0,
         pointerEvents: isScrollbarNeeded && showScrollbar ? 'auto' : 'none',
         transition: 'opacity 0.16s',
-        borderLeft: '1px solid #bdc3c7',
+        borderLeft: border,
       }}
     >
       <motion.div

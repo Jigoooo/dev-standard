@@ -7,6 +7,8 @@ type CustomHorizontalScrollbarProps = {
   totalContentWidth: number;
   leftOffset?: number;
   rightOffset?: number;
+  border?: string;
+  backgroundColor?: string;
 };
 
 export function CustomHorizontalScrollbar({
@@ -15,6 +17,8 @@ export function CustomHorizontalScrollbar({
   totalContentWidth,
   leftOffset = 0,
   rightOffset = 0,
+  border = '1px solid #bdc3c7',
+  backgroundColor = '#f1f1f1',
 }: CustomHorizontalScrollbarProps) {
   const { scrollXProgress } = useScroll({ container: ref });
 
@@ -88,8 +92,8 @@ export function CustomHorizontalScrollbar({
             bottom: 0,
             height: 14,
             width: leftOffset,
-            backgroundColor: '#f1f1f1',
-            borderTop: '1px solid #bdc3c7',
+            backgroundColor,
+            borderTop: border,
           }}
         />
       )}
@@ -100,11 +104,12 @@ export function CustomHorizontalScrollbar({
           bottom: 0,
           height: 14,
           width: containerWidth + 2,
-          backgroundColor: '#f1f1f1',
+          backgroundColor,
           opacity: isScrollbarNeeded && showScrollbar ? 1 : 0,
           pointerEvents: isScrollbarNeeded && showScrollbar ? 'auto' : 'none',
           transition: 'opacity 0.16s',
-          border: '1px solid #bdc3c7',
+          borderLeft: border,
+          borderTop: border,
         }}
       >
         <motion.div
@@ -138,9 +143,9 @@ export function CustomHorizontalScrollbar({
             bottom: 0,
             height: 14,
             width: rightOffset,
-            backgroundColor: '#f1f1f1',
-            borderLeft: '1px solid #bdc3c7',
-            borderTop: '1px solid #bdc3c7',
+            backgroundColor,
+            borderLeft: border,
+            borderTop: border,
           }}
         />
       )}

@@ -177,7 +177,14 @@ export function Home() {
           overflow: 'hidden',
         }}
       >
-        <Table tableHeaders={tableHeaders} tableDataList={dataList} filterRowEnabled={true} />
+        <Table
+          tableHeaders={tableHeaders}
+          tableDataList={dataList}
+          handleSyncCheckList={(checkedList) => {
+            console.log(checkedList);
+          }}
+          filterRowEnabled={true}
+        />
       </div>
     </MainLayout>
   );

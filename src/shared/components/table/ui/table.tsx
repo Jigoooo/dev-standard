@@ -12,7 +12,6 @@ import { TableBody } from './table-body.tsx';
 
 /*
  * todo
- * - 테이블 크기조절
  * - 로우 수 변화 시 스크롤 위치 조절
  * - 하단 페이징 또는 로우수 정보
  *    체크박스 페이징 시 초기화
@@ -33,10 +32,10 @@ const defaultTableStyle: TTableStyle = {
   tableBorderRadius: 2,
   tableHeaderHeight: 36,
   tableBodyHeight: 40,
-  tableHeaderBackgroundColor: '#f4f4f4',
+  tableHeaderBackgroundColor: '#efefef',
   tableBodyBackgroundColor: '#ffffff',
-  tableBodyOddBackgroundColor: '#fcfdfe',
-  tableHeaderColor: 'rgba(0, 0, 0, 0.6)',
+  tableBodyOddBackgroundColor: '#f9f9f9',
+  tableHeaderColor: 'rgba(0, 0, 0, 0.7)',
   tableBodyColor: 'rgba(0, 0, 0, 1)',
   tableFooterHeight: 40,
   tableBodyHoverBackgroundColor: '#eaeaea',
@@ -45,12 +44,14 @@ const defaultTableStyle: TTableStyle = {
 export function Table<TData extends { index: string } & Record<string, any>>({
   tableHeaders,
   tableDataList,
+  handleSyncCheckList,
   tableStyle = {},
   dataKey = 'index',
   filterRowEnabled = false,
 }: {
   tableHeaders: THeader[];
   tableDataList: TData[];
+  handleSyncCheckList?: (checkedList: string[]) => void;
   tableStyle?: Partial<TTableStyle>;
   dataKey?: keyof TData;
   filterRowEnabled?: boolean;
@@ -90,10 +91,14 @@ export function Table<TData extends { index: string } & Record<string, any>>({
     });
   };
 
-  const { isChecked, handleCheck, handleCheckAll, checkedState } = useTableChecked({
+  const { checkList, isChecked, handleCheck, handleCheckAll, checkedState } = useTableChecked({
     dataList: tableDataList,
     dataKey,
   });
+
+  useEffect(() => {
+    handleSyncCheckList?.(checkList);
+  }, [checkList]);
 
   const totalWidth = headers.reduce((acc, cur) => acc + (cur?.width ?? 0), 0) + 2;
   const headerHeight = filterRowEnabled

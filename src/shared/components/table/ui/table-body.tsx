@@ -113,6 +113,7 @@ export function TableBody<TData extends { index: string }>({
         totalContentWidth={viewWidth}
         leftOffset={scrollLeftOffset}
         rightOffset={scrollRightOffset}
+        border={tableStyle.tableBorder}
       />
     </FlexRow>
   );
