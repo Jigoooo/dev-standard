@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export type TTableStyle = {
   tableMaxHeight?: number;
   tableResizeColor: string;
@@ -19,6 +21,7 @@ export type THeader = {
   id: string;
   label: string;
   width: number;
+  customCell?: (cellData: any, rowData: Record<string, any>) => ReactNode;
   pin: 'view' | 'left' | 'right';
   align: 'left' | 'center' | 'right';
   filter?: {

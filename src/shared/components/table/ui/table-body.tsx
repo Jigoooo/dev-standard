@@ -286,6 +286,7 @@ function TableBodyPin<TData extends Record<string, any>>({
                   setHoverIndex={setHoverIndex}
                   isChecked={isChecked}
                   handleCheck={handleCheck}
+                  leftOffset={position === 'left' ? -1 : 0}
                 />
               );
             })}
@@ -293,23 +294,6 @@ function TableBodyPin<TData extends Record<string, any>>({
         );
       })}
     </div>
-  );
-}
-
-function TableBodyLabel({ tableStyle, label }: { tableStyle: TTableStyle; label: string }) {
-  return (
-    <span
-      style={{
-        fontSize: '0.88rem',
-        fontWeight: 500,
-        color: tableStyle.tableBodyColor,
-        whiteSpace: 'nowrap',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-      }}
-    >
-      {label}
-    </span>
   );
 }
 
@@ -325,6 +309,7 @@ function TableBodyCell<TData extends Record<string, any>>({
   setHoverIndex,
   isChecked,
   handleCheck,
+  leftOffset = 0,
 }: {
   tableStyle: TTableStyle;
   data: TData;
@@ -337,6 +322,7 @@ function TableBodyCell<TData extends Record<string, any>>({
   setHoverIndex: (index: string | null) => void;
   isChecked?: (data: TData) => boolean;
   handleCheck?: (data: TData) => void;
+  leftOffset?: number;
 }) {
   if (header.id === 'check' && (isChecked === undefined || handleCheck === undefined)) {
     throw new Error('checkedState is required for check header');
@@ -346,6 +332,8 @@ function TableBodyCell<TData extends Record<string, any>>({
     headerIndex === 0 ? 0 : array.slice(0, headerIndex).reduce((acc, cur) => acc + cur.width, 0);
   const justifyContent =
     header.align === 'left' ? 'flex-start' : header.align === 'right' ? 'flex-end' : 'center';
+
+  const cellData = data[header.id];
 
   return (
     <FlexRow
@@ -357,10 +345,10 @@ function TableBodyCell<TData extends Record<string, any>>({
         position: 'absolute',
         justifyContent,
         alignItems: 'center',
-        paddingInline: 10,
-        left: left,
-        width: header.width - 1, // todo 보정해야 하는 이유 찾기
-        // width: header.width,
+        paddingInline: 12,
+        left: left + leftOffset,
+        // width: header.width - 1, // todo 보정해야 하는 이유 찾기
+        width: header.width,
         height: '100%',
         backgroundColor:
           hoverIndex === index
@@ -391,7 +379,22 @@ function TableBodyCell<TData extends Record<string, any>>({
           }}
         />
       )}
-      <TableBodyLabel tableStyle={tableStyle} label={data[header.id]} />
+      {header.customCell ? (
+        header.customCell(cellData, data)
+      ) : (
+        <span
+          style={{
+            fontSize: '0.88rem',
+            fontWeight: 500,
+            color: tableStyle.tableBodyColor,
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+          }}
+        >
+          {cellData}
+        </span>
+      )}
     </FlexRow>
   );
 }
