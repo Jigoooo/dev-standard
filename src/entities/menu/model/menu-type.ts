@@ -8,12 +8,15 @@ export type TMenu = {
 };
 
 export type TMenuState = {
+  sidebarCollapsed: boolean;
+  sidebarWidth: number;
   selectedMenu: TMenu;
 };
 
 export type TMenuStore = {
   state: TMenuState;
   actions: {
+    toggleSidebarCollapsed: () => void;
     setSelectedMenu: (menu: TMenu) => void;
   };
 };

@@ -1,10 +1,19 @@
 import { Outlet } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
-import { menus } from '@/entities/menu';
-import { MainMenuController, SidebarItems } from '@/widgets/main';
+import {
+  MainMenuController,
+  SidebarItems,
+  menus,
+  SidebarHeader,
+  useMenuState,
+  menuActions,
+} from '@/entities/menu';
 import { FlexColumn, FlexRow } from '@/shared/components';
 
 export function Main() {
+  const menuState = useMenuState();
+
   return (
     <FlexRow
       style={{
@@ -14,7 +23,15 @@ export function Main() {
         backgroundColor: '#ffffff',
       }}
     >
-      <div style={{ userSelect: 'none', minWidth: 250, width: 250, height: '100%' }}>
+      <motion.div
+        animate={{ width: menuState.sidebarWidth, minWidth: menuState.sidebarWidth }}
+        transition={{ duration: 0.3 }}
+        style={{
+          position: 'relative',
+          userSelect: 'none',
+          height: '100%',
+        }}
+      >
         <FlexColumn
           style={{
             position: 'relative',
@@ -24,14 +41,28 @@ export function Main() {
             gap: 15,
           }}
         >
-          <div style={{ paddingInline: 10, paddingBottom: 16 }}>
-            <span style={{ fontSize: '1.1rem', fontWeight: 700, color: '#ffffff' }}>
-              Dev standard
-            </span>
-          </div>
+          <SidebarHeader title={'Dev standard'} />
           <SidebarItems menus={menus} />
         </FlexColumn>
-      </div>
+
+        <motion.button
+          animate={{ left: menuState.sidebarWidth }}
+          onClick={menuActions.toggleSidebarCollapsed}
+          style={{
+            position: 'absolute',
+            top: '10%',
+            zIndex: 10,
+            padding: '4px 8px',
+            border: 'none',
+            borderRadius: 4,
+            backgroundColor: '#1e232e',
+            color: '#fff',
+            cursor: 'pointer',
+          }}
+        >
+          {menuState.sidebarCollapsed ? 'Expand' : 'Collapse'}
+        </motion.button>
+      </motion.div>
 
       <FlexColumn
         style={{

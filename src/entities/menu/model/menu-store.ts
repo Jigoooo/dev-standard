@@ -34,15 +34,29 @@ export const menus: TMenu[] = [
 ] as const;
 
 const initialState: TMenuState = {
+  sidebarCollapsed: false,
+  sidebarWidth: 250,
   selectedMenu: menus[0],
 };
 
-const useMenuStore = create<TMenuStore>()((setState) => {
+const useMenuStore = create<TMenuStore>()((setState, getState) => {
   return {
     state: {
       ...initialState,
     },
     actions: {
+      toggleSidebarCollapsed: () => {
+        setState((state) => {
+          return {
+            ...state,
+            state: {
+              ...state.state,
+              sidebarCollapsed: !getState().state.sidebarCollapsed,
+              sidebarWidth: !getState().state.sidebarCollapsed ? 50 : initialState.sidebarWidth,
+            },
+          };
+        });
+      },
       setSelectedMenu: (menu) => {
         setState((state) => {
           return {
