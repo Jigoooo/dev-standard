@@ -1,5 +1,3 @@
-import { useMenuState } from '@/entities/menu';
-import { MainLayout } from '@/entities/main';
 import { Input, Table, THeader, useTableData } from '@/shared/components';
 import { testData } from '@/shared/components/table/ui/testData.ts';
 
@@ -172,29 +170,23 @@ const tableHeaders: THeader[] = [
 ];
 
 export function Home() {
-  const menuState = useMenuState();
-
   const { dataList, handelDataList } = useTableData(testData);
 
   return (
-    <MainLayout headerTitle={menuState.selectedMenu.name}>
-      <div
-        style={{
-          height: '100%',
-          maxHeight: 'calc(100vh - 200px)',
-          maxWidth: 'calc(100vw - 300px)',
-          overflow: 'hidden',
+    <div
+      style={{
+        height: '100%',
+        maxHeight: 'calc(100vh - 200px)',
+      }}
+    >
+      <Table
+        tableHeaders={tableHeaders}
+        tableDataList={dataList}
+        handelDataList={handelDataList}
+        handleSyncCheckList={(checkedList) => {
+          console.log(checkedList);
         }}
-      >
-        <Table
-          tableHeaders={tableHeaders}
-          tableDataList={dataList}
-          handelDataList={handelDataList}
-          handleSyncCheckList={(checkedList) => {
-            console.log(checkedList);
-          }}
-        />
-      </div>
-    </MainLayout>
+      />
+    </div>
   );
 }

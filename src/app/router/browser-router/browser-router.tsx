@@ -1,10 +1,11 @@
 import { createBrowserRouter } from 'react-router-dom';
 
+import { Router } from '@/entities/router';
 import { RouteErrorPage } from '@/shared/components';
 import { SignIn } from '@/pages/sign-in';
 import { Main } from '@/pages/main';
 import { Home } from '@/pages/home';
-import { Router } from '@/entities/router';
+import { UiComponent } from '@/pages/ui-component';
 
 export const browserRouter = createBrowserRouter([
   {
@@ -23,7 +24,7 @@ export const browserRouter = createBrowserRouter([
       },
       {
         path: Router.UI,
-        element: <Home />,
+        element: <UiComponent />,
       },
       {
         path: Router.FILE_UPLOAD_DOWNLOAD,

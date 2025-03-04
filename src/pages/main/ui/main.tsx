@@ -1,9 +1,12 @@
 import { Outlet } from 'react-router-dom';
 
-import { Sidebar } from '@/entities/menu';
+import { Sidebar, useMenuState } from '@/entities/menu';
 import { FlexColumn, FlexRow } from '@/shared/components';
+import { MainHeader } from '@/entities/main/ui/main-header.tsx';
 
 export function Main() {
+  const menuState = useMenuState();
+
   return (
     <FlexRow
       style={{
@@ -18,12 +21,18 @@ export function Main() {
       <FlexColumn
         style={{
           flexGrow: 1,
+          position: 'relative',
+          backgroundColor: '#ffffff',
+          width: '100%',
+          maxWidth: `calc(100vw - ${menuState.sidebarWidth}px)`,
+          maxHeight: '100vh',
           height: '100%',
-          overflowX: 'auto',
+          overflow: 'hidden',
           paddingInline: 16,
-          paddingBottom: 16,
+          paddingBlock: 16,
         }}
       >
+        <MainHeader title={menuState.selectedMenu.name} />
         <Outlet />
       </FlexColumn>
     </FlexRow>
