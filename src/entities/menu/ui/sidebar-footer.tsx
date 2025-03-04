@@ -45,6 +45,7 @@ export function SidebarFooter() {
           }}
           onClick={goMyProfile}
         >
+          <myProfileMenu.icon style={{ color: '#ffffff', fontSize: '2.4rem' }} />
           <FlexColumn style={{ width: '90%' }}>
             <span
               style={{
