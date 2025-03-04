@@ -190,7 +190,7 @@ function Picker({
     >
       <FlexRow style={{ justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
         <Button
-          style={{ height: 38, backgroundColor: '#ffffff' }}
+          style={{ height: 38, backgroundColor: '#ffffff', paddingInline: 8 }}
           onClick={handlePrevMonth}
           disabled={disablePrev}
         >
@@ -200,7 +200,7 @@ function Picker({
           {format(currentDate, 'yyyy년 MMMM', { locale: ko })}
         </span>
         <Button
-          style={{ height: 38, backgroundColor: '#ffffff' }}
+          style={{ height: 38, backgroundColor: '#ffffff', paddingInline: 8 }}
           onClick={handleNextMonth}
           disabled={disableNext}
         >
