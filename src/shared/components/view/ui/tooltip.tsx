@@ -52,6 +52,7 @@ export function Tooltip({ style, position, children, content, disabled = false }
             transition={{ duration: 0.2 }}
             style={{
               ...{
+                userSelect: 'none',
                 position: 'absolute',
                 ...tooltipPositionStyles[position],
                 padding: 12,

@@ -2,6 +2,7 @@ import {
   Button,
   ButtonStyle,
   Checkbox,
+  DashedDivider,
   DateFromToPicker,
   DatePicker,
   dialogActions,
@@ -16,6 +17,7 @@ import {
   Select,
   Switch,
   Textarea,
+  Tooltip,
   useModal,
 } from '@/shared/components';
 import { useState } from 'react';
@@ -163,6 +165,17 @@ export function UiComponent() {
       </FlexRow>
 
       <Divider style={{ marginBlock: 16, backgroundColor: '#bbbbbb' }} />
+
+      <FlexRow style={{ alignItems: 'center' }}>
+        <span style={{ width: 200, fontWeight: 500 }}>Dashed Divider: </span>
+        <DashedDivider strokeColor={'red'} />
+      </FlexRow>
+      <FlexRow style={{ alignItems: 'center' }}>
+        <span style={{ width: 200, fontWeight: 500 }}>Tooltip: </span>
+        <Tooltip content={'Tooltip'} position={'topRight'}>
+          <span style={{ border: '1px solid #bbbbbb', padding: 12, borderRadius: 4 }}>Tooltip</span>
+        </Tooltip>
+      </FlexRow>
     </FlexColumn>
   );
 }
