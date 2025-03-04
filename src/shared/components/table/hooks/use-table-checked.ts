@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export function useTableChecked<T, K extends keyof T>({
+export function useTableChecked<T extends Record<string, any>, K extends keyof T>({
   dataList,
   dataKey,
 }: {

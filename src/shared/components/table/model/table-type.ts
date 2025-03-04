@@ -1,9 +1,22 @@
 import { ReactNode } from 'react';
 
-export type TTableContext<TData extends Record<string, any> = Record<string, any>> = {
+export type TTableContext<TData> = {
+  tableStyle: TTableStyle;
+  bodyMaxHeight: number;
   headers: THeader[];
   sortedHeaders: THeader[];
   dataList: (TData & { index: string })[];
+  handelDataList: (index: string, key: string, value: any) => void;
+  filterRowEnabled: boolean;
+  onChangeFilterValue: (headerId: string, value: string) => void;
+  isChecked: (data: TData) => boolean;
+  checkedState: {
+    isAllChecked: boolean;
+    isPartiallyChecked: boolean;
+  };
+  handleCheck: (data: TData) => void;
+  handleCheckAll: () => void;
+  handleSort: (key: string) => void;
 };
 
 export type TTableStyle = {

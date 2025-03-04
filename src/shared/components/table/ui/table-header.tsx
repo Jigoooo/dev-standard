@@ -3,30 +3,18 @@ import { RefObject } from 'react';
 import NorthIcon from '@mui/icons-material/North';
 import SouthIcon from '@mui/icons-material/South';
 
-import { Checkbox, FlexRow, Input, THeader, TTableStyle } from '@/shared/components';
+import {
+  Checkbox,
+  FlexRow,
+  Input,
+  THeader,
+  TTableStyle,
+  useTableContext,
+} from '@/shared/components';
 
-export function TableHeader({
-  ref,
-  tableStyle,
-  headers,
-  filterRowEnabled,
-  onChangeFilterValue,
-  checkedState,
-  handleCheckAll,
-  handleSort,
-}: {
-  ref: RefObject<HTMLDivElement | null>;
-  tableStyle: TTableStyle;
-  headers: THeader[];
-  filterRowEnabled: boolean;
-  onChangeFilterValue: (headerId: string, value: string) => void;
-  checkedState?: {
-    isAllChecked: boolean;
-    isPartiallyChecked: boolean;
-  };
-  handleCheckAll?: () => void;
-  handleSort: (key: string) => void;
-}) {
+export function TableHeader({ ref }: { ref: RefObject<HTMLDivElement | null> }) {
+  const { tableStyle, sortedHeaders: headers, filterRowEnabled } = useTableContext();
+
   const viewHeaders = headers.filter((header) => header.pin === 'view');
 
   const leftPinHeaders = headers.filter((header) => header.pin === 'left');
@@ -42,66 +30,26 @@ export function TableHeader({
       }}
     >
       {/* 왼쪽 고정 영역 */}
-      <TableHeaderPin
-        tableStyle={tableStyle}
-        position={'left'}
-        headers={leftPinHeaders}
-        filterRowEnabled={filterRowEnabled}
-        onChangeFilterValue={onChangeFilterValue}
-        checkedState={checkedState}
-        handleCheckAll={handleCheckAll}
-        handleSort={handleSort}
-      />
+      <TableHeaderPin position={'left'} headers={leftPinHeaders} />
 
       {/* 중앙 영역 */}
-      <TableHeaderView
-        ref={ref}
-        tableStyle={tableStyle}
-        headers={viewHeaders}
-        filterRowEnabled={filterRowEnabled}
-        onChangeFilterValue={onChangeFilterValue}
-        checkedState={checkedState}
-        handleCheckAll={handleCheckAll}
-        handleSort={handleSort}
-      />
+      <TableHeaderView ref={ref} headers={viewHeaders} />
 
       {/* 오른쪽 고정 영역 */}
-      <TableHeaderPin
-        tableStyle={tableStyle}
-        position={'right'}
-        headers={rightPinHeaders}
-        filterRowEnabled={filterRowEnabled}
-        onChangeFilterValue={onChangeFilterValue}
-        checkedState={checkedState}
-        handleCheckAll={handleCheckAll}
-        handleSort={handleSort}
-      />
+      <TableHeaderPin position={'right'} headers={rightPinHeaders} />
     </FlexRow>
   );
 }
 
 function TableHeaderView({
   ref,
-  tableStyle,
   headers,
-  filterRowEnabled,
-  onChangeFilterValue,
-  checkedState,
-  handleCheckAll,
-  handleSort,
 }: {
   ref: RefObject<HTMLDivElement | null>;
-  tableStyle: TTableStyle;
   headers: THeader[];
-  filterRowEnabled: boolean;
-  onChangeFilterValue: (headerId: string, value: string) => void;
-  checkedState?: {
-    isAllChecked: boolean;
-    isPartiallyChecked: boolean;
-  };
-  handleCheckAll?: () => void;
-  handleSort: (key: string) => void;
 }) {
+  const { tableStyle, filterRowEnabled } = useTableContext();
+
   const viewWidth = headers.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
   return (
     <div
@@ -130,16 +78,7 @@ function TableHeaderView({
           }}
         >
           {headers.map((header) => {
-            return (
-              <TableHeaderCell
-                key={header.id}
-                tableStyle={tableStyle}
-                header={header}
-                checkedState={checkedState}
-                handleCheckAll={handleCheckAll}
-                handleSort={handleSort}
-              />
-            );
+            return <TableHeaderCell key={header.id} header={header} />;
           })}
         </FlexRow>
         {filterRowEnabled && (
@@ -155,15 +94,7 @@ function TableHeaderView({
             }}
           >
             {headers.map((header) => {
-              return (
-                <TableHeaderFilterCell
-                  key={header.id}
-                  tableStyle={tableStyle}
-                  position={'right'}
-                  header={header}
-                  onChangeFilterValue={onChangeFilterValue}
-                />
-              );
+              return <TableHeaderFilterCell key={header.id} position={'right'} header={header} />;
             })}
           </FlexRow>
         )}
@@ -172,28 +103,9 @@ function TableHeaderView({
   );
 }
 
-function TableHeaderPin({
-  tableStyle,
-  position,
-  headers,
-  filterRowEnabled,
-  onChangeFilterValue,
-  checkedState,
-  handleCheckAll,
-  handleSort,
-}: {
-  tableStyle: TTableStyle;
-  position: 'left' | 'right';
-  headers: THeader[];
-  filterRowEnabled: boolean;
-  onChangeFilterValue: (headerId: string, value: string) => void;
-  checkedState?: {
-    isAllChecked: boolean;
-    isPartiallyChecked: boolean;
-  };
-  handleCheckAll?: () => void;
-  handleSort: (key: string) => void;
-}) {
+function TableHeaderPin({ position, headers }: { position: 'left' | 'right'; headers: THeader[] }) {
+  const { tableStyle, filterRowEnabled } = useTableContext();
+
   const pinHeaderWidth = headers.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
 
   return (
@@ -223,16 +135,7 @@ function TableHeaderPin({
         }}
       >
         {headers.map((header) => {
-          return (
-            <TableHeaderCell
-              key={header.id}
-              tableStyle={tableStyle}
-              header={header}
-              checkedState={checkedState}
-              handleCheckAll={handleCheckAll}
-              handleSort={handleSort}
-            />
-          );
+          return <TableHeaderCell key={header.id} header={header} />;
         })}
       </FlexRow>
       {filterRowEnabled && (
@@ -248,15 +151,7 @@ function TableHeaderPin({
           }}
         >
           {headers.map((header) => {
-            return (
-              <TableHeaderFilterCell
-                key={header.id}
-                tableStyle={tableStyle}
-                position={position}
-                header={header}
-                onChangeFilterValue={onChangeFilterValue}
-              />
-            );
+            return <TableHeaderFilterCell key={header.id} position={position} header={header} />;
           })}
         </FlexRow>
       )}
@@ -264,22 +159,9 @@ function TableHeaderPin({
   );
 }
 
-function TableHeaderCell({
-  tableStyle,
-  header,
-  checkedState,
-  handleCheckAll = () => {},
-  handleSort,
-}: {
-  tableStyle: TTableStyle;
-  header: THeader;
-  checkedState?: {
-    isAllChecked: boolean;
-    isPartiallyChecked: boolean;
-  };
-  handleCheckAll?: () => void;
-  handleSort: (key: string) => void;
-}) {
+function TableHeaderCell({ header }: { header: THeader }) {
+  const { tableStyle, checkedState, handleCheckAll, handleSort } = useTableContext();
+
   if (header.id === 'check' && checkedState === undefined) {
     throw new Error('checkedState is required for check header');
   }
@@ -337,16 +219,14 @@ function TableHeaderCell({
 }
 
 function TableHeaderFilterCell({
-  tableStyle,
   position,
   header,
-  onChangeFilterValue,
 }: {
-  tableStyle: TTableStyle;
   position: 'left' | 'right';
   header: THeader;
-  onChangeFilterValue: (headerId: string, value: string) => void;
 }) {
+  const { tableStyle, onChangeFilterValue } = useTableContext();
+
   return (
     <FlexRow
       key={header.id}

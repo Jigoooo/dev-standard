@@ -41,9 +41,9 @@ const defaultTableStyle: TTableStyle = {
   tableBodyHoverBackgroundColor: '#eaeaea',
 };
 
-const TableContext = createContext<TTableContext | null>(null);
-export const useTableContext = <T extends Record<string, unknown>>() => {
-  const tableContext = use(TableContext as unknown as Usable<TTableContext<T>>);
+const TableContext = createContext<TTableContext<any> | null>(null);
+export const useTableContext = <T extends Record<string, any>>() => {
+  const tableContext = use(TableContext as Usable<TTableContext<T>>);
 
   if (tableContext === null) {
     throw new Error('Table context is null. Please check the Table context ');
@@ -138,7 +138,23 @@ export function Table<TData extends { index: string } & Record<string, any>>({
   });
 
   return (
-    <TableContext value={{ headers, sortedHeaders, dataList: sortedDataList }}>
+    <TableContext
+      value={{
+        tableStyle: applyTableStyle,
+        bodyMaxHeight,
+        headers,
+        sortedHeaders,
+        dataList: sortedDataList,
+        handelDataList,
+        filterRowEnabled,
+        onChangeFilterValue,
+        isChecked,
+        checkedState,
+        handleCheckAll,
+        handleCheck,
+        handleSort,
+      }}
+    >
       <div
         ref={tableRef}
         className={'table-root selection-none'}
@@ -153,27 +169,9 @@ export function Table<TData extends { index: string } & Record<string, any>>({
           },
         }}
       >
-        <TableHeader
-          ref={headerRef}
-          tableStyle={applyTableStyle}
-          headers={sortedHeaders}
-          filterRowEnabled={filterRowEnabled}
-          onChangeFilterValue={onChangeFilterValue}
-          checkedState={checkedState}
-          handleCheckAll={handleCheckAll}
-          handleSort={handleSort}
-        />
+        <TableHeader ref={headerRef} />
 
-        <TableBody
-          ref={bodyRef}
-          tableStyle={applyTableStyle}
-          headers={headers}
-          dataList={sortedDataList}
-          handelDataList={handelDataList}
-          bodyMaxHeight={bodyMaxHeight}
-          isChecked={isChecked}
-          handleCheck={handleCheck}
-        />
+        <TableBody ref={bodyRef} />
 
         <FlexRow
           style={{

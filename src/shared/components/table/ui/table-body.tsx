@@ -8,7 +8,7 @@ import {
   CustomVerticalScrollbar,
   FlexRow,
   THeader,
-  TTableStyle,
+  useTableContext,
 } from '@/shared/components';
 import { colors } from '@/shared/constants';
 
@@ -20,23 +20,11 @@ function validateDataList<T>(dataList: unknown[], keys: (keyof T)[]): dataList i
 
 export function TableBody<TData extends { index: string }>({
   ref,
-  headers,
-  dataList,
-  handelDataList,
-  tableStyle,
-  bodyMaxHeight,
-  isChecked,
-  handleCheck,
 }: {
   ref: RefObject<HTMLDivElement | null>;
-  headers: THeader[];
-  dataList: TData[];
-  handelDataList: (index: string, key: string, value: any) => void;
-  tableStyle: TTableStyle;
-  bodyMaxHeight: number;
-  isChecked?: (data: TData) => boolean;
-  handleCheck?: (data: TData) => void;
 }) {
+  const { tableStyle, bodyMaxHeight, headers, dataList } = useTableContext();
+
   const viewHeaders = headers.filter((header) => header.pin === 'view');
   const viewHeight = tableStyle.tableBodyHeight * dataList.length;
   const viewWidth = viewHeaders.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
@@ -71,41 +59,26 @@ export function TableBody<TData extends { index: string }>({
       >
         {/* 왼쪽 고정 영역 */}
         <TableBodyPin
-          tableStyle={tableStyle}
           position={'left'}
           headers={leftPinHeaders}
-          dataList={dataList}
-          handelDataList={handelDataList}
           hoverIndex={hoverIndex}
           setHoverIndex={setHoverIndex}
-          isChecked={isChecked}
-          handleCheck={handleCheck}
         />
 
         {/* 중앙 영역 */}
         <TableBodyView
           ref={ref}
-          tableStyle={tableStyle}
           headers={viewHeaders}
-          dataList={dataList}
-          handelDataList={handelDataList}
           hoverIndex={hoverIndex}
           setHoverIndex={setHoverIndex}
-          isChecked={isChecked}
-          handleCheck={handleCheck}
         />
 
         {/* 오른쪽 고정 영역 */}
         <TableBodyPin
-          tableStyle={tableStyle}
           position={'right'}
           headers={rightPinHeaders}
-          dataList={dataList}
-          handelDataList={handelDataList}
           hoverIndex={hoverIndex}
           setHoverIndex={setHoverIndex}
-          isChecked={isChecked}
-          handleCheck={handleCheck}
         />
       </FlexRow>
 
@@ -122,27 +95,19 @@ export function TableBody<TData extends { index: string }>({
   );
 }
 
-function TableBodyView<TData extends Record<string, any>>({
+function TableBodyView({
   ref,
-  tableStyle,
   headers,
-  dataList,
-  handelDataList,
   hoverIndex,
   setHoverIndex,
-  isChecked,
-  handleCheck,
 }: {
   ref: RefObject<HTMLDivElement | null>;
-  tableStyle: TTableStyle;
   headers: THeader[];
-  dataList: TData[];
-  handelDataList: (index: string, key: string, value: any) => void;
   hoverIndex: string | null;
   setHoverIndex: (index: string | null) => void;
-  isChecked?: (data: TData) => boolean;
-  handleCheck?: (data: TData) => void;
 }) {
+  const { tableStyle, dataList } = useTableContext();
+
   const viewWidth = headers.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
 
   const rowVirtualizer = useVirtualizer({
@@ -192,16 +157,12 @@ function TableBodyView<TData extends Record<string, any>>({
                   <TableBodyCell
                     key={header.id}
                     rowIndex={virtualIndex}
-                    tableStyle={tableStyle}
                     data={data}
-                    handelDataList={handelDataList}
                     index={index}
                     isOdd={isOdd}
                     header={header}
                     hoverIndex={hoverIndex}
                     setHoverIndex={setHoverIndex}
-                    isChecked={isChecked}
-                    handleCheck={handleCheck}
                   />
                 );
               })}
@@ -213,27 +174,19 @@ function TableBodyView<TData extends Record<string, any>>({
   );
 }
 
-function TableBodyPin<TData extends Record<string, any>>({
-  tableStyle,
+function TableBodyPin({
   position,
   headers,
-  dataList,
-  handelDataList,
   hoverIndex,
   setHoverIndex,
-  isChecked,
-  handleCheck,
 }: {
-  tableStyle: TTableStyle;
   position: 'left' | 'right';
   headers: THeader[];
-  dataList: TData[];
-  handelDataList: (index: string, key: string, value: any) => void;
   hoverIndex: string | null;
   setHoverIndex: (index: string | null) => void;
-  isChecked?: (data: TData) => boolean;
-  handleCheck?: (data: TData) => void;
 }) {
+  const { tableStyle, dataList } = useTableContext();
+
   const pinHeaderWidth = headers.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
 
   const tableBodyRef = useRef<HTMLDivElement>(null);
@@ -287,16 +240,12 @@ function TableBodyPin<TData extends Record<string, any>>({
                 <TableBodyCell
                   key={header.id}
                   rowIndex={virtualIndex}
-                  tableStyle={tableStyle}
                   data={data}
-                  handelDataList={handelDataList}
                   index={index}
                   isOdd={isOdd}
                   header={header}
                   hoverIndex={hoverIndex}
                   setHoverIndex={setHoverIndex}
-                  isChecked={isChecked}
-                  handleCheck={handleCheck}
                 />
               );
             })}
@@ -308,31 +257,24 @@ function TableBodyPin<TData extends Record<string, any>>({
 }
 
 function TableBodyCell<TData extends Record<string, any>>({
-  tableStyle,
   rowIndex,
   data,
-  handelDataList,
   index,
   isOdd,
   header,
   hoverIndex,
   setHoverIndex,
-  isChecked,
-  handleCheck,
 }: {
-  tableStyle: TTableStyle;
   rowIndex: number;
   data: TData;
-  handelDataList: (index: string, key: string, value: any) => void;
   index: string;
   isOdd: boolean;
   header: THeader;
   hoverIndex: string | null;
   setHoverIndex: (index: string | null) => void;
-  isChecked?: (data: TData) => boolean;
-  handleCheck?: (data: TData) => void;
-  leftOffset?: number;
 }) {
+  const { tableStyle, handelDataList, isChecked, handleCheck } = useTableContext();
+
   if (header.id === 'check' && (isChecked === undefined || handleCheck === undefined)) {
     throw new Error('checkedState is required for check header');
   }
