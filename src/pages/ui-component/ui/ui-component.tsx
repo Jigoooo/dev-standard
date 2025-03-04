@@ -2,12 +2,15 @@ import {
   Button,
   ButtonStyle,
   Checkbox,
+  DateFromToPicker,
+  DatePicker,
   dialogActions,
   Divider,
   FlexColumn,
   FlexRow,
   Input,
   InputStyle,
+  loadingAction,
   ModalLayout,
   MultiSelect,
   Select,
@@ -17,6 +20,7 @@ import {
 } from '@/shared/components';
 import { useState } from 'react';
 import { useToggle } from '@/shared/hooks';
+import { sleep } from '@/shared/lib';
 
 export function UiComponent() {
   const [check, toggleCheck] = useToggle();
@@ -77,6 +81,23 @@ export function UiComponent() {
           Open dialog
         </Button>
       </FlexRow>
+      <FlexRow style={{ alignItems: 'center' }}>
+        <span style={{ width: 200, fontWeight: 500 }}>Show loading: </span>
+        <Button
+          onClick={async () => {
+            loadingAction.showLoading({
+              loadingText: 'Loading...',
+            });
+
+            await sleep(3000);
+
+            loadingAction.hideLoading();
+          }}
+          style={{ backgroundColor: '#6f9e28' }}
+        >
+          Show loading
+        </Button>
+      </FlexRow>
 
       <Divider style={{ marginBlock: 16, backgroundColor: '#bbbbbb' }} />
 
@@ -131,6 +152,14 @@ export function UiComponent() {
             { value: '3', label: 'Select 3' },
           ]}
         />
+      </FlexRow>
+      <FlexRow style={{ alignItems: 'center' }}>
+        <span style={{ width: 200, fontWeight: 500 }}>Date Picker: </span>
+        <DatePicker minDate={new Date('2025-02-01')} maxDate={new Date('2025-03-30')} />
+      </FlexRow>
+      <FlexRow style={{ alignItems: 'center' }}>
+        <span style={{ width: 200, fontWeight: 500 }}>Date Range Picker: </span>
+        <DateFromToPicker minDate={new Date('2025-02-01')} maxDate={new Date('2025-03-30')} />
       </FlexRow>
 
       <Divider style={{ marginBlock: 16, backgroundColor: '#bbbbbb' }} />

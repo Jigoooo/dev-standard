@@ -164,6 +164,15 @@ function Picker({
     handleDateClick(date);
   };
 
+  let disablePrev = false;
+  let disableNext = false;
+  if (minDate && isBefore(subMonths(currentDate, 1), minDate)) {
+    disablePrev = true;
+  }
+  if (maxDate && isAfter(addMonths(currentDate, 1), maxDate)) {
+    disableNext = true;
+  }
+
   return (
     <div
       style={{
@@ -180,14 +189,22 @@ function Picker({
       }}
     >
       <FlexRow style={{ justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-        <Button style={{ height: 38, backgroundColor: '#ffffff' }} onClick={handlePrevMonth}>
-          <ArrowBackIcon />
+        <Button
+          style={{ height: 38, backgroundColor: '#ffffff' }}
+          onClick={handlePrevMonth}
+          disabled={disablePrev}
+        >
+          <ArrowBackIcon style={{ color: disablePrev ? 'lightgrey' : 'black' }} />
         </Button>
         <span style={{ fontSize: '1.1rem', fontWeight: 700, lineHeight: 2 }}>
           {format(currentDate, 'yyyy년 MMMM', { locale: ko })}
         </span>
-        <Button style={{ height: 38, backgroundColor: '#ffffff' }} onClick={handleNextMonth}>
-          <ArrowForwardIcon />
+        <Button
+          style={{ height: 38, backgroundColor: '#ffffff' }}
+          onClick={handleNextMonth}
+          disabled={disableNext}
+        >
+          <ArrowForwardIcon style={{ color: disableNext ? 'lightgrey' : 'black' }} />
         </Button>
       </FlexRow>
       <FlexRow style={{ width: '100%', justifyContent: 'space-around', marginBottom: 8 }}>
