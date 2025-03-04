@@ -1,8 +1,6 @@
-import { useState } from 'react';
-
 import { useMenuState } from '@/entities/menu';
 import { MainLayout } from '@/entities/main';
-import { Input, Table, THeader } from '@/shared/components';
+import { Input, Table, THeader, useTableData } from '@/shared/components';
 import { testData } from '@/shared/components/table/ui/testData.ts';
 
 const tableHeaders: THeader[] = [
@@ -176,21 +174,7 @@ const tableHeaders: THeader[] = [
 export function Home() {
   const menuState = useMenuState();
 
-  const [dataList, setDataList] = useState(testData);
-
-  const handelDataList = (index: string, key: string, value: any) => {
-    setDataList((prevState) => {
-      return prevState.map((item) => {
-        if (item.index === index) {
-          return {
-            ...item,
-            [key]: value,
-          };
-        }
-        return item;
-      });
-    });
-  };
+  const { dataList, handelDataList } = useTableData(testData);
 
   return (
     <MainLayout headerTitle={menuState.selectedMenu.name}>
