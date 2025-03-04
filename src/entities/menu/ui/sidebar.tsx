@@ -1,5 +1,8 @@
 import { motion } from 'framer-motion';
 
+import { TbLayoutSidebarLeftCollapseFilled } from 'react-icons/tb';
+import { TbLayoutSidebarRightCollapseFilled } from 'react-icons/tb';
+
 import { FlexColumn } from '@/shared/components';
 import {
   MainMenuController,
@@ -29,7 +32,7 @@ export function Sidebar({ headerTitle }: { headerTitle: string }) {
           backgroundColor: '#1e232e',
           height: '100%',
           paddingBlock: 16,
-          gap: 15,
+          gap: 30,
         }}
       >
         <SidebarHeader title={headerTitle} />
@@ -51,7 +54,11 @@ export function Sidebar({ headerTitle }: { headerTitle: string }) {
           cursor: 'pointer',
         }}
       >
-        {menuState.sidebarCollapsed ? 'Expand' : 'Collapse'}
+        {menuState.sidebarCollapsed ? (
+          <TbLayoutSidebarRightCollapseFilled />
+        ) : (
+          <TbLayoutSidebarLeftCollapseFilled />
+        )}
       </motion.button>
 
       <MainMenuController />

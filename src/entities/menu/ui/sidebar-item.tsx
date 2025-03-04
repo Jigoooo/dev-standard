@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 
-import { menuActions, TMenu } from '@/entities/menu';
+import { menuActions, TMenu, useMenuState } from '@/entities/menu';
 import { FlexRow } from '@/shared/components';
 
 export function SidebarItem({
@@ -12,6 +12,8 @@ export function SidebarItem({
   menu: TMenu;
   onClickMenu: (menu: TMenu) => void;
 }) {
+  const menuState = useMenuState();
+
   return (
     <FlexRow
       as={motion.div}
@@ -23,6 +25,9 @@ export function SidebarItem({
         cursor: 'pointer',
         color: isSelected ? '#4ba7ff' : '#999999',
         transition: 'all 0.1s',
+        minHeight: 38,
+        height: 38,
+        maxHeight: 38,
       }}
       whileHover={{
         backgroundColor: 'rgba(255, 255, 255, 0.14)',
@@ -39,7 +44,17 @@ export function SidebarItem({
       }}
     >
       <menu.icon style={{ color: 'inherit', fontSize: '1.2rem' }} />
-      <span style={{ color: 'inherit', fontSize: '0.84rem', fontWeight: 700 }}>{menu.name}</span>
+      {!menuState.sidebarCollapsed && (
+        <motion.span
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1 }}
+          style={{ color: 'inherit', fontSize: '0.84rem', fontWeight: 700 }}
+        >
+          {menu.name}
+        </motion.span>
+      )}
     </FlexRow>
   );
 }
