@@ -104,21 +104,6 @@ export function UiComponent() {
       <Divider style={{ marginBlock: 16, backgroundColor: '#bbbbbb' }} />
 
       <FlexRow style={{ alignItems: 'center' }}>
-        <span style={{ width: 200, fontWeight: 500 }}>Input Outlined: </span>
-        <Input style={{ height: 36 }} />
-      </FlexRow>
-      <FlexRow style={{ alignItems: 'center' }}>
-        <span style={{ width: 200, fontWeight: 500 }}>Input Underline: </span>
-        <Input inputStyle={InputStyle.UNDERLINE} style={{ height: 36 }} />
-      </FlexRow>
-      <FlexRow style={{ alignItems: 'center' }}>
-        <span style={{ width: 200, fontWeight: 500 }}>Textarea: </span>
-        <Textarea style={{ width: 300 }} />
-      </FlexRow>
-
-      <Divider style={{ marginBlock: 16, backgroundColor: '#bbbbbb' }} />
-
-      <FlexRow style={{ alignItems: 'center' }}>
         <span style={{ width: 200, fontWeight: 500 }}>Select: </span>
         <Select
           label={'Select Label'}
@@ -151,6 +136,21 @@ export function UiComponent() {
       <FlexRow style={{ alignItems: 'center' }}>
         <span style={{ width: 200, fontWeight: 500 }}>Date Range Picker: </span>
         <DateFromToPicker minDate={new Date('2025-02-01')} maxDate={new Date('2025-03-30')} />
+      </FlexRow>
+
+      <Divider style={{ marginBlock: 16, backgroundColor: '#bbbbbb' }} />
+
+      <FlexRow style={{ alignItems: 'center' }}>
+        <span style={{ width: 200, fontWeight: 500 }}>Input Outlined: </span>
+        <Input style={{ height: 36 }} />
+      </FlexRow>
+      <FlexRow style={{ alignItems: 'center' }}>
+        <span style={{ width: 200, fontWeight: 500 }}>Input Underline: </span>
+        <Input inputStyle={InputStyle.UNDERLINE} style={{ height: 36 }} />
+      </FlexRow>
+      <FlexRow style={{ alignItems: 'center' }}>
+        <span style={{ width: 200, fontWeight: 500 }}>Textarea: </span>
+        <Textarea style={{ width: 300 }} />
       </FlexRow>
 
       <Divider style={{ marginBlock: 16, backgroundColor: '#bbbbbb' }} />
