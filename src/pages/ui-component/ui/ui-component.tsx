@@ -168,7 +168,7 @@ export function UiComponent() {
 
       <FlexRow style={{ alignItems: 'center' }}>
         <span style={{ width: 200, fontWeight: 500 }}>Dashed Divider: </span>
-        <DashedDivider strokeColor={'red'} />
+        <DashedDivider strokeColor={'red'} style={{ width: 500 }} />
       </FlexRow>
       <FlexRow style={{ alignItems: 'center' }}>
         <span style={{ width: 200, fontWeight: 500 }}>Tooltip: </span>
