@@ -95,6 +95,7 @@ const tableHeaders: THeader[] = [
     cell: ({ cellData, setCellData }) => {
       return (
         <Input
+          style={{ width: '100%', height: 30 }}
           value={cellData}
           onClick={(event) => event.stopPropagation()}
           onChange={(event) => setCellData(event.target.value)}
