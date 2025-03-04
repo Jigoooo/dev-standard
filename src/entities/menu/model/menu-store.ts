@@ -35,6 +35,7 @@ export const menus: TMenu[] = [
 
 const initialState: TMenuState = {
   sidebarCollapsed: false,
+  delayedSidebarCollapsed: false,
   sidebarWidth: 250,
   selectedMenu: menus[0],
 };
@@ -46,16 +47,46 @@ const useMenuStore = create<TMenuStore>()((setState, getState) => {
     },
     actions: {
       toggleSidebarCollapsed: () => {
+        const newSidebarCollapsed = !getState().state.sidebarCollapsed;
+
         setState((state) => {
+          const newSidebarCollapsed = !state.state.sidebarCollapsed;
+
+          if (newSidebarCollapsed) {
+            return {
+              ...state,
+              state: {
+                ...state.state,
+                delayedSidebarCollapsed: newSidebarCollapsed,
+                sidebarCollapsed: newSidebarCollapsed,
+                sidebarWidth: newSidebarCollapsed ? 50 : initialState.sidebarWidth,
+              },
+            };
+          }
+
           return {
             ...state,
             state: {
               ...state.state,
-              sidebarCollapsed: !getState().state.sidebarCollapsed,
-              sidebarWidth: !getState().state.sidebarCollapsed ? 50 : initialState.sidebarWidth,
+              sidebarCollapsed: newSidebarCollapsed,
+              sidebarWidth: newSidebarCollapsed ? 50 : initialState.sidebarWidth,
             },
           };
         });
+
+        setTimeout(() => {
+          if (newSidebarCollapsed) {
+            return;
+          }
+
+          setState((state) => ({
+            ...state,
+            state: {
+              ...state.state,
+              delayedSidebarCollapsed: state.state.sidebarCollapsed,
+            },
+          }));
+        }, 200);
       },
       setSelectedMenu: (menu) => {
         setState((state) => {

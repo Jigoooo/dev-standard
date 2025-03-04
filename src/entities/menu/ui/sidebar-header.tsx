@@ -8,12 +8,12 @@ export function SidebarHeader({ title }: { title: string }) {
 
   return (
     <FlexRow style={{ alignItems: 'center', paddingInline: 10, paddingBlock: 4, height: 42 }}>
-      {!menuState.sidebarCollapsed && (
+      {!menuState.delayedSidebarCollapsed && (
         <motion.span
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 1 }}
+          transition={{ duration: 0.2 }}
           style={{ fontSize: '1.1rem', fontWeight: 700, color: '#ffffff' }}
         >
           {title}

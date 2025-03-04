@@ -17,6 +17,7 @@ type TooltipProps = {
   position: TooltipPosition;
   children: ReactNode;
   content: ReactNode;
+  disabled?: boolean;
 };
 
 const tooltipPositionStyles: Record<TooltipPosition, CSSProperties> = {
@@ -30,14 +31,14 @@ const tooltipPositionStyles: Record<TooltipPosition, CSSProperties> = {
   right: { left: '100%', top: '50%', transform: 'translateY(-50%)' },
 };
 
-export function Tooltip({ position, children, content }: TooltipProps) {
+export function Tooltip({ position, children, content, disabled = false }: TooltipProps) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <div
       style={{ position: 'relative' }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={() => !disabled && setIsHovered(true)}
+      onMouseLeave={() => !disabled && setIsHovered(false)}
     >
       {children}
       <AnimatePresence>

@@ -9,6 +9,7 @@ export type TMenu = {
 
 export type TMenuState = {
   sidebarCollapsed: boolean;
+  delayedSidebarCollapsed: boolean;
   sidebarWidth: number;
   selectedMenu: TMenu;
 };
