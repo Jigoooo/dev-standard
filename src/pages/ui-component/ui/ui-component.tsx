@@ -119,17 +119,6 @@ export function UiComponent() {
       <Divider style={{ marginBlock: 16, backgroundColor: '#bbbbbb' }} />
 
       <FlexRow style={{ alignItems: 'center' }}>
-        <span style={{ width: 200, fontWeight: 500 }}>Checkbox: </span>
-        <Checkbox label={'Checkbox Label'} checked={check} onClick={toggleCheck} />
-      </FlexRow>
-      <FlexRow style={{ alignItems: 'center' }}>
-        <span style={{ width: 200, fontWeight: 500 }}>Switch: </span>
-        <Switch label={'Switch Label'} isOn={switchValue} onClick={toggleSwitch} />
-      </FlexRow>
-
-      <Divider style={{ marginBlock: 16, backgroundColor: '#bbbbbb' }} />
-
-      <FlexRow style={{ alignItems: 'center' }}>
         <span style={{ width: 200, fontWeight: 500 }}>Select: </span>
         <Select
           label={'Select Label'}
@@ -162,6 +151,17 @@ export function UiComponent() {
       <FlexRow style={{ alignItems: 'center' }}>
         <span style={{ width: 200, fontWeight: 500 }}>Date Range Picker: </span>
         <DateFromToPicker minDate={new Date('2025-02-01')} maxDate={new Date('2025-03-30')} />
+      </FlexRow>
+
+      <Divider style={{ marginBlock: 16, backgroundColor: '#bbbbbb' }} />
+
+      <FlexRow style={{ alignItems: 'center' }}>
+        <span style={{ width: 200, fontWeight: 500 }}>Checkbox: </span>
+        <Checkbox label={'Checkbox Label'} checked={check} onClick={toggleCheck} />
+      </FlexRow>
+      <FlexRow style={{ alignItems: 'center' }}>
+        <span style={{ width: 200, fontWeight: 500 }}>Switch: </span>
+        <Switch label={'Switch Label'} isOn={switchValue} onClick={toggleSwitch} />
       </FlexRow>
 
       <Divider style={{ marginBlock: 16, backgroundColor: '#bbbbbb' }} />
