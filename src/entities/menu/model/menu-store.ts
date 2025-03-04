@@ -9,9 +9,24 @@ import { useShallow } from 'zustand/react/shallow';
 
 export const menus: TMenu[] = [
   {
-    name: '홈',
+    name: 'UI 컴포넌트',
     icon: HomeOutlinedIcon,
-    router: Router.HOME,
+    router: Router.UI,
+  },
+  {
+    name: '파일 업로드/다운로드',
+    icon: HomeOutlinedIcon,
+    router: Router.FILE_UPLOAD_DOWNLOAD,
+  },
+  {
+    name: '엑셀 업로드/다운로드',
+    icon: HomeOutlinedIcon,
+    router: Router.EXCEL_UPLOAD_DOWNLOAD,
+  },
+  {
+    name: '메뉴/버튼 권한관리',
+    icon: HomeOutlinedIcon,
+    router: Router.ROLE_MANAGEMENT,
   },
 ] as const;
 

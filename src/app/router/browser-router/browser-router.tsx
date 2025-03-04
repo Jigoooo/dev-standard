@@ -18,7 +18,23 @@ export const browserRouter = createBrowserRouter([
     errorElement: <RouteErrorPage />,
     children: [
       {
-        path: Router.HOME,
+        path: Router.MY_PROFILE,
+        element: <Home />,
+      },
+      {
+        path: Router.UI,
+        element: <Home />,
+      },
+      {
+        path: Router.FILE_UPLOAD_DOWNLOAD,
+        element: <Home />,
+      },
+      {
+        path: Router.EXCEL_UPLOAD_DOWNLOAD,
+        element: <Home />,
+      },
+      {
+        path: Router.ROLE_MANAGEMENT,
         element: <Home />,
       },
     ],

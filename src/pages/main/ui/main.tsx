@@ -14,7 +14,7 @@ export function Main() {
         backgroundColor: '#ffffff',
       }}
     >
-      <div style={{ minWidth: 250, width: 250, height: '100%' }}>
+      <div style={{ userSelect: 'none', minWidth: 250, width: 250, height: '100%' }}>
         <FlexColumn
           style={{
             position: 'relative',
