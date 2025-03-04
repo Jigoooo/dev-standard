@@ -38,7 +38,7 @@ export function SidebarItem({
         onClickMenu(menu);
       }}
     >
-      <menu.icon sx={{ color: 'inherit', fontSize: '1.4rem' }} />
+      <menu.icon style={{ color: 'inherit', fontSize: '1.2rem' }} />
       <span style={{ color: 'inherit', fontSize: '0.84rem', fontWeight: 700 }}>{menu.name}</span>
     </FlexRow>
   );

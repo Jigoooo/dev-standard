@@ -1,9 +1,9 @@
-import { SvgIconComponent } from '@mui/icons-material';
 import { Router } from '@/entities/router';
+import { IconType } from 'react-icons';
 
 export type TMenu = {
   name: string;
-  icon: SvgIconComponent;
+  icon: IconType;
   router: Router;
 };
 
