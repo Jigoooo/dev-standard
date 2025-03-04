@@ -136,7 +136,7 @@ function SelectContainer({
         height: containerHeight,
         backgroundColor: '#ffffff',
         boxShadow: '0 0 3px rgba(50, 50, 50, 0.1)',
-        border: '1px solid #cccccc',
+        border: '2px solid #cccccc',
         borderRadius: 4,
         cursor: 'pointer',
         overflow: 'hidden',
@@ -151,7 +151,7 @@ function SelectContainer({
           <>
             <span
               style={{
-                fontSize: '0.9rem',
+                fontSize: '0.88rem',
                 fontWeight: 400,
                 color: '#333333',
                 whiteSpace: 'nowrap',
@@ -199,6 +199,7 @@ function SelectContainer({
                 containerWidth && optionsContainerWidth
                   ? `${optionsContainerWidth - 120}px`
                   : '100%',
+              gap: 4,
             }}
           >
             {selectedOptions.map((selectedOption, index) => {
@@ -218,7 +219,7 @@ function SelectContainer({
                 >
                   <span
                     style={{
-                      fontWeight: 500,
+                      fontWeight: 600,
                       fontSize: '1rem',
                       color: '#ffffff',
                     }}

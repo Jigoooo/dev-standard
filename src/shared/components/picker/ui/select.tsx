@@ -185,7 +185,7 @@ function SelectContainer({
       <FlexRow style={{ alignItems: 'center', gap: 8 }}>
         {label && (
           <>
-            <span style={{ fontSize: '0.9rem', fontWeight: 400, color: '#333333' }}>{label}</span>
+            <span style={{ fontSize: '0.88rem', fontWeight: 400, color: '#333333' }}>{label}</span>
             <div
               style={{ height: 20, width: 1, alignSelf: 'center', backgroundColor: '#cccccc' }}
             ></div>
@@ -196,7 +196,7 @@ function SelectContainer({
             style={{
               padding: '3px 6px',
               borderRadius: 4,
-              fontWeight: 500,
+              fontWeight: 600,
               fontSize: '1rem',
             }}
           >
