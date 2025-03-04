@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { LayoutGroup, motion } from 'framer-motion';
 import { CSSProperties } from 'react';
 import { colors } from '@/shared/constants';
 
@@ -34,8 +34,10 @@ export function Switch({
         justifyContent: 'space-between',
         alignItems: 'center',
         gap: 6,
+        cursor: disabled ? 'not-allowed' : 'pointer',
         ...containerStyle,
       }}
+      onClick={disabled ? undefined : onClick}
     >
       {label && (
         <span
@@ -52,35 +54,39 @@ export function Switch({
           {label}
         </span>
       )}
-      <div
-        style={{
-          display: 'flex',
-          width,
-          height,
-          borderRadius,
-          backgroundColor: disabled ? '#e0e0e0' : isOn ? colors.primary[400] : '#999999',
-          padding,
-          cursor: disabled ? 'not-allowed' : 'pointer',
-          justifyContent: isOn ? 'flex-end' : 'flex-start',
-          alignItems: 'center',
-        }}
-        onClick={disabled ? undefined : onClick}
-      >
+      <LayoutGroup>
         <motion.div
           layout
-          transition={{
-            type: 'spring',
-            stiffness: 700,
-            damping: 35,
+          onClick={(event) => {
+            event.stopPropagation();
+            if (!disabled) {
+              onClick();
+            }
           }}
           style={{
-            width: circleSize,
-            height: circleSize,
-            backgroundColor: 'white',
-            borderRadius: '50%',
+            display: 'flex',
+            width,
+            height,
+            borderRadius,
+            backgroundColor: disabled ? '#e0e0e0' : isOn ? colors.primary[400] : '#999999',
+            padding,
+            cursor: disabled ? 'not-allowed' : 'pointer',
+            justifyContent: isOn ? 'flex-end' : 'flex-start',
+            alignItems: 'center',
           }}
-        />
-      </div>
+        >
+          <motion.div
+            layoutId='switch-thumb'
+            transition={{ type: 'spring', stiffness: 700, damping: 35 }}
+            style={{
+              width: circleSize,
+              height: circleSize,
+              backgroundColor: 'white',
+              borderRadius: '50%',
+            }}
+          />
+        </motion.div>
+      </LayoutGroup>
     </div>
   );
 }
