@@ -285,7 +285,7 @@ export function DatePicker({
     <FlexColumn ref={datePickerRef} style={{ position: 'relative', width }}>
       {!isInputMode ? (
         <Input
-          style={{ width: 140 }}
+          style={{ width: 140, cursor: 'pointer' }}
           value={inputSelectedDateString}
           onClick={handleInputClick}
           readOnly
