@@ -2,9 +2,18 @@ import LogoutIcon from '@mui/icons-material/Logout';
 
 import { useLogout } from '@/entities/auth';
 import { Button, Divider, FlexColumn, FlexRow } from '@/shared/components';
+import { useNavigate } from 'react-router-dom';
+import { Router } from '@/entities/router';
+import { menuActions, myProfileMenu } from '@/entities/menu';
 
 export function SidebarFooter() {
+  const navigate = useNavigate();
   const logout = useLogout();
+
+  const goMyProfile = () => {
+    menuActions.setSelectedMenu(myProfileMenu);
+    navigate(Router.MY_PROFILE);
+  };
 
   return (
     <FlexColumn
@@ -34,7 +43,7 @@ export function SidebarFooter() {
             cursor: 'pointer',
             width: '70%',
           }}
-          onClick={() => {}}
+          onClick={goMyProfile}
         >
           <FlexColumn style={{ width: '90%' }}>
             <span

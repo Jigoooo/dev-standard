@@ -4,6 +4,7 @@ import { RxComponent1 } from 'react-icons/rx';
 import { RiFileExcel2Line } from 'react-icons/ri';
 import { FaRegFile } from 'react-icons/fa';
 import { MdOutlineManageAccounts } from 'react-icons/md';
+import { IoPersonCircleOutline } from 'react-icons/io5';
 
 import { TMenuState, TMenuStore } from '@/entities/menu/model/menu-type.ts';
 import { TMenu } from '@/entities/menu';
@@ -32,6 +33,12 @@ export const menus: TMenu[] = [
     router: Router.ROLE_MANAGEMENT,
   },
 ] as const;
+
+export const myProfileMenu: TMenu = {
+  name: '내 정보',
+  icon: IoPersonCircleOutline,
+  router: Router.MY_PROFILE,
+};
 
 const initialState: TMenuState = {
   sidebarCollapsed: false,
