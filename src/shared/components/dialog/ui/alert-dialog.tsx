@@ -83,11 +83,11 @@ export function AlertDialog() {
                 alignItems: 'center',
               }}
             >
-              <span style={{ fontSize: '1.3rem', fontWeight: 700, whiteSpace: 'pre-line' }}>
+              <span style={{ fontSize: '1.2rem', fontWeight: 700, whiteSpace: 'pre-line' }}>
                 {dialogInfos.title}
               </span>
             </FlexRow>
-            {!!dialogInfos.contents ? (
+            {dialogInfos.contents ? (
               <FlexColumn style={{ paddingTop: 8, paddingBottom: 24, whiteSpace: 'pre-line' }}>
                 <span style={{ fontSize: '1.05rem', fontWeight: 500, paddingRight: 12 }}>
                   {dialogInfos.contents}
@@ -98,7 +98,7 @@ export function AlertDialog() {
             )}
             <FlexRow
               style={{
-                gap: 1,
+                gap: 8,
                 width: '100%',
                 alignItems: 'center',
                 justifyContent: 'flex-end',
@@ -108,23 +108,24 @@ export function AlertDialog() {
                 <Button
                   buttonStyle={ButtonStyle.OUTLINED}
                   style={{
-                    height: 35,
+                    height: 36,
                     minWidth: 80,
                     color: '#bbbbbb',
-                    fontSize: '0.9rem',
-                    fontWeight: 500,
+                    borderColor: '#bbbbbb',
                   }}
                   onClick={() => {
                     window.history.back();
                     dialogInfos?.onCancel?.();
                   }}
                 >
-                  {dialogInfos.cancelText}
+                  <span style={{ color: '#555555', fontSize: '0.9rem', fontWeight: 500 }}>
+                    {dialogInfos.cancelText}
+                  </span>
                 </Button>
               )}
               <Button
                 style={{
-                  height: 35,
+                  height: 36,
                   minWidth: 80,
                   fontSize: '0.9rem',
                   fontWeight: 500,

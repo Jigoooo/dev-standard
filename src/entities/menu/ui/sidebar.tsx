@@ -4,6 +4,7 @@ import { FlexColumn } from '@/shared/components';
 import {
   MainMenuController,
   menus,
+  SidebarFooter,
   SidebarHeader,
   SidebarItems,
   useMenuState,
@@ -33,6 +34,7 @@ export function Sidebar({ headerTitle }: { headerTitle: string }) {
       >
         <SidebarHeader title={headerTitle} />
         <SidebarItems menus={menus} />
+        <SidebarFooter />
       </FlexColumn>
 
       <MainMenuController />
