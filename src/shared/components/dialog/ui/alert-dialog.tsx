@@ -11,6 +11,7 @@ import {
 import { useModalClose } from '@/shared/hooks';
 import { colors } from '@/shared/constants';
 import { useEffect, useRef } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 
 /* todo 모바일버전 만들어야 함 */
 
@@ -53,17 +54,21 @@ export function AlertDialog() {
   }, [dialogOpen]);
 
   return (
-    <>
+    <AnimatePresence>
       {dialogOpen && (
         <>
           <FlexColumn
+            as={motion.div}
+            initial={{ opacity: 0.6, scale: 0.94, x: '-50%', y: '-40%' }}
+            animate={{ opacity: 1, scale: 1, x: '-50%', y: '-50%' }}
+            exit={{ opacity: 0.2, scale: 0.98, x: '-50%', y: '-45%' }}
+            transition={{ duration: 0.1 }}
             ref={modalRef}
             tabIndex={-1}
             style={{
               position: 'fixed',
               top: '50%',
               left: '50%',
-              transform: 'translate(-50%, -50%)',
               zIndex: 100,
               minWidth: 350,
               maxWidth: 600,
@@ -83,13 +88,13 @@ export function AlertDialog() {
                 alignItems: 'center',
               }}
             >
-              <span style={{ fontSize: '1.2rem', fontWeight: 700, whiteSpace: 'pre-line' }}>
+              <span style={{ fontSize: '1.1rem', fontWeight: 700, whiteSpace: 'pre-line' }}>
                 {dialogInfos.title}
               </span>
             </FlexRow>
             {dialogInfos.contents ? (
               <FlexColumn style={{ paddingTop: 8, paddingBottom: 24, whiteSpace: 'pre-line' }}>
-                <span style={{ fontSize: '1.05rem', fontWeight: 500, paddingRight: 12 }}>
+                <span style={{ fontSize: '0.9rem', fontWeight: 400, paddingRight: 12 }}>
                   {dialogInfos.contents}
                 </span>
               </FlexColumn>
@@ -140,7 +145,11 @@ export function AlertDialog() {
               </Button>
             </FlexRow>
           </FlexColumn>
-          <div
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.1 }}
             style={{
               position: 'fixed',
               top: 0,
@@ -157,6 +166,6 @@ export function AlertDialog() {
           />
         </>
       )}
-    </>
+    </AnimatePresence>
   );
 }

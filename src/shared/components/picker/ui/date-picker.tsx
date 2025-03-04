@@ -214,7 +214,7 @@ function Picker({
           </div>
         ))}
       </FlexRow>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', rowGap: 14 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', rowGap: 8 }}>
         {days.map((day, index) => {
           const isDisabled =
             !!day &&
