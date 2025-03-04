@@ -169,7 +169,7 @@ const tableHeaders: THeader[] = [
   },
 ];
 
-export function Home() {
+export function RoleManagement() {
   const { dataList, handelDataList } = useTableData(testData);
 
   return (
