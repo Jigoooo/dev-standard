@@ -193,7 +193,6 @@ export function Home() {
           handleSyncCheckList={(checkedList) => {
             console.log(checkedList);
           }}
-          filterRowEnabled={true}
         />
       </div>
     </MainLayout>

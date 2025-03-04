@@ -59,7 +59,7 @@ export function Table<TData extends { index: string } & Record<string, any>>({
   handleSyncCheckList,
   tableStyle = {},
   dataKey = 'index',
-  filterRowEnabled = false,
+  filterRowEnabled = true,
 }: {
   tableHeaders: THeader[];
   tableDataList: TData[];
