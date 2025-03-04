@@ -180,7 +180,10 @@ function SelectContainer({
         borderRadius: 4,
         cursor: 'pointer',
       }}
-      onClick={toggleSelectBox}
+      onClick={(event) => {
+        event.stopPropagation();
+        toggleSelectBox();
+      }}
     >
       <FlexRow style={{ alignItems: 'center', gap: 8 }}>
         {label && (

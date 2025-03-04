@@ -55,12 +55,52 @@ export function useTableSorting<T>({
     }
   };
 
+  // const sortedDataList = useMemo(() => {
+  //   return [...dataList].sort((a, b) => {
+  //     const activeHeader = sortedHeaders.find(
+  //       (header) => header.sorter?.sortable && header.sorter.direction !== null,
+  //     );
+  //
+  //     if (!activeHeader) return 0;
+  //
+  //     const key = activeHeader.id;
+  //     const direction = activeHeader.sorter.direction;
+  //     const aValue = a[key as keyof T];
+  //     const bValue = b[key as keyof T];
+  //
+  //     const parseValue = (value: any, locale: string = 'ko') => {
+  //       if (value == null) return { text: '', num: -Infinity };
+  //       if (value instanceof Date) return { text: '', num: value.getTime() };
+  //       if (!isNaN(Number(value))) return { text: '', num: Number(value) };
+  //       if (typeof value === 'string') {
+  //         const match = value.match(/(\D*)(\d+)?/);
+  //         return {
+  //           text: match?.[1]?.toLocaleLowerCase(locale) || '',
+  //           num: match?.[2] ? Number(match[2]) : 0,
+  //         };
+  //       }
+  //       return { text: '', num: 0 };
+  //     };
+  //
+  //     const aParsed = parseValue(aValue);
+  //     const bParsed = parseValue(bValue);
+  //
+  //     const textComparison = aParsed.text.localeCompare(bParsed.text, 'ko', {
+  //       sensitivity: 'base',
+  //     });
+  //     if (textComparison !== 0) {
+  //       return direction === 'asc' ? textComparison : -textComparison;
+  //     }
+  //
+  //     return direction === 'asc' ? aParsed.num - bParsed.num : bParsed.num - aParsed.num;
+  //   });
+  // }, [dataList, sortedHeaders]);
+
   const sortedDataList = useMemo(() => {
     return [...dataList].sort((a, b) => {
       const activeHeader = sortedHeaders.find(
         (header) => header.sorter?.sortable && header.sorter.direction !== null,
       );
-
       if (!activeHeader) return 0;
 
       const key = activeHeader.id;
@@ -68,31 +108,9 @@ export function useTableSorting<T>({
       const aValue = a[key as keyof T];
       const bValue = b[key as keyof T];
 
-      const parseValue = (value: any, locale: string = 'ko') => {
-        if (value == null) return { text: '', num: -Infinity };
-        if (value instanceof Date) return { text: '', num: value.getTime() };
-        if (!isNaN(Number(value))) return { text: '', num: Number(value) };
-        if (typeof value === 'string') {
-          const match = value.match(/(\D*)(\d+)?/);
-          return {
-            text: match?.[1]?.toLocaleLowerCase(locale) || '',
-            num: match?.[2] ? Number(match[2]) : 0,
-          };
-        }
-        return { text: '', num: 0 };
-      };
-
-      const aParsed = parseValue(aValue);
-      const bParsed = parseValue(bValue);
-
-      const textComparison = aParsed.text.localeCompare(bParsed.text, 'ko', {
-        sensitivity: 'base',
-      });
-      if (textComparison !== 0) {
-        return direction === 'asc' ? textComparison : -textComparison;
-      }
-
-      return direction === 'asc' ? aParsed.num - bParsed.num : bParsed.num - aParsed.num;
+      const collator = new Intl.Collator('ko', { numeric: true, sensitivity: 'base' });
+      const cmp = collator.compare(String(aValue), String(bValue));
+      return direction === 'asc' ? cmp : -cmp;
     });
   }, [dataList, sortedHeaders]);
 

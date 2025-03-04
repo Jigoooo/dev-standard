@@ -97,14 +97,13 @@ const tableHeaders: THeader[] = [
         <Input
           style={{ width: '100%', height: 30 }}
           value={cellData}
-          onClick={(event) => event.stopPropagation()}
           onChange={(event) => setCellData(event.target.value)}
           isFocusEffect={false}
         />
       );
     },
     sorter: {
-      sortable: true,
+      sortable: false,
       direction: null,
     },
     filter: {
@@ -178,9 +177,10 @@ export function Home() {
   const menuState = useMenuState();
 
   const [dataList, setDataList] = useState(testData);
+
   const handelDataList = useCallback((index: string, key: string, value: any) => {
-    setDataList((prev) => {
-      return prev.map((item) => {
+    setDataList((prevState) => {
+      return prevState.map((item) => {
         if (item.index === index) {
           return {
             ...item,

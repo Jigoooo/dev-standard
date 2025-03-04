@@ -68,6 +68,7 @@ export function Input({
   startDecorator,
   endDecorator,
   isFocusEffect = true,
+  onClick,
   ...props
 }: ExtendedInputProps) {
   const extraPadding = 28;
@@ -115,6 +116,10 @@ export function Input({
           paddingRight: endDecorator ? extraPadding : defaultInputStyle.paddingInline,
           ...style,
           ...(props.disabled ? inputDisabledStyles[inputStyle] : {}),
+        }}
+        onClick={(event) => {
+          event.stopPropagation();
+          onClick?.(event);
         }}
         {...props}
       />

@@ -149,7 +149,8 @@ function TableBodyView<TData extends Record<string, any>>({
     count: dataList.length,
     getScrollElement: () => ref.current,
     estimateSize: () => tableStyle.tableBodyHeight,
-    overscan: 10,
+    overscan: 1,
+    getItemKey: (index) => dataList[index].index,
   });
 
   return (
@@ -241,7 +242,8 @@ function TableBodyPin<TData extends Record<string, any>>({
     count: dataList.length,
     getScrollElement: () => tableBodyRef.current,
     estimateSize: () => tableStyle.tableBodyHeight,
-    overscan: 10,
+    overscan: 1,
+    getItemKey: (index) => dataList[index].index,
   });
 
   return (
