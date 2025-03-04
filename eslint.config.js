@@ -10,14 +10,6 @@ import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 /** @type {import('eslint').Linter.Config[]} */
 export default [
   { files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'] },
-  {
-    rules: {
-      '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/ban-ts-comment': 'off',
-      'prettier/prettier': 'error',
-      'react/react-in-jsx-scope': 'off',
-    },
-  },
   { languageOptions: { globals: globals.browser } },
   pluginJs.configs.recommended,
   ...pluginQuery.configs['flat/recommended'],
@@ -28,4 +20,12 @@ export default [
   reactHooks.configs['recommended-latest'],
   eslintConfigPrettier,
   eslintPluginPrettierRecommended,
+  {
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/ban-ts-comment': 'off',
+      'prettier/prettier': 'error',
+      'react/react-in-jsx-scope': 'off',
+    },
+  },
 ];
