@@ -20,7 +20,7 @@ export type THeader = {
   id: string;
   label: string;
   width: number;
-  customCell?: ({
+  cell?: ({
     cellData,
     rowData,
     setCellData,

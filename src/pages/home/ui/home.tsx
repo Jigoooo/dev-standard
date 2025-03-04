@@ -1,7 +1,8 @@
+import { useCallback, useState } from 'react';
+
 import { useMenuState } from '@/entities/menu';
 import { MainLayout } from '@/entities/main';
-import { Table, THeader } from '@/shared/components';
-import { useState } from 'react';
+import { Input, Table, THeader } from '@/shared/components';
 import { testData } from '@/shared/components/table/ui/testData.ts';
 
 const tableHeaders: THeader[] = [
@@ -91,6 +92,16 @@ const tableHeaders: THeader[] = [
     align: 'left',
     label: '휴대폰번호',
     width: 150,
+    cell: ({ cellData, setCellData }) => {
+      return (
+        <Input
+          value={cellData}
+          onClick={(event) => event.stopPropagation()}
+          onChange={(event) => setCellData(event.target.value)}
+          isFocusEffect={false}
+        />
+      );
+    },
     sorter: {
       sortable: true,
       direction: null,
@@ -166,7 +177,7 @@ export function Home() {
   const menuState = useMenuState();
 
   const [dataList, setDataList] = useState(testData);
-  const handelDataList = (index: string, key: string, value: any) => {
+  const handelDataList = useCallback((index: string, key: string, value: any) => {
     setDataList((prev) => {
       return prev.map((item) => {
         if (item.index === index) {
@@ -178,7 +189,7 @@ export function Home() {
         return item;
       });
     });
-  };
+  }, []);
 
   return (
     <MainLayout headerTitle={menuState.selectedMenu.name}>

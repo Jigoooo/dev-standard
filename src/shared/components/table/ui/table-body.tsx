@@ -1,4 +1,4 @@
-import { isValidElement, RefObject, useRef, useState } from 'react';
+import { RefObject, useRef, useState } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { motion } from 'framer-motion';
 
@@ -340,11 +340,31 @@ function TableBodyCell<TData extends Record<string, any>>({
 
   const cellData = data[header.id];
 
+  const getBackgroundColor = () => {
+    if (header.id === 'index') {
+      return tableStyle.tableHeaderBackgroundColor;
+    }
+    if (isChecked!(data) && hoverIndex === index) {
+      return colors.primary[100];
+    }
+    if (isChecked!(data)) {
+      return colors.primary[50];
+    }
+    if (hoverIndex === index) {
+      return tableStyle.tableBodyHoverBackgroundColor;
+    }
+    if (isOdd) {
+      return tableStyle.tableBodyOddBackgroundColor;
+    }
+
+    return tableStyle.tableBodyBackgroundColor;
+  };
+
   return (
     <FlexRow
       as={motion.div}
       className={'table-body-cell'}
-      key={header.id}
+      key={header.id + rowIndex}
       style={{
         boxSizing: 'border-box',
         justifyContent,
@@ -352,18 +372,7 @@ function TableBodyCell<TData extends Record<string, any>>({
         paddingInline: 12,
         width: header.width,
         height: '100%',
-        backgroundColor:
-          isChecked!(data) && hoverIndex === index
-            ? colors.primary[100]
-            : isChecked!(data)
-              ? colors.primary[50]
-              : hoverIndex === index
-                ? tableStyle.tableBodyHoverBackgroundColor
-                : header.id === 'index'
-                  ? tableStyle.tableHeaderBackgroundColor
-                  : isOdd
-                    ? tableStyle.tableBodyOddBackgroundColor
-                    : tableStyle.tableBodyBackgroundColor,
+        backgroundColor: getBackgroundColor(),
         contain: 'paint',
       }}
       onMouseEnter={() => {
@@ -385,8 +394,8 @@ function TableBodyCell<TData extends Record<string, any>>({
           }}
         />
       )}
-      {header.customCell && isValidElement(cellData) ? (
-        header.customCell({
+      {typeof header.cell === 'function' ? (
+        header.cell({
           cellData,
           rowData: data,
           setCellData: (value) => {
