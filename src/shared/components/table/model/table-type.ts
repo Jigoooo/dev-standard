@@ -1,5 +1,11 @@
 import { ReactNode } from 'react';
 
+export type TTableContext<TData extends Record<string, any> = Record<string, any>> = {
+  headers: THeader[];
+  sortedHeaders: THeader[];
+  dataList: (TData & { index: string })[];
+};
+
 export type TTableStyle = {
   tableResizeColor: string;
   tableBorderColor: string;

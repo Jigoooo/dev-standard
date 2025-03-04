@@ -42,7 +42,7 @@ export type TTablePagination = {
   pageSize: number;
 };
 
-export type TTableContext<T> = {
+export type TTableContextLegacy<T> = {
   headers: TTableHeader[];
   dataList: T[];
   handleSort: (key: string) => void;

@@ -6,8 +6,8 @@ import { colors, TABLE_Z_INDEX } from '@/shared/constants';
 import {
   Checkbox,
   calculateTableFixedValues,
-  TableContext,
-  TTableContext,
+  TableContextLegacy,
+  TTableContextLegacy,
   FlexColumn,
   FlexRow,
   Link,
@@ -48,7 +48,7 @@ export function TableBodyLegacy<T>({
   handleCheck?: (key: string | number) => void;
   emptyMessage?: string;
 }) {
-  const tableContext = use(TableContext as unknown as Usable<TTableContext<T>>);
+  const tableContext = use(TableContextLegacy as unknown as Usable<TTableContextLegacy<T>>);
 
   if (tableContext === null) {
     throw new Error(`Table context is null. Please check the Table context `);

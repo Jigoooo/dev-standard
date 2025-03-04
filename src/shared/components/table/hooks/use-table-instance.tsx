@@ -1,6 +1,5 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import {
-  ColumnDef,
   createColumnHelper,
   getCoreRowModel,
   getSortedRowModel,
@@ -21,7 +20,7 @@ export function useTableInstance<TColumnData>({
 }: UseTableInstanceProps<TColumnData>) {
   const [sorting, setSorting] = useState<SortingState>([]);
 
-  const columns = useMemo<ColumnDef<TColumnData, any>[]>(() => {
+  const columns = () => {
     const columnHelper = createColumnHelper<TColumnData>();
 
     return (Object.keys(columnConfig) as (keyof TColumnData)[])
@@ -46,11 +45,11 @@ export function useTableInstance<TColumnData>({
         });
       })
       .filter((column) => column !== null);
-  }, [columnConfig]);
+  };
 
   const tableInstance = useReactTable({
     data,
-    columns,
+    columns: columns(),
     pageCount: pageCount ?? -1,
     state: {
       sorting,
@@ -71,18 +70,13 @@ export function useTableInstance<TColumnData>({
     tableInstance.setPageSize(newPageSize);
   };
 
-  const tableWidth = useMemo(() => {
-    return (
-      tableInstance
-        .getAllColumns()
-        .map((column) => column.getSize())
-        .reduce((a, b) => a + b, 0) + otherColumnWidth
-    );
-  }, [tableInstance, otherColumnWidth]);
+  const tableWidth =
+    tableInstance
+      .getAllColumns()
+      .map((column) => column.getSize())
+      .reduce((a, b) => a + b, 0) + otherColumnWidth;
 
-  const sheetMinWidth = useMemo(() => {
-    return tableWidth / 1.5;
-  }, [tableWidth]);
+  const sheetMinWidth = tableWidth / 1.5;
 
   return { tableInstance, paginatedSizeChange, tableWidth, sheetMinWidth };
 }

@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import CloseIcon from '@mui/icons-material/Close';
@@ -36,10 +36,9 @@ export function MultiSelect<ValuesType extends (string | number)[]>({
     outsideClickAction: () => setIsOpen(false),
   });
 
-  const selectedOptions = useMemo(
-    () => options.filter((option) => values.includes(option.value)).map((option) => option),
-    [options, values],
-  );
+  const selectedOptions = options
+    .filter((option) => values.includes(option.value))
+    .map((option) => option);
 
   const toggleSelectBox = () => setIsOpen(!isOpen);
 

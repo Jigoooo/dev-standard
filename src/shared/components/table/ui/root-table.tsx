@@ -1,8 +1,8 @@
 import { createContext } from 'react';
 
-import { TTableContext } from '@/shared/components';
+import { TTableContextLegacy } from '@/shared/components';
 
-export const TableContext = createContext<TTableContext<unknown> | null>(null);
+export const TableContextLegacy = createContext<TTableContextLegacy<unknown> | null>(null);
 
 /*
  * todo

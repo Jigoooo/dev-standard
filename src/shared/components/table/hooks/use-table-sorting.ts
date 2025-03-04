@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { THeader } from '@/shared/components';
 
@@ -12,19 +12,18 @@ export function useTableSorting<T>({
   isMultipleSorting?: boolean;
 }) {
   const [sortState, setSortState] = useState<Record<string, 'asc' | 'desc' | null>>({});
+  const [sortedDataList, setSortedDataList] = useState<T[]>([...dataList]);
 
-  const sortedHeaders = useMemo(() => {
-    return headers.map((header) => ({
-      ...header,
-      sorter: {
-        ...header.sorter,
-        direction:
-          sortState[header.id] !== undefined
-            ? sortState[header.id]
-            : header.sorter?.direction || null,
-      },
-    }));
-  }, [headers, sortState]);
+  const sortedHeaders = headers.map((header) => ({
+    ...header,
+    sorter: {
+      ...header.sorter,
+      direction:
+        sortState[header.id] !== undefined
+          ? sortState[header.id]
+          : header.sorter?.direction || null,
+    },
+  }));
 
   const handleSort = (key: string) => {
     const targetHeader = headers.find((header) => header.id === key);
@@ -96,11 +95,12 @@ export function useTableSorting<T>({
   //   });
   // }, [dataList, sortedHeaders]);
 
-  const sortedDataList = useMemo(() => {
-    return [...dataList].sort((a, b) => {
+  useEffect(() => {
+    const sorted = [...dataList].sort((a, b) => {
       const activeHeader = sortedHeaders.find(
         (header) => header.sorter?.sortable && header.sorter.direction !== null,
       );
+
       if (!activeHeader) return 0;
 
       const key = activeHeader.id;
@@ -112,6 +112,8 @@ export function useTableSorting<T>({
       const cmp = collator.compare(String(aValue), String(bValue));
       return direction === 'asc' ? cmp : -cmp;
     });
+
+    setSortedDataList(sorted);
   }, [dataList, sortedHeaders]);
 
   const resetSort = () => {

@@ -3,7 +3,7 @@ export type {
   ColumnValueFunction,
   UseTableInstanceProps,
   TTableHeader,
-  TTableContext,
+  TTableContextLegacy,
   TTablePagination,
 } from './table-type-legacy.ts';
-export type { TTableStyle, THeader } from './table-type.ts';
+export type { TTableContext, TTableStyle, THeader } from './table-type.ts';

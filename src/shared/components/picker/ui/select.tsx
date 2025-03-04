@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { colors, SELECT_BOX_ITEM_Z_INDEX } from '@/shared/constants';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
@@ -37,10 +37,7 @@ export function Select<ValueType extends string | number>({
     outsideClickAction: () => setIsOpen(false),
   });
 
-  const selectedLabel = useMemo(
-    () => options.find((option) => option.value === value)?.label || '',
-    [options, value],
-  );
+  const selectedLabel = options.find((option) => option.value === value)?.label || '';
 
   const toggleSelectBox = () => {
     if (!isOpen && isAutocomplete) {
@@ -58,14 +55,14 @@ export function Select<ValueType extends string | number>({
     setHighlightedIndex(null);
   };
 
-  const filteredOptions = useMemo(() => {
+  const filteredOptions = () => {
     if (!isAutocomplete) {
       return options;
     }
     return options.filter((option) =>
       option.label.toLowerCase().includes(filterText.toLowerCase()),
     );
-  }, [options, filterText, isAutocomplete]);
+  };
 
   // const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
   //   if (!isOpen) {
@@ -127,7 +124,7 @@ export function Select<ValueType extends string | number>({
       />
       {isOpen && (
         <SelectItems
-          options={filteredOptions}
+          options={filteredOptions()}
           selectedValue={value}
           highlightedIndex={highlightedIndex}
           selectValue={(newValue) => {

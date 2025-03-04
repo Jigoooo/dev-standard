@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { FlexRow, ModalContext } from '@/shared/components';
@@ -29,10 +29,8 @@ export function ModalContextWrapper({ children }: { children: ReactNode }) {
     }
   }, [isOpen]);
 
-  const contextValue = useMemo(() => ({ open, close, setIsPossibleOverlayClose }), []);
-
   return (
-    <ModalContext value={contextValue}>
+    <ModalContext value={{ open, close, setIsPossibleOverlayClose }}>
       {children}
       <AnimatePresence>
         {isOpen && modalRender && (

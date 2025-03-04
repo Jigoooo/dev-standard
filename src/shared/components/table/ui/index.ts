@@ -1,4 +1,4 @@
-export { Table } from './table.tsx';
+export { Table, useTableContext } from './table.tsx';
 export { TableBodyLegacy } from './table-body-legacy.tsx';
 export { TableHeaderLegacy } from './table-header-legacy.tsx';
-export { TableContext } from './root-table.tsx';
+export { TableContextLegacy } from './root-table.tsx';

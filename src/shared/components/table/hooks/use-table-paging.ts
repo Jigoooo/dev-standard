@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 
 import { TTablePagination } from '@/shared/components';
 
@@ -24,18 +24,18 @@ export function useTablePaging<T>({
 
   const totalPages = Math.ceil(dataList.length / pagination.pageSize);
 
-  const currentPageDataList = useMemo(() => {
+  const currentPageDataList = () => {
     const pageIndex = pagination.currentPage - 1;
 
     const start = pageIndex * pagination.pageSize;
     const end = start + pagination.pageSize;
     return dataList.slice(start, end);
-  }, [pagination.currentPage, pagination.pageSize, dataList]);
+  };
 
   return {
     pagination,
     totalPages,
-    currentPageDataList,
+    currentPageDataList: currentPageDataList(),
     handlePageChange,
     handlePageSizeChange,
   };

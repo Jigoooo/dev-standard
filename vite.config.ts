@@ -1,8 +1,12 @@
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react-swc';
+import react from '@vitejs/plugin-react';
 import svgr from 'vite-plugin-svgr';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
+
+const ReactCompilerConfig = {
+  /* ... */
+};
 
 export default defineConfig({
   // server: {
@@ -18,7 +22,11 @@ export default defineConfig({
     svgr({
       svgrOptions: {},
     }),
-    react(),
+    react({
+      babel: {
+        plugins: [['babel-plugin-react-compiler', ReactCompilerConfig]],
+      },
+    }),
     tsconfigPaths(),
     ViteImageOptimizer({
       test: /\.(jpe?g|png|gif|tiff|webp|svg|avif)$/i,

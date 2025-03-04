@@ -1,7 +1,8 @@
-import { RefObject, useEffect, useMemo, useRef, useState } from 'react';
+import { createContext, RefObject, Usable, use, useEffect, useRef, useState } from 'react';
 
 import {
   FlexRow,
+  TTableContext,
   THeader,
   TTableStyle,
   useTableChecked,
@@ -38,6 +39,17 @@ const defaultTableStyle: TTableStyle = {
   tableBodyColor: 'rgba(0, 0, 0, 1)',
   tableFooterHeight: 40,
   tableBodyHoverBackgroundColor: '#eaeaea',
+};
+
+const TableContext = createContext<TTableContext | null>(null);
+export const useTableContext = <T extends Record<string, unknown>>() => {
+  const tableContext = use(TableContext as unknown as Usable<TTableContext<T>>);
+
+  if (tableContext === null) {
+    throw new Error('Table context is null. Please check the Table context ');
+  }
+
+  return tableContext;
 };
 
 export function Table<TData extends { index: string } & Record<string, any>>({
@@ -108,19 +120,17 @@ export function Table<TData extends { index: string } & Record<string, any>>({
 
   const bodyMaxHeight = tableHeight - headerHeight - applyTableStyle.tableFooterHeight;
 
-  const filteredDataList = useMemo(() => {
-    return filterRowEnabled
-      ? tableDataList.filter((data) => {
-          return headers.every((header) => {
-            const filterValue = header.filter?.filterValue || '';
+  const filteredDataList = filterRowEnabled
+    ? tableDataList.filter((data) => {
+        return headers.every((header) => {
+          const filterValue = header.filter?.filterValue || '';
 
-            if (filterValue === '') return true;
-            const cellValue = String(data[header.id]).toLowerCase();
-            return cellValue.includes(filterValue.toLowerCase());
-          });
-        })
-      : tableDataList;
-  }, [filterRowEnabled, headers, tableDataList]);
+          if (filterValue === '') return true;
+          const cellValue = String(data[header.id]).toLowerCase();
+          return cellValue.includes(filterValue.toLowerCase());
+        });
+      })
+    : tableDataList;
 
   const { sortedHeaders, sortedDataList, handleSort } = useTableSorting({
     headers,
@@ -128,70 +138,72 @@ export function Table<TData extends { index: string } & Record<string, any>>({
   });
 
   return (
-    <div
-      ref={tableRef}
-      className={'table-root selection-none'}
-      style={{
-        ...{
-          position: 'relative',
-          height: '100%',
-          maxWidth: totalWidth,
-          border: applyTableStyle.tableBorder,
-          borderRadius: applyTableStyle.tableBorderRadius,
-          overflow: 'hidden',
-        },
-      }}
-    >
-      <TableHeader
-        ref={headerRef}
-        tableStyle={applyTableStyle}
-        headers={sortedHeaders}
-        filterRowEnabled={filterRowEnabled}
-        onChangeFilterValue={onChangeFilterValue}
-        checkedState={checkedState}
-        handleCheckAll={handleCheckAll}
-        handleSort={handleSort}
-      />
-
-      <TableBody
-        ref={bodyRef}
-        tableStyle={applyTableStyle}
-        headers={headers}
-        dataList={sortedDataList}
-        handelDataList={handelDataList}
-        bodyMaxHeight={bodyMaxHeight}
-        isChecked={isChecked}
-        handleCheck={handleCheck}
-      />
-
-      <FlexRow
+    <TableContext value={{ headers, sortedHeaders, dataList: sortedDataList }}>
+      <div
+        ref={tableRef}
+        className={'table-root selection-none'}
         style={{
-          position: 'absolute',
-          bottom: 0,
-          width: '100%',
-          height: applyTableStyle.tableFooterHeight,
-          backgroundColor: '#ffffff',
-          borderTop: applyTableStyle.tableBorder,
-          alignItems: 'center',
-          paddingLeft: 12,
+          ...{
+            position: 'relative',
+            height: '100%',
+            maxWidth: totalWidth,
+            border: applyTableStyle.tableBorder,
+            borderRadius: applyTableStyle.tableBorderRadius,
+            overflow: 'hidden',
+          },
         }}
       >
-        <span style={{ fontSize: '0.86rem', color: '#999999', fontWeight: 500 }}>
-          Rows:{' '}
-          {filteredDataList.length !== tableDataList.length && (
-            <>
-              <span style={{ color: '#000000', fontWeight: 500 }}>{filteredDataList.length}</span>
-              &nbsp;
-              <span style={{ color: '#000000', fontWeight: 500 }}>of</span>
-              &nbsp;
-            </>
-          )}
-          <span style={{ fontSize: '0.86rem', color: '#000000', fontWeight: 500 }}>
-            {tableDataList.length}
+        <TableHeader
+          ref={headerRef}
+          tableStyle={applyTableStyle}
+          headers={sortedHeaders}
+          filterRowEnabled={filterRowEnabled}
+          onChangeFilterValue={onChangeFilterValue}
+          checkedState={checkedState}
+          handleCheckAll={handleCheckAll}
+          handleSort={handleSort}
+        />
+
+        <TableBody
+          ref={bodyRef}
+          tableStyle={applyTableStyle}
+          headers={headers}
+          dataList={sortedDataList}
+          handelDataList={handelDataList}
+          bodyMaxHeight={bodyMaxHeight}
+          isChecked={isChecked}
+          handleCheck={handleCheck}
+        />
+
+        <FlexRow
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            width: '100%',
+            height: applyTableStyle.tableFooterHeight,
+            backgroundColor: '#ffffff',
+            borderTop: applyTableStyle.tableBorder,
+            alignItems: 'center',
+            paddingLeft: 12,
+          }}
+        >
+          <span style={{ fontSize: '0.86rem', color: '#999999', fontWeight: 500 }}>
+            Rows:{' '}
+            {filteredDataList.length !== tableDataList.length && (
+              <>
+                <span style={{ color: '#000000', fontWeight: 500 }}>{filteredDataList.length}</span>
+                &nbsp;
+                <span style={{ color: '#000000', fontWeight: 500 }}>of</span>
+                &nbsp;
+              </>
+            )}
+            <span style={{ fontSize: '0.86rem', color: '#000000', fontWeight: 500 }}>
+              {tableDataList.length}
+            </span>
           </span>
-        </span>
-      </FlexRow>
-    </div>
+        </FlexRow>
+      </div>
+    </TableContext>
   );
 }
 
@@ -212,8 +224,8 @@ function useSyncScroll(
       bodyEl.scrollLeft = headerEl.scrollLeft;
     };
 
-    bodyEl.addEventListener('scroll', onBodyScroll, { passive: true });
-    headerEl.addEventListener('scroll', onHeaderScroll, { passive: true });
+    bodyEl.addEventListener('scroll', onBodyScroll);
+    headerEl.addEventListener('scroll', onHeaderScroll);
 
     return () => {
       bodyEl.removeEventListener('scroll', onBodyScroll);

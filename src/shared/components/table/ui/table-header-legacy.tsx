@@ -8,7 +8,7 @@ import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 import {
   Checkbox,
   calculateTableFixedValues,
-  TableContext,
+  TableContextLegacy,
   FlexRow,
   FlexColumn,
   Divider,
@@ -39,7 +39,7 @@ export function TableHeaderLegacy({
   };
   handleCheckAll?: () => void;
 }) {
-  const tableContext = use(TableContext);
+  const tableContext = use(TableContextLegacy);
 
   if (tableContext === null) {
     return;
