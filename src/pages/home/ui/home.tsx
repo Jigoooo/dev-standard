@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 
 import { useMenuState } from '@/entities/menu';
 import { MainLayout } from '@/entities/main';
@@ -178,7 +178,7 @@ export function Home() {
 
   const [dataList, setDataList] = useState(testData);
 
-  const handelDataList = useCallback((index: string, key: string, value: any) => {
+  const handelDataList = (index: string, key: string, value: any) => {
     setDataList((prevState) => {
       return prevState.map((item) => {
         if (item.index === index) {
@@ -190,7 +190,7 @@ export function Home() {
         return item;
       });
     });
-  }, []);
+  };
 
   return (
     <MainLayout headerTitle={menuState.selectedMenu.name}>
