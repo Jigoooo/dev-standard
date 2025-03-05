@@ -204,14 +204,14 @@ export function UiComponent() {
             isOpen={accordionStates[0].isOpen}
             toggleAccordion={() => toggleAccordion(accordionStates[0].id)}
           >
-            <span>contents</span>
+            <span style={{ paddingBottom: 16 }}>contents 1</span>
           </Accordion>
           <Accordion
             title={'Accordion 2'}
             isOpen={accordionStates[1].isOpen}
             toggleAccordion={() => toggleAccordion(accordionStates[1].id)}
           >
-            <span>contents</span>
+            <span style={{ paddingBottom: 16 }}>contents 2</span>
           </Accordion>
         </AccordionGroup>
       </FlexRow>

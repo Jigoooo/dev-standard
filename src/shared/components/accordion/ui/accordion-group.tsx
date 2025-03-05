@@ -31,6 +31,7 @@ export function AccordionGroup({
       <FlexColumn
         style={{
           userSelect: 'none',
+          gap: 16,
           ...style,
         }}
       >
@@ -66,12 +67,13 @@ export function Accordion({
   }, [children, isOpen]);
 
   return (
-    <FlexColumn style={{ gap: 12, paddingBlock: 8 }}>
+    <FlexColumn>
       <FlexRow
         style={{
           cursor: 'pointer',
           alignItems: 'center',
           justifyContent: 'space-between',
+          paddingBlock: 16,
           ...style,
         }}
         onClick={toggleAccordion}
@@ -95,7 +97,7 @@ export function Accordion({
             animate={{ height: contentHeight }}
             exit={{ height: 0 }}
             style={{ overflow: 'hidden' }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.2, ease: 'easeInOut' }}
           >
             <div ref={contentRef}>{children}</div>
           </motion.div>
