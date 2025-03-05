@@ -154,7 +154,7 @@ function SelectContainer({
           <>
             <span
               style={{
-                fontSize: '0.84rem',
+                fontSize: '0.8rem',
                 fontWeight: 400,
                 color: '#333333',
                 whiteSpace: 'nowrap',
@@ -274,11 +274,12 @@ function SelectItems<ValuesType extends (string | number)[]>({
         backgroundColor: 'white',
         border: '1px solid #ddd',
         borderRadius: 4,
-        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.2)',
         maxHeight: 300,
         overflowY: 'auto',
         zIndex: SELECT_BOX_ITEM_Z_INDEX,
         transformOrigin: 'top center',
+        padding: 6,
       }}
       initial={{
         opacity: 0,
@@ -296,15 +297,16 @@ function SelectItems<ValuesType extends (string | number)[]>({
     >
       {options.map((option) => (
         <FlexRow
+          as={motion.div}
           key={option.value}
           style={{
             alignItems: 'center',
             height: 38,
             cursor: 'pointer',
-            paddingLeft: 10,
-            paddingRight: 6,
+            paddingInline: 8,
             paddingBlock: 2,
-            // backgroundColor: selectedValues.includes(option.value) ? '#ececec' : 'transparent',
+            backgroundColor: '#ffffff',
+            borderRadius: 6,
           }}
           onClick={() => {
             if (selectedValues.includes(option.value)) {
@@ -317,6 +319,7 @@ function SelectItems<ValuesType extends (string | number)[]>({
               selectValue([...options.map((option) => option.value)] as ValuesType);
             }
           }}
+          whileHover={{ backgroundColor: '#f4f4f4' }}
         >
           <Checkbox
             checked={selectedValues.includes(option.value)}
@@ -324,6 +327,7 @@ function SelectItems<ValuesType extends (string | number)[]>({
           />
           <span
             style={{
+              fontSize: '0.94rem',
               padding: '2px 8px',
               borderRadius: 4,
               color: '#000000',

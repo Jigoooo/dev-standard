@@ -106,6 +106,7 @@ export function UiComponent() {
       <FlexRow style={{ alignItems: 'center' }}>
         <span style={{ width: 200, fontWeight: 500 }}>Select: </span>
         <Select
+          isAutocomplete={true}
           label={'Select Label'}
           value={select}
           onChange={setSelect}

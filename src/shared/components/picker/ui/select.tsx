@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { HiChevronUpDown } from 'react-icons/hi2';
+import { IoMdCheckmark } from 'react-icons/io';
 
-import { colors, SELECT_BOX_ITEM_Z_INDEX } from '@/shared/constants';
+import { SELECT_BOX_ITEM_Z_INDEX } from '@/shared/constants';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
 import { FlexRow, Input } from '@/shared/components';
 
@@ -117,11 +118,7 @@ export function Select<ValueType extends string | number>({
     >
       <SelectContainer
         label={label}
-        isOpen={isOpen}
         selectedLabel={selectedLabel}
-        isAutocomplete={isAutocomplete}
-        filterText={filterText}
-        handleFilterText={handleFilterText}
         toggleSelectBox={toggleSelectBox}
         containerHeight={containerHeight}
       />
@@ -129,6 +126,9 @@ export function Select<ValueType extends string | number>({
         {isOpen && (
           <SelectItems
             options={filteredOptions()}
+            isAutocomplete={isAutocomplete}
+            filterText={filterText}
+            handleFilterText={handleFilterText}
             selectedValue={value}
             highlightedIndex={highlightedIndex}
             selectValue={(newValue) => {
@@ -145,26 +145,15 @@ export function Select<ValueType extends string | number>({
 
 function SelectContainer({
   label,
-  isOpen,
   selectedLabel,
-  isAutocomplete,
-  filterText,
-  handleFilterText,
   toggleSelectBox,
   containerHeight,
 }: {
   label?: string;
-  isOpen: boolean;
   selectedLabel?: string;
-  isAutocomplete?: boolean;
-  filterText: string;
-  handleFilterText: (newFilterText: string) => void;
   toggleSelectBox: () => void;
   containerHeight: number;
 }) {
-  const [isChanged, setIsChanged] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
-
   return (
     <FlexRow
       as={motion.div}
@@ -178,7 +167,7 @@ function SelectContainer({
         height: containerHeight,
         backgroundColor: '#ffffff',
         boxShadow: '0 0 3px rgba(50, 50, 50, 0.1)',
-        border: `1px solid ${isFocused ? colors.primary[400] : '#cccccc'}`,
+        border: `1px solid #cccccc`,
         transition: 'border-color 0.1s ease',
         borderRadius: 4,
         cursor: 'pointer',
@@ -193,42 +182,22 @@ function SelectContainer({
       <FlexRow style={{ alignItems: 'center', gap: 8 }}>
         {label && (
           <>
-            <span style={{ fontSize: '0.84rem', fontWeight: 400, color: '#333333' }}>{label}</span>
+            <span style={{ fontSize: '0.8rem', fontWeight: 400, color: '#333333' }}>{label}</span>
             <div
               style={{ height: 20, width: 1, alignSelf: 'center', backgroundColor: '#cccccc' }}
             ></div>
           </>
         )}
-        {!isAutocomplete ? (
-          <span
-            style={{
-              padding: '3px 6px',
-              borderRadius: 4,
-              fontWeight: 600,
-              fontSize: '0.94rem',
-            }}
-          >
-            {selectedLabel}
-          </span>
-        ) : (
-          <Input
-            value={isOpen && isChanged ? filterText : selectedLabel}
-            onChange={(event) => {
-              setIsChanged(true);
-              handleFilterText(event.target.value);
-            }}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => {
-              setTimeout(() => {
-                setIsChanged(false);
-              }, 300);
-              setIsFocused(false);
-            }}
-            onClick={(event) => event.stopPropagation()}
-            isFocusEffect={false}
-            style={{ boxShadow: 'none', backgroundColor: 'transparent' }}
-          />
-        )}
+        <span
+          style={{
+            padding: '3px 6px',
+            borderRadius: 4,
+            fontWeight: 600,
+            fontSize: '0.94rem',
+          }}
+        >
+          {selectedLabel}
+        </span>
       </FlexRow>
       <FlexRow
         style={{
@@ -246,11 +215,17 @@ function SelectItems<ValueType extends string | number>({
   selectValue,
   selectedValue,
   options,
+  isAutocomplete,
+  filterText,
+  handleFilterText,
   highlightedIndex,
 }: {
   selectValue: (value: ValueType) => void;
   selectedValue: ValueType;
   options: SelectOption<ValueType>[];
+  isAutocomplete: boolean;
+  filterText: string;
+  handleFilterText: (text: string) => void;
   highlightedIndex: number | null;
 }) {
   return (
@@ -264,11 +239,12 @@ function SelectItems<ValueType extends string | number>({
         backgroundColor: 'white',
         border: '1px solid #ddd',
         borderRadius: 4,
-        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.2)',
         maxHeight: 300,
         overflowY: 'auto',
         zIndex: SELECT_BOX_ITEM_Z_INDEX,
         transformOrigin: 'top center',
+        padding: 6,
       }}
       initial={{
         opacity: 0,
@@ -284,32 +260,47 @@ function SelectItems<ValueType extends string | number>({
       }}
       transition={{ duration: 0.14, ease: 'easeInOut' }}
     >
+      {isAutocomplete && (
+        <Input
+          value={filterText}
+          onChange={(event) => {
+            handleFilterText(event.target.value);
+          }}
+          onClick={(event) => event.stopPropagation()}
+          isFocusEffect={false}
+          style={{ backgroundColor: 'transparent' }}
+        />
+      )}
       {options.map((option, index) => (
         <FlexRow
+          as={motion.div}
           key={option.value}
           style={{
             alignItems: 'center',
+            justifyContent: 'space-between',
             height: 38,
             cursor: 'pointer',
+            paddingBlock: 4,
+            paddingInline: 8,
             backgroundColor:
-              selectedValue === option.value
-                ? colors.primary[50]
-                : highlightedIndex && highlightedIndex === index
-                  ? '#f0f0f0'
-                  : 'transparent',
+              highlightedIndex && highlightedIndex === index ? '#f4f4f4' : 'transparent',
+            borderRadius: 6,
           }}
           onClick={() => selectValue(option.value)}
+          whileHover={{ backgroundColor: '#f4f4f4' }}
         >
           <span
             style={{
-              marginLeft: 4,
-              padding: '2px 8px',
+              fontSize: '0.94rem',
               borderRadius: 4,
               color: '#000000',
             }}
           >
             {option.label}
           </span>
+          {selectedValue === option.value && (
+            <IoMdCheckmark style={{ fontSize: '1.2rem', color: '#333333' }} />
+          )}
         </FlexRow>
       ))}
     </motion.div>
