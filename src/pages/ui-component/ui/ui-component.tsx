@@ -22,12 +22,37 @@ import {
 import { useState } from 'react';
 import { useToggle } from '@/shared/hooks';
 import { sleep } from '@/shared/lib';
+import { Accordion, AccordionGroup } from '@/shared/components/accordion';
 
 export function UiComponent() {
   const [check, toggleCheck] = useToggle();
   const [switchValue, toggleSwitch] = useToggle();
   const [select, setSelect] = useState('1');
   const [multiSelect, setMultiSelect] = useState(['1', '2']);
+  const [accordionStates, setAccordionStates] = useState([
+    {
+      id: '1',
+      isOpen: false,
+    },
+    {
+      id: '2',
+      isOpen: false,
+    },
+  ]);
+
+  const toggleAccordion = (id: string) => {
+    setAccordionStates((prev) => {
+      return prev.map((item) => {
+        if (item.id === id) {
+          return {
+            ...item,
+            isOpen: !item.isOpen,
+          };
+        }
+        return item;
+      });
+    });
+  };
 
   const modal = useModal();
   const openModal = () => {
@@ -170,6 +195,26 @@ export function UiComponent() {
       </FlexRow>
 
       <DashedDivider strokeColor={'#666666'} style={{ marginBlock: 16 }} />
+
+      <FlexRow style={{ alignItems: 'center', marginBottom: 16 }}>
+        <span style={{ width: 200, fontWeight: 500 }}>Accordion: </span>
+        <AccordionGroup style={{ minWidth: 400 }}>
+          <Accordion
+            title={'Accordion 1'}
+            isOpen={accordionStates[0].isOpen}
+            toggleAccordion={() => toggleAccordion(accordionStates[0].id)}
+          >
+            <span>contents</span>
+          </Accordion>
+          <Accordion
+            title={'Accordion 2'}
+            isOpen={accordionStates[1].isOpen}
+            toggleAccordion={() => toggleAccordion(accordionStates[1].id)}
+          >
+            <span>contents</span>
+          </Accordion>
+        </AccordionGroup>
+      </FlexRow>
 
       <FlexRow style={{ alignItems: 'center' }}>
         <span style={{ width: 200, fontWeight: 500 }}>Tooltip: </span>

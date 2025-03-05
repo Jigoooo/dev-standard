@@ -41,7 +41,7 @@ export function SidebarItem({
           color: '#ffffff',
         }}
         transition={{
-          duration: 0.1,
+          duration: 0.04,
         }}
         onClick={() => {
           if (isSelected) return;
