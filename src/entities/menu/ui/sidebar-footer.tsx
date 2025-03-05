@@ -155,7 +155,7 @@ export function SidebarFooter() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={logout}
-              style={{ backgroundColor: '#1e232e' }}
+              style={{ backgroundColor: '#1e232e', paddingInline: 8 }}
               whileHover={{ backgroundColor: '#666666' }}
               transition={{ duration: 0.1 }}
             >

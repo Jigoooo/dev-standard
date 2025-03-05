@@ -131,11 +131,11 @@ export function UiComponent() {
       </FlexRow>
       <FlexRow style={{ alignItems: 'center' }}>
         <span style={{ width: 200, fontWeight: 500 }}>Date Picker: </span>
-        <DatePicker minDate={new Date('2025-02-01')} maxDate={new Date('2025-03-30')} />
+        <DatePicker minDate={new Date('2025-02-01')} maxDate={new Date('2025-04-30')} />
       </FlexRow>
       <FlexRow style={{ alignItems: 'center' }}>
         <span style={{ width: 200, fontWeight: 500 }}>Date Range Picker: </span>
-        <DateFromToPicker minDate={new Date('2025-02-01')} maxDate={new Date('2025-03-30')} />
+        <DateFromToPicker minDate={new Date('2025-02-01')} maxDate={new Date('2025-05-30')} />
       </FlexRow>
 
       <Divider style={{ marginBlock: 16, backgroundColor: '#bbbbbb' }} />
