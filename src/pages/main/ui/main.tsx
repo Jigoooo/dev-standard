@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 
 import { Sidebar, useMenuState } from '@/entities/menu';
-import { FlexColumn, FlexRow } from '@/shared/components';
+import { Divider, FlexColumn, FlexRow } from '@/shared/components';
 import { MainHeader } from '@/entities/main/ui/main-header.tsx';
 
 export function Main() {
@@ -33,6 +33,7 @@ export function Main() {
         }}
       >
         <MainHeader title={menuState.selectedMenu.name} />
+        <Divider style={{ marginBottom: 12 }} />
         <Outlet />
       </FlexColumn>
     </FlexRow>
