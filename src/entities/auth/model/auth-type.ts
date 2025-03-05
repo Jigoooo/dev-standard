@@ -3,4 +3,7 @@ export type PSignIn = {
   password: string;
 };
 
-export type RSignIn = {};
+export type RSignIn = {
+  accessToken: string;
+  refreshToken: string;
+};

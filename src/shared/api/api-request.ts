@@ -4,7 +4,7 @@ import { AdapterResponseType, ApiResponseType, ResponseAdapter } from './respons
 export async function apiRequest<T>(
   request: Promise<any>,
   adaptFn?: (item: ApiResponseType<T>, status: number) => AdapterResponseType<T>,
-): Promise<AdapterResponseType<T | null>> {
+): Promise<AdapterResponseType<T>> {
   try {
     const response = await request;
 

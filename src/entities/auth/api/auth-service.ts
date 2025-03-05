@@ -5,5 +5,9 @@ import { PSignIn } from '@/entities/auth/model';
 export function useSignInService() {
   return useMutation({
     mutationFn: (params: PSignIn) => signInApi(params),
+    onMutate: () => {},
+    onSuccess: () => {},
+    onError: () => {},
+    onSettled: () => {},
   });
 }

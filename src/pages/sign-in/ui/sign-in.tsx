@@ -61,6 +61,8 @@ export function SignIn() {
             return;
           }
 
+          console.log(data.data);
+
           if (saveIdChecked) {
             localStorage.setItem(localStorageKey.ID, id);
           } else {
