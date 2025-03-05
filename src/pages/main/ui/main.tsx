@@ -24,6 +24,7 @@ export function Main() {
           position: 'relative',
           backgroundColor: '#ffffff',
           width: '100%',
+          minWidth: 800,
           maxWidth: `calc(100vw - ${menuState.sidebarWidth}px)`,
           maxHeight: '100vh',
           height: '100%',

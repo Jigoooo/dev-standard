@@ -26,9 +26,9 @@ export function SidebarFooter() {
       style={{
         position: 'absolute',
         left: 0,
-        bottom: 14,
+        bottom: 12,
         width: '100%',
-        gap: 12,
+        gap: 6,
         height: 52,
         paddingInline: 4,
       }}
@@ -43,39 +43,59 @@ export function SidebarFooter() {
       </motion.div>
 
       <FlexRow
+        as={motion.div}
         style={{
-          display: 'flex',
           width: '100%',
           alignItems: 'center',
           justifyContent: 'space-between',
+          cursor: 'pointer',
         }}
+        onClick={menuState.sidebarCollapsed ? toggleFooterMenu : undefined}
       >
         <FlexRow
-          as={motion.div}
           style={{
-            display: 'flex',
-            gap: 12,
+            flexGrow: 1,
+            gap: 4,
             cursor: 'pointer',
             width: '70%',
             borderRadius: 8,
             paddingInline: 4,
             paddingBlock: 4,
           }}
-          whileHover={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }}
-          onClick={menuState.sidebarCollapsed ? toggleFooterMenu : goMyProfile}
+          onClick={!menuState.sidebarCollapsed ? goMyProfile : undefined}
         >
           <AnchorPicker
             open={openFooterMenu}
             onClose={toggleFooterMenu}
             position={'topRight'}
             contents={
-              <div
-                style={{ width: 100, height: 100, backgroundColor: 'red' }}
+              <FlexColumn
+                style={{
+                  padding: 8,
+                  width: 200,
+                  backgroundColor: '#ffffff',
+                  borderRadius: 6,
+                }}
                 onClick={(event) => {
                   event.stopPropagation();
                   toggleFooterMenu();
                 }}
-              ></div>
+              >
+                <motion.span
+                  style={{ padding: 8, backgroundColor: '#ffffff', borderRadius: 6 }}
+                  whileHover={{ backgroundColor: '#eeeeee' }}
+                  transition={{ duration: 0.1 }}
+                >
+                  내 정보
+                </motion.span>
+                <motion.span
+                  style={{ padding: 8, backgroundColor: '#ffffff', borderRadius: 6 }}
+                  whileHover={{ backgroundColor: '#eeeeee' }}
+                  transition={{ duration: 0.1 }}
+                >
+                  로그아웃
+                </motion.span>
+              </FlexColumn>
             }
           >
             <FlexRow
@@ -118,16 +138,17 @@ export function SidebarFooter() {
         </FlexRow>
         <AnimatePresence initial={false}>
           {!menuState.sidebarCollapsed && (
-            <FlexRow
-              as={motion.div}
+            <Button
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              onClick={logout}
+              style={{ backgroundColor: '#1e232e' }}
+              whileHover={{ backgroundColor: '#666666' }}
+              transition={{ duration: 0.1 }}
             >
-              <Button onClick={logout} style={{ backgroundColor: 'transparent' }}>
-                <LogoutIcon style={{ color: '#ffffff', fontSize: '1.4rem' }} />
-              </Button>
-            </FlexRow>
+              <LogoutIcon style={{ color: '#ffffff', fontSize: '1.4rem' }} />
+            </Button>
           )}
         </AnimatePresence>
       </FlexRow>
