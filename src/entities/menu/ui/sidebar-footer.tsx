@@ -1,11 +1,12 @@
 import LogoutIcon from '@mui/icons-material/Logout';
 
 import { useLogout } from '@/entities/auth';
-import { Button, Divider, FlexColumn, FlexRow } from '@/shared/components';
+import { AnchorPicker, Button, Divider, FlexColumn, FlexRow } from '@/shared/components';
 import { useNavigate } from 'react-router-dom';
 import { Router } from '@/entities/router';
 import { menuActions, myProfileMenu, useMenuState } from '@/entities/menu';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useToggle } from '@/shared/hooks';
 
 export function SidebarFooter() {
   const menuState = useMenuState();
@@ -18,6 +19,8 @@ export function SidebarFooter() {
     navigate(Router.MY_PROFILE);
   };
 
+  const [openFooterMenu, toggleFooterMenu] = useToggle();
+
   return (
     <FlexColumn
       style={{
@@ -25,9 +28,9 @@ export function SidebarFooter() {
         left: 0,
         bottom: 14,
         width: '100%',
-        paddingInline: 8,
         gap: 12,
         height: 52,
+        paddingInline: 4,
       }}
     >
       <motion.div
@@ -48,22 +51,42 @@ export function SidebarFooter() {
         }}
       >
         <FlexRow
+          as={motion.div}
           style={{
             display: 'flex',
             gap: 12,
             cursor: 'pointer',
             width: '70%',
+            borderRadius: 8,
+            paddingInline: 4,
+            paddingBlock: 4,
           }}
-          onClick={goMyProfile}
+          whileHover={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }}
+          onClick={menuState.sidebarCollapsed ? toggleFooterMenu : goMyProfile}
         >
-          <FlexRow
-            as={motion.div}
-            initial={{ fontSize: '2.4rem' }}
-            animate={{ fontSize: menuState.sidebarCollapsed ? '2rem' : '2.4rem' }}
-            exit={{ fontSize: '2.4rem' }}
+          <AnchorPicker
+            open={openFooterMenu}
+            onClose={toggleFooterMenu}
+            position={'topRight'}
+            contents={
+              <div
+                style={{ width: 100, height: 100, backgroundColor: 'red' }}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  toggleFooterMenu();
+                }}
+              ></div>
+            }
           >
-            <myProfileMenu.icon style={{ color: '#ffffff' }} />
-          </FlexRow>
+            <FlexRow
+              as={motion.div}
+              initial={{ fontSize: '2.4rem' }}
+              animate={{ fontSize: menuState.sidebarCollapsed ? '2rem' : '2.4rem' }}
+              exit={{ fontSize: '2.4rem' }}
+            >
+              <myProfileMenu.icon style={{ color: '#ffffff' }} />
+            </FlexRow>
+          </AnchorPicker>
           <AnimatePresence initial={false}>
             {!menuState.sidebarCollapsed && (
               <FlexColumn

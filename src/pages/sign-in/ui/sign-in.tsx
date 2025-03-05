@@ -9,6 +9,7 @@ import { FlexColumn, FlexRow } from '@/shared/components';
 import { useToggle } from '@/shared/hooks';
 import { getFormValues } from '@/shared/lib';
 import { localStorageKey } from '@/shared/constants';
+import { useSignInService } from '@/entities/auth/api';
 
 const signInFields: Record<
   keyof {
@@ -27,6 +28,8 @@ export function SignIn() {
 
   const [saveIdChecked, toggleSaveIdChecked] = useToggle(!!saveId);
 
+  const signInService = useSignInService();
+
   const signIn = (formData: FormData) => {
     const { id, password } = getFormValues(formData, signInFields);
 
@@ -44,16 +47,24 @@ export function SignIn() {
       });
     }
 
-    console.log('id: ', id);
-    console.log('password: ', password);
+    signInService.mutate(
+      { id, password },
+      {
+        onSuccess: (data) => {
+          if (!data.success) {
+            return;
+          }
 
-    if (saveIdChecked) {
-      localStorage.setItem(localStorageKey.ID, id);
-    } else {
-      localStorage.removeItem(localStorageKey.ID);
-    }
+          if (saveIdChecked) {
+            localStorage.setItem(localStorageKey.ID, id);
+          } else {
+            localStorage.removeItem(localStorageKey.ID);
+          }
 
-    navigate(`${Router.MAIN}/${menus[0].router}`, { viewTransition: true });
+          navigate(`${Router.MAIN}/${menus[0].router}`, { viewTransition: true });
+        },
+      },
+    );
   };
 
   return (

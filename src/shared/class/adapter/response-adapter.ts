@@ -5,7 +5,7 @@ export type ApiResponseType<T> = {
   success: boolean;
 };
 
-type AdapterResponseType<T> = {
+export type AdapterResponseType<T> = {
   code: number;
   msg: string;
   data?: T;

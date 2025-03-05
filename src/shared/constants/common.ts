@@ -1,6 +1,8 @@
 export const TABLE_Z_INDEX = 10;
 export const TABLE_FIXED_HEADER_Z_INDEX = 11;
 export const HEADER_Z_INDEX = 100;
+export const ANCHOR_OVERLAY_Z_INDEX = 101;
+export const ANCHOR_Z_INDEX = 101;
 export const SELECT_BOX_ITEM_Z_INDEX = 200;
 export const MODAL_Z_INDEX = 400;
 export const DIALOG_OVERLAY_Z_INDEX = 500;
