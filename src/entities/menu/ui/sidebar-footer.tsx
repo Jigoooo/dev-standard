@@ -30,7 +30,8 @@ export function SidebarFooter() {
         width: '100%',
         gap: 6,
         height: 52,
-        paddingInline: 4,
+        paddingLeft: 4,
+        paddingRight: 8,
       }}
     >
       <motion.div
@@ -155,7 +156,7 @@ export function SidebarFooter() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={logout}
-              style={{ backgroundColor: '#1e232e', paddingInline: 8 }}
+              style={{ backgroundColor: '#1e232e', paddingInline: 6, paddingBlock: 14 }}
               whileHover={{ backgroundColor: '#666666' }}
               transition={{ duration: 0.1 }}
             >

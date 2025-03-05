@@ -1,11 +1,12 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
 
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { HiChevronUpDown } from 'react-icons/hi2';
 import CloseIcon from '@mui/icons-material/Close';
 
 import { colors, SELECT_BOX_ITEM_Z_INDEX } from '@/shared/constants';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
 import { Checkbox, FlexRow } from '@/shared/components';
+import { AnimatePresence, motion } from 'framer-motion';
 
 type SelectOption = {
   label: ReactNode;
@@ -62,7 +63,6 @@ export function MultiSelect<ValuesType extends (string | number)[]>({
     >
       <SelectContainer
         label={label}
-        isOpen={isOpen}
         selectedOptions={selectedOptions}
         deleteValue={(option) => {
           onChange(values.filter((value) => value !== option.value) as ValuesType);
@@ -76,22 +76,23 @@ export function MultiSelect<ValuesType extends (string | number)[]>({
         containerWidth={containerWidth}
         containerHeight={containerHeight}
       />
-      {isOpen && (
-        <SelectItems
-          options={options}
-          selectedValues={values}
-          selectValue={(newValues) => {
-            onChange(newValues);
-          }}
-        />
-      )}
+      <AnimatePresence>
+        {isOpen && (
+          <SelectItems
+            options={options}
+            selectedValues={values}
+            selectValue={(newValues) => {
+              onChange(newValues);
+            }}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
 
 function SelectContainer({
   label,
-  isOpen,
   selectedOptions = [],
   deleteValue,
   isAllSelected,
@@ -100,7 +101,6 @@ function SelectContainer({
   containerHeight,
 }: {
   label?: string;
-  isOpen: boolean;
   selectedOptions: SelectOption[];
   deleteValue: (option: SelectOption) => void;
   isAllSelected: boolean;
@@ -126,6 +126,7 @@ function SelectContainer({
 
   return (
     <FlexRow
+      as={motion.div}
       style={{
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -136,12 +137,14 @@ function SelectContainer({
         height: containerHeight,
         backgroundColor: '#ffffff',
         boxShadow: '0 0 3px rgba(50, 50, 50, 0.1)',
-        border: '2px solid #cccccc',
+        border: '1px solid #cccccc',
         borderRadius: 4,
         cursor: 'pointer',
         overflow: 'hidden',
       }}
       onClick={toggleSelectBox}
+      whileHover={{ backgroundColor: '#f4f4f4' }}
+      transition={{ duration: 0.14 }}
     >
       <FlexRow
         ref={selectedOptionsContainerRef}
@@ -151,7 +154,7 @@ function SelectContainer({
           <>
             <span
               style={{
-                fontSize: '0.88rem',
+                fontSize: '0.84rem',
                 fontWeight: 400,
                 color: '#333333',
                 whiteSpace: 'nowrap',
@@ -181,8 +184,8 @@ function SelectContainer({
           >
             <span
               style={{
-                fontWeight: 500,
-                fontSize: '1rem',
+                fontWeight: 600,
+                fontSize: '0.92rem',
                 color: '#ffffff',
               }}
             >
@@ -207,7 +210,7 @@ function SelectContainer({
                 <FlexRow
                   key={index}
                   style={{
-                    paddingBlock: 2,
+                    paddingBlock: 1,
                     paddingInline: 6,
                     borderRadius: 4,
                     border: '1px solid #cccccc',
@@ -220,14 +223,14 @@ function SelectContainer({
                   <span
                     style={{
                       fontWeight: 600,
-                      fontSize: '1rem',
+                      fontSize: '0.92rem',
                       color: '#ffffff',
                     }}
                   >
                     {selectedOption.label}
                   </span>
                   <CloseIcon
-                    style={{ fontSize: '1rem', color: '#ffffff', cursor: 'pointer' }}
+                    style={{ fontSize: '0.94rem', color: '#ffffff', cursor: 'pointer' }}
                     onClick={(e) => {
                       e.stopPropagation();
                       deleteValue(selectedOption);
@@ -243,11 +246,9 @@ function SelectContainer({
         style={{
           alignItems: 'center',
           justifyContent: 'center',
-          transition: 'transform 0.3s ease',
-          transform: isOpen ? 'rotate(-180deg)' : 'rotate(0deg)',
         }}
       >
-        <KeyboardArrowDownIcon style={{ fontSize: '1.4rem' }} />
+        <HiChevronUpDown style={{ fontSize: '1.3rem', color: '#888888' }} />
       </FlexRow>
     </FlexRow>
   );
@@ -263,7 +264,7 @@ function SelectItems<ValuesType extends (string | number)[]>({
   options: SelectOption[];
 }) {
   return (
-    <div
+    <motion.div
       className='shadow-scroll'
       style={{
         position: 'absolute',
@@ -277,7 +278,21 @@ function SelectItems<ValuesType extends (string | number)[]>({
         maxHeight: 300,
         overflowY: 'auto',
         zIndex: SELECT_BOX_ITEM_Z_INDEX,
+        transformOrigin: 'top center',
       }}
+      initial={{
+        opacity: 0,
+        scale: 0.95,
+      }}
+      animate={{
+        opacity: 1,
+        scale: 1,
+      }}
+      exit={{
+        opacity: 0,
+        scale: 0.95,
+      }}
+      transition={{ duration: 0.14, ease: 'easeInOut' }}
     >
       {options.map((option) => (
         <FlexRow
@@ -318,6 +333,6 @@ function SelectItems<ValuesType extends (string | number)[]>({
           </span>
         </FlexRow>
       ))}
-    </div>
+    </motion.div>
   );
 }

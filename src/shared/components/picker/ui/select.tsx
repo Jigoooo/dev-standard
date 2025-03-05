@@ -1,5 +1,8 @@
 import { useState } from 'react';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { AnimatePresence, motion } from 'framer-motion';
+
+import { HiChevronUpDown } from 'react-icons/hi2';
+
 import { colors, SELECT_BOX_ITEM_Z_INDEX } from '@/shared/constants';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
 import { FlexRow, Input } from '@/shared/components';
@@ -122,18 +125,20 @@ export function Select<ValueType extends string | number>({
         toggleSelectBox={toggleSelectBox}
         containerHeight={containerHeight}
       />
-      {isOpen && (
-        <SelectItems
-          options={filteredOptions()}
-          selectedValue={value}
-          highlightedIndex={highlightedIndex}
-          selectValue={(newValue) => {
-            onChange(newValue);
-            setIsOpen(false);
-            setFilterText('');
-          }}
-        />
-      )}
+      <AnimatePresence initial={false}>
+        {isOpen && (
+          <SelectItems
+            options={filteredOptions()}
+            selectedValue={value}
+            highlightedIndex={highlightedIndex}
+            selectValue={(newValue) => {
+              onChange(newValue);
+              setIsOpen(false);
+              setFilterText('');
+            }}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -162,6 +167,7 @@ function SelectContainer({
 
   return (
     <FlexRow
+      as={motion.div}
       style={{
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -172,7 +178,7 @@ function SelectContainer({
         height: containerHeight,
         backgroundColor: '#ffffff',
         boxShadow: '0 0 3px rgba(50, 50, 50, 0.1)',
-        border: `2px solid ${isFocused ? colors.primary[400] : '#cccccc'}`,
+        border: `1px solid ${isFocused ? colors.primary[400] : '#cccccc'}`,
         transition: 'border-color 0.1s ease',
         borderRadius: 4,
         cursor: 'pointer',
@@ -181,11 +187,13 @@ function SelectContainer({
         event.stopPropagation();
         toggleSelectBox();
       }}
+      whileHover={{ backgroundColor: '#f4f4f4' }}
+      transition={{ duration: 0.14 }}
     >
       <FlexRow style={{ alignItems: 'center', gap: 8 }}>
         {label && (
           <>
-            <span style={{ fontSize: '0.88rem', fontWeight: 400, color: '#333333' }}>{label}</span>
+            <span style={{ fontSize: '0.84rem', fontWeight: 400, color: '#333333' }}>{label}</span>
             <div
               style={{ height: 20, width: 1, alignSelf: 'center', backgroundColor: '#cccccc' }}
             ></div>
@@ -197,7 +205,7 @@ function SelectContainer({
               padding: '3px 6px',
               borderRadius: 4,
               fontWeight: 600,
-              fontSize: '1rem',
+              fontSize: '0.94rem',
             }}
           >
             {selectedLabel}
@@ -226,11 +234,9 @@ function SelectContainer({
         style={{
           alignItems: 'center',
           justifyContent: 'center',
-          transition: 'transform 0.3s ease',
-          transform: isOpen ? 'rotate(-180deg)' : 'rotate(0deg)',
         }}
       >
-        <KeyboardArrowDownIcon style={{ fontSize: '1.4rem' }} />
+        <HiChevronUpDown style={{ fontSize: '1.3rem', color: '#888888' }} />
       </FlexRow>
     </FlexRow>
   );
@@ -248,7 +254,7 @@ function SelectItems<ValueType extends string | number>({
   highlightedIndex: number | null;
 }) {
   return (
-    <div
+    <motion.div
       className='shadow-scroll'
       style={{
         position: 'absolute',
@@ -262,7 +268,21 @@ function SelectItems<ValueType extends string | number>({
         maxHeight: 300,
         overflowY: 'auto',
         zIndex: SELECT_BOX_ITEM_Z_INDEX,
+        transformOrigin: 'top center',
       }}
+      initial={{
+        opacity: 0,
+        scale: 0.95,
+      }}
+      animate={{
+        opacity: 1,
+        scale: 1,
+      }}
+      exit={{
+        opacity: 0,
+        scale: 0.95,
+      }}
+      transition={{ duration: 0.14, ease: 'easeInOut' }}
     >
       {options.map((option, index) => (
         <FlexRow
@@ -292,6 +312,6 @@ function SelectItems<ValueType extends string | number>({
           </span>
         </FlexRow>
       ))}
-    </div>
+    </motion.div>
   );
 }

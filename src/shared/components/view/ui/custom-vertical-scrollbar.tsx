@@ -134,7 +134,7 @@ export function CustomVerticalScrollbar({
         dragMomentum={false}
         onDrag={(_, info) => {
           if (ref.current) {
-            ref.current.scrollTop = info.point.y;
+            ref.current.scrollTop = info.point.y * 2.6;
           }
         }}
         style={{
