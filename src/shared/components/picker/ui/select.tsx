@@ -103,8 +103,6 @@ export function Select<ValueType extends string | number>({
   return (
     <div
       ref={ref}
-      // onKeyDown={handleKeyDown}
-      // tabIndex={0}
       style={{
         position: 'relative',
         minWidth: containerMinWidth,

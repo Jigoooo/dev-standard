@@ -1,15 +1,16 @@
-import { ReactNode, useEffect, useRef, useState } from 'react';
+import { KeyboardEvent, useEffect, useRef, useState } from 'react';
 
 import { HiChevronUpDown } from 'react-icons/hi2';
 import CloseIcon from '@mui/icons-material/Close';
 
 import { colors, SELECT_BOX_ITEM_Z_INDEX } from '@/shared/constants';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
-import { Checkbox, FlexRow } from '@/shared/components';
+import { Checkbox, FlexRow, Input, InputStyle } from '@/shared/components';
 import { AnimatePresence, motion } from 'framer-motion';
+import { FiSearch } from 'react-icons/fi';
 
 type SelectOption = {
-  label: ReactNode;
+  label: string;
   value: string | number;
 };
 
@@ -21,6 +22,7 @@ export function MultiSelect<ValuesType extends (string | number)[]>({
   containerWidth,
   containerMinWidth = 160,
   containerHeight = 38,
+  isAutocomplete = false,
 }: {
   label?: string;
   values: ValuesType;
@@ -29,8 +31,11 @@ export function MultiSelect<ValuesType extends (string | number)[]>({
   containerWidth?: string | number;
   containerMinWidth?: string | number;
   containerHeight?: number;
+  isAutocomplete?: boolean;
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [filterText, setFilterText] = useState('');
+  const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null);
 
   const ref = useHandleClickOutsideRef({
     condition: isOpen,
@@ -50,6 +55,62 @@ export function MultiSelect<ValuesType extends (string | number)[]>({
       onChange([...options.map((option) => option.value)] as ValuesType);
     }
   }, [isAllSelected]);
+
+  const handleFilterText = (newFilterText: string) => {
+    setFilterText(newFilterText);
+    if (!isOpen) {
+      setIsOpen(true);
+    }
+    setHighlightedIndex(null);
+  };
+
+  const getFilteredOptions = () => {
+    if (!isAutocomplete) {
+      return options;
+    }
+    return options.filter((option) =>
+      option.label.toLowerCase().includes(filterText.toLowerCase()),
+    );
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (highlightedIndex === null) {
+        setHighlightedIndex(0);
+      } else {
+        setHighlightedIndex((prev) =>
+          prev !== null && getFilteredOptions().length - 1 !== prev
+            ? Math.min(prev + 1, getFilteredOptions().length - 1)
+            : 0,
+        );
+      }
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (highlightedIndex === 0) {
+        setHighlightedIndex(getFilteredOptions().length - 1);
+      } else {
+        setHighlightedIndex((prev) => (prev !== null ? Math.max(prev - 1, 0) : 0));
+      }
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (highlightedIndex !== null && getFilteredOptions()[highlightedIndex]) {
+        const isExist = values.includes(getFilteredOptions()[highlightedIndex].value);
+
+        if (isExist) {
+          onChange(
+            values.filter(
+              (value) => value !== getFilteredOptions()[highlightedIndex].value,
+            ) as ValuesType,
+          );
+        } else {
+          onChange([...values, getFilteredOptions()[highlightedIndex].value] as ValuesType);
+        }
+      }
+    } else if (e.key === 'Escape') {
+      setIsOpen(false);
+    }
+  };
 
   return (
     <div
@@ -79,11 +140,16 @@ export function MultiSelect<ValuesType extends (string | number)[]>({
       <AnimatePresence>
         {isOpen && (
           <SelectItems
-            options={options}
+            options={getFilteredOptions()}
             selectedValues={values}
             selectValue={(newValues) => {
               onChange(newValues);
             }}
+            isAutocomplete={isAutocomplete}
+            filterText={filterText}
+            handleFilterText={handleFilterText}
+            handleKeyDown={handleKeyDown}
+            highlightedIndex={highlightedIndex}
           />
         )}
       </AnimatePresence>
@@ -258,10 +324,20 @@ function SelectItems<ValuesType extends (string | number)[]>({
   selectValue,
   selectedValues,
   options,
+  isAutocomplete,
+  filterText,
+  handleFilterText,
+  handleKeyDown,
+  highlightedIndex,
 }: {
   selectValue: (value: ValuesType) => void;
   selectedValues: ValuesType;
   options: SelectOption[];
+  isAutocomplete: boolean;
+  filterText: string;
+  handleFilterText: (text: string) => void;
+  handleKeyDown: (e: KeyboardEvent<HTMLDivElement>) => void;
+  highlightedIndex: number | null;
 }) {
   return (
     <motion.div
@@ -295,7 +371,22 @@ function SelectItems<ValuesType extends (string | number)[]>({
       }}
       transition={{ duration: 0.14, ease: 'easeInOut' }}
     >
-      {options.map((option) => (
+      {isAutocomplete && (
+        <Input
+          onKeyDown={handleKeyDown}
+          startDecorator={<FiSearch style={{ color: '#999999', fontSize: '1.1rem' }} />}
+          inputStyle={InputStyle.UNDERLINE}
+          value={filterText}
+          onChange={(event) => {
+            handleFilterText(event.target.value);
+          }}
+          onClick={(event) => event.stopPropagation()}
+          isFocusEffect={false}
+          style={{ width: '100%', backgroundColor: 'transparent', height: 32, marginBottom: 6 }}
+          placeholder={'Search Option'}
+        />
+      )}
+      {options.map((option, index) => (
         <FlexRow
           as={motion.div}
           key={option.value}
@@ -305,7 +396,7 @@ function SelectItems<ValuesType extends (string | number)[]>({
             cursor: 'pointer',
             paddingInline: 8,
             paddingBlock: 2,
-            backgroundColor: '#ffffff',
+            backgroundColor: highlightedIndex === index ? '#f4f4f4' : '#ffffff',
             borderRadius: 6,
           }}
           onClick={() => {

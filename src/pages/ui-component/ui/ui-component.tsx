@@ -120,6 +120,7 @@ export function UiComponent() {
       <FlexRow style={{ alignItems: 'center' }}>
         <span style={{ width: 200, fontWeight: 500 }}>Multi Select: </span>
         <MultiSelect
+          isAutocomplete={true}
           label={'Multi Select Label'}
           values={multiSelect}
           onChange={setMultiSelect}
