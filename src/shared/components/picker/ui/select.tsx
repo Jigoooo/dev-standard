@@ -1,12 +1,13 @@
-import { useState } from 'react';
+import { useState, KeyboardEvent } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { HiChevronUpDown } from 'react-icons/hi2';
 import { IoMdCheckmark } from 'react-icons/io';
+import { FiSearch } from 'react-icons/fi';
 
 import { SELECT_BOX_ITEM_Z_INDEX } from '@/shared/constants';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
-import { FlexRow, Input } from '@/shared/components';
+import { FlexRow, Input, InputStyle } from '@/shared/components';
 
 type SelectOption<ValueType extends string | number> = {
   label: string;
@@ -59,7 +60,7 @@ export function Select<ValueType extends string | number>({
     setHighlightedIndex(null);
   };
 
-  const filteredOptions = () => {
+  const getFilteredOptions = () => {
     if (!isAutocomplete) {
       return options;
     }
@@ -68,40 +69,36 @@ export function Select<ValueType extends string | number>({
     );
   };
 
-  // const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-  //   if (!isOpen) {
-  //     if (e.key === 'ArrowDown' || e.key === 'Enter') {
-  //       setIsOpen(true);
-  //     }
-  //     return;
-  //   }
-  //   if (e.key === 'ArrowDown') {
-  //     e.preventDefault();
-  //     if (highlightedIndex === null) {
-  //       setHighlightedIndex(0);
-  //     } else {
-  //       setHighlightedIndex((prev) =>
-  //         prev !== null ? Math.min(prev + 1, filteredOptions.length - 1) : 0,
-  //       );
-  //     }
-  //   } else if (e.key === 'ArrowUp') {
-  //     e.preventDefault();
-  //     if (highlightedIndex === 0) {
-  //       setHighlightedIndex(filteredOptions.length - 1);
-  //     } else {
-  //       setHighlightedIndex((prev) => (prev !== null ? Math.max(prev - 1, 0) : 0));
-  //     }
-  //   } else if (e.key === 'Enter') {
-  //     e.preventDefault();
-  //     if (highlightedIndex && filteredOptions[highlightedIndex]) {
-  //       onChange(filteredOptions[highlightedIndex].value);
-  //     }
-  //     setIsOpen(false);
-  //     setFilterText('');
-  //   } else if (e.key === 'Escape') {
-  //     setIsOpen(false);
-  //   }
-  // };
+  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (highlightedIndex === null) {
+        setHighlightedIndex(0);
+      } else {
+        setHighlightedIndex((prev) =>
+          prev !== null && getFilteredOptions().length - 1 !== prev
+            ? Math.min(prev + 1, getFilteredOptions().length - 1)
+            : 0,
+        );
+      }
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (highlightedIndex === 0) {
+        setHighlightedIndex(getFilteredOptions().length - 1);
+      } else {
+        setHighlightedIndex((prev) => (prev !== null ? Math.max(prev - 1, 0) : 0));
+      }
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (highlightedIndex !== null && getFilteredOptions()[highlightedIndex]) {
+        onChange(getFilteredOptions()[highlightedIndex].value);
+      }
+      setIsOpen(false);
+      setFilterText('');
+    } else if (e.key === 'Escape') {
+      setIsOpen(false);
+    }
+  };
 
   return (
     <div
@@ -125,10 +122,11 @@ export function Select<ValueType extends string | number>({
       <AnimatePresence initial={false}>
         {isOpen && (
           <SelectItems
-            options={filteredOptions()}
+            options={getFilteredOptions()}
             isAutocomplete={isAutocomplete}
             filterText={filterText}
             handleFilterText={handleFilterText}
+            handleKeyDown={handleKeyDown}
             selectedValue={value}
             highlightedIndex={highlightedIndex}
             selectValue={(newValue) => {
@@ -218,6 +216,7 @@ function SelectItems<ValueType extends string | number>({
   isAutocomplete,
   filterText,
   handleFilterText,
+  handleKeyDown,
   highlightedIndex,
 }: {
   selectValue: (value: ValueType) => void;
@@ -226,6 +225,7 @@ function SelectItems<ValueType extends string | number>({
   isAutocomplete: boolean;
   filterText: string;
   handleFilterText: (text: string) => void;
+  handleKeyDown: (e: KeyboardEvent<HTMLDivElement>) => void;
   highlightedIndex: number | null;
 }) {
   return (
@@ -262,47 +262,52 @@ function SelectItems<ValueType extends string | number>({
     >
       {isAutocomplete && (
         <Input
+          onKeyDown={handleKeyDown}
+          startDecorator={<FiSearch style={{ color: '#999999', fontSize: '1.1rem' }} />}
+          inputStyle={InputStyle.UNDERLINE}
           value={filterText}
           onChange={(event) => {
             handleFilterText(event.target.value);
           }}
           onClick={(event) => event.stopPropagation()}
           isFocusEffect={false}
-          style={{ backgroundColor: 'transparent' }}
+          style={{ width: '100%', backgroundColor: 'transparent', height: 32, marginBottom: 6 }}
+          placeholder={'Search Option'}
         />
       )}
-      {options.map((option, index) => (
-        <FlexRow
-          as={motion.div}
-          key={option.value}
-          style={{
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            height: 38,
-            cursor: 'pointer',
-            paddingBlock: 4,
-            paddingInline: 8,
-            backgroundColor:
-              highlightedIndex && highlightedIndex === index ? '#f4f4f4' : 'transparent',
-            borderRadius: 6,
-          }}
-          onClick={() => selectValue(option.value)}
-          whileHover={{ backgroundColor: '#f4f4f4' }}
-        >
-          <span
+      {options.map((option, index) => {
+        return (
+          <FlexRow
+            as={motion.div}
+            key={option.value}
             style={{
-              fontSize: '0.94rem',
-              borderRadius: 4,
-              color: '#000000',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              height: 38,
+              cursor: 'pointer',
+              paddingBlock: 4,
+              paddingInline: 8,
+              backgroundColor: highlightedIndex === index ? '#f4f4f4' : '#ffffff',
+              borderRadius: 6,
             }}
+            onClick={() => selectValue(option.value)}
+            whileHover={{ backgroundColor: '#f4f4f4' }}
           >
-            {option.label}
-          </span>
-          {selectedValue === option.value && (
-            <IoMdCheckmark style={{ fontSize: '1.2rem', color: '#333333' }} />
-          )}
-        </FlexRow>
-      ))}
+            <span
+              style={{
+                fontSize: '0.94rem',
+                borderRadius: 4,
+                color: '#000000',
+              }}
+            >
+              {option.label}
+            </span>
+            {selectedValue === option.value && (
+              <IoMdCheckmark style={{ fontSize: '1.2rem', color: '#333333' }} />
+            )}
+          </FlexRow>
+        );
+      })}
     </motion.div>
   );
 }

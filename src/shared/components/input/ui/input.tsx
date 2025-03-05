@@ -36,7 +36,6 @@ const inputStyles: Record<InputStyle, CSSProperties> = {
     borderLeft: 'none',
     borderRight: 'none',
     borderBottom: `1.4px solid #c4c4c4`,
-    paddingBottom: 0,
   },
 } as const;
 
@@ -72,7 +71,7 @@ export function Input({
   onClick,
   ...props
 }: ExtendedInputProps) {
-  const extraPadding = 28;
+  const extraPadding = 30;
   return (
     <div
       style={{
@@ -84,8 +83,8 @@ export function Input({
         <div
           style={{
             position: 'absolute',
-            left: 8,
-            top: '50%',
+            left: 6,
+            top: '40%',
             transform: 'translateY(-40%)',
             pointerEvents: 'none',
           }}
