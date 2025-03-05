@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import { TbLayoutSidebarLeftCollapseFilled } from 'react-icons/tb';
 import { TbLayoutSidebarRightCollapseFilled } from 'react-icons/tb';
@@ -19,17 +19,26 @@ export function SidebarHeader({ title }: { title: string }) {
         height: 42,
       }}
     >
-      {!menuState.delayedSidebarCollapsed && (
-        <motion.span
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
-          style={{ fontSize: '1.1rem', fontWeight: 700, color: '#ffffff' }}
-        >
-          {title}
-        </motion.span>
-      )}
+      <div style={{ width: menuState.sidebarCollapsed ? 0 : 150, flexGrow: 1, overflow: 'hidden' }}>
+        <AnimatePresence>
+          {!menuState.sidebarCollapsed && (
+            <motion.span
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: -20, opacity: 0 }}
+              transition={{ duration: 0.1 }}
+              style={{
+                fontSize: '1.1rem',
+                fontWeight: 700,
+                color: '#ffffff',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {title}
+            </motion.span>
+          )}
+        </AnimatePresence>
+      </div>
 
       <FlexRow
         style={{
@@ -40,11 +49,29 @@ export function SidebarHeader({ title }: { title: string }) {
         }}
         onClick={menuActions.toggleSidebarCollapsed}
       >
-        {menuState.sidebarCollapsed ? (
-          <TbLayoutSidebarRightCollapseFilled style={{ fontSize: '1.4rem', color: '#ffffff' }} />
-        ) : (
-          <TbLayoutSidebarLeftCollapseFilled style={{ fontSize: '1.4rem', color: '#ffffff' }} />
-        )}
+        <AnimatePresence mode={'wait'}>
+          {menuState.sidebarCollapsed ? (
+            <motion.div
+              key={'collapsed'}
+              initial={{ opacity: 0.8 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0.8 }}
+            >
+              <TbLayoutSidebarRightCollapseFilled
+                style={{ fontSize: '1.4rem', color: '#ffffff' }}
+              />
+            </motion.div>
+          ) : (
+            <motion.div
+              key={'expanded'}
+              initial={{ opacity: 0.8 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0.8 }}
+            >
+              <TbLayoutSidebarLeftCollapseFilled style={{ fontSize: '1.4rem', color: '#ffffff' }} />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </FlexRow>
     </FlexRow>
   );

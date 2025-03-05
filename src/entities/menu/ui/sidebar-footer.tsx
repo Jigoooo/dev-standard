@@ -4,9 +4,11 @@ import { useLogout } from '@/entities/auth';
 import { Button, Divider, FlexColumn, FlexRow } from '@/shared/components';
 import { useNavigate } from 'react-router-dom';
 import { Router } from '@/entities/router';
-import { menuActions, myProfileMenu } from '@/entities/menu';
+import { menuActions, myProfileMenu, useMenuState } from '@/entities/menu';
 
 export function SidebarFooter() {
+  const menuState = useMenuState();
+
   const navigate = useNavigate();
   const logout = useLogout();
 
@@ -22,7 +24,7 @@ export function SidebarFooter() {
         left: 0,
         bottom: 14,
         width: '100%',
-        paddingInline: 12,
+        paddingInline: 6,
         gap: 12,
       }}
     >
@@ -45,27 +47,31 @@ export function SidebarFooter() {
           }}
           onClick={goMyProfile}
         >
-          <myProfileMenu.icon style={{ color: '#ffffff', fontSize: '2.4rem' }} />
-          <FlexColumn style={{ width: '90%' }}>
-            <span
-              style={{
-                fontSize: '0.9rem',
-                fontWeight: 700,
-                color: '#ffffff',
-                lineHeight: 1.4,
-                overflow: 'hidden',
-                whiteSpace: 'nowrap',
-                textOverflow: 'ellipsis',
-              }}
-            >
-              김지우(Jeff)
-            </span>
-            <span style={{ fontSize: '0.8rem', color: '#eeeeee', lineHeight: 1.4 }}>매니저</span>
-          </FlexColumn>
+          <myProfileMenu.icon style={{ color: '#ffffff', fontSize: '2.4rem', flexShrink: 0 }} />
+          {!menuState.sidebarCollapsed && (
+            <FlexColumn style={{ width: '90%' }}>
+              <span
+                style={{
+                  fontSize: '0.9rem',
+                  fontWeight: 700,
+                  color: '#ffffff',
+                  lineHeight: 1.4,
+                  overflow: 'hidden',
+                  whiteSpace: 'nowrap',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                김지우(Jeff)
+              </span>
+              <span style={{ fontSize: '0.8rem', color: '#eeeeee', lineHeight: 1.4 }}>매니저</span>
+            </FlexColumn>
+          )}
         </FlexRow>
-        <Button onClick={logout} style={{ backgroundColor: 'transparent' }}>
-          <LogoutIcon style={{ color: '#ffffff', fontSize: '1.4rem' }} />
-        </Button>
+        {!menuState.sidebarCollapsed && (
+          <Button onClick={logout} style={{ backgroundColor: 'transparent' }}>
+            <LogoutIcon style={{ color: '#ffffff', fontSize: '1.4rem' }} />
+          </Button>
+        )}
       </FlexRow>
     </FlexColumn>
   );
