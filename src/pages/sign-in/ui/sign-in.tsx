@@ -63,21 +63,24 @@ export function SignIn() {
           style={{
             display: 'flex',
             flexDirection: 'column',
-            width: 530,
+            width: 480,
             backgroundColor: '#ffffff',
             alignItems: 'center',
             justifyContent: 'center',
             borderRadius: 12,
             boxShadow: '2px 2px 10px rgba(0, 0, 0, 0.06)',
-            padding: 60,
-            gap: 30,
+            paddingInline: 40,
+            paddingBlock: 30,
+            gap: 40,
           }}
           action={signIn}
         >
           <FlexColumn
             className={'selection-none'}
             style={{
-              height: 60,
+              height: 80,
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
           >
             <img src={TriphosLogo} alt={'로고'} />
@@ -87,7 +90,7 @@ export function SignIn() {
               width: '100%',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: 12,
+              gap: 14,
             }}
           >
             <Input
@@ -115,7 +118,7 @@ export function SignIn() {
             </FlexRow>
           </FlexColumn>
           <Button type={'submit'} style={{ width: '100%', height: 48 }}>
-            <span>로그인</span>
+            <span style={{ fontSize: '1rem', fontWeight: 600 }}>로그인</span>
           </Button>
         </Form>
       </FlexRow>

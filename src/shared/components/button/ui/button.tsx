@@ -18,7 +18,7 @@ const defaultButtonStyle: CSSProperties = {
   paddingBlock: 4,
   borderRadius: 6,
   cursor: 'pointer',
-  fontSize: '0.9rem',
+  fontSize: '0.88rem',
   fontWeight: 600,
   height: 38,
   lineHeight: 0,

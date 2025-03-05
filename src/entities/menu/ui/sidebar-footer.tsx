@@ -50,7 +50,6 @@ export function SidebarFooter() {
         <FlexRow
           style={{
             display: 'flex',
-            // alignItems: 'center',
             gap: 12,
             cursor: 'pointer',
             width: '70%',
@@ -59,12 +58,13 @@ export function SidebarFooter() {
         >
           <FlexRow
             as={motion.div}
-            layout
+            initial={{ fontSize: '2.4rem' }}
             animate={{ fontSize: menuState.sidebarCollapsed ? '2rem' : '2.4rem' }}
+            exit={{ fontSize: '2.4rem' }}
           >
-            <myProfileMenu.icon style={{ color: '#ffffff', fontSize: 'inherit' }} />
+            <myProfileMenu.icon style={{ color: '#ffffff' }} />
           </FlexRow>
-          <AnimatePresence>
+          <AnimatePresence initial={false}>
             {!menuState.sidebarCollapsed && (
               <FlexColumn
                 as={motion.div}
@@ -93,7 +93,7 @@ export function SidebarFooter() {
             )}
           </AnimatePresence>
         </FlexRow>
-        <AnimatePresence>
+        <AnimatePresence initial={false}>
           {!menuState.sidebarCollapsed && (
             <FlexRow
               as={motion.div}
