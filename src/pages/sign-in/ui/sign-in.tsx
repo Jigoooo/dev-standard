@@ -97,19 +97,21 @@ export function SignIn() {
             boxShadow: '2px 2px 10px rgba(0, 0, 0, 0.06)',
             paddingInline: 40,
             paddingBlock: 30,
-            gap: 40,
+            gap: 30,
           }}
           action={signIn}
         >
           <FlexColumn
             className={'selection-none'}
             style={{
-              height: 80,
+              height: 70,
               alignItems: 'center',
               justifyContent: 'center',
+              gap: 6,
             }}
           >
-            <img src={TriphosLogo} alt={'로고'} />
+            <img src={TriphosLogo} alt={'로고'} width={120} />
+            <span style={{ color: '#555555', fontWeight: 600, fontSize: '1.2rem' }}>개발 표준</span>
           </FlexColumn>
           <FlexColumn
             style={{
@@ -119,18 +121,25 @@ export function SignIn() {
               gap: 14,
             }}
           >
-            <Input
-              name={signInFields.id}
-              defaultValue={saveId}
-              style={{ width: '100%', height: 48 }}
-              placeholder={'아이디'}
-            />
-            <Input
-              name={signInFields.password}
-              style={{ width: '100%', height: 48 }}
-              type={'password'}
-              placeholder={'비밀번호'}
-            />
+            <FlexColumn style={{ width: '100%', gap: 4 }}>
+              <span style={{ color: '#555555', fontWeight: 500, fontSize: '0.8rem' }}>아이디</span>
+              <Input
+                name={signInFields.id}
+                defaultValue={saveId}
+                style={{ width: '100%', height: 42 }}
+              />
+            </FlexColumn>
+            <FlexColumn style={{ width: '100%', gap: 4 }}>
+              <span style={{ color: '#555555', fontWeight: 500, fontSize: '0.8rem' }}>
+                비밀번호
+              </span>
+              <Input
+                name={signInFields.password}
+                style={{ width: '100%', height: 42 }}
+                type={'password'}
+              />
+            </FlexColumn>
+
             <FlexRow
               style={{
                 width: '100%',

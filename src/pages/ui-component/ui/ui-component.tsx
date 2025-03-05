@@ -142,15 +142,19 @@ export function UiComponent() {
 
       <FlexRow style={{ alignItems: 'center' }}>
         <span style={{ width: 200, fontWeight: 500 }}>Input Outlined: </span>
-        <Input style={{ height: 36 }} />
+        <Input style={{ height: 36 }} placeholder={'Input Outlined'} />
       </FlexRow>
       <FlexRow style={{ alignItems: 'center' }}>
         <span style={{ width: 200, fontWeight: 500 }}>Input Underline: </span>
-        <Input inputStyle={InputStyle.UNDERLINE} style={{ height: 36 }} />
+        <Input
+          inputStyle={InputStyle.UNDERLINE}
+          style={{ height: 36 }}
+          placeholder={'Input Underline'}
+        />
       </FlexRow>
       <FlexRow style={{ alignItems: 'center' }}>
         <span style={{ width: 200, fontWeight: 500 }}>Textarea: </span>
-        <Textarea style={{ width: 300 }} />
+        <Textarea style={{ width: 300 }} placeholder={'Textarea'} />
       </FlexRow>
 
       <Divider style={{ marginBlock: 16, backgroundColor: '#bbbbbb' }} />

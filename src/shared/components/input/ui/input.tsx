@@ -36,6 +36,7 @@ const inputStyles: Record<InputStyle, CSSProperties> = {
     borderLeft: 'none',
     borderRight: 'none',
     borderBottom: `1.4px solid #c4c4c4`,
+    paddingBottom: 0,
   },
 } as const;
 
