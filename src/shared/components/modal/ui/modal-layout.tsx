@@ -6,11 +6,12 @@ import { Button, FlexColumn, FlexRow, Divider } from '@/shared/components';
 
 const modalContainerDefaultStyle: CSSProperties = {
   backgroundColor: '#ffffff',
-  padding: 16,
+  paddingInline: 16,
+  paddingBlock: 12,
   width: 600,
   height: 300,
   borderRadius: 6,
-  gap: 8,
+  gap: 6,
 };
 
 export function ModalLayout({
@@ -38,7 +39,7 @@ export function ModalLayout({
           alignItems: 'center',
         }}
       >
-        <span style={{ fontSize: '1.2rem', fontWeight: 600 }}>{title}</span>
+        <span style={{ fontSize: '1.1rem', fontWeight: 600 }}>{title}</span>
         <Button onClick={close} style={{ backgroundColor: '#ffffff', height: 36, width: 36 }}>
           <CloseIcon style={{ fontSize: '1.4rem', color: '#212121' }} />
         </Button>

@@ -82,16 +82,28 @@ export function SidebarFooter() {
                 }}
               >
                 <motion.span
-                  style={{ padding: 8, backgroundColor: '#ffffff', borderRadius: 6 }}
+                  style={{
+                    padding: 8,
+                    backgroundColor: '#ffffff',
+                    borderRadius: 6,
+                    fontWeight: 500,
+                  }}
                   whileHover={{ backgroundColor: '#eeeeee' }}
                   transition={{ duration: 0.1 }}
+                  onClick={goMyProfile}
                 >
                   내 정보
                 </motion.span>
                 <motion.span
-                  style={{ padding: 8, backgroundColor: '#ffffff', borderRadius: 6 }}
+                  style={{
+                    padding: 8,
+                    backgroundColor: '#ffffff',
+                    borderRadius: 6,
+                    fontWeight: 500,
+                  }}
                   whileHover={{ backgroundColor: '#eeeeee' }}
                   transition={{ duration: 0.1 }}
+                  onClick={logout}
                 >
                   로그아웃
                 </motion.span>
