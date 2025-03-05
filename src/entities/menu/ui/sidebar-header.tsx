@@ -23,10 +23,10 @@ export function SidebarHeader({ title }: { title: string }) {
         <AnimatePresence>
           {!menuState.sidebarCollapsed && (
             <motion.span
-              initial={{ x: -20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ x: -20, opacity: 0 }}
-              transition={{ duration: 0.1 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
               style={{
                 fontSize: '1.1rem',
                 fontWeight: 700,

@@ -16,7 +16,7 @@ export function Sidebar({ headerTitle }: { headerTitle: string }) {
   return (
     <motion.div
       animate={{ width: menuState.sidebarWidth, minWidth: menuState.sidebarWidth }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: 0.2 }}
       style={{
         position: 'relative',
         userSelect: 'none',
