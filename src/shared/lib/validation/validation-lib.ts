@@ -1,11 +1,3 @@
-import { KeyboardEvent } from 'react';
-
-export function formEnterPrevention(event: KeyboardEvent) {
-  if (event.key === 'Enter') {
-    event.preventDefault();
-  }
-}
-
 export function isValidId(username: string) {
   const regex = /^[0-9a-zA-Z]+$/;
   return regex.test(username);
@@ -50,9 +42,4 @@ export function isImageSrcEmpty(html: string) {
   const regex = /<img\s+src=["']\s*["']/i;
 
   return regex.test(html);
-}
-
-export function isValidAgriculturalBusinessCheckNumber(number: string) {
-  const regex = /^\d{6}-\d{7}$/;
-  return regex.test(number);
 }

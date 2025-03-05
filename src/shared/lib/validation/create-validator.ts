@@ -14,7 +14,7 @@ export function createValidator(value: any) {
   let errorMessage = '';
 
   const validator = {
-    string({ message }: { message?: string } = {}) {
+    isString({ message }: { message?: string } = {}) {
       if (error) return validator;
       if (typeof value !== 'string') {
         error = true;
@@ -22,7 +22,7 @@ export function createValidator(value: any) {
       }
       return validator;
     },
-    number({ message }: { message?: string } = {}) {
+    isNumber({ message }: { message?: string } = {}) {
       if (error) return validator;
       if (isNaN(Number(value))) {
         error = true;
@@ -32,7 +32,8 @@ export function createValidator(value: any) {
     },
     min(minValue: number, { message }: { message?: string } = {}) {
       if (error) return validator;
-      if (value < minValue) {
+      const numValue = Number(value);
+      if (isNaN(numValue) || numValue < minValue) {
         error = true;
         errorMessage = message ?? '최소값을 벗어날 수 없습니다.';
       }
@@ -40,7 +41,8 @@ export function createValidator(value: any) {
     },
     max(maxValue: number, { message }: { message?: string } = {}) {
       if (error) return validator;
-      if (value > maxValue) {
+      const numValue = Number(value);
+      if (isNaN(numValue) || numValue > maxValue) {
         error = true;
         errorMessage = message ?? '최대값을 초과할 수 없습니다.';
       }
@@ -174,11 +176,21 @@ export function createValidator(value: any) {
       }
       return validator;
     },
-    includes(substring: string, { message }: { message?: string } = {}) {
+    includesString(substring: string, { message }: { message?: string } = {}) {
       if (error) return validator;
       if (typeof value !== 'string' || !value.includes(substring)) {
         error = true;
         errorMessage = message ?? `문자열에 '${substring}'이 포함되어 있지 않습니다.`;
+      }
+      return validator;
+    },
+    isValidUrl({ message }: { message?: string } = {}) {
+      if (error) return validator;
+      try {
+        new URL(value);
+      } catch {
+        error = true;
+        errorMessage = message ?? '유효한 URL이 아닙니다.';
       }
       return validator;
     },
