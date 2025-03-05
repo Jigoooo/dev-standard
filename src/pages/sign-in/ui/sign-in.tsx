@@ -7,9 +7,10 @@ import { Form, Input, Checkbox, Button, dialogActions, DialogType } from '@/shar
 import { menus } from '@/entities/menu';
 import { FlexColumn, FlexRow } from '@/shared/components';
 import { useToggle } from '@/shared/hooks';
-import { getFormValues } from '@/shared/lib';
+import { createValidator, getFormValues } from '@/shared/lib';
 import { localStorageKey } from '@/shared/constants';
 import { useSignInService } from '@/entities/auth/api';
+import { PSignIn } from '@/entities/auth/model';
 
 const signInFields: Record<
   keyof {
@@ -31,24 +32,30 @@ export function SignIn() {
   const signInService = useSignInService();
 
   const signIn = (formData: FormData) => {
-    const { id, password } = getFormValues(formData, signInFields);
+    const { id, password } = getFormValues<PSignIn>(formData, signInFields);
+    const idWithValidated = createValidator(id)
+      .required({ message: '아이디를 입력해 주세요.' })
+      .validate();
+    const passwordWithValidated = createValidator(password)
+      .required({ message: '비밀번호를 입력해 주세요.' })
+      .validate();
 
-    if (!id) {
+    if (idWithValidated.error) {
       return dialogActions.openDialog({
         dialogType: DialogType.WARNING,
-        contents: '아이디를 입력해 주세요.',
+        contents: idWithValidated.errorMessage,
       });
     }
 
-    if (!password) {
+    if (passwordWithValidated.error) {
       return dialogActions.openDialog({
         dialogType: DialogType.WARNING,
-        contents: '비밀번호를 입력해 주세요.',
+        contents: passwordWithValidated.errorMessage,
       });
     }
 
     signInService.mutate(
-      { id, password },
+      { id: idWithValidated.value, password: passwordWithValidated.value },
       {
         onSuccess: (data) => {
           if (!data.success) {

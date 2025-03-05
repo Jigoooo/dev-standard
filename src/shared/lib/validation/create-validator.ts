@@ -1,6 +1,5 @@
 import {
   isAllDigits,
-  isImageSrcEmpty,
   isValidBusinessNumber,
   isValidEmail,
   isValidHomeNumber,
@@ -9,7 +8,7 @@ import {
   isValidPhoneNumber,
 } from '@/shared/lib';
 
-export function createValidator(value: any) {
+export function createValidator<TValue extends string | number | null>(value: TValue) {
   let error = false;
   let errorMessage = '';
 
@@ -58,6 +57,13 @@ export function createValidator(value: any) {
     },
     id({ message }: { message?: string } = {}) {
       if (error) return validator;
+      if (typeof value !== 'string') {
+        error = true;
+        errorMessage = message ?? '문자로 입력해 주세요.';
+
+        return validator;
+      }
+
       if (!isValidId(value)) {
         error = true;
         errorMessage = message ?? '유효한 ID가 아닙니다.';
@@ -66,6 +72,13 @@ export function createValidator(value: any) {
     },
     password({ message }: { message?: string } = {}) {
       if (error) return validator;
+      if (typeof value !== 'string') {
+        error = true;
+        errorMessage = message ?? '문자로 입력해 주세요.';
+
+        return validator;
+      }
+
       if (!isValidPassword(value)) {
         error = true;
         errorMessage = message ?? '유효한 비밀번호가 아닙니다.';
@@ -74,6 +87,13 @@ export function createValidator(value: any) {
     },
     phoneNumber({ message }: { message?: string } = {}) {
       if (error) return validator;
+      if (typeof value !== 'string') {
+        error = true;
+        errorMessage = message ?? '문자로 입력해 주세요.';
+
+        return validator;
+      }
+
       if (!isValidPhoneNumber(value)) {
         error = true;
         errorMessage = message ?? '유효한 전화번호가 아닙니다.';
@@ -82,6 +102,13 @@ export function createValidator(value: any) {
     },
     homeNumber({ message }: { message?: string } = {}) {
       if (error) return validator;
+      if (typeof value !== 'string') {
+        error = true;
+        errorMessage = message ?? '문자로 입력해 주세요.';
+
+        return validator;
+      }
+
       if (!isValidHomeNumber(value)) {
         error = true;
         errorMessage = message ?? '유효한 집 전화번호가 아닙니다.';
@@ -90,6 +117,13 @@ export function createValidator(value: any) {
     },
     allDigits({ message }: { message?: string } = {}) {
       if (error) return validator;
+      if (typeof value !== 'string') {
+        error = true;
+        errorMessage = message ?? '문자로 입력해 주세요.';
+
+        return validator;
+      }
+
       if (!isAllDigits(value)) {
         error = true;
         errorMessage = message ?? '모든 문자가 숫자여야 합니다.';
@@ -98,6 +132,13 @@ export function createValidator(value: any) {
     },
     email({ message }: { message?: string } = {}) {
       if (error) return validator;
+      if (typeof value !== 'string') {
+        error = true;
+        errorMessage = message ?? '문자로 입력해 주세요.';
+
+        return validator;
+      }
+
       if (!isValidEmail(value)) {
         error = true;
         errorMessage = message ?? '유효한 이메일 주소가 아닙니다.';
@@ -106,17 +147,16 @@ export function createValidator(value: any) {
     },
     businessNumber({ message }: { message?: string } = {}) {
       if (error) return validator;
+      if (typeof value !== 'string') {
+        error = true;
+        errorMessage = message ?? '문자로 입력해 주세요.';
+
+        return validator;
+      }
+
       if (!isValidBusinessNumber(value)) {
         error = true;
         errorMessage = message ?? '유효한 사업자 등록번호가 아닙니다.';
-      }
-      return validator;
-    },
-    imageSrcEmpty({ message }: { message?: string } = {}) {
-      if (error) return validator;
-      if (!isImageSrcEmpty(value)) {
-        error = true;
-        errorMessage = message ?? '이미지 소스가 비어 있습니다.';
       }
       return validator;
     },
@@ -186,6 +226,13 @@ export function createValidator(value: any) {
     },
     isValidUrl({ message }: { message?: string } = {}) {
       if (error) return validator;
+      if (typeof value !== 'string') {
+        error = true;
+        errorMessage = message ?? '문자로 입력해 주세요.';
+
+        return validator;
+      }
+
       try {
         new URL(value);
       } catch {

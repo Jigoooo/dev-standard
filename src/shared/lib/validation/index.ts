@@ -1,6 +1,5 @@
 export {
   isAllDigits,
-  isImageSrcEmpty,
   isValidBusinessNumber,
   isValidHomeNumber,
   isValidId,
