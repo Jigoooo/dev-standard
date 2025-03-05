@@ -1,1 +1,1 @@
-export type { PSignIn } from './auth-type.ts';
+export type { PSignIn, RSignIn } from './auth-type.ts';
