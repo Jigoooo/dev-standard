@@ -95,5 +95,6 @@ export default defineConfig(({ mode }) => {
         cacheLocation: undefined,
       }),
     ],
+    assetsInclude: ['**/*.ttf', '**/*.woff', '**/*.woff2', '**/*.eot', '**/*.otf'],
   };
 });
