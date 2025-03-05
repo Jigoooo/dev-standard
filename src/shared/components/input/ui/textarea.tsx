@@ -13,6 +13,7 @@ type ExtendedTextareaProps = MotionProps &
   };
 
 const defaultTextareaStyle: CSSProperties = {
+  resize: 'vertical',
   paddingInline: 8,
   paddingBlock: 10,
   width: '100%',

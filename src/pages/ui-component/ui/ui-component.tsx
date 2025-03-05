@@ -6,7 +6,6 @@ import {
   DateFromToPicker,
   DatePicker,
   dialogActions,
-  Divider,
   FlexColumn,
   FlexRow,
   Input,
@@ -60,7 +59,7 @@ export function UiComponent() {
         <Button buttonStyle={ButtonStyle.OUTLINED}>Button Outlined</Button>
       </FlexRow>
 
-      <Divider style={{ marginBlock: 16, backgroundColor: '#bbbbbb' }} />
+      <DashedDivider strokeColor={'#666666'} style={{ marginBlock: 16 }} />
 
       <FlexRow style={{ alignItems: 'center' }}>
         <span style={{ width: 200, fontWeight: 500 }}>Open modal: </span>
@@ -101,7 +100,7 @@ export function UiComponent() {
         </Button>
       </FlexRow>
 
-      <Divider style={{ marginBlock: 16, backgroundColor: '#bbbbbb' }} />
+      <DashedDivider strokeColor={'#666666'} style={{ marginBlock: 16 }} />
 
       <FlexRow style={{ alignItems: 'center' }}>
         <span style={{ width: 200, fontWeight: 500 }}>Select: </span>
@@ -140,7 +139,7 @@ export function UiComponent() {
         <DateFromToPicker minDate={new Date('2025-02-01')} maxDate={new Date('2025-05-30')} />
       </FlexRow>
 
-      <Divider style={{ marginBlock: 16, backgroundColor: '#bbbbbb' }} />
+      <DashedDivider strokeColor={'#666666'} style={{ marginBlock: 16 }} />
 
       <FlexRow style={{ alignItems: 'center' }}>
         <span style={{ width: 200, fontWeight: 500 }}>Input Outlined: </span>
@@ -159,7 +158,7 @@ export function UiComponent() {
         <Textarea style={{ width: 300 }} placeholder={'Textarea'} />
       </FlexRow>
 
-      <Divider style={{ marginBlock: 16, backgroundColor: '#bbbbbb' }} />
+      <DashedDivider strokeColor={'#666666'} style={{ marginBlock: 16 }} />
 
       <FlexRow style={{ alignItems: 'center' }}>
         <span style={{ width: 200, fontWeight: 500 }}>Checkbox: </span>
@@ -170,12 +169,8 @@ export function UiComponent() {
         <Switch label={'Switch Label'} isOn={switchValue} onClick={toggleSwitch} />
       </FlexRow>
 
-      <Divider style={{ marginBlock: 16, backgroundColor: '#bbbbbb' }} />
+      <DashedDivider strokeColor={'#666666'} style={{ marginBlock: 16 }} />
 
-      <FlexRow style={{ alignItems: 'center' }}>
-        <span style={{ width: 200, fontWeight: 500 }}>Dashed Divider: </span>
-        <DashedDivider strokeColor={'red'} style={{ width: 500 }} />
-      </FlexRow>
       <FlexRow style={{ alignItems: 'center' }}>
         <span style={{ width: 200, fontWeight: 500 }}>Tooltip: </span>
         <Tooltip content={'Tooltip'} position={'topRight'}>
