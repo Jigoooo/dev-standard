@@ -12,13 +12,9 @@ export function Main() {
   const menuState = useMenuState();
   const excludeCacheMenuRouters = [`${Router.MAIN}/${Router.MY_PROFILE}`];
 
-  const isMatchedExceludeMenu = excludeCacheMenuRouters.includes(
+  const isMatchedExcludeMenu = excludeCacheMenuRouters.includes(
     `${Router.MAIN}/${menuState.selectedMenu.router}`,
   );
-
-  console.log(isMatchedExceludeMenu);
-
-  // console.log(excludeCacheMenuRouters.includes(menuState.selectedMenu.router));
 
   return (
     <FlexRow
@@ -51,7 +47,7 @@ export function Main() {
           borderRadius: 8,
         }}
       >
-        {isMatchedExceludeMenu ? (
+        {isMatchedExcludeMenu ? (
           <MainHeader title={menuState.selectedMenu.name} />
         ) : (
           <PageTab aliveRef={aliveRef} />

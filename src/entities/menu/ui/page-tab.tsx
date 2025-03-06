@@ -7,7 +7,6 @@ import { IoClose } from 'react-icons/io5';
 
 import { Button, Divider, FlexColumn, FlexRow } from '@/shared/components';
 import { CacheNode, menus, TMenu, useMenuState } from '@/entities/menu';
-import { colors } from '@/shared/constants';
 
 export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undefined> }) {
   const navigate = useNavigate();
@@ -46,10 +45,10 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
             as={motion.div}
             layoutId='current-tab'
             style={{
-              height: 40,
+              height: 45,
               justifyContent: 'center',
               alignItems: 'center',
-              width: 200,
+              width: 220,
               borderTop: '1px solid #cccccc',
               borderLeft: '1px solid #cccccc',
               borderRight: '1px solid #cccccc',
@@ -57,17 +56,17 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
               borderTopRightRadius: 4,
               paddingInline: 8,
               paddingBlock: 4,
-              backgroundColor: colors.primary[300],
+              backgroundColor: '#ffffff',
             }}
           >
             <span
               style={{
-                fontWeight: 600,
-                fontSize: '1rem',
+                fontWeight: 700,
+                fontSize: '1.2rem',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 whiteSpace: 'nowrap',
-                color: '#ffffff',
+                // color: '#ffffff',
               }}
             >
               {currentMenu?.name}
@@ -91,7 +90,7 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
                     style={{
                       backgroundColor: '#ffffff',
                       cursor: 'pointer',
-                      border: '1px solid #cccccc',
+                      border: '1px solid #bbbbbb',
                       borderRadius: 4,
                       paddingLeft: 12,
                       paddingRight: 6,
