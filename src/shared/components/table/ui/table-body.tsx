@@ -1,4 +1,4 @@
-import { RefObject, useRef, useState } from 'react';
+import { RefObject, useCallback, useRef, useState } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { motion } from 'framer-motion';
 
@@ -111,13 +111,15 @@ function TableBodyView({
 
   const viewWidth = headers.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
 
+  const getItemKey = useCallback((index: number) => dataList[index].index, [dataList]);
+
   const rowVirtualizer = useVirtualizer({
     count: dataList.length,
     getScrollElement: () => ref.current,
     estimateSize: () => tableStyle.tableBodyHeight,
     overscan: 1,
     initialRect: { width: viewWidth, height: tableStyle.tableBodyHeight },
-    getItemKey: (index) => dataList[index].index,
+    getItemKey,
   });
 
   return (
@@ -199,13 +201,15 @@ function TableBodyPin({
 
   const pinWidth = headers.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
 
+  const getItemKey = useCallback((index: number) => dataList[index].index, [dataList]);
+
   const rowVirtualizer = useVirtualizer({
     count: dataList.length,
     getScrollElement: () => tableBodyRef.current,
     estimateSize: () => tableStyle.tableBodyHeight,
     overscan: 1,
     initialRect: { width: pinWidth, height: tableStyle.tableBodyHeight },
-    getItemKey: (index) => dataList[index].index,
+    getItemKey,
   });
 
   return (
