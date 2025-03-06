@@ -4,7 +4,7 @@ import { useLogout } from '@/entities/auth';
 import { AnchorPicker, Button, Divider, FlexColumn, FlexRow } from '@/shared/components';
 import { useNavigate } from 'react-router-dom';
 import { Router } from '@/entities/router';
-import { menuActions, myProfileMenu, useMenuState } from '@/entities/menu';
+import { myProfileMenu, useMenuState } from '@/entities/menu';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useToggle } from '@/shared/hooks';
 

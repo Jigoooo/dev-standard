@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 
-import { menuActions, TMenu, useMenuState } from '@/entities/menu';
+import { TMenu, useMenuState } from '@/entities/menu';
 import { FlexRow, Tooltip } from '@/shared/components';
 
 export function SidebarItem({
