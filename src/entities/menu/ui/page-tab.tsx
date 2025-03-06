@@ -1,8 +1,9 @@
-import { FlexColumn, FlexRow } from '@/shared/components';
-import { menus, TMenu } from '@/entities/menu';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { RefObject } from 'react';
 import { KeepAliveRef } from 'keepalive-for-react';
+
+import { FlexColumn, FlexRow } from '@/shared/components';
+import { menus, TMenu } from '@/entities/menu';
 
 export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undefined> }) {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
 
   const currentMenu = menus.find((menu) => activePath.includes(menu.router));
 
-  const toMenu = (menu: TMenu | undefined) => {
+  const toMenu = (menu: TMenu) => {
     if (!menu) {
       return;
     }
@@ -21,29 +22,44 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
   };
 
   return (
-    <FlexColumn style={{ minHeight: 50, height: 50, maxHeight: 50, width: '100%' }}>
-      <FlexRow>
-        <FlexRow>
+    <FlexColumn style={{ minHeight: 50, height: 50, maxHeight: 50, width: '100%', gap: 4 }}>
+      <FlexRow style={{ alignItems: 'center', gap: 16 }}>
+        <FlexRow
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: 200,
+            border: '1px solid #dcdcdc',
+            borderRadius: 4,
+            paddingInline: 8,
+          }}
+        >
           <span>{currentMenu?.name}</span>
         </FlexRow>
-        {cacheNodes.map((cacheNode) => {
-          const findCacheMenu = menus.find((menu) => cacheNode.cacheKey.includes(menu.router));
+        <FlexRow style={{ alignItems: 'center', gap: 8 }}>
+          {cacheNodes.map((cacheNode) => {
+            const findCacheMenu = menus.find((menu) => cacheNode.cacheKey.includes(menu.router));
 
-          if (currentMenu === findCacheMenu) {
-            return null;
-          }
+            if (currentMenu === findCacheMenu || !findCacheMenu) {
+              return null;
+            }
 
-          console.log(findCacheMenu);
-          return (
-            <FlexRow
-              key={cacheNode.cacheKey}
-              style={{ cursor: 'pointer' }}
-              onClick={() => toMenu(findCacheMenu)}
-            >
-              <span>{findCacheMenu?.name}</span>
-            </FlexRow>
-          );
-        })}
+            return (
+              <FlexRow
+                key={cacheNode.cacheKey}
+                style={{
+                  cursor: 'pointer',
+                  border: '1px solid #dcdcdc',
+                  borderRadius: 4,
+                  paddingInline: 8,
+                }}
+                onClick={() => toMenu(findCacheMenu)}
+              >
+                <span>{findCacheMenu.name}</span>
+              </FlexRow>
+            );
+          })}
+        </FlexRow>
       </FlexRow>
 
       <div style={{ height: 1, width: '100%', backgroundColor: '#dcdcdc' }}></div>
