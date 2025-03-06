@@ -64,7 +64,7 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
             <span
               style={{
                 fontWeight: 700,
-                fontSize: '1.2rem',
+                fontSize: '1.31rem',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 whiteSpace: 'nowrap',
