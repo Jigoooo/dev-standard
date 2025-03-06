@@ -9,3 +9,4 @@ export { useAudio } from './use-audio.ts';
 export { useToggle } from './use-toggle.ts';
 export { useKeepAliveScrollHistoryRef } from './use-keep-alive-scroll-history-ref.ts';
 export { useWindowStyle } from './use-window-style.ts';
+export { useElementHeight } from './use-element-height.ts';
