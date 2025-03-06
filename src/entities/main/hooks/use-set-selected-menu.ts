@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 
 import { menuActions, menus } from '@/entities/menu';
 
-export function useSetSidebarSelectedMenu() {
+export function useSetSelectedMenu() {
   const location = useLocation();
 
   useEffect(() => {

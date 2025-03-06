@@ -5,6 +5,10 @@ import { Router } from '@/entities/router';
 import { RouteErrorPage } from '@/shared/components';
 import { SignIn } from '@/pages/sign-in';
 import { Main } from '@/pages/main';
+// import { MyProfile } from '@/pages/my-profile';
+// import { UiComponent } from '@/pages/ui-component';
+// import { FileUploadDownload } from '@/pages/file-upload-download';
+// import { ExcelUploadDownload } from '@/pages/excel-upload-download';
 
 const MyProfile = lazy(() =>
   import('@/pages/my-profile').then((module) => ({ default: module.MyProfile })),

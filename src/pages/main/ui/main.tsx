@@ -1,22 +1,15 @@
-import { useLocation } from 'react-router-dom';
 import { useKeepAliveRef } from 'keepalive-for-react';
 import KeepAliveRouteOutlet from 'keepalive-for-react-router';
 
-import { Sidebar, useMenuState } from '@/entities/menu';
+import { MenuController, Sidebar, PageTab, useMenuState } from '@/entities/menu';
 import { FlexColumn, FlexRow } from '@/shared/components';
-import { MainHeader } from '@/entities/main/ui/main-header.tsx';
 import { Router } from '@/entities/router';
-import { KeepAliveWrapper } from '@/entities/main';
+import { MainHeader, KeepAliveWrapper } from '@/entities/main';
 
 export function Main() {
-  const location = useLocation();
-  const activePath = location.pathname + location.search;
   const aliveRef = useKeepAliveRef();
 
   const menuState = useMenuState();
-
-  console.log('activePath: ', activePath);
-  console.log('aliveRef: ', aliveRef?.current?.getCacheNodes());
 
   return (
     <FlexRow
@@ -49,22 +42,7 @@ export function Main() {
           borderRadius: 8,
         }}
       >
-        <FlexColumn style={{ minHeight: 50, height: 50, maxHeight: 50, width: '100%' }}>
-          <FlexRow>
-            <FlexRow>
-              <span>1</span>
-            </FlexRow>
-            <FlexRow>
-              <span>2</span>
-            </FlexRow>
-            <FlexRow>
-              <span>3</span>
-            </FlexRow>
-            <FlexRow>
-              <span>4</span>
-            </FlexRow>
-          </FlexRow>
-        </FlexColumn>
+        <PageTab aliveRef={aliveRef} />
 
         <MainHeader title={menuState.selectedMenu.name} />
 
@@ -74,6 +52,8 @@ export function Main() {
           aliveRef={aliveRef}
         />
       </FlexColumn>
+
+      <MenuController />
     </FlexRow>
   );
 }

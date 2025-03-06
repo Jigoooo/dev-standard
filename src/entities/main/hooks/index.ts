@@ -1,1 +1,1 @@
-export { useSetSidebarSelectedMenu } from './use-set-sidebar-selected-menu.ts';
+export { useSetSelectedMenu } from './use-set-selected-menu.ts';

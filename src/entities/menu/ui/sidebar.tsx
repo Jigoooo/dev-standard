@@ -1,14 +1,7 @@
 import { motion } from 'framer-motion';
 
 import { FlexColumn } from '@/shared/components';
-import {
-  MainMenuController,
-  menus,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarItems,
-  useMenuState,
-} from '@/entities/menu';
+import { menus, SidebarFooter, SidebarHeader, SidebarItems, useMenuState } from '@/entities/menu';
 
 export function Sidebar({ headerTitle }: { headerTitle: string }) {
   const menuState = useMenuState();
@@ -37,8 +30,6 @@ export function Sidebar({ headerTitle }: { headerTitle: string }) {
           <SidebarItems menus={menus} />
           <SidebarFooter />
         </FlexColumn>
-
-        <MainMenuController />
       </motion.div>
     </div>
   );
