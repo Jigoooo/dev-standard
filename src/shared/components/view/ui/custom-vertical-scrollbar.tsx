@@ -6,6 +6,7 @@ import {
   useScroll,
   useTransform,
 } from 'framer-motion';
+import { useKeepAliveScrollHistoryRef } from '@/shared/hooks';
 
 type CustomVerticalScrollbarProps = {
   ref: RefObject<HTMLDivElement | null>;
@@ -24,28 +25,32 @@ export function CustomVerticalScrollbar({
 }: CustomVerticalScrollbarProps) {
   const { scrollYProgress } = useScroll({ container: ref });
 
+  const bodyScrollHistoryRef = useKeepAliveScrollHistoryRef({
+    ref,
+  });
+
   const [containerHeight, setContainerHeight] = useState(0);
   const [showScrollbar, setShowScrollbar] = useState(false);
   const hideTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    if (ref.current) {
-      setContainerHeight(ref.current.clientHeight);
+    if (bodyScrollHistoryRef.current) {
+      setContainerHeight(bodyScrollHistoryRef.current.clientHeight);
     }
-  }, [ref]);
+  }, [bodyScrollHistoryRef]);
 
   useEffect(() => {
-    if (!ref.current) return;
+    if (!bodyScrollHistoryRef.current) return;
     const resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
         setContainerHeight(entry.contentRect.height);
       }
     });
-    resizeObserver.observe(ref.current);
+    resizeObserver.observe(bodyScrollHistoryRef.current);
     return () => {
       resizeObserver.disconnect();
     };
-  }, [ref]);
+  }, [bodyScrollHistoryRef]);
 
   useEffect(() => {
     if (!isTimeoutHiding) {
@@ -53,7 +58,7 @@ export function CustomVerticalScrollbar({
       return;
     }
 
-    const container = ref.current;
+    const container = bodyScrollHistoryRef.current;
     if (!container) return;
 
     const handleScroll = () => {
@@ -78,7 +83,7 @@ export function CustomVerticalScrollbar({
         clearTimeout(hideTimeoutRef.current);
       }
     };
-  }, [ref]);
+  }, [bodyScrollHistoryRef]);
 
   // 컨테이너 높이가 총 컨텐츠 높이보다 크면 스크롤바가 필요없으므로 숨김
   const isScrollbarNeeded = totalContentHeight > containerHeight;
@@ -100,8 +105,8 @@ export function CustomVerticalScrollbar({
 
   useEffect(() => {
     if (prevTotalContentHeight.current !== totalContentHeight) {
-      if (ref.current) {
-        ref.current.scrollTop = 0;
+      if (bodyScrollHistoryRef.current) {
+        bodyScrollHistoryRef.current.scrollTop = 0;
       }
       setTimeout(() => {
         effectiveProgress.set(0);
@@ -133,8 +138,8 @@ export function CustomVerticalScrollbar({
         dragElastic={0}
         dragMomentum={false}
         onDrag={(_, info) => {
-          if (ref.current) {
-            ref.current.scrollTop = info.point.y * 2.6;
+          if (bodyScrollHistoryRef.current) {
+            bodyScrollHistoryRef.current.scrollTop = info.point.y * 2.6;
           }
         }}
         style={{

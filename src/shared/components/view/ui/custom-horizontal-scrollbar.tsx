@@ -1,5 +1,6 @@
 import { RefObject, useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { useKeepAliveScrollHistoryRef } from '@/shared/hooks';
 
 type CustomHorizontalScrollbarProps = {
   ref: RefObject<HTMLDivElement | null>;
@@ -22,29 +23,34 @@ export function CustomHorizontalScrollbar({
 }: CustomHorizontalScrollbarProps) {
   const { scrollXProgress, scrollX } = useScroll({ container: ref });
 
+  const bodyHorizontalScrollHistoryRef = useKeepAliveScrollHistoryRef({
+    ref,
+    axis: 'horizontal',
+  });
+
   const [containerWidth, setContainerWidth] = useState(0);
   const [showScrollbar, setShowScrollbar] = useState(false);
   const hideTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const initialScrollLeft = useRef(0);
 
   useEffect(() => {
-    if (ref.current) {
-      setContainerWidth(ref.current.clientWidth);
+    if (bodyHorizontalScrollHistoryRef.current) {
+      setContainerWidth(bodyHorizontalScrollHistoryRef.current.clientWidth);
     }
-  }, [ref]);
+  }, [bodyHorizontalScrollHistoryRef]);
 
   useEffect(() => {
-    if (!ref.current) return;
+    if (!bodyHorizontalScrollHistoryRef.current) return;
     const resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
         setContainerWidth(entry.contentRect.width);
       }
     });
-    resizeObserver.observe(ref.current);
+    resizeObserver.observe(bodyHorizontalScrollHistoryRef.current);
     return () => {
       resizeObserver.disconnect();
     };
-  }, [ref]);
+  }, [bodyHorizontalScrollHistoryRef]);
 
   useEffect(() => {
     if (!isTimeoutHiding) {
@@ -52,7 +58,7 @@ export function CustomHorizontalScrollbar({
       return;
     }
 
-    const container = ref.current;
+    const container = bodyHorizontalScrollHistoryRef.current;
     if (!container) return;
 
     const handleScroll = () => {
@@ -72,7 +78,7 @@ export function CustomHorizontalScrollbar({
         clearTimeout(hideTimeoutRef.current);
       }
     };
-  }, [ref, isTimeoutHiding]);
+  }, [bodyHorizontalScrollHistoryRef, isTimeoutHiding]);
 
   // 컨테이너 너비가 컨텐츠 전체 너비보다 크면 스크롤바가 필요없으므로 숨김
   const isScrollbarNeeded = totalContentWidth > containerWidth;
@@ -119,13 +125,14 @@ export function CustomHorizontalScrollbar({
           dragElastic={0}
           dragMomentum={false}
           onDragStart={() => {
-            if (ref.current) {
+            if (bodyHorizontalScrollHistoryRef.current) {
               initialScrollLeft.current = scrollX.get();
             }
           }}
           onDrag={(_, info) => {
-            if (ref.current) {
-              ref.current.scrollLeft = initialScrollLeft.current + info.offset.x * 2.4;
+            if (bodyHorizontalScrollHistoryRef.current) {
+              bodyHorizontalScrollHistoryRef.current.scrollLeft =
+                initialScrollLeft.current + info.offset.x * 2.4;
             }
           }}
           style={{
