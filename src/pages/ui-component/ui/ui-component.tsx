@@ -44,7 +44,7 @@ export function UiComponent() {
   ]);
 
   const domRef = useRef<HTMLDivElement>(null);
-  const keepAliveScrollHistoryRef = useKeepAliveScrollHistoryRef(domRef);
+  const keepAliveScrollHistoryRef = useKeepAliveScrollHistoryRef({ ref: domRef });
 
   const toggleAccordion = (id: string) => {
     setAccordionStates((prev) => {

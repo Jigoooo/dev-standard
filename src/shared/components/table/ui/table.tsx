@@ -11,7 +11,7 @@ import {
 } from '@/shared/components';
 import { TableHeader } from './table-header.tsx';
 import { TableBody } from './table-body.tsx';
-import { useElementHeight } from '@/shared/hooks';
+import { useElementHeight, useKeepAliveScrollHistoryRef } from '@/shared/hooks';
 
 /*
  * todo
@@ -79,7 +79,12 @@ export function Table<TData extends { index: string } & Record<string, any>>({
   const headerRef = useRef<HTMLDivElement>(null);
   const bodyRef = useRef<HTMLDivElement>(null);
 
-  useSyncScroll(headerRef, bodyRef);
+  const bodyHorizontalScrollHistoryRef = useKeepAliveScrollHistoryRef({
+    ref: bodyRef,
+    axis: 'horizontal',
+  });
+
+  useSyncScroll(headerRef, bodyHorizontalScrollHistoryRef);
 
   const tableHeight = useElementHeight(tableRef);
 
@@ -168,7 +173,7 @@ export function Table<TData extends { index: string } & Record<string, any>>({
       >
         <TableHeader ref={headerRef} />
 
-        <TableBody ref={bodyRef} />
+        <TableBody ref={bodyHorizontalScrollHistoryRef} />
 
         <FlexRow
           style={{

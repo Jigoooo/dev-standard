@@ -12,6 +12,7 @@ import {
   useTableContext,
 } from '@/shared/components';
 import { colors } from '@/shared/constants';
+import { useKeepAliveScrollHistoryRef } from '@/shared/hooks';
 
 function validateDataList<T>(dataList: unknown[], keys: (keyof T)[]): dataList is T[] {
   return dataList.every((item) =>
@@ -42,13 +43,16 @@ export function TableBody<TData extends { index: string }>({
   }
 
   const bodyRef = useRef<HTMLDivElement>(null);
+  const bodyScrollHistoryRef = useKeepAliveScrollHistoryRef({
+    ref: bodyRef,
+  });
 
   const [hoverIndex, setHoverIndex] = useState<string | null>(null);
 
   return (
     <FlexRow style={{ position: 'relative' }}>
       <FlexRow
-        ref={bodyRef}
+        ref={bodyScrollHistoryRef}
         className={'table-body no-scrollbar'}
         style={{
           backgroundColor: tableStyle.tableBodyBackgroundColor,
@@ -83,7 +87,7 @@ export function TableBody<TData extends { index: string }>({
         />
       </FlexRow>
 
-      <CustomVerticalScrollbar ref={bodyRef} totalContentHeight={viewHeight} />
+      <CustomVerticalScrollbar ref={bodyScrollHistoryRef} totalContentHeight={viewHeight} />
 
       <CustomHorizontalScrollbar
         ref={ref}

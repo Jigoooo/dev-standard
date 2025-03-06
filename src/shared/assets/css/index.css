@@ -1,5 +1,6 @@
 * {
   -webkit-touch-callout: none;
+  font-family: Pretendard;
 }
 
 *,
@@ -23,14 +24,9 @@ html, body {
 
 body {
   overflow-x: hidden;
-  font-family: Pretendard;
   line-height: 1.5;
   background-color: white;
   color: #212121;
-}
-
-span {
-  font-family: Pretendard;
 }
 
 /* 자동완성 시 배경색 및 글자색 지정 */
