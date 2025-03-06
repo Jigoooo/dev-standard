@@ -45,7 +45,6 @@ export function CustomVerticalScrollbar({
   const [containerHeight, setContainerHeight] = useState(0);
   const [showScrollbar, setShowScrollbar] = useState(false);
   const hideTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const initialScrollTop = useRef(0);
 
   useEffect(() => {
     if (bodyScrollHistoryRef.current) {
@@ -161,14 +160,19 @@ export function CustomVerticalScrollbar({
         dragConstraints={{ top: 0, bottom: 0 }}
         dragElastic={0}
         dragMomentum={false}
-        onDragStart={() => {
-          if (bodyScrollHistoryRef.current) {
-            initialScrollTop.current = bodyScrollHistoryRef.current.scrollTop;
-          }
-        }}
         onDrag={(_, info) => {
           if (bodyScrollHistoryRef.current) {
-            bodyScrollHistoryRef.current.scrollTop = info.point.y * 4;
+            const container = bodyScrollHistoryRef.current;
+            const scrollableHeight = container.scrollHeight - container.clientHeight;
+            const scrollbarMovableDistance = containerHeight - safeThumbHeight;
+            const scrollRatio = scrollableHeight / scrollbarMovableDistance;
+            let offsetY = info.offset.y;
+
+            if (offsetY < 0) {
+              offsetY += scrollbarMovableDistance;
+            }
+
+            container.scrollTop = offsetY * scrollRatio;
           }
         }}
         style={{
