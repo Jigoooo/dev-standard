@@ -117,6 +117,7 @@ function TableBodyView({
     getScrollElement: () => ref.current,
     estimateSize: () => tableStyle.tableBodyHeight,
     overscan: 1,
+    initialRect: { width: viewWidth, height: tableStyle.tableBodyHeight },
     getItemKey: (index) => dataList[index].index,
   });
 
@@ -194,11 +195,14 @@ function TableBodyPin({
 
   const tableBodyRef = useRef<HTMLDivElement>(null);
 
+  const pinWidth = headers.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
+
   const rowVirtualizer = useVirtualizer({
     count: dataList.length,
     getScrollElement: () => tableBodyRef.current,
     estimateSize: () => tableStyle.tableBodyHeight,
     overscan: 1,
+    initialRect: { width: pinWidth, height: tableStyle.tableBodyHeight },
     getItemKey: (index) => dataList[index].index,
   });
 
