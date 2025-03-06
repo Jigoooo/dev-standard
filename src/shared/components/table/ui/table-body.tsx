@@ -106,6 +106,7 @@ function TableBodyView({
   hoverIndex: string | null;
   setHoverIndex: (index: string | null) => void;
 }) {
+  'use no memo';
   const { tableStyle, dataList } = useTableContext();
 
   const viewWidth = headers.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
@@ -185,6 +186,7 @@ function TableBodyPin({
   hoverIndex: string | null;
   setHoverIndex: (index: string | null) => void;
 }) {
+  'use no memo';
   const { tableStyle, dataList } = useTableContext();
 
   const pinHeaderWidth = headers.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
