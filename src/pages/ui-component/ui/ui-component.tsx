@@ -1,5 +1,4 @@
 import { useRef, useState } from 'react';
-import { useEffectOnActive } from 'keepalive-for-react';
 
 import {
   Button,
@@ -44,10 +43,6 @@ export function UiComponent() {
 
   const domRef = useRef<HTMLDivElement>(null);
   const keepAliveScrollHistoryRef = useKeepAliveScrollHistoryRef(domRef);
-
-  useEffectOnActive(() => {
-    console.log('select is active', select);
-  }, [select]);
 
   const toggleAccordion = (id: string) => {
     setAccordionStates((prev) => {
