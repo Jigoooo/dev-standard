@@ -24,7 +24,7 @@ export function CustomVerticalScrollbar({
   border = '1px solid #bdc3c7',
   backgroundColor = '#f1f1f1',
 }: CustomVerticalScrollbarProps) {
-  const { scrollYProgress } = useScroll({ container: ref });
+  const { scrollYProgress, scrollY } = useScroll({ container: ref });
   const effectiveProgress = useMotionValue(0);
 
   const bodyScrollHistoryRef = useKeepAliveScrollHistoryRef({
@@ -45,6 +45,7 @@ export function CustomVerticalScrollbar({
   const [containerHeight, setContainerHeight] = useState(0);
   const [showScrollbar, setShowScrollbar] = useState(false);
   const hideTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const initialScrollTop = useRef(0);
 
   useEffect(() => {
     if (bodyScrollHistoryRef.current) {
@@ -128,7 +129,6 @@ export function CustomVerticalScrollbar({
   }, [totalContentHeight]);
 
   const thumbTop = useTransform(effectiveProgress, [0, 1], [0, containerHeight - safeThumbHeight]);
-
   return (
     <motion.div
       style={{
@@ -151,7 +151,8 @@ export function CustomVerticalScrollbar({
       //     const clickRatio = clickY / containerHeight;
       //     const scrollableHeight = container.scrollHeight - container.clientHeight;
       //
-      //     container.scrollTop = scrollableHeight * clickRatio;
+      //     container.scrollTop = scrollableHeight * (clickRatio + 0.06);
+      //     console.log(container.scrollTop);
       //   }
       // }}
     >
@@ -160,19 +161,18 @@ export function CustomVerticalScrollbar({
         dragConstraints={{ top: 0, bottom: 0 }}
         dragElastic={0}
         dragMomentum={false}
+        onDragStart={() => {
+          initialScrollTop.current = scrollY.get();
+        }}
         onDrag={(_, info) => {
           if (bodyScrollHistoryRef.current) {
             const container = bodyScrollHistoryRef.current;
             const scrollableHeight = container.scrollHeight - container.clientHeight;
             const scrollbarMovableDistance = containerHeight - safeThumbHeight;
             const scrollRatio = scrollableHeight / scrollbarMovableDistance;
-            let offsetY = info.offset.y;
+            const newScrollTop = initialScrollTop.current + info.offset.y * scrollRatio;
 
-            if (offsetY < 0) {
-              offsetY += scrollbarMovableDistance;
-            }
-
-            container.scrollTop = offsetY * scrollRatio;
+            container.scrollTop = Math.max(0, Math.min(newScrollTop, scrollableHeight));
           }
         }}
         style={{

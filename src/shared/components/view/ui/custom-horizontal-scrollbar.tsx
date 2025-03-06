@@ -159,9 +159,7 @@ export function CustomHorizontalScrollbar({
           dragElastic={0}
           dragMomentum={false}
           onDragStart={() => {
-            if (bodyHorizontalScrollHistoryRef.current) {
-              initialScrollLeft.current = scrollX.get();
-            }
+            initialScrollLeft.current = scrollX.get();
           }}
           onDrag={(_, info) => {
             if (bodyHorizontalScrollHistoryRef.current) {
