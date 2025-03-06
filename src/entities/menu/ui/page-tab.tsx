@@ -50,7 +50,7 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
               height: 45,
               justifyContent: 'center',
               alignItems: 'center',
-              width: 220,
+              width: 260,
               borderTop: '1px solid #cccccc',
               borderLeft: '1px solid #cccccc',
               borderRight: '1px solid #cccccc',
@@ -64,7 +64,7 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
             <span
               style={{
                 fontWeight: 700,
-                fontSize: '1.31rem',
+                fontSize: '1.1rem',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 whiteSpace: 'nowrap',
