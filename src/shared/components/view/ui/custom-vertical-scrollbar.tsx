@@ -25,6 +25,8 @@ export function CustomVerticalScrollbar({
 }: CustomVerticalScrollbarProps) {
   const { scrollYProgress } = useScroll({ container: ref });
 
+  const effectiveProgress = useMotionValue(0);
+
   const bodyScrollHistoryRef = useKeepAliveScrollHistoryRef({
     ref,
   });
@@ -94,7 +96,6 @@ export function CustomVerticalScrollbar({
 
   const prevTotalContentHeight = useRef(totalContentHeight);
 
-  const effectiveProgress = useMotionValue(0);
   useMotionValueEvent(scrollYProgress, 'change', (latestValue) => {
     if (isScrollbarNeeded) {
       effectiveProgress.set(latestValue);
