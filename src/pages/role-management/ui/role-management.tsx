@@ -1,5 +1,5 @@
 import { Input, Table, THeader, useTableData } from '@/shared/components';
-import { testData } from '@/shared/components/table/ui/testData.ts';
+import { users } from '@/shared/components/table/ui/testData.ts';
 
 const tableHeaders: THeader[] = [
   {
@@ -170,7 +170,7 @@ const tableHeaders: THeader[] = [
 ];
 
 export function RoleManagement() {
-  const { dataList, handelDataList } = useTableData(testData);
+  const { dataList, handelDataList } = useTableData(users);
 
   return (
     <div
