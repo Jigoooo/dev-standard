@@ -1,2 +1,2 @@
-export type { TMenu } from './menu-type.ts';
+export type { TMenu, CacheNode } from './menu-type.ts';
 export { menus, myProfileMenu, menuActions, useMenuState } from './menu-store.ts';

@@ -1,5 +1,7 @@
-import { Router } from '@/entities/router';
+import { ReactElement, ReactNode, JSX } from 'react';
 import { IconType } from 'react-icons';
+
+import { Router } from '@/entities/router';
 
 export type TMenu = {
   menuIndex: number;
@@ -21,4 +23,11 @@ export type TMenuStore = {
     toggleSidebarCollapsed: () => void;
     setSelectedMenu: (menu: TMenu) => void;
   };
+};
+
+export type CacheNode = {
+  cacheKey: string;
+  ele?: ReactNode | ReactElement | null | undefined | JSX.Element;
+  lastActiveTime: number;
+  renderCount: number;
 };

@@ -1,21 +1,35 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { RefObject } from 'react';
+import { RefObject, useEffect, useState } from 'react';
 import { KeepAliveRef } from 'keepalive-for-react';
 import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
 
-import { FlexColumn, FlexRow } from '@/shared/components';
-import { menus, TMenu } from '@/entities/menu';
+import { IoClose } from 'react-icons/io5';
+
+import { Button, FlexColumn, FlexRow } from '@/shared/components';
+import { CacheNode, menus, TMenu } from '@/entities/menu';
 
 export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undefined> }) {
   const navigate = useNavigate();
   const location = useLocation();
   const activePath = location.pathname + location.search;
-  const cacheNodes = aliveRef?.current?.getCacheNodes() ?? [];
-  const sortedCacheNodes = [...cacheNodes].sort((a, b) => {
-    const menuA = menus.find((menu) => a.cacheKey.includes(menu.router));
-    const menuB = menus.find((menu) => b.cacheKey.includes(menu.router));
-    return (menuA?.menuIndex ?? 0) - (menuB?.menuIndex ?? 0);
-  });
+
+  const [sortedCacheNodes, setSortedCacheNodes] = useState<CacheNode[]>([]);
+
+  useEffect(() => {
+    const nodes = aliveRef?.current?.getCacheNodes() ?? [];
+    const sorted = [...nodes].sort((a, b) => {
+      const menuA = menus.find((menu) => a.cacheKey.includes(menu.router));
+      const menuB = menus.find((menu) => b.cacheKey.includes(menu.router));
+      return (menuA?.menuIndex ?? 0) - (menuB?.menuIndex ?? 0);
+    });
+    setSortedCacheNodes(sorted);
+  }, [aliveRef, location]);
+
+  const destroyCacheNode = (cacheKey: string) => {
+    aliveRef?.current?.destroy(cacheKey).then(() => {
+      setSortedCacheNodes((prev) => prev.filter((node) => node.cacheKey !== cacheKey));
+    });
+  };
 
   const currentMenu = menus.find((menu) => activePath.includes(menu.router));
 
@@ -37,6 +51,7 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
               border: '1px solid #dcdcdc',
               borderRadius: 4,
               paddingInline: 8,
+              paddingBlock: 4,
             }}
           >
             <span>{currentMenu?.name}</span>
@@ -61,16 +76,35 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
                       cursor: 'pointer',
                       border: '1px solid #dcdcdc',
                       borderRadius: 4,
-                      paddingInline: 8,
+                      paddingLeft: 12,
+                      paddingRight: 6,
+                      paddingBlock: 4,
+                      gap: 6,
+                      alignItems: 'center',
                     }}
                     onClick={() => toMenu(findCacheMenu)}
                     layout
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.8 }}
-                    transition={{ duration: 0.4, ease: 'easeInOut' }}
+                    transition={{ duration: 0.3, ease: 'easeInOut' }}
                   >
                     <span>{findCacheMenu.name}</span>
+                    <Button
+                      style={{
+                        padding: 0,
+                        height: 22,
+                        width: 22,
+                        borderRadius: 2,
+                        backgroundColor: '#ffffff',
+                      }}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        destroyCacheNode(cacheNode.cacheKey);
+                      }}
+                    >
+                      <IoClose style={{ color: '#000000' }} />
+                    </Button>
                   </FlexRow>
                 );
               })}
