@@ -4,12 +4,21 @@ import KeepAliveRouteOutlet from 'keepalive-for-react-router';
 import { MenuController, Sidebar, PageTab, useMenuState } from '@/entities/menu';
 import { FlexColumn, FlexRow } from '@/shared/components';
 import { Router } from '@/entities/router';
-import { MainHeader, KeepAliveWrapper } from '@/entities/main';
+import { KeepAliveWrapper, MainHeader } from '@/entities/main';
 
 export function Main() {
   const aliveRef = useKeepAliveRef();
 
   const menuState = useMenuState();
+  const excludeCacheMenuRouters = [`${Router.MAIN}/${Router.MY_PROFILE}`];
+
+  const isMatchedExceludeMenu = excludeCacheMenuRouters.includes(
+    `${Router.MAIN}/${menuState.selectedMenu.router}`,
+  );
+
+  console.log(isMatchedExceludeMenu);
+
+  // console.log(excludeCacheMenuRouters.includes(menuState.selectedMenu.router));
 
   return (
     <FlexRow
@@ -42,13 +51,15 @@ export function Main() {
           borderRadius: 8,
         }}
       >
-        <PageTab aliveRef={aliveRef} />
-
-        <MainHeader title={menuState.selectedMenu.name} />
+        {isMatchedExceludeMenu ? (
+          <MainHeader title={menuState.selectedMenu.name} />
+        ) : (
+          <PageTab aliveRef={aliveRef} />
+        )}
 
         <KeepAliveRouteOutlet
           wrapperComponent={KeepAliveWrapper}
-          exclude={[`${Router.MAIN}/${Router.MY_PROFILE}`]}
+          exclude={excludeCacheMenuRouters}
           aliveRef={aliveRef}
         />
       </FlexColumn>

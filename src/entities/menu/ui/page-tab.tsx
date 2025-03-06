@@ -5,13 +5,14 @@ import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
 
 import { IoClose } from 'react-icons/io5';
 
-import { Button, FlexColumn, FlexRow } from '@/shared/components';
-import { CacheNode, menus, TMenu } from '@/entities/menu';
+import { Button, Divider, FlexColumn, FlexRow } from '@/shared/components';
+import { CacheNode, menus, TMenu, useMenuState } from '@/entities/menu';
+import { colors } from '@/shared/constants';
 
 export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undefined> }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const activePath = location.pathname + location.search;
+  const menuState = useMenuState();
 
   const [sortedCacheNodes, setSortedCacheNodes] = useState<CacheNode[]>([]);
 
@@ -31,30 +32,46 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
     });
   };
 
-  const currentMenu = menus.find((menu) => activePath.includes(menu.router));
+  const currentMenu = menuState.selectedMenu;
 
   const toMenu = (menu: TMenu) => {
     navigate(menu.router);
   };
 
   return (
-    <FlexColumn style={{ minHeight: 50, height: 50, maxHeight: 50, width: '100%', gap: 4 }}>
+    <FlexColumn style={{ minHeight: 50, height: 50, maxHeight: 50, width: '100%' }}>
       <LayoutGroup>
         <FlexRow style={{ alignItems: 'center', gap: 16 }}>
           <FlexRow
             as={motion.div}
             layoutId='current-tab'
             style={{
+              height: 40,
               justifyContent: 'center',
               alignItems: 'center',
               width: 200,
-              border: '1px solid #dcdcdc',
-              borderRadius: 4,
+              borderTop: '1px solid #cccccc',
+              borderLeft: '1px solid #cccccc',
+              borderRight: '1px solid #cccccc',
+              borderTopLeftRadius: 4,
+              borderTopRightRadius: 4,
               paddingInline: 8,
               paddingBlock: 4,
+              backgroundColor: colors.primary[300],
             }}
           >
-            <span>{currentMenu?.name}</span>
+            <span
+              style={{
+                fontWeight: 600,
+                fontSize: '1rem',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                color: '#ffffff',
+              }}
+            >
+              {currentMenu?.name}
+            </span>
           </FlexRow>
           <FlexRow style={{ alignItems: 'center', gap: 8 }}>
             <AnimatePresence initial={false}>
@@ -74,13 +91,14 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
                     style={{
                       backgroundColor: '#ffffff',
                       cursor: 'pointer',
-                      border: '1px solid #dcdcdc',
+                      border: '1px solid #cccccc',
                       borderRadius: 4,
                       paddingLeft: 12,
                       paddingRight: 6,
                       paddingBlock: 4,
                       gap: 6,
                       alignItems: 'center',
+                      justifyContent: 'space-between',
                     }}
                     onClick={() => toMenu(findCacheMenu)}
                     layout
@@ -89,7 +107,9 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
                     exit={{ opacity: 0, scale: 0.8 }}
                     transition={{ duration: 0.3, ease: 'easeInOut' }}
                   >
-                    <span>{findCacheMenu.name}</span>
+                    <span style={{ fontWeight: 500, fontSize: '0.9rem' }}>
+                      {findCacheMenu.name}
+                    </span>
                     <Button
                       style={{
                         padding: 0,
@@ -113,7 +133,7 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
         </FlexRow>
       </LayoutGroup>
 
-      <div style={{ height: 1, width: '100%', backgroundColor: '#dcdcdc' }}></div>
+      <Divider style={{ backgroundColor: '#cccccc' }} />
     </FlexColumn>
   );
 }

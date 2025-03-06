@@ -1,11 +1,11 @@
 import LogoutIcon from '@mui/icons-material/Logout';
+import { useNavigate } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import { useLogout } from '@/entities/auth';
 import { AnchorPicker, Button, Divider, FlexColumn, FlexRow } from '@/shared/components';
-import { useNavigate } from 'react-router-dom';
 import { Router } from '@/entities/router';
 import { myProfileMenu, useMenuState } from '@/entities/menu';
-import { AnimatePresence, motion } from 'framer-motion';
 import { useToggle } from '@/shared/hooks';
 
 export function SidebarFooter() {

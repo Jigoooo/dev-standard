@@ -39,7 +39,7 @@ export const menus: TMenu[] = [
 ] as const;
 
 export const myProfileMenu: TMenu = {
-  menuIndex: 0,
+  menuIndex: 4,
   name: '내 정보',
   icon: IoPersonCircleOutline,
   router: Router.MY_PROFILE,
