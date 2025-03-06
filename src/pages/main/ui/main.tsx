@@ -1,6 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import { useKeepAliveRef } from 'keepalive-for-react';
-import { ReactNode, Suspense, useEffect, useRef } from 'react';
+import { ReactNode, Suspense } from 'react';
 import KeepAliveRouteOutlet from 'keepalive-for-react-router';
 
 import { Sidebar, useMenuState } from '@/entities/menu';
