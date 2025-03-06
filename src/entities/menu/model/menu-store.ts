@@ -13,21 +13,25 @@ import { useShallow } from 'zustand/react/shallow';
 
 export const menus: TMenu[] = [
   {
+    menuIndex: 0,
     name: 'UI 컴포넌트',
     icon: RxComponent1,
     router: Router.UI,
   },
   {
+    menuIndex: 1,
     name: '파일 업로드/다운로드',
     icon: FaRegFile,
     router: Router.FILE_UPLOAD_DOWNLOAD,
   },
   {
+    menuIndex: 2,
     name: '엑셀 업로드/다운로드',
     icon: RiFileExcel2Line,
     router: Router.EXCEL_UPLOAD_DOWNLOAD,
   },
   {
+    menuIndex: 3,
     name: '메뉴/버튼 권한관리',
     icon: MdOutlineManageAccounts,
     router: Router.ROLE_MANAGEMENT,
@@ -35,6 +39,7 @@ export const menus: TMenu[] = [
 ] as const;
 
 export const myProfileMenu: TMenu = {
+  menuIndex: 0,
   name: '내 정보',
   icon: IoPersonCircleOutline,
   router: Router.MY_PROFILE,

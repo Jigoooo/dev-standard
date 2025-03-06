@@ -2,6 +2,7 @@ import { Router } from '@/entities/router';
 import { IconType } from 'react-icons';
 
 export type TMenu = {
+  menuIndex: number;
   name: string;
   icon: IconType;
   router: Router;
