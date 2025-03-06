@@ -1,12 +1,12 @@
 import { useLocation } from 'react-router-dom';
 import { useKeepAliveRef } from 'keepalive-for-react';
-import { ReactNode } from 'react';
 import KeepAliveRouteOutlet from 'keepalive-for-react-router';
 
 import { Sidebar, useMenuState } from '@/entities/menu';
 import { Divider, FlexColumn, FlexRow } from '@/shared/components';
 import { MainHeader } from '@/entities/main/ui/main-header.tsx';
 import { Router } from '@/entities/router';
+import { KeepAliveWrapper } from '@/entities/main';
 
 export function Main() {
   const location = useLocation();
@@ -16,6 +16,7 @@ export function Main() {
   const menuState = useMenuState();
 
   console.log('activePath: ', activePath);
+  console.log('aliveRef: ', aliveRef?.current?.getCacheNodes());
 
   return (
     <FlexRow
@@ -49,22 +50,10 @@ export function Main() {
 
         <KeepAliveRouteOutlet
           wrapperComponent={KeepAliveWrapper}
-          exclude={[`/${Router.MY_PROFILE}`]}
+          exclude={[`${Router.MAIN}/${Router.MY_PROFILE}`]}
           aliveRef={aliveRef}
         />
       </FlexColumn>
     </FlexRow>
-  );
-}
-
-function KeepAliveWrapper({ children }: { children?: ReactNode }) {
-  return (
-    <div
-      style={{
-        height: 'calc(100vh - 110px)',
-      }}
-    >
-      {children}
-    </div>
   );
 }
