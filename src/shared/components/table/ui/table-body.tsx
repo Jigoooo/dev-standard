@@ -1,5 +1,5 @@
 import { RefObject, useCallback, useRef, useState } from 'react';
-import { useVirtualizer, Virtualizer } from '@tanstack/react-virtual';
+import { Virtualizer } from '@tanstack/react-virtual';
 import { motion } from 'framer-motion';
 
 import {
@@ -10,6 +10,7 @@ import {
   THeader,
   Typography,
   useTableContext,
+  useVirtualRow,
 } from '@/shared/components';
 import { colors } from '@/shared/constants';
 
@@ -47,7 +48,7 @@ export function TableBody<TData extends { index: string }>({
 
   const getItemKey = useCallback((index: number) => dataList[index].index, [dataList]);
 
-  const rowVirtualizer = useVirtualizer({
+  const rowVirtualizer = useVirtualRow({
     count: dataList.length,
     getScrollElement: () => bodyRef.current,
     estimateSize: () => tableStyle.tableBodyHeight,
