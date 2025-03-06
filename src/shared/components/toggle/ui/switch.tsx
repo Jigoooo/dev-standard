@@ -1,6 +1,7 @@
 import { LayoutGroup, motion } from 'framer-motion';
 import { CSSProperties } from 'react';
 import { colors } from '@/shared/constants';
+import { Typography } from '@/shared/components';
 
 interface FramerMotionSwitchProps {
   containerStyle?: CSSProperties;
@@ -40,7 +41,7 @@ export function Switch({
       onClick={disabled ? undefined : onClick}
     >
       {label && (
-        <span
+        <Typography
           style={{
             ...{
               userSelect: 'none',
@@ -52,7 +53,7 @@ export function Switch({
           }}
         >
           {label}
-        </span>
+        </Typography>
       )}
       <LayoutGroup>
         <motion.div

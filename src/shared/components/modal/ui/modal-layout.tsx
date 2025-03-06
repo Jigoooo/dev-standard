@@ -2,7 +2,7 @@ import { CSSProperties, ReactNode } from 'react';
 
 import CloseIcon from '@mui/icons-material/Close';
 
-import { Button, FlexColumn, FlexRow, Divider } from '@/shared/components';
+import { Button, FlexColumn, FlexRow, Divider, Typography } from '@/shared/components';
 
 const modalContainerDefaultStyle: CSSProperties = {
   backgroundColor: '#ffffff',
@@ -39,7 +39,7 @@ export function ModalLayout({
           alignItems: 'center',
         }}
       >
-        <span style={{ fontSize: '1.1rem', fontWeight: 600 }}>{title}</span>
+        <Typography style={{ fontSize: '1.1rem', fontWeight: 600 }}>{title}</Typography>
         <Button onClick={close} style={{ backgroundColor: '#ffffff', height: 36, width: 36 }}>
           <CloseIcon style={{ fontSize: '1.4rem', color: '#212121' }} />
         </Button>

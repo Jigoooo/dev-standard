@@ -3,7 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { useLogout } from '@/entities/auth';
-import { AnchorPicker, Button, Divider, FlexColumn, FlexRow } from '@/shared/components';
+import {
+  AnchorPicker,
+  Button,
+  Divider,
+  FlexColumn,
+  FlexRow,
+  Typography,
+} from '@/shared/components';
 import { Router } from '@/entities/router';
 import { myProfileMenu, useMenuState } from '@/entities/menu';
 import { useToggle } from '@/shared/hooks';
@@ -128,7 +135,7 @@ export function SidebarFooter() {
                 exit={{ opacity: 0 }}
                 style={{ width: '90%' }}
               >
-                <span
+                <Typography
                   style={{
                     fontSize: '0.9rem',
                     fontWeight: 700,
@@ -140,10 +147,10 @@ export function SidebarFooter() {
                   }}
                 >
                   김지우(Jeff)
-                </span>
-                <span style={{ fontSize: '0.8rem', color: '#eeeeee', lineHeight: 1.4 }}>
+                </Typography>
+                <Typography style={{ fontSize: '0.8rem', color: '#eeeeee', lineHeight: 1.4 }}>
                   매니저
-                </span>
+                </Typography>
               </FlexColumn>
             )}
           </AnimatePresence>

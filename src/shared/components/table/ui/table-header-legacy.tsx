@@ -12,6 +12,7 @@ import {
   FlexRow,
   FlexColumn,
   Divider,
+  Typography,
 } from '@/shared/components';
 import { colors, TABLE_Z_INDEX, TABLE_FIXED_HEADER_Z_INDEX } from '@/shared/constants';
 
@@ -160,9 +161,11 @@ export function TableHeaderLegacy({
             }}
             whileHover={header.sorter.sortable && !header.sorter.direction ? 'none' : 'hover'}
           >
-            <span style={{ fontWeight: 600, fontSize: '0.94rem', color: TABLE_HEADER_LABEL_COLOR }}>
+            <Typography
+              style={{ fontWeight: 600, fontSize: '0.94rem', color: TABLE_HEADER_LABEL_COLOR }}
+            >
               {header.label}
-            </span>
+            </Typography>
             <FlexRow
               style={{
                 alignItems: 'center',

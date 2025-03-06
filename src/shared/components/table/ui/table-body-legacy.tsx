@@ -11,6 +11,7 @@ import {
   FlexColumn,
   FlexRow,
   Link,
+  Typography,
 } from '@/shared/components';
 import { NoData } from '@/entities/main';
 import { motion } from 'framer-motion';
@@ -192,7 +193,9 @@ export function TableBodyLegacy<T>({
                       backgroundColor: 'inherit',
                     }}
                   >
-                    <span style={{ color: TABLE_COLUMN_VALUE_COLOR }}>{globalIndex}</span>
+                    <Typography style={{ color: TABLE_COLUMN_VALUE_COLOR }}>
+                      {globalIndex}
+                    </Typography>
                   </FlexRow>
                 )}
                 {headers.map((header, headerIndex) => {
@@ -249,7 +252,7 @@ export function TableBodyLegacy<T>({
                             : 'none',
                       }}
                     >
-                      <span
+                      <Typography
                         style={{
                           fontSize: '0.94rem',
                           fontWeight: 400,
@@ -269,7 +272,7 @@ export function TableBodyLegacy<T>({
                         ) : (
                           value
                         )}
-                      </span>
+                      </Typography>
                     </FlexRow>
                   );
                 })}

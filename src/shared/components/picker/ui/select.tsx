@@ -7,7 +7,7 @@ import { FiSearch } from 'react-icons/fi';
 
 import { SELECT_BOX_ITEM_Z_INDEX } from '@/shared/constants';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
-import { FlexRow, Input, InputStyle } from '@/shared/components';
+import { FlexRow, Input, InputStyle, Typography } from '@/shared/components';
 
 type SelectOption<ValueType extends string | number> = {
   label: string;
@@ -178,13 +178,15 @@ function SelectContainer({
       <FlexRow style={{ alignItems: 'center', gap: 8 }}>
         {label && (
           <>
-            <span style={{ fontSize: '0.8rem', fontWeight: 400, color: '#333333' }}>{label}</span>
+            <Typography style={{ fontSize: '0.8rem', fontWeight: 400, color: '#333333' }}>
+              {label}
+            </Typography>
             <div
               style={{ height: 20, width: 1, alignSelf: 'center', backgroundColor: '#cccccc' }}
             ></div>
           </>
         )}
-        <span
+        <Typography
           style={{
             padding: '3px 6px',
             borderRadius: 4,
@@ -193,7 +195,7 @@ function SelectContainer({
           }}
         >
           {selectedLabel}
-        </span>
+        </Typography>
       </FlexRow>
       <FlexRow
         style={{
@@ -291,7 +293,7 @@ function SelectItems<ValueType extends string | number>({
             onClick={() => selectValue(option.value)}
             whileHover={{ backgroundColor: '#f4f4f4' }}
           >
-            <span
+            <Typography
               style={{
                 fontSize: '0.94rem',
                 borderRadius: 4,
@@ -299,7 +301,7 @@ function SelectItems<ValueType extends string | number>({
               }}
             >
               {option.label}
-            </span>
+            </Typography>
             {selectedValue === option.value && (
               <IoMdCheckmark style={{ fontSize: '1.2rem', color: '#333333' }} />
             )}

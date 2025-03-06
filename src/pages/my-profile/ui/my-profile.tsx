@@ -1,4 +1,4 @@
-import { FlexColumn } from '@/shared/components';
+import { FlexColumn, Typography } from '@/shared/components';
 
 export function MyProfile() {
   return (
@@ -11,7 +11,7 @@ export function MyProfile() {
         overflowY: 'auto',
       }}
     >
-      <span></span>
+      <Typography></Typography>
     </FlexColumn>
   );
 }

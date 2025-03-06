@@ -5,7 +5,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import { MODAL_Z_INDEX } from '@/shared/constants';
 import { useDraggable } from '@/shared/hooks/common/use-draggable.ts';
-import { Button, FlexRow, Tooltip } from '@/shared/components';
+import { Button, FlexRow, Tooltip, Typography } from '@/shared/components';
 
 type ModalType = {
   isOpen: boolean;
@@ -136,7 +136,7 @@ function ModalHeader({
       }}
       onMouseDown={onMouseDown}
     >
-      <span style={{ fontSize: '1.6rem', fontWeight: 700 }}>{title}</span>
+      <Typography style={{ fontSize: '1.6rem', fontWeight: 700 }}>{title}</Typography>
       <Tooltip content={'닫기'} position={'top'}>
         <Button onClick={onClose} style={{ backgroundColor: '#ffffff' }}>
           <CloseIcon style={{ fontSize: 32 }} />

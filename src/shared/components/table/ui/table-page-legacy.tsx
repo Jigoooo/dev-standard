@@ -8,7 +8,7 @@ import KeyboardDoubleArrowRightOutlinedIcon from '@mui/icons-material/KeyboardDo
 import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 
 import { colors, SELECT_BOX_ITEM_Z_INDEX } from '@/shared/constants';
-import { FlexColumn, FlexRow, TTablePagination } from '@/shared/components';
+import { FlexColumn, FlexRow, TTablePagination, Typography } from '@/shared/components';
 import { useToggle } from '@/shared/hooks';
 
 const PAGE_SIZE_OPTIONS = [10, 20, 50, 100];
@@ -114,9 +114,9 @@ export function TablePageLegacy({
       }}
     >
       <FlexRow style={{ alignItems: 'flex-start', alignSelf: 'flex-start', paddingInline: 16 }}>
-        <span style={{ fontSize: '0.9rem', fontWeight: 300 }}>
-          전체 <span style={{ fontWeight: 700 }}>{totalSize}</span>
-        </span>
+        <Typography style={{ fontSize: '0.9rem', fontWeight: 300 }}>
+          전체 <Typography style={{ fontWeight: 700 }}>{totalSize}</Typography>
+        </Typography>
       </FlexRow>
       <FlexRow style={{ alignItems: 'center', gap: 6 }}>
         <FlexRow style={{ alignItems: 'center', gap: 6, paddingInline: 16 }}>
@@ -186,14 +186,14 @@ export function TablePageLegacy({
                     }}
                     whileHover={isCurrentPage ? 'none' : 'hover'}
                   >
-                    <span
+                    <Typography
                       style={{
                         fontWeight: isCurrentPage ? 600 : 400,
                         color: isCurrentPage ? colors.primary[400] : '#000000',
                       }}
                     >
                       {page}
-                    </span>
+                    </Typography>
                   </FlexRow>
                 ) : (
                   <FlexRow
@@ -205,7 +205,7 @@ export function TablePageLegacy({
                       backgroundColor: 'transparent',
                     }}
                   >
-                    <span style={{ color: '#888888' }}>{page}</span>
+                    <Typography style={{ color: '#888888' }}>{page}</Typography>
                   </FlexRow>
                 )}
               </div>
@@ -266,9 +266,9 @@ export function TablePageLegacy({
             }}
             onClick={togglePageSizeSelectBox}
           >
-            <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#000000' }}>
+            <Typography style={{ fontSize: '0.9rem', fontWeight: 600, color: '#000000' }}>
               {pagination.pageSize} / page
-            </span>
+            </Typography>
             <ExpandMoreOutlinedIcon sx={{ fontSize: '1.4rem' }} />
           </FlexRow>
           <AnimatePresence>
@@ -332,7 +332,7 @@ export function TablePageLegacy({
                         handlePageSizeChange(pageSize);
                       }}
                     >
-                      <span
+                      <Typography
                         style={{
                           fontSize: '0.9rem',
                           fontWeight: pageSize === pagination.pageSize ? 600 : 400,
@@ -340,7 +340,7 @@ export function TablePageLegacy({
                         }}
                       >
                         {pageSize} / page
-                      </span>
+                      </Typography>
                     </FlexRow>
                   );
                 })}

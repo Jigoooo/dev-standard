@@ -1,4 +1,4 @@
-import { FlexColumn } from '@/shared/components';
+import { FlexColumn, Typography } from '@/shared/components';
 
 export function FileUploadDownload() {
   return (
@@ -11,7 +11,7 @@ export function FileUploadDownload() {
         overflowY: 'auto',
       }}
     >
-      <span></span>
+      <Typography></Typography>
     </FlexColumn>
   );
 }

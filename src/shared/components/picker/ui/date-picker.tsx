@@ -18,7 +18,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
-import { FlexRow, Input, Button, FlexColumn } from '@/shared/components';
+import { FlexRow, Input, Button, FlexColumn, Typography } from '@/shared/components';
 import { colors } from '@/shared/constants';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
 import { DateInputField } from './date-input-field';
@@ -196,9 +196,9 @@ function Picker({
         >
           <ArrowBackIcon style={{ color: disablePrev ? 'lightgrey' : 'black' }} />
         </Button>
-        <span style={{ fontSize: '1.1rem', fontWeight: 700, lineHeight: 2 }}>
+        <Typography style={{ fontSize: '1.1rem', fontWeight: 700, lineHeight: 2 }}>
           {format(currentDate, 'yyyy년 MMMM', { locale: ko })}
-        </span>
+        </Typography>
         <Button
           style={{ height: 38, backgroundColor: '#ffffff', paddingInline: 8 }}
           onClick={handleNextMonth}
@@ -210,7 +210,7 @@ function Picker({
       <FlexRow style={{ width: '100%', justifyContent: 'space-around', marginBottom: 8 }}>
         {weekDays.map((day) => (
           <div key={day}>
-            <span style={{ fontSize: '1rem', fontWeight: 700 }}>{day}</span>
+            <Typography style={{ fontSize: '1rem', fontWeight: 700 }}>{day}</Typography>
           </div>
         ))}
       </FlexRow>

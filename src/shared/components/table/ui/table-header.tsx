@@ -9,6 +9,7 @@ import {
   Input,
   THeader,
   TTableStyle,
+  Typography,
   useTableContext,
 } from '@/shared/components';
 
@@ -195,7 +196,7 @@ function TableHeaderCell({ header }: { header: THeader }) {
       )}
       {header.label && (
         <FlexRow style={{ fontSize: '0.88rem', alignItems: 'center', gap: 6 }}>
-          <span
+          <Typography
             style={{
               fontSize: 'inherit',
               fontWeight: 600,
@@ -206,7 +207,7 @@ function TableHeaderCell({ header }: { header: THeader }) {
             }}
           >
             {header.label}
-          </span>
+          </Typography>
           {header.sorter.direction === 'asc' && <NorthIcon style={{ fontSize: 'inherit' }} />}
           {header.sorter.direction === 'desc' && <SouthIcon style={{ fontSize: 'inherit' }} />}
         </FlexRow>

@@ -5,7 +5,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import { colors, SELECT_BOX_ITEM_Z_INDEX } from '@/shared/constants';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
-import { Checkbox, FlexRow, Input, InputStyle } from '@/shared/components';
+import { Checkbox, FlexRow, Input, InputStyle, Typography } from '@/shared/components';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FiSearch } from 'react-icons/fi';
 
@@ -218,7 +218,7 @@ function SelectContainer({
       >
         {label && (
           <>
-            <span
+            <Typography
               style={{
                 fontSize: '0.8rem',
                 fontWeight: 400,
@@ -227,7 +227,7 @@ function SelectContainer({
               }}
             >
               {label}
-            </span>
+            </Typography>
             <div
               style={{ height: 20, width: 1, alignSelf: 'center', backgroundColor: '#cccccc' }}
             ></div>
@@ -248,7 +248,7 @@ function SelectContainer({
               gap: 6,
             }}
           >
-            <span
+            <Typography
               style={{
                 fontWeight: 600,
                 fontSize: '0.92rem',
@@ -256,7 +256,7 @@ function SelectContainer({
               }}
             >
               전체
-            </span>
+            </Typography>
           </FlexRow>
         ) : (
           <FlexRow
@@ -286,7 +286,7 @@ function SelectContainer({
                     gap: 6,
                   }}
                 >
-                  <span
+                  <Typography
                     style={{
                       fontWeight: 500,
                       fontSize: '0.92rem',
@@ -294,7 +294,7 @@ function SelectContainer({
                     }}
                   >
                     {selectedOption.label}
-                  </span>
+                  </Typography>
                   <CloseIcon
                     style={{ fontSize: '0.94rem', color: '#ffffff', cursor: 'pointer' }}
                     onClick={(e) => {
@@ -416,7 +416,7 @@ function SelectItems<ValuesType extends (string | number)[]>({
             checked={selectedValues.includes(option.value)}
             onClick={(e) => e.preventDefault()}
           />
-          <span
+          <Typography
             style={{
               fontSize: '0.94rem',
               padding: '2px 8px',
@@ -425,7 +425,7 @@ function SelectItems<ValuesType extends (string | number)[]>({
             }}
           >
             {option.label}
-          </span>
+          </Typography>
         </FlexRow>
       ))}
     </motion.div>

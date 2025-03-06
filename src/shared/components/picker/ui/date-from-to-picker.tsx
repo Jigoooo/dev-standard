@@ -21,9 +21,9 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
-import { FlexRow, Input, Button, FlexColumn } from '@/shared/components';
+import { FlexRow, Input, Button, FlexColumn, Typography } from '@/shared/components';
 import { colors } from '@/shared/constants';
-import { useHandleClickOutsideRef } from '@/shared/hooks';
+import { useHandleClickOutsideRef, useWindowStyle } from '@/shared/hooks';
 import { DateInputField } from '@/shared/components/picker/ui/date-input-field.tsx';
 
 type FromToDateString = {
@@ -282,6 +282,8 @@ function FromToPicker({
   minDate,
   maxDate,
 }: FromToPickerProps) {
+  const windowStyle = useWindowStyle();
+
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
   const days = generateDaysArray(year, month);
@@ -334,9 +336,9 @@ function FromToPicker({
         >
           <ArrowBackIcon style={{ color: disablePrev ? 'lightgrey' : 'black' }} />
         </Button>
-        <span style={{ fontSize: '1.1rem', fontWeight: 700, lineHeight: 2 }}>
+        <Typography style={{ fontSize: '1.1rem', fontWeight: 700, lineHeight: 2 }}>
           {format(currentDate, 'yyyy년 MMMM', { locale: ko })}
-        </span>
+        </Typography>
         <Button
           style={{ height: 38, backgroundColor: '#ffffff', paddingInline: 8 }}
           onClick={handleNextMonth}
@@ -348,7 +350,7 @@ function FromToPicker({
       <FlexRow style={{ width: '100%', justifyContent: 'space-around', marginBottom: 8 }}>
         {weekDays.map((day) => (
           <div key={day}>
-            <span style={{ fontSize: '1rem', fontWeight: 700 }}>{day}</span>
+            <Typography style={{ fontSize: '1rem', fontWeight: 700 }}>{day}</Typography>
           </div>
         ))}
       </FlexRow>
@@ -381,13 +383,16 @@ function FromToPicker({
                   }
                 }}
                 style={{
-                  textAlign: 'center',
-                  cursor: day && !isDisabled ? 'pointer' : undefined,
-                  paddingBlock: 6,
-                  borderRadius,
-                  backgroundColor,
-                  color: textColor,
-                  position: 'relative',
+                  ...{
+                    textAlign: 'center',
+                    cursor: day && !isDisabled ? 'pointer' : undefined,
+                    paddingBlock: 6,
+                    borderRadius,
+                    backgroundColor,
+                    color: textColor,
+                    position: 'relative',
+                  },
+                  ...windowStyle,
                 }}
               >
                 {day ? format(day, 'd') : ''}
@@ -459,7 +464,6 @@ export function DateFromToPicker({
           <DateInputField
             selectedDate={selectedFromToDate.from}
             handleDateClick={(date) => {
-              console.log('from: ', date);
               handleDateInput('from', format(date, dateFormat));
             }}
             handleInputClick={handleInputClick}
@@ -469,7 +473,6 @@ export function DateFromToPicker({
           <DateInputField
             selectedDate={selectedFromToDate.to}
             handleDateClick={(date) => {
-              console.log('to: ', date);
               handleDateInput('to', format(date, dateFormat));
             }}
             handleInputClick={handleInputClick}

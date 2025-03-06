@@ -3,7 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import TriphosLogo from '@/shared/assets/images/triphos_logo.png';
 
 import { Router } from '@/entities/router';
-import { Form, Input, Checkbox, Button, dialogActions, DialogType } from '@/shared/components';
+import {
+  Form,
+  Input,
+  Checkbox,
+  Button,
+  dialogActions,
+  DialogType,
+  Typography,
+} from '@/shared/components';
 import { menus } from '@/entities/menu';
 import { FlexColumn, FlexRow } from '@/shared/components';
 import { useToggle } from '@/shared/hooks';
@@ -119,7 +127,9 @@ export function SignIn() {
             }}
           >
             <img src={TriphosLogo} alt={'로고'} width={120} />
-            <span style={{ color: '#555555', fontWeight: 600, fontSize: '1.2rem' }}>개발 표준</span>
+            <Typography style={{ color: '#555555', fontWeight: 600, fontSize: '1.2rem' }}>
+              개발 표준
+            </Typography>
           </FlexColumn>
           <FlexColumn
             style={{
@@ -130,7 +140,9 @@ export function SignIn() {
             }}
           >
             <FlexColumn style={{ width: '100%', gap: 4 }}>
-              <span style={{ color: '#555555', fontWeight: 500, fontSize: '0.8rem' }}>아이디</span>
+              <Typography style={{ color: '#555555', fontWeight: 500, fontSize: '0.8rem' }}>
+                아이디
+              </Typography>
               <Input
                 name={signInFields.id}
                 defaultValue={saveId}
@@ -138,9 +150,9 @@ export function SignIn() {
               />
             </FlexColumn>
             <FlexColumn style={{ width: '100%', gap: 4 }}>
-              <span style={{ color: '#555555', fontWeight: 500, fontSize: '0.8rem' }}>
+              <Typography style={{ color: '#555555', fontWeight: 500, fontSize: '0.8rem' }}>
                 비밀번호
-              </span>
+              </Typography>
               <Input
                 name={signInFields.password}
                 style={{ width: '100%', height: 42 }}
@@ -161,7 +173,7 @@ export function SignIn() {
             </FlexRow>
           </FlexColumn>
           <Button type={'submit'} style={{ width: '100%', height: 48 }}>
-            <span style={{ fontSize: '1rem', fontWeight: 600 }}>로그인</span>
+            <Typography style={{ fontSize: '1rem', fontWeight: 600 }}>로그인</Typography>
           </Button>
         </Form>
       </FlexRow>

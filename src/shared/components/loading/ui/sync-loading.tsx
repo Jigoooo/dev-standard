@@ -1,7 +1,7 @@
 import { SyncLoader } from 'react-spinners';
 
 import { loadingStyles } from './loading-styles.ts';
-import { useLoading } from '@/shared/components';
+import { Typography, useLoading } from '@/shared/components';
 
 export function SyncLoading() {
   const loadingState = useLoading();
@@ -15,9 +15,9 @@ export function SyncLoading() {
             size={18}
             style={{ alignItems: 'center', justifyContent: 'center', marginBottom: '12px' }}
           />
-          <span style={{ color: '#ffffff', fontSize: '1rem', fontWeight: 500 }}>
+          <Typography style={{ color: '#ffffff', fontSize: '1rem', fontWeight: 500 }}>
             {loadingState.loadingText}
-          </span>
+          </Typography>
         </div>
       )}
     </>

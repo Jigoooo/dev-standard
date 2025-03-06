@@ -1,3 +1,5 @@
+import { Typography } from '@/shared/components';
+
 export function MainHeader({ title }: { title: string }) {
   return (
     <div
@@ -12,7 +14,9 @@ export function MainHeader({ title }: { title: string }) {
         alignItems: 'center',
       }}
     >
-      <span style={{ color: '#000000', fontSize: '1.6rem', fontWeight: 700 }}>{title}</span>
+      <Typography style={{ color: '#000000', fontSize: '1.6rem', fontWeight: 700 }}>
+        {title}
+      </Typography>
     </div>
   );
 }

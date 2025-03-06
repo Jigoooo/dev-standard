@@ -7,7 +7,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 
-import { ColumnValueFunction, UseTableInstanceProps } from '@/shared/components';
+import { ColumnValueFunction, Typography, UseTableInstanceProps } from '@/shared/components';
 
 export function useTableInstance<TColumnData>({
   data,
@@ -39,7 +39,7 @@ export function useTableInstance<TColumnData>({
 
         return columnHelper.accessor(columnValue as any, {
           id: accessorKey as string,
-          header: () => <span>{columnConfig[columnKey]!.header}</span>,
+          header: () => <Typography>{columnConfig[columnKey]!.header}</Typography>,
           size: columnConfig[columnKey]!.size,
           cell: (info) => info.getValue(),
         });

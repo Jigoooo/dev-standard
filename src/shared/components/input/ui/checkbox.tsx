@@ -4,7 +4,7 @@ import { MouseEventHandler } from 'react';
 import CheckSolid from '@/shared/assets/images/check-solid.svg?react';
 
 import { colors } from '@/shared/constants';
-import { FlexRow } from '@/shared/components';
+import { FlexRow, Typography } from '@/shared/components';
 
 export function Checkbox({
   label = '',
@@ -103,7 +103,7 @@ export function Checkbox({
           )}
         </AnimatePresence>
       </FlexRow>
-      <span
+      <Typography
         style={{
           userSelect: 'none',
           fontSize: '0.9rem',
@@ -112,7 +112,7 @@ export function Checkbox({
         }}
       >
         {label}
-      </span>
+      </Typography>
     </FlexRow>
   );
 }

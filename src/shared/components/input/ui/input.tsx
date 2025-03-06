@@ -2,6 +2,7 @@ import { CSSProperties, InputHTMLAttributes, ReactNode, Ref } from 'react';
 import { motion, MotionProps } from 'framer-motion';
 
 import { colors } from '@/shared/constants';
+import { useWindowStyle } from '@/shared/hooks';
 
 export enum InputStyle {
   SOFT = 'soft',
@@ -10,6 +11,7 @@ export enum InputStyle {
 }
 
 const defaultInputStyle: CSSProperties = {
+  width: 'auto',
   paddingInline: 8,
   paddingBlock: 10,
   borderRadius: 4,
@@ -71,6 +73,8 @@ export function Input({
   onClick,
   ...props
 }: ExtendedInputProps) {
+  const windowStyle = useWindowStyle();
+
   const extraPadding = 30;
   return (
     <div
@@ -109,7 +113,7 @@ export function Input({
         }
         transition={{ duration: 0.1 }}
         style={{
-          width: 'auto',
+          ...windowStyle,
           ...defaultInputStyle,
           ...inputStyles[inputStyle],
           paddingLeft: startDecorator ? extraPadding : defaultInputStyle.paddingInline,

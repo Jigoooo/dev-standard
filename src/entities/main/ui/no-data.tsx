@@ -1,6 +1,6 @@
 import NoDataIcon from '@/shared/assets/images/no-data-icon.svg?react';
 
-import { FlexColumn } from '@/shared/components';
+import { FlexColumn, Typography } from '@/shared/components';
 
 export function NoData({ emptyMessage }: { emptyMessage: string }) {
   return (
@@ -14,7 +14,7 @@ export function NoData({ emptyMessage }: { emptyMessage: string }) {
       }}
     >
       <NoDataIcon style={{ width: 50, height: 50, fill: '#000000' }} />
-      <span style={{ fontWeight: 600, color: '#000000' }}>{emptyMessage}</span>
+      <Typography style={{ fontWeight: 600, color: '#000000' }}>{emptyMessage}</Typography>
     </FlexColumn>
   );
 }

@@ -8,6 +8,7 @@ import {
   CustomVerticalScrollbar,
   FlexRow,
   THeader,
+  Typography,
   useTableContext,
 } from '@/shared/components';
 import { colors } from '@/shared/constants';
@@ -349,7 +350,7 @@ function TableBodyCell<TData extends Record<string, any>>({
           },
         })
       ) : (
-        <span
+        <Typography
           style={{
             fontSize: '0.88rem',
             fontWeight: 500,
@@ -360,7 +361,7 @@ function TableBodyCell<TData extends Record<string, any>>({
           }}
         >
           {header.id === 'index' ? rowIndex + 1 : cellData}
-        </span>
+        </Typography>
       )}
     </FlexRow>
   );

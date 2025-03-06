@@ -3,6 +3,7 @@ import { CSSProperties, ReactNode, Ref, TextareaHTMLAttributes } from 'react';
 
 import { InputStyle } from '@/shared/components';
 import { colors } from '@/shared/constants';
+import { useWindowStyle } from '@/shared/hooks';
 
 type ExtendedTextareaProps = MotionProps &
   TextareaHTMLAttributes<HTMLTextAreaElement> & {
@@ -31,11 +32,14 @@ const textareaDisabledStyle: CSSProperties = {
 };
 
 export function Textarea({ ref, style, ...props }: Readonly<ExtendedTextareaProps>) {
+  const windowStyle = useWindowStyle();
+
   return (
     <motion.textarea
       ref={ref}
       className='selection-none'
       style={{
+        ...windowStyle,
         ...defaultTextareaStyle,
         ...(props.disabled ? textareaDisabledStyle : {}),
         ...style,

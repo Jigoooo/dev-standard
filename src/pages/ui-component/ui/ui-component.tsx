@@ -20,6 +20,7 @@ import {
   Switch,
   Textarea,
   Tooltip,
+  Typography,
   useModal,
 } from '@/shared/components';
 import { useKeepAliveScrollHistoryRef, useToggle } from '@/shared/hooks';
@@ -64,7 +65,7 @@ export function UiComponent() {
     modal.open(({ close }) => {
       return (
         <ModalLayout title={'Modal Title'} close={close}>
-          <span>Modal Contents</span>
+          <Typography>Modal Contents</Typography>
         </ModalLayout>
       );
     });
@@ -82,24 +83,24 @@ export function UiComponent() {
       }}
     >
       <FlexRow style={{ alignItems: 'center' }}>
-        <span style={{ width: 200, fontWeight: 500 }}>Button Solid: </span>
+        <Typography style={{ width: 200, fontWeight: 500 }}>Button Solid: </Typography>
         <Button>Button Solid</Button>
       </FlexRow>
       <FlexRow style={{ alignItems: 'center' }}>
-        <span style={{ width: 200, fontWeight: 500 }}>Button Outlined: </span>
+        <Typography style={{ width: 200, fontWeight: 500 }}>Button Outlined: </Typography>
         <Button buttonStyle={ButtonStyle.OUTLINED}>Button Outlined</Button>
       </FlexRow>
 
       <DashedDivider strokeColor={'#666666'} style={{ marginBlock: 16 }} />
 
       <FlexRow style={{ alignItems: 'center' }}>
-        <span style={{ width: 200, fontWeight: 500 }}>Open modal: </span>
+        <Typography style={{ width: 200, fontWeight: 500 }}>Open modal: </Typography>
         <Button onClick={openModal} style={{ backgroundColor: '#5ba2ed' }}>
           Open modal
         </Button>
       </FlexRow>
       <FlexRow style={{ alignItems: 'center' }}>
-        <span style={{ width: 200, fontWeight: 500 }}>Open dialog: </span>
+        <Typography style={{ width: 200, fontWeight: 500 }}>Open dialog: </Typography>
         <Button
           onClick={() => {
             dialogActions.openDialog({
@@ -114,7 +115,7 @@ export function UiComponent() {
         </Button>
       </FlexRow>
       <FlexRow style={{ alignItems: 'center' }}>
-        <span style={{ width: 200, fontWeight: 500 }}>Show loading: </span>
+        <Typography style={{ width: 200, fontWeight: 500 }}>Show loading: </Typography>
         <Button
           onClick={async () => {
             loadingAction.showLoading({
@@ -134,7 +135,7 @@ export function UiComponent() {
       <DashedDivider strokeColor={'#666666'} style={{ marginBlock: 16 }} />
 
       <FlexRow style={{ alignItems: 'center' }}>
-        <span style={{ width: 200, fontWeight: 500 }}>Select: </span>
+        <Typography style={{ width: 200, fontWeight: 500 }}>Select: </Typography>
         <Select
           isAutocomplete={true}
           label={'Select Label'}
@@ -148,7 +149,7 @@ export function UiComponent() {
         />
       </FlexRow>
       <FlexRow style={{ alignItems: 'center' }}>
-        <span style={{ width: 200, fontWeight: 500 }}>Multi Select: </span>
+        <Typography style={{ width: 200, fontWeight: 500 }}>Multi Select: </Typography>
         <MultiSelect
           isAutocomplete={true}
           label={'Multi Select Label'}
@@ -162,22 +163,22 @@ export function UiComponent() {
         />
       </FlexRow>
       <FlexRow style={{ alignItems: 'center' }}>
-        <span style={{ width: 200, fontWeight: 500 }}>Date Picker: </span>
+        <Typography style={{ width: 200, fontWeight: 500 }}>Date Picker: </Typography>
         <DatePicker minDate={new Date('2025-02-01')} maxDate={new Date('2025-04-30')} />
       </FlexRow>
       <FlexRow style={{ alignItems: 'center' }}>
-        <span style={{ width: 200, fontWeight: 500 }}>Date Range Picker: </span>
+        <Typography style={{ width: 200, fontWeight: 500 }}>Date Range Picker: </Typography>
         <DateFromToPicker minDate={new Date('2025-02-01')} maxDate={new Date('2025-05-30')} />
       </FlexRow>
 
       <DashedDivider strokeColor={'#666666'} style={{ marginBlock: 16 }} />
 
       <FlexRow style={{ alignItems: 'center' }}>
-        <span style={{ width: 200, fontWeight: 500 }}>Input Outlined: </span>
+        <Typography style={{ width: 200, fontWeight: 500 }}>Input Outlined: </Typography>
         <Input style={{ height: 36 }} placeholder={'Input Outlined'} />
       </FlexRow>
       <FlexRow style={{ alignItems: 'center' }}>
-        <span style={{ width: 200, fontWeight: 500 }}>Input Underline: </span>
+        <Typography style={{ width: 200, fontWeight: 500 }}>Input Underline: </Typography>
         <Input
           inputStyle={InputStyle.UNDERLINE}
           style={{ height: 36 }}
@@ -185,52 +186,54 @@ export function UiComponent() {
         />
       </FlexRow>
       <FlexRow style={{ alignItems: 'center' }}>
-        <span style={{ width: 200, fontWeight: 500 }}>Textarea: </span>
+        <Typography style={{ width: 200, fontWeight: 500 }}>Textarea: </Typography>
         <Textarea style={{ width: 300 }} placeholder={'Textarea'} />
       </FlexRow>
 
       <DashedDivider strokeColor={'#666666'} style={{ marginBlock: 16 }} />
 
       <FlexRow style={{ alignItems: 'center' }}>
-        <span style={{ width: 200, fontWeight: 500 }}>Checkbox: </span>
+        <Typography style={{ width: 200, fontWeight: 500 }}>Checkbox: </Typography>
         <Checkbox label={'Checkbox Label'} checked={check} onClick={toggleCheck} />
       </FlexRow>
       <FlexRow style={{ alignItems: 'center' }}>
-        <span style={{ width: 200, fontWeight: 500 }}>Switch: </span>
+        <Typography style={{ width: 200, fontWeight: 500 }}>Switch: </Typography>
         <Switch label={'Switch Label'} isOn={switchValue} onClick={toggleSwitch} />
       </FlexRow>
 
       <DashedDivider strokeColor={'#666666'} style={{ marginBlock: 16 }} />
 
       <FlexRow style={{ alignItems: 'center', marginBottom: 16 }}>
-        <span style={{ width: 200, fontWeight: 500 }}>Accordion: </span>
+        <Typography style={{ width: 200, fontWeight: 500 }}>Accordion: </Typography>
         <AccordionGroup style={{ minWidth: 400 }}>
           <Accordion
             title={'Accordion 1'}
             isOpen={accordionStates[0].isOpen}
             toggleAccordion={() => toggleAccordion(accordionStates[0].id)}
           >
-            <span style={{ paddingBottom: 16 }}>contents 1</span>
+            <Typography style={{ paddingBottom: 16 }}>contents 1</Typography>
           </Accordion>
           <Accordion
             title={'Accordion 2'}
             isOpen={accordionStates[1].isOpen}
             toggleAccordion={() => toggleAccordion(accordionStates[1].id)}
           >
-            <span style={{ paddingBottom: 16 }}>contents 2</span>
+            <Typography style={{ paddingBottom: 16 }}>contents 2</Typography>
           </Accordion>
         </AccordionGroup>
       </FlexRow>
 
       <FlexRow style={{ alignItems: 'center' }}>
-        <span style={{ width: 200, fontWeight: 500 }}>Tooltip: </span>
+        <Typography style={{ width: 200, fontWeight: 500 }}>Tooltip: </Typography>
         <Tooltip content={'Tooltip'} position={'topRight'}>
-          <span style={{ border: '1px solid #bbbbbb', padding: 12, borderRadius: 4 }}>Tooltip</span>
+          <Typography style={{ border: '1px solid #bbbbbb', padding: 12, borderRadius: 4 }}>
+            Tooltip
+          </Typography>
         </Tooltip>
       </FlexRow>
 
       <FlexRow style={{ alignItems: 'center' }}>
-        <span style={{ width: 200, fontWeight: 500 }}>Tooltip: </span>
+        <Typography style={{ width: 200, fontWeight: 500 }}>Tooltip: </Typography>
         <Link>Link</Link>
       </FlexRow>
     </FlexColumn>

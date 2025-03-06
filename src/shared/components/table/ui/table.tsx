@@ -7,6 +7,7 @@ import {
   TTableStyle,
   useTableChecked,
   useTableSorting,
+  Typography,
 } from '@/shared/components';
 import { TableHeader } from './table-header.tsx';
 import { TableBody } from './table-body.tsx';
@@ -185,20 +186,22 @@ export function Table<TData extends { index: string } & Record<string, any>>({
             paddingLeft: 12,
           }}
         >
-          <span style={{ fontSize: '0.86rem', color: '#999999', fontWeight: 500 }}>
+          <Typography style={{ fontSize: '0.86rem', color: '#999999', fontWeight: 500 }}>
             Rows:{' '}
             {filteredDataList.length !== tableDataList.length && (
               <>
-                <span style={{ color: '#000000', fontWeight: 500 }}>{filteredDataList.length}</span>
+                <Typography style={{ color: '#000000', fontWeight: 500 }}>
+                  {filteredDataList.length}
+                </Typography>
                 &nbsp;
-                <span style={{ color: '#000000', fontWeight: 500 }}>of</span>
+                <Typography style={{ color: '#000000', fontWeight: 500 }}>of</Typography>
                 &nbsp;
               </>
             )}
-            <span style={{ fontSize: '0.86rem', color: '#000000', fontWeight: 500 }}>
+            <Typography style={{ fontSize: '0.86rem', color: '#000000', fontWeight: 500 }}>
               {tableDataList.length}
-            </span>
-          </span>
+            </Typography>
+          </Typography>
         </FlexRow>
       </div>
     </TableContext>

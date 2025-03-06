@@ -7,6 +7,7 @@ import {
   useDialogOpen,
   FlexColumn,
   FlexRow,
+  Typography,
 } from '@/shared/components';
 import { useModalClose } from '@/shared/hooks';
 import { colors } from '@/shared/constants';
@@ -88,15 +89,15 @@ export function AlertDialog() {
                 alignItems: 'center',
               }}
             >
-              <span style={{ fontSize: '1.1rem', fontWeight: 700, whiteSpace: 'pre-line' }}>
+              <Typography style={{ fontSize: '1.1rem', fontWeight: 700, whiteSpace: 'pre-line' }}>
                 {dialogInfos.title}
-              </span>
+              </Typography>
             </FlexRow>
             {dialogInfos.contents ? (
               <FlexColumn style={{ paddingTop: 8, paddingBottom: 24, whiteSpace: 'pre-line' }}>
-                <span style={{ fontSize: '0.9rem', fontWeight: 400, paddingRight: 12 }}>
+                <Typography style={{ fontSize: '0.9rem', fontWeight: 400, paddingRight: 12 }}>
                   {dialogInfos.contents}
-                </span>
+                </Typography>
               </FlexColumn>
             ) : (
               <div style={{ height: 20 }}></div>
@@ -123,9 +124,9 @@ export function AlertDialog() {
                     dialogInfos?.onCancel?.();
                   }}
                 >
-                  <span style={{ color: '#555555', fontSize: '0.9rem', fontWeight: 500 }}>
+                  <Typography style={{ color: '#555555', fontSize: '0.9rem', fontWeight: 500 }}>
                     {dialogInfos.cancelText}
-                  </span>
+                  </Typography>
                 </Button>
               )}
               <Button

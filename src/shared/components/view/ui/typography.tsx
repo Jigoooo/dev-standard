@@ -8,7 +8,7 @@ export function Typography({
   ...props
 }: HTMLAttributes<HTMLSpanElement> & {
   ref?: RefObject<HTMLSpanElement | null>;
-  children: ReactNode;
+  children?: ReactNode;
 }) {
   const windowStyle = useWindowStyle();
 

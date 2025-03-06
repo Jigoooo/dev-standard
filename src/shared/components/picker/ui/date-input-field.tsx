@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { format, isAfter, isBefore } from 'date-fns';
-import { FlexRow, Input } from '@/shared/components';
+import { FlexRow, Input, Typography } from '@/shared/components';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
 export function DateInputField({
@@ -113,7 +113,7 @@ export function DateInputField({
         maxLength={4}
         isFocusEffect={false}
       />
-      <span>-</span>
+      <Typography>-</Typography>
       <Input
         style={{
           boxShadow: 'none',
@@ -129,7 +129,7 @@ export function DateInputField({
         maxLength={2}
         isFocusEffect={false}
       />
-      <span>-</span>
+      <Typography>-</Typography>
       <Input
         style={{
           boxShadow: 'none',

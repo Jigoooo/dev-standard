@@ -5,7 +5,7 @@ import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
 
 import { IoClose } from 'react-icons/io5';
 
-import { Button, Divider, FlexColumn, FlexRow } from '@/shared/components';
+import { Button, Divider, FlexColumn, FlexRow, Typography } from '@/shared/components';
 import { CacheNode, menus, TMenu, useMenuState } from '@/entities/menu';
 
 export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undefined> }) {
@@ -61,7 +61,7 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
               backgroundColor: '#ffffff',
             }}
           >
-            <span
+            <Typography
               style={{
                 fontWeight: 700,
                 fontSize: '1.1rem',
@@ -72,7 +72,7 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
               }}
             >
               {currentMenu?.name}
-            </span>
+            </Typography>
           </FlexRow>
           <FlexRow style={{ alignItems: 'center', gap: 8 }}>
             <AnimatePresence initial={false}>
@@ -108,9 +108,9 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
                     exit={{ opacity: 0, scale: 0.8 }}
                     transition={{ duration: 0.3, ease: 'easeInOut' }}
                   >
-                    <span style={{ fontWeight: 500, fontSize: '0.9rem' }}>
+                    <Typography style={{ fontWeight: 500, fontSize: '0.9rem' }}>
                       {findCacheMenu.name}
-                    </span>
+                    </Typography>
                     <Button
                       style={{
                         padding: 0,
