@@ -38,7 +38,9 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
   };
 
   return (
-    <FlexColumn style={{ minHeight: 50, height: 50, maxHeight: 50, width: '100%' }}>
+    <FlexColumn
+      style={{ userSelect: 'none', minHeight: 50, height: 50, maxHeight: 50, width: '100%' }}
+    >
       <LayoutGroup>
         <FlexRow style={{ alignItems: 'center', gap: 16 }}>
           <FlexRow
