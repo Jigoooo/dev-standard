@@ -1,3 +1,6 @@
+import { useRef, useState } from 'react';
+import { useEffectOnActive } from 'keepalive-for-react';
+
 import {
   Button,
   ButtonStyle,
@@ -19,8 +22,7 @@ import {
   Tooltip,
   useModal,
 } from '@/shared/components';
-import { useState } from 'react';
-import { useToggle } from '@/shared/hooks';
+import { useKeepAliveScrollHistoryRef, useToggle } from '@/shared/hooks';
 import { sleep } from '@/shared/lib';
 import { Accordion, AccordionGroup } from '@/shared/components/accordion';
 
@@ -39,6 +41,13 @@ export function UiComponent() {
       isOpen: false,
     },
   ]);
+
+  const domRef = useRef<HTMLDivElement>(null);
+  const keepAliveScrollHistoryRef = useKeepAliveScrollHistoryRef(domRef);
+
+  useEffectOnActive(() => {
+    console.log('select is active', select);
+  }, [select]);
 
   const toggleAccordion = (id: string) => {
     setAccordionStates((prev) => {
@@ -67,6 +76,7 @@ export function UiComponent() {
 
   return (
     <FlexColumn
+      ref={keepAliveScrollHistoryRef}
       style={{
         height: '100%',
         gap: 16,

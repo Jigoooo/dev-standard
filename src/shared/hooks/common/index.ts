@@ -7,3 +7,4 @@ export { useBeforeUnload } from './use-before-unload.ts';
 export { useDimensions } from './use-dimension.ts';
 export { useAudio } from './use-audio.ts';
 export { useToggle } from './use-toggle.ts';
+export { useKeepAliveScrollHistoryRef } from './use-keep-alive-scroll-history-ref.ts';

@@ -1,4 +1,4 @@
-import { createContext, CSSProperties, ReactNode, use, useEffect, useRef, useState } from 'react';
+import { createContext, CSSProperties, ReactNode, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
@@ -9,13 +9,13 @@ const AccordionGroupContext = createContext<{
   type?: 'single' | 'multiple';
 }>({});
 
-function useAccordionGroupContext() {
-  const context = use(AccordionGroupContext);
-  if (!context) {
-    throw new Error('Accordion must be used within a AccordionGroup');
-  }
-  return context;
-}
+// function useAccordionGroupContext() {
+//   const context = use(AccordionGroupContext);
+//   if (!context) {
+//     throw new Error('Accordion must be used within a AccordionGroup');
+//   }
+//   return context;
+// }
 
 export function AccordionGroup({
   type = 'single',
@@ -54,8 +54,7 @@ export function Accordion({
   toggleAccordion: () => void;
   children: ReactNode;
 }) {
-  const { type } = useAccordionGroupContext();
-  console.log(type);
+  // const { type } = useAccordionGroupContext();
 
   const contentRef = useRef<HTMLDivElement>(null);
   const [contentHeight, setContentHeight] = useState(0);
