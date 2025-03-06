@@ -10,7 +10,7 @@ export function useLogout() {
     dialogActions.openDialog({
       dialogType: DialogType.WARNING,
       title: '로그아웃을 진행하시겠습니까?',
-      contents: '자동로그인이 설정되어 있으면 해제됩니다.',
+      contents: '',
       withCancel: true,
       cancelText: '아니요',
       confirmText: '로그아웃',
