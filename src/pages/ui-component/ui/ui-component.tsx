@@ -232,8 +232,8 @@ export function UiComponent() {
         </Tooltip>
       </FlexRow>
 
-      <FlexRow style={{ alignItems: 'center' }}>
-        <Typography style={{ width: 200, fontWeight: 500 }}>Tooltip: </Typography>
+      <FlexRow style={{ alignItems: 'center', marginTop: 16 }}>
+        <Typography style={{ width: 200, fontWeight: 500 }}>Link: </Typography>
         <Link>Link</Link>
       </FlexRow>
     </FlexColumn>
