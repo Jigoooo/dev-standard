@@ -288,7 +288,7 @@ function SelectContainer({
                 >
                   <span
                     style={{
-                      fontWeight: 600,
+                      fontWeight: 500,
                       fontSize: '0.92rem',
                       color: '#ffffff',
                     }}

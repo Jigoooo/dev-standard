@@ -188,7 +188,7 @@ function SelectContainer({
           style={{
             padding: '3px 6px',
             borderRadius: 4,
-            fontWeight: 600,
+            fontWeight: 500,
             fontSize: '0.94rem',
           }}
         >

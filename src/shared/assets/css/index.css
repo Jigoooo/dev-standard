@@ -14,12 +14,11 @@ html, body {
   padding: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 body {
   overflow-x: hidden;
-  font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
   font-family: Pretendard;
   line-height: 1.5;
   background-color: white;
