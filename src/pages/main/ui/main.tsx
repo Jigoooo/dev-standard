@@ -3,7 +3,7 @@ import { useKeepAliveRef } from 'keepalive-for-react';
 import KeepAliveRouteOutlet from 'keepalive-for-react-router';
 
 import { Sidebar, useMenuState } from '@/entities/menu';
-import { Divider, FlexColumn, FlexRow } from '@/shared/components';
+import { FlexColumn, FlexRow } from '@/shared/components';
 import { MainHeader } from '@/entities/main/ui/main-header.tsx';
 import { Router } from '@/entities/router';
 import { KeepAliveWrapper } from '@/entities/main';
@@ -25,7 +25,7 @@ export function Main() {
         height: '100vh',
         maxHeight: '100vh',
         minHeight: 600,
-        backgroundColor: '#ffffff',
+        backgroundColor: '#eaeaea',
       }}
     >
       <Sidebar headerTitle={'Dev standard'} />
@@ -38,15 +38,33 @@ export function Main() {
           width: '100%',
           minWidth: 800,
           maxWidth: `calc(100vw - ${menuState.sidebarWidth}px)`,
-          maxHeight: '100vh',
+          maxHeight: '98vh',
           height: '100%',
           overflow: 'hidden',
-          paddingInline: 16,
-          paddingBlock: 16,
+          padding: 16,
+          marginInline: 12,
+          marginBlock: '1vh',
+          borderRadius: 8,
         }}
       >
+        <FlexColumn style={{ minHeight: 50, height: 50, maxHeight: 50, width: '100%' }}>
+          <FlexRow>
+            <FlexRow>
+              <span>1</span>
+            </FlexRow>
+            <FlexRow>
+              <span>2</span>
+            </FlexRow>
+            <FlexRow>
+              <span>3</span>
+            </FlexRow>
+            <FlexRow>
+              <span>4</span>
+            </FlexRow>
+          </FlexRow>
+        </FlexColumn>
+
         <MainHeader title={menuState.selectedMenu.name} />
-        <Divider style={{ marginBottom: 12 }} />
 
         <KeepAliveRouteOutlet
           wrapperComponent={KeepAliveWrapper}
