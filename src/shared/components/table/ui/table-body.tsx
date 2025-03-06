@@ -1,5 +1,5 @@
 import { RefObject, useCallback, useRef, useState } from 'react';
-import { useVirtualizer } from '@tanstack/react-virtual';
+import { useVirtualizer, Virtualizer } from '@tanstack/react-virtual';
 import { motion } from 'framer-motion';
 
 import {
@@ -45,6 +45,16 @@ export function TableBody<TData extends { index: string }>({
 
   const [hoverIndex, setHoverIndex] = useState<string | null>(null);
 
+  const getItemKey = useCallback((index: number) => dataList[index].index, [dataList]);
+
+  const rowVirtualizer = useVirtualizer({
+    count: dataList.length,
+    getScrollElement: () => bodyRef.current,
+    estimateSize: () => tableStyle.tableBodyHeight,
+    overscan: 40,
+    getItemKey,
+  });
+
   return (
     <FlexRow style={{ position: 'relative' }}>
       <FlexRow
@@ -54,7 +64,7 @@ export function TableBody<TData extends { index: string }>({
           backgroundColor: tableStyle.tableBodyBackgroundColor,
           overflowY: 'auto',
           overflowX: 'hidden',
-          height: '100%',
+          height: rowVirtualizer.getTotalSize(),
           maxHeight: bodyMaxHeight,
         }}
       >
@@ -62,6 +72,7 @@ export function TableBody<TData extends { index: string }>({
         <TableBodyPin
           position={'left'}
           headers={leftPinHeaders}
+          rowVirtualizer={rowVirtualizer}
           hoverIndex={hoverIndex}
           setHoverIndex={setHoverIndex}
         />
@@ -70,6 +81,7 @@ export function TableBody<TData extends { index: string }>({
         <TableBodyView
           ref={ref}
           headers={viewHeaders}
+          rowVirtualizer={rowVirtualizer}
           hoverIndex={hoverIndex}
           setHoverIndex={setHoverIndex}
         />
@@ -78,6 +90,7 @@ export function TableBody<TData extends { index: string }>({
         <TableBodyPin
           position={'right'}
           headers={rightPinHeaders}
+          rowVirtualizer={rowVirtualizer}
           hoverIndex={hoverIndex}
           setHoverIndex={setHoverIndex}
         />
@@ -99,28 +112,19 @@ export function TableBody<TData extends { index: string }>({
 function TableBodyView({
   ref,
   headers,
+  rowVirtualizer,
   hoverIndex,
   setHoverIndex,
 }: {
   ref: RefObject<HTMLDivElement | null>;
   headers: THeader[];
+  rowVirtualizer: Virtualizer<HTMLDivElement, Element>;
   hoverIndex: string | null;
   setHoverIndex: (index: string | null) => void;
 }) {
   const { tableStyle, dataList } = useTableContext();
 
   const viewWidth = headers.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
-
-  const getItemKey = useCallback((index: number) => dataList[index].index, [dataList]);
-
-  const rowVirtualizer = useVirtualizer({
-    count: dataList.length,
-    getScrollElement: () => ref.current,
-    estimateSize: () => tableStyle.tableBodyHeight,
-    overscan: 1,
-    initialRect: { width: viewWidth, height: tableStyle.tableBodyHeight },
-    getItemKey,
-  });
 
   return (
     <div
@@ -129,7 +133,6 @@ function TableBodyView({
       style={{
         position: 'relative',
         height: rowVirtualizer.getTotalSize(),
-        // height: dataList.length * tableStyle.tableBodyHeight,
         flexGrow: 1,
         overflowX: 'auto',
         scrollbarWidth: 'none',
@@ -139,12 +142,10 @@ function TableBodyView({
         className={'table-body-container'}
         style={{ position: 'relative', width: viewWidth, height: '100%' }}
       >
-        {/*{dataList.map((data, dataIndex) => {*/}
-        {rowVirtualizer.getVirtualItems().map((virtualItem, dataIndex) => {
+        {rowVirtualizer.getVirtualItems().map((virtualItem) => {
           const data = dataList[virtualItem.index];
           const index = data['index'];
-          const isOdd = dataIndex % 2 === 0;
-          // const startOffset = dataIndex * tableStyle.tableBodyHeight;
+          const isOdd = virtualItem.index % 2 === 0;
 
           return (
             <FlexRow
@@ -154,7 +155,6 @@ function TableBodyView({
                 alignItems: 'center',
                 position: 'absolute',
                 transform: 'translateY(' + virtualItem.start + 'px)',
-                // transform: 'translateY(' + startOffset + 'px)',
                 width: viewWidth,
                 height: tableStyle.tableBodyHeight,
                 borderBottom: tableStyle.tableBorder,
@@ -163,8 +163,8 @@ function TableBodyView({
               {headers.map((header) => {
                 return (
                   <TableBodyCell
-                    key={header.id + dataIndex}
-                    rowIndex={dataIndex}
+                    key={header.id + virtualItem.index}
+                    rowIndex={virtualItem.index}
                     data={data}
                     index={index}
                     isOdd={isOdd}
@@ -185,11 +185,13 @@ function TableBodyView({
 function TableBodyPin({
   position,
   headers,
+  rowVirtualizer,
   hoverIndex,
   setHoverIndex,
 }: {
   position: 'left' | 'right';
   headers: THeader[];
+  rowVirtualizer: Virtualizer<HTMLDivElement, Element>;
   hoverIndex: string | null;
   setHoverIndex: (index: string | null) => void;
 }) {
@@ -199,19 +201,6 @@ function TableBodyPin({
 
   const tableBodyRef = useRef<HTMLDivElement>(null);
 
-  const pinWidth = headers.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
-
-  const getItemKey = useCallback((index: number) => dataList[index].index, [dataList]);
-
-  const rowVirtualizer = useVirtualizer({
-    count: dataList.length,
-    getScrollElement: () => tableBodyRef.current,
-    estimateSize: () => tableStyle.tableBodyHeight,
-    overscan: 1,
-    initialRect: { width: pinWidth, height: tableStyle.tableBodyHeight },
-    getItemKey,
-  });
-
   return (
     <div
       ref={tableBodyRef}
@@ -219,7 +208,6 @@ function TableBodyPin({
       style={{
         ...{
           position: 'relative',
-          // height: dataList.length * tableStyle.tableBodyHeight,
           height: rowVirtualizer.getTotalSize(),
           width: pinHeaderWidth,
           minWidth: pinHeaderWidth,
@@ -231,12 +219,10 @@ function TableBodyPin({
         },
       }}
     >
-      {/*{dataList.map((data, dataIndex) => {*/}
-      {rowVirtualizer.getVirtualItems().map((virtualItem, dataIndex) => {
+      {rowVirtualizer.getVirtualItems().map((virtualItem) => {
         const data = dataList[virtualItem.index];
         const index = data['index'];
-        const isOdd = dataIndex % 2 === 0;
-        // const startOffset = dataIndex * tableStyle.tableBodyHeight;
+        const isOdd = virtualItem.index % 2 === 0;
 
         return (
           <FlexRow
@@ -246,7 +232,6 @@ function TableBodyPin({
               alignItems: 'center',
               position: 'absolute',
               transform: 'translateY(' + virtualItem.start + 'px)',
-              // transform: 'translateY(' + startOffset + 'px)',
               width: '100%',
               height: tableStyle.tableBodyHeight,
               borderBottom: tableStyle.tableBorder,
@@ -255,8 +240,8 @@ function TableBodyPin({
             {headers.map((header) => {
               return (
                 <TableBodyCell
-                  key={header.id + dataIndex}
-                  rowIndex={dataIndex}
+                  key={header.id + virtualItem.index}
+                  rowIndex={virtualItem.index}
                   data={data}
                   index={index}
                   isOdd={isOdd}
