@@ -45,6 +45,7 @@ export function CustomVerticalScrollbar({
   const [containerHeight, setContainerHeight] = useState(0);
   const [showScrollbar, setShowScrollbar] = useState(false);
   const hideTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const initialScrollTop = useRef(0);
 
   useEffect(() => {
     if (bodyScrollHistoryRef.current) {
@@ -143,15 +144,31 @@ export function CustomVerticalScrollbar({
         transition: 'opacity 0.16s',
         borderLeft: border,
       }}
+      // onClick={(event) => {
+      //   if (bodyScrollHistoryRef.current) {
+      //     const container = bodyScrollHistoryRef.current;
+      //     const rect = event.currentTarget.getBoundingClientRect();
+      //     const clickY = event.clientY - rect.top;
+      //     const clickRatio = clickY / containerHeight;
+      //     const scrollableHeight = container.scrollHeight - container.clientHeight;
+      //
+      //     container.scrollTop = scrollableHeight * clickRatio;
+      //   }
+      // }}
     >
       <motion.div
         drag='y'
         dragConstraints={{ top: 0, bottom: 0 }}
         dragElastic={0}
         dragMomentum={false}
+        onDragStart={() => {
+          if (bodyScrollHistoryRef.current) {
+            initialScrollTop.current = bodyScrollHistoryRef.current.scrollTop;
+          }
+        }}
         onDrag={(_, info) => {
           if (bodyScrollHistoryRef.current) {
-            bodyScrollHistoryRef.current.scrollTop = info.point.y * 2.6;
+            bodyScrollHistoryRef.current.scrollTop = info.point.y * 4;
           }
         }}
         style={{
@@ -165,6 +182,7 @@ export function CustomVerticalScrollbar({
           cursor: 'pointer',
           transition: 'top 0.2s ease-out',
         }}
+        whileDrag={{ backgroundColor: '#999999' }}
       />
     </motion.div>
   );

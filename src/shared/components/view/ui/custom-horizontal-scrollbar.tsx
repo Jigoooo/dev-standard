@@ -141,6 +141,17 @@ export function CustomHorizontalScrollbar({
           borderLeft: border,
           borderTop: border,
         }}
+        // onClick={(event) => {
+        //   if (bodyHorizontalScrollHistoryRef.current) {
+        //     const container = bodyHorizontalScrollHistoryRef.current;
+        //     const rect = event.currentTarget.getBoundingClientRect();
+        //     const clickX = event.clientX - rect.left;
+        //     const clickRatio = clickX / containerWidth;
+        //     const scrollableWidth = container.scrollWidth - container.clientWidth;
+        //
+        //     container.scrollLeft = scrollableWidth * clickRatio;
+        //   }
+        // }}
       >
         <motion.div
           drag='x'
@@ -169,6 +180,7 @@ export function CustomHorizontalScrollbar({
             cursor: 'pointer',
             transition: 'left 0.2s ease-out',
           }}
+          whileDrag={{ backgroundColor: '#999999' }}
         />
       </motion.div>
       {isScrollbarNeeded && showScrollbar && rightOffset !== 0 && (
