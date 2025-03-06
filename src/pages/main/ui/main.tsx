@@ -1,6 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import { useKeepAliveRef } from 'keepalive-for-react';
-import { ReactNode, Suspense } from 'react';
+import { ReactNode } from 'react';
 import KeepAliveRouteOutlet from 'keepalive-for-react-router';
 
 import { Sidebar, useMenuState } from '@/entities/menu';
@@ -47,21 +47,17 @@ export function Main() {
         <MainHeader title={menuState.selectedMenu.name} />
         <Divider style={{ marginBottom: 12 }} />
 
-        <Suspense fallback={<div></div>}>
-          <KeepAliveRouteOutlet
-            wrapperComponent={MemoScrollTopWrapper}
-            exclude={[`/${Router.MY_PROFILE}`]}
-            aliveRef={aliveRef}
-            duration={100}
-            transition={true}
-          />
-        </Suspense>
+        <KeepAliveRouteOutlet
+          wrapperComponent={KeepAliveWrapper}
+          exclude={[`/${Router.MY_PROFILE}`]}
+          aliveRef={aliveRef}
+        />
       </FlexColumn>
     </FlexRow>
   );
 }
 
-function MemoScrollTopWrapper({ children }: { children?: ReactNode }) {
+function KeepAliveWrapper({ children }: { children?: ReactNode }) {
   return (
     <div
       style={{

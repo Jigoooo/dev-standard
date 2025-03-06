@@ -12,7 +12,7 @@ export function useKeepAliveScrollHistoryRef<T extends HTMLElement>(domRef?: Ref
     if (!divDom) return;
     setTimeout(() => {
       divDom.scrollTo(0, scrollHistoryMap.current.get(activeKey) || 0);
-    }, 0); // 300 milliseconds to wait for the animation transition ending
+    }, 200); // 300 milliseconds to wait for the animation transition ending
     const onScroll = (e: Event) => {
       const target = e.target as HTMLDivElement;
       if (!target) return;
