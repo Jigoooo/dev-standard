@@ -4,7 +4,7 @@ export function KeepAliveWrapper({ children }: { children: ReactNode }) {
   return (
     <div
       style={{
-        height: 'calc(100vh - 150px)',
+        height: 'calc(100vh - 160px)',
         backgroundColor: '#ffffff',
       }}
     >
