@@ -1,9 +1,11 @@
 import { motion, MotionProps } from 'framer-motion';
-import { ButtonHTMLAttributes, CSSProperties, ReactNode } from 'react';
+import { ButtonHTMLAttributes, CSSProperties, isValidElement, ReactNode } from 'react';
 import { darken, lighten } from 'polished';
 
 import { isLightColor } from '@/shared/lib';
 import { colors } from '@/shared/constants';
+import { Typography } from '@/shared/components';
+import { useWindowStyle } from '@/shared/hooks';
 
 export enum ButtonStyle {
   SOLID = 'solid',
@@ -93,6 +95,8 @@ export function Button({
   style,
   ...props
 }: ButtonProps) {
+  const windowStyle = useWindowStyle();
+
   const backgroundColor = style?.backgroundColor ?? colors.primary[400];
   const color = style?.color ?? colors.primary[400];
   const animationColor = buttonStyle === ButtonStyle.OUTLINED ? color : backgroundColor;
@@ -106,6 +110,7 @@ export function Button({
         ...defaultButtonStyle,
         ...buttonStyles[buttonStyle],
         ...(props.disabled ? buttonDisabledStyle[buttonStyle] : {}),
+        ...windowStyle,
         ...style,
       }}
       variants={{
@@ -117,7 +122,7 @@ export function Button({
       whileTap={props.disabled ? 'none' : 'tap'}
       {...props}
     >
-      {children}
+      {isValidElement(children) ? children : <Typography>{children}</Typography>}
     </motion.button>
   );
 }

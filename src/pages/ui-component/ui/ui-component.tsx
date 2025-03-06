@@ -12,6 +12,7 @@ import {
   FlexRow,
   Input,
   InputStyle,
+  Link,
   loadingAction,
   ModalLayout,
   MultiSelect,
@@ -226,6 +227,11 @@ export function UiComponent() {
         <Tooltip content={'Tooltip'} position={'topRight'}>
           <span style={{ border: '1px solid #bbbbbb', padding: 12, borderRadius: 4 }}>Tooltip</span>
         </Tooltip>
+      </FlexRow>
+
+      <FlexRow style={{ alignItems: 'center' }}>
+        <span style={{ width: 200, fontWeight: 500 }}>Tooltip: </span>
+        <Link>Link</Link>
       </FlexRow>
     </FlexColumn>
   );

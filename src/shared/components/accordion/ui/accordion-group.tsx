@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
 
-import { Divider, FlexColumn, FlexRow } from '@/shared/components';
+import { Divider, FlexColumn, FlexRow, Typography } from '@/shared/components';
 
 const AccordionGroupContext = createContext<{
   type?: 'single' | 'multiple';
@@ -77,7 +77,7 @@ export function Accordion({
         }}
         onClick={toggleAccordion}
       >
-        <span>{title}</span>
+        <Typography>{title}</Typography>
         <FlexRow
           style={{
             alignItems: 'center',

@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import { createContext, ReactNode, use } from 'react';
 import { colors } from '@/shared/constants';
+import { useWindowStyle } from '@/shared/hooks';
+import { Typography } from '@/shared/components';
 
 const RadioGroupContext = createContext<
   | {
@@ -49,6 +51,8 @@ export function Radio({
   value: string;
   disabled?: boolean;
 }) {
+  const windowStyle = useWindowStyle();
+
   const { name, selectedRadio, handleSelectedRadio, groupDisabled } = useRadioGroupContext();
 
   const disabledValue = disabled || groupDisabled;
@@ -57,10 +61,13 @@ export function Radio({
     <label
       key={value}
       style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: 8,
-        cursor: disabledValue ? 'not-allowed' : 'pointer',
+        ...{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 8,
+          cursor: disabledValue ? 'not-allowed' : 'pointer',
+        },
+        ...windowStyle,
       }}
     >
       <input
@@ -111,9 +118,9 @@ export function Radio({
           />
         )}
       </motion.div>
-      <span style={{ fontSize: '0.9rem', color: disabledValue ? '#cccccc' : '#333333' }}>
+      <Typography style={{ fontSize: '0.9rem', color: disabledValue ? '#cccccc' : '#333333' }}>
         {label}
-      </span>
+      </Typography>
     </label>
   );
 }

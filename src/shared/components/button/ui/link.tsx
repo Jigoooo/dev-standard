@@ -1,5 +1,7 @@
 import { CSSProperties, HTMLAttributes, useState } from 'react';
 
+import { Typography } from '@/shared/components';
+
 export function Link({
   style,
   children,
@@ -8,11 +10,12 @@ export function Link({
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <span
+    <Typography
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       style={{
         ...{
+          userSelect: 'none',
           borderBottom: isHovered ? '1px solid currentColor' : '1px solid transparent',
           lineHeight: 1,
           cursor: 'pointer',
@@ -22,6 +25,6 @@ export function Link({
       {...props}
     >
       {children}
-    </span>
+    </Typography>
   );
 }
