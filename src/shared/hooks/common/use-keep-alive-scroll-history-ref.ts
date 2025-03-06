@@ -1,27 +1,31 @@
 import { RefObject, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useEffectOnActive } from 'keepalive-for-react';
 
 export function useKeepAliveScrollHistoryRef<T extends HTMLElement>({
   ref,
   axis = 'vertical',
   delay = 0,
-  action,
+  scrollResetAction,
 }: {
   ref: RefObject<T | null>;
   axis?: 'vertical' | 'horizontal';
   delay?: number;
-  action?: () => void;
+  scrollResetAction?: (scrollValue: number) => void;
 }) {
   const location = useLocation();
   const scrollHistoryMap = useRef<Map<string, number>>(new Map());
 
   const activeKey = location.pathname + location.search;
 
+  useEffectOnActive(() => {
+    const storedValue = scrollHistoryMap.current.get(activeKey) || 0;
+    scrollResetAction?.(storedValue);
+  }, [activeKey]);
+
   useEffect(() => {
     const dom = ref?.current;
     if (!dom) return;
-
-    action?.();
 
     setTimeout(() => {
       const storedValue = scrollHistoryMap.current.get(activeKey) || 0;

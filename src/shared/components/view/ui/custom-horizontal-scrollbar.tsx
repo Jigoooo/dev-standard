@@ -1,5 +1,11 @@
 import { RefObject, useEffect, useRef, useState } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import {
+  motion,
+  useMotionValue,
+  useMotionValueEvent,
+  useScroll,
+  useTransform,
+} from 'framer-motion';
 import { useKeepAliveScrollHistoryRef } from '@/shared/hooks';
 
 type CustomHorizontalScrollbarProps = {
@@ -22,10 +28,22 @@ export function CustomHorizontalScrollbar({
   backgroundColor = '#f1f1f1',
 }: CustomHorizontalScrollbarProps) {
   const { scrollXProgress, scrollX } = useScroll({ container: ref });
+  const effectiveProgress = useMotionValue(0);
 
   const bodyHorizontalScrollHistoryRef = useKeepAliveScrollHistoryRef({
     ref,
     axis: 'horizontal',
+    scrollResetAction: (scrollValue) => {
+      if (scrollValue === 0) {
+        setTimeout(() => {
+          if (bodyHorizontalScrollHistoryRef.current) {
+            bodyHorizontalScrollHistoryRef.current.scrollTop = 0;
+          }
+
+          effectiveProgress.set(0);
+        }, 50);
+      }
+    },
   });
 
   const [containerWidth, setContainerWidth] = useState(0);
@@ -80,14 +98,19 @@ export function CustomHorizontalScrollbar({
     };
   }, [bodyHorizontalScrollHistoryRef, isTimeoutHiding]);
 
-  // 컨테이너 너비가 컨텐츠 전체 너비보다 크면 스크롤바가 필요없으므로 숨김
   const isScrollbarNeeded = totalContentWidth > containerWidth;
 
-  // thumb 너비 계산: 컨테이너 너비 * (컨테이너 너비 / 컨텐츠 전체 너비)
   const thumbWidth = containerWidth * (containerWidth / totalContentWidth);
 
-  // scrollXProgress를 이용해 thumb의 left 위치를 계산 (최대 left 값은 containerWidth - thumbWidth)
-  const thumbLeft = useTransform(scrollXProgress, [0, 1], [0, containerWidth - thumbWidth]);
+  useMotionValueEvent(scrollXProgress, 'change', (latestValue) => {
+    if (isScrollbarNeeded) {
+      effectiveProgress.set(latestValue);
+    } else {
+      effectiveProgress.set(0);
+    }
+  });
+
+  const thumbLeft = useTransform(effectiveProgress, [0, 1], [0, containerWidth - thumbWidth]);
 
   return (
     <>

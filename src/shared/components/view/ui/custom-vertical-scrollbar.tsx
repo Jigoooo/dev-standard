@@ -1,4 +1,5 @@
 import { RefObject, useEffect, useRef, useState } from 'react';
+
 import {
   motion,
   useMotionValue,
@@ -24,11 +25,21 @@ export function CustomVerticalScrollbar({
   backgroundColor = '#f1f1f1',
 }: CustomVerticalScrollbarProps) {
   const { scrollYProgress } = useScroll({ container: ref });
-
   const effectiveProgress = useMotionValue(0);
 
   const bodyScrollHistoryRef = useKeepAliveScrollHistoryRef({
     ref,
+    scrollResetAction: (scrollValue) => {
+      if (scrollValue === 0) {
+        setTimeout(() => {
+          if (bodyScrollHistoryRef.current) {
+            bodyScrollHistoryRef.current.scrollTop = 0;
+          }
+
+          effectiveProgress.set(0);
+        }, 50);
+      }
+    },
   });
 
   const [containerHeight, setContainerHeight] = useState(0);
