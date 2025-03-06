@@ -37,7 +37,9 @@ const inputStyles: Record<InputStyle, CSSProperties> = {
     borderTop: 'none',
     borderLeft: 'none',
     borderRight: 'none',
-    borderBottom: `1.4px solid #c4c4c4`,
+    // borderBottom: `1.4px solid #c4c4c4`,
+    border: 'none',
+    boxShadow: 'inset 0 -1.4px 0 0 #c4c4c4',
   },
 } as const;
 
@@ -50,7 +52,8 @@ const inputDisabledStyles: Record<InputStyle, CSSProperties> = {
     backgroundColor: '#eaeaea',
   },
   [InputStyle.UNDERLINE]: {
-    borderBottom: `2px solid #e1e1e1`,
+    // borderBottom: `2px solid #e1e1e1`,
+    boxShadow: 'inset 0 -2px 0 0 #e1e1e1',
   },
 } as const;
 
@@ -104,7 +107,8 @@ export function Input({
             boxShadow: `inset 0 0 0 2px ${colors.primary[400]}`,
           },
           focusUnderline: {
-            borderBottom: `2px solid ${colors.primary[400]}`,
+            // borderBottom: `2px solid ${colors.primary[400]}`,
+            boxShadow: `inset 0 -2px 0 0 ${colors.primary[400]}`,
           },
           none: {},
         }}

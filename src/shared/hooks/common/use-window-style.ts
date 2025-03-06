@@ -1,7 +1,6 @@
 import { CSSProperties, useEffect, useState } from 'react';
 
 const windowStyle = {
-  letterSpacing: '-0.2px',
   wordSpacing: '-1.4px',
   transform: 'rotate(0.03deg)',
 };
