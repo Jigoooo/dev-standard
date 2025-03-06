@@ -64,7 +64,7 @@ export function TableBody<TData extends { index: string }>({
           backgroundColor: tableStyle.tableBodyBackgroundColor,
           overflowY: 'auto',
           overflowX: 'hidden',
-          height: rowVirtualizer.getTotalSize(),
+          height: rowVirtualizer.getTotalSize() + 15,
           maxHeight: bodyMaxHeight,
         }}
       >
