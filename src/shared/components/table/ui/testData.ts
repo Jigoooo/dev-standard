@@ -10,7 +10,7 @@ const createRandomUser = () => {
     name: faker.internet.username(),
     email: faker.internet.email(),
     age: faker.number.int({ min: 20, max: 70 }),
-    address: faker.address.streetAddress(),
+    address: faker.location.streetAddress(),
     phone: faker.phone.number(),
     jobTitle: faker.person.jobTitle(),
     department: faker.commerce.department(),
@@ -20,5 +20,5 @@ const createRandomUser = () => {
 };
 
 export const users = faker.helpers.multiple(createRandomUser, {
-  count: 1000,
+  count: 500,
 });

@@ -161,7 +161,7 @@ function TableBodyView({
               {headers.map((header) => {
                 return (
                   <TableBodyCell
-                    key={header.id}
+                    key={header.id + dataIndex}
                     rowIndex={dataIndex}
                     data={data}
                     index={index}
@@ -251,7 +251,7 @@ function TableBodyPin({
             {headers.map((header) => {
               return (
                 <TableBodyCell
-                  key={header.id}
+                  key={header.id + dataIndex}
                   rowIndex={dataIndex}
                   data={data}
                   index={index}
@@ -321,7 +321,6 @@ function TableBodyCell<TData extends Record<string, any>>({
     <FlexRow
       as={motion.div}
       className={'table-body-cell'}
-      key={header.id + rowIndex}
       style={{
         boxSizing: 'border-box',
         justifyContent,
