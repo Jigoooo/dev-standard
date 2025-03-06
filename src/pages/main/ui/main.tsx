@@ -46,15 +46,16 @@ export function Main() {
       >
         <MainHeader title={menuState.selectedMenu.name} />
         <Divider style={{ marginBottom: 12 }} />
-        <CustomSuspense>
+
+        <Suspense fallback={<div></div>}>
           <KeepAliveRouteOutlet
             wrapperComponent={MemoScrollTopWrapper}
             exclude={[`/${Router.MY_PROFILE}`]}
             aliveRef={aliveRef}
-            // duration={300}
-            // transition={true}
+            duration={100}
+            transition={true}
           />
-        </CustomSuspense>
+        </Suspense>
       </FlexColumn>
     </FlexRow>
   );
@@ -70,9 +71,4 @@ function MemoScrollTopWrapper({ children }: { children?: ReactNode }) {
       {children}
     </div>
   );
-}
-
-function CustomSuspense(props: { children: ReactNode }) {
-  const { children } = props;
-  return <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>;
 }
