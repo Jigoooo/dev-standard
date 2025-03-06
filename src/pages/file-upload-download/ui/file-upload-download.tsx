@@ -14,10 +14,9 @@ export function FileUploadDownload() {
       }}
     >
       <FileUploadForm
-        attachments={[]}
-        fileHandlerService={(file) => {
+        files={[]}
+        handleFiles={(file) => {
           console.log(file);
-          return Promise.resolve({ path: '', idx: -1 });
         }}
         fileDelete={() => {}}
       />
