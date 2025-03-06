@@ -129,6 +129,7 @@ export function CustomVerticalScrollbar({
   }, [totalContentHeight]);
 
   const thumbTop = useTransform(effectiveProgress, [0, 1], [0, containerHeight - safeThumbHeight]);
+
   return (
     <motion.div
       style={{

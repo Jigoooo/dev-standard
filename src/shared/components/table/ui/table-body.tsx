@@ -1,5 +1,5 @@
 import { RefObject, useCallback, useRef, useState } from 'react';
-import { Virtualizer } from '@tanstack/react-virtual';
+import { elementScroll, Virtualizer, VirtualizerOptions } from '@tanstack/react-virtual';
 import { motion } from 'framer-motion';
 
 import {
@@ -18,6 +18,10 @@ function validateDataList<T>(dataList: unknown[], keys: (keyof T)[]): dataList i
   return dataList.every((item) =>
     keys.every((key) => Object.prototype.hasOwnProperty.call(item, key)),
   );
+}
+
+function easeInOutQuint(t: number) {
+  return t < 0.5 ? 16 * t * t * t * t * t : 1 + 16 * --t * t * t * t * t;
 }
 
 export function TableBody<TData extends { index: string }>({
@@ -47,6 +51,33 @@ export function TableBody<TData extends { index: string }>({
   const [hoverIndex, setHoverIndex] = useState<string | null>(null);
 
   const getItemKey = useCallback((index: number) => dataList[index].index, [dataList]);
+  const scrollingRef = useRef<number>(null);
+
+  const scrollToFn: VirtualizerOptions<any, any>['scrollToFn'] = useCallback(
+    (offset, canSmooth, instance) => {
+      const duration = 1000;
+      const start = bodyRef.current?.scrollTop || 0;
+      const startTime = (scrollingRef.current = Date.now());
+
+      const run = () => {
+        if (scrollingRef.current !== startTime) return;
+        const now = Date.now();
+        const elapsed = now - startTime;
+        const progress = easeInOutQuint(Math.min(elapsed / duration, 1));
+        const interpolated = start + (offset - start) * progress;
+
+        if (elapsed < duration) {
+          elementScroll(interpolated, canSmooth, instance);
+          requestAnimationFrame(run);
+        } else {
+          elementScroll(interpolated, canSmooth, instance);
+        }
+      };
+
+      requestAnimationFrame(run);
+    },
+    [],
+  );
 
   const rowVirtualizer = useVirtualRow({
     count: dataList.length,
@@ -54,7 +85,10 @@ export function TableBody<TData extends { index: string }>({
     estimateSize: () => tableStyle.tableBodyHeight,
     overscan: 40,
     getItemKey,
+    scrollToFn,
   });
+
+  // console.log(bodyRef?.current?.scrollTop);
 
   return (
     <FlexRow style={{ position: 'relative' }}>
