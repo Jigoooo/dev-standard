@@ -15,7 +15,6 @@ export function SidebarFooter() {
   const logout = useLogout();
 
   const goMyProfile = () => {
-    menuActions.setSelectedMenu(myProfileMenu);
     navigate(Router.MY_PROFILE);
   };
 

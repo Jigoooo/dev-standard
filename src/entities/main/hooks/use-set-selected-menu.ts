@@ -11,5 +11,5 @@ export function useSetSelectedMenu() {
     if (findMenu) {
       menuActions.setSelectedMenu(findMenu);
     }
-  }, []);
+  }, [location]);
 }

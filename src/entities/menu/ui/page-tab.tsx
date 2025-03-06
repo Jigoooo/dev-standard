@@ -1,15 +1,24 @@
 import { FlexColumn, FlexRow } from '@/shared/components';
-import { menus } from '@/entities/menu';
-import { useLocation } from 'react-router-dom';
+import { menus, TMenu } from '@/entities/menu';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { RefObject } from 'react';
 import { KeepAliveRef } from 'keepalive-for-react';
 
 export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undefined> }) {
+  const navigate = useNavigate();
   const location = useLocation();
   const activePath = location.pathname + location.search;
   const cacheNodes = aliveRef?.current?.getCacheNodes() ?? [];
 
   const currentMenu = menus.find((menu) => activePath.includes(menu.router));
+
+  const toMenu = (menu: TMenu | undefined) => {
+    if (!menu) {
+      return;
+    }
+
+    navigate(menu.router);
+  };
 
   return (
     <FlexColumn style={{ minHeight: 50, height: 50, maxHeight: 50, width: '100%' }}>
@@ -26,7 +35,11 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
 
           console.log(findCacheMenu);
           return (
-            <FlexRow key={cacheNode.cacheKey}>
+            <FlexRow
+              key={cacheNode.cacheKey}
+              style={{ cursor: 'pointer' }}
+              onClick={() => toMenu(findCacheMenu)}
+            >
               <span>{findCacheMenu?.name}</span>
             </FlexRow>
           );

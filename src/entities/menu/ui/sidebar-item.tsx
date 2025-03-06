@@ -45,8 +45,6 @@ export function SidebarItem({
         }}
         onClick={() => {
           if (isSelected) return;
-
-          menuActions.setSelectedMenu(menu);
           onClickMenu(menu);
         }}
       >
