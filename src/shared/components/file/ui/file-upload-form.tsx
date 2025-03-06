@@ -1,11 +1,12 @@
 import { useEffect, useId, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { v4 as uuidV4 } from 'uuid';
 
 // import InsertDriveFileRoundedIcon from '@mui/icons-material/InsertDriveFileRounded';
 
 import { DropZone } from './drop-zone.tsx';
 import { fileSizeFormatter, resizeImage } from '@/shared/lib';
-import { Divider, FlexColumn, FlexRow, Typography } from '@/shared/components';
+import { FlexColumn, FlexRow, Typography, TFile } from '@/shared/components';
 
 export function FileUploadForm({
   attachments,
@@ -13,23 +14,23 @@ export function FileUploadForm({
   fileDelete,
 }: {
   attachments: any[];
-  fileHandlerService: (file: File) => Promise<{ path: string; idx: number }>;
-  fileDelete: (fileIdx: number) => void;
+  fileHandlerService: (file: TFile) => Promise<{ path: string; idx: number }>;
+  fileDelete: (fileUUID: string) => void;
 }) {
   const fileId = useId();
 
-  const [fileList, setFileList] = useState<any[]>([]);
+  const [files, setFiles] = useState<TFile[]>([]);
   useEffect(() => {
-    setFileList(attachments);
+    setFiles(attachments);
   }, [attachments]);
 
   const totalFileSize = useMemo(() => {
-    return fileList.reduce((acc, cur) => {
-      const { sizeInMB } = fileSizeFormatter(cur.fileSize);
+    return files.reduce((acc, cur) => {
+      const { sizeInMB } = fileSizeFormatter(cur.file.size);
 
       return acc + Number(sizeInMB);
     }, 0);
-  }, [fileList]);
+  }, [files]);
 
   const fileProgressNumber = useMemo(() => {
     return Math.round((Number(totalFileSize) / 10) * 100);
@@ -37,7 +38,14 @@ export function FileUploadForm({
 
   const handleFileList = async (file: File) => {
     const compressedFile = (await resizeImage({ file })) as File;
-    fileHandlerService(compressedFile);
+    const newFile: TFile = {
+      fileUUID: uuidV4(),
+      file: compressedFile,
+    };
+
+    console.log(newFile);
+
+    fileHandlerService(newFile);
 
     // const fileUploadResponse = await fileHandlerService(compressedFile);
 
@@ -54,30 +62,16 @@ export function FileUploadForm({
     //   return;
     // }
 
-    const fileObj = {
-      fileName: compressedFile.name,
-      fileSize: compressedFile.size,
-      path: '',
-      idx: -1,
-      postIdx: -1,
-    };
-
-    setFileList((state) => [...state, fileObj]);
+    setFiles((state) => [...state, newFile]);
   };
 
-  const deleteFile = (file: any) => {
-    setFileList((state) => state.filter((item) => item.idx !== file.idx));
-    fileDelete(file.idx);
+  const deleteFile = (file: TFile) => {
+    setFiles((state) => state.filter((item) => item.fileUUID !== file.fileUUID));
+    fileDelete(file.fileUUID);
   };
-
-  console.log(deleteFile);
 
   return (
     <FlexColumn>
-      <div style={{ marginBottom: 8 }}>
-        <Typography>첨부파일</Typography>
-      </div>
-      <Divider />
       <FlexColumn style={{ marginBlock: 8, gap: 8 }}>
         <FlexRow style={{ alignItems: 'center', gap: 8 }}>
           <Typography style={{ fontWeight: 600 }}>최대 업로드 용량</Typography>
@@ -101,20 +95,24 @@ export function FileUploadForm({
           dropCautionContent={<Typography>개별파일 5MB, 총합 10MB 까지 업로드 가능</Typography>}
         />
         <AnimatePresence>
-          {fileList.map((file, index) => {
-            console.log(file);
-            // const { sizeInKB, sizeInMB, isUnder1MB } = fileSizeFormatter(file.fileSize);
+          {files.map((file, index) => {
+            const { sizeInKB, sizeInMB, isUnder1MB } = fileSizeFormatter(file.file.size);
 
-            // const fileSize = !isUnder1MB ? sizeInMB.toFixed(2) : sizeInKB.toFixed(2);
-            // const fileProgressNumber = Math.round((Number(sizeInMB) / 5) * 100);
+            const fileSize = !isUnder1MB ? sizeInMB.toFixed(2) : sizeInKB.toFixed(2);
+            const fileProgressNumber = Math.round((Number(sizeInMB) / 5) * 100);
 
             return (
-              <motion.div
+              <FlexRow
+                as={motion.div}
                 key={`${fileId}_${index}`}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
+                onClick={() => deleteFile(file)}
               >
+                <Typography>fileSize: {fileSize}</Typography>
+                <Typography>fileProgressNumber: {fileProgressNumber}</Typography>
+                <Typography>fileName: {file.file.name}</Typography>
                 {/*<FileUploadItem*/}
                 {/*  icon={<InsertDriveFileRoundedIcon />}*/}
                 {/*  fileName={file.originalFileName || file.fileName}*/}
@@ -122,23 +120,10 @@ export function FileUploadForm({
                 {/*  progress={fileProgressNumber}*/}
                 {/*  deleteFile={() => deleteFile(file)}*/}
                 {/*/>*/}
-              </motion.div>
+              </FlexRow>
             );
           })}
         </AnimatePresence>
-        <FlexColumn style={{ paddingTop: 48, gap: 8 }}>
-          <Typography>
-            &#8251; 다음 파일들은 랜섬웨어 공격루트로 활용될 수 있어 업로드 및 다운로드가
-            불가합니다.
-          </Typography>
-          <Typography>
-            ace, ade, adp, asp, aspx, bat, chm, cmd, com, cpl, crt, exe, gz, hlp, hta, htm,
-            <br />
-            html, in, inf, mdb, mde, msc, msi, ink, ins, isp, js, jse, jsp, lnk, msp, mst, pcd, php,
-            <br />
-            php3, php4, phps, pi, pif, reg, scr, sct, shs, url, vb, vbe, vbs, wsc, wsf, wsh, xml
-          </Typography>
-        </FlexColumn>
       </FlexColumn>
     </FlexColumn>
   );

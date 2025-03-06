@@ -1,4 +1,4 @@
-import { FlexColumn, FlexRow } from '@/shared/components';
+import { FlexColumn } from '@/shared/components';
 import { FileUploadForm } from '@/shared/components/file/ui/file-upload-form.tsx';
 
 export function FileUploadDownload() {
@@ -13,18 +13,14 @@ export function FileUploadDownload() {
         justifyContent: 'center',
       }}
     >
-      <FlexRow
-        style={{ border: '1px solid #cccccc', paddingBlock: 32, paddingInline: 16, width: 800 }}
-      >
-        <FileUploadForm
-          attachments={[]}
-          fileHandlerService={(file) => {
-            console.log(file);
-            return Promise.resolve({ path: '', idx: -1 });
-          }}
-          fileDelete={() => {}}
-        />
-      </FlexRow>
+      <FileUploadForm
+        attachments={[]}
+        fileHandlerService={(file) => {
+          console.log(file);
+          return Promise.resolve({ path: '', idx: -1 });
+        }}
+        fileDelete={() => {}}
+      />
     </FlexColumn>
   );
 }

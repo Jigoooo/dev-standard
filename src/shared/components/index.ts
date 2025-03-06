@@ -10,3 +10,4 @@ export * from './input';
 export * from './toggle';
 export * from './picker';
 export * from './view';
+export * from './file';

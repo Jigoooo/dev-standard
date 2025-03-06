@@ -65,7 +65,10 @@ export const getImageBlobToFetch = async (url: string) => {
   return await responseImage.blob();
 };
 
-export const blobToDataURL = (blob: Blob, callback: (dataUrl: string | ArrayBuffer | null) => void) => {
+export const blobToDataURL = (
+  blob: Blob,
+  callback: (dataUrl: string | ArrayBuffer | null) => void,
+) => {
   const reader = new FileReader();
   reader.onload = function (e) {
     callback(e.target?.result ?? '');
@@ -73,7 +76,9 @@ export const blobToDataURL = (blob: Blob, callback: (dataUrl: string | ArrayBuff
   reader.readAsDataURL(blob);
 };
 
-export const fileSizeFormatter = (sizeInBytes: number): { sizeInKB: number; sizeInMB: number; isUnder1MB: boolean } => {
+export const fileSizeFormatter = (
+  sizeInBytes: number,
+): { sizeInKB: number; sizeInMB: number; isUnder1MB: boolean } => {
   const sizeInKB = sizeInBytes / 1024;
   const sizeInMB = sizeInKB / 1024;
 
