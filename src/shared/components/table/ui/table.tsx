@@ -116,6 +116,7 @@ export function Table<TData extends { index: string } & Record<string, any>>({
     : applyTableStyle.tableHeaderHeight;
 
   let bodyMaxHeight = tableSize.height - headerHeight - applyTableStyle.tableFooterHeight;
+
   if (bodyMaxHeight < 0) {
     bodyMaxHeight = 0;
   }

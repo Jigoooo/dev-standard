@@ -71,11 +71,9 @@ export const TableBody = memo(function TableBody<TData extends { index: string }
     scrollToFn,
   });
 
-  const rowTotalSize = useMemo(() => {
-    return rowVirtualizer.getTotalSize();
-  }, [dataList.length]);
-
+  const rowTotalSize = rowVirtualizer.getTotalSize();
   const virtualItems = rowVirtualizer.getVirtualItems();
+
   const memoizedItems = useMemo(() => {
     return virtualItems;
   }, [virtualItems]);

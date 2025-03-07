@@ -1,7 +1,19 @@
-import { FlexColumn } from '@/shared/components';
-import { FileUploadForm } from '@/shared/components/file/ui/file-upload-form.tsx';
+import { useState } from 'react';
+
+import { FlexColumn, TFile, FileUploadForm } from '@/shared/components';
 
 export function FileUploadDownload() {
+  const [files, setFiles] = useState<TFile[]>([]);
+  const handleFiles = (file: TFile) => {
+    console.log('file: ', file);
+    setFiles((prevState) => [...prevState, file]);
+  };
+  const deleteFile = (fileUUID: string) => {
+    setFiles((prevState) => {
+      return prevState.filter((file) => file.fileUUID !== fileUUID);
+    });
+  };
+
   return (
     <FlexColumn
       style={{
@@ -13,13 +25,7 @@ export function FileUploadDownload() {
         justifyContent: 'center',
       }}
     >
-      <FileUploadForm
-        files={[]}
-        handleFiles={(file) => {
-          console.log(file);
-        }}
-        fileDelete={() => {}}
-      />
+      <FileUploadForm files={files} handleFiles={handleFiles} fileDelete={deleteFile} />
     </FlexColumn>
   );
 }
