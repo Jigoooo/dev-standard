@@ -4,18 +4,28 @@ import { v4 as uuidV4 } from 'uuid';
 
 import { DropZone } from './drop-zone.tsx';
 import { fileSizeFormatter } from '@/shared/lib';
-import { FlexColumn, FlexRow, Typography, TFile } from '@/shared/components';
+import {
+  FlexColumn,
+  FlexRow,
+  Typography,
+  TFile,
+  LinearProgress,
+  dialogActions,
+  DialogType,
+} from '@/shared/components';
 
 export function FileUploadForm({
-  multiple = false,
   files,
   handleFiles,
   fileDelete,
+  multiple = false,
+  limitMB = 0,
 }: {
-  multiple?: boolean;
   files: TFile[];
   handleFiles: (file: TFile[]) => void;
   fileDelete: (fileUUID: string) => void;
+  multiple?: boolean;
+  limitMB?: number;
 }) {
   const [innerFiles, setInnerFiles] = useState<TFile[]>([]);
   useEffect(() => {
@@ -25,14 +35,13 @@ export function FileUploadForm({
   const totalFileSize = useMemo(() => {
     return innerFiles.reduce((acc, cur) => {
       const { sizeInMB } = fileSizeFormatter(cur.file.size);
-
       return acc + Number(sizeInMB);
     }, 0);
   }, [innerFiles]);
 
-  const fileProgressNumber = useMemo(() => {
-    return Math.round((Number(totalFileSize) / 10) * 100);
-  }, [totalFileSize]);
+  const fileProgressFraction = useMemo(() => {
+    return Math.min(totalFileSize / limitMB, 1);
+  }, [limitMB, totalFileSize]);
 
   const handleInnerFiles = async (files: FileList) => {
     const newFiles = Array.from(files).map((file) => {
@@ -42,9 +51,18 @@ export function FileUploadForm({
       };
     });
 
-    handleFiles(newFiles);
+    const totalSize = [...innerFiles, ...newFiles].reduce((sum, { file }) => sum + file.size, 0);
+    if (totalSize / (1024 * 1024) <= limitMB && limitMB > 0) {
+      handleFiles(newFiles);
 
-    setInnerFiles((state) => [...state, ...newFiles]);
+      setInnerFiles((state) => [...state, ...newFiles]);
+    } else {
+      dialogActions.openDialog({
+        dialogType: DialogType.WARNING,
+        title: '업로드 용량이 초과되었습니다.',
+        contents: `업로드 가능한 최대 용량은 ${limitMB}MB 입니다.`,
+      });
+    }
   };
 
   const deleteFile = (file: TFile) => {
@@ -54,23 +72,14 @@ export function FileUploadForm({
 
   return (
     <FlexColumn style={{ width: '100%', gap: 8 }}>
-      <FlexRow style={{ alignItems: 'center', gap: 8 }}>
-        <Typography style={{ fontWeight: 600 }}>최대 업로드 용량</Typography>
-        {/*<LinearProgress*/}
-        {/*  color='neutral'*/}
-        {/*  value={fileProgressNumber}*/}
-        {/*  size={'lg'}*/}
-        {/*  determinate*/}
-        {/*  sx={[*/}
-        {/*    {*/}
-        {/*      ...(fileProgressNumber < 100 && {*/}
-        {/*        color: 'var(--joy-palette-success-solidBg)',*/}
-        {/*      }),*/}
-        {/*    },*/}
-        {/*  ]}*/}
-        {/*/>*/}
-        <Typography>{fileProgressNumber}%</Typography>
-      </FlexRow>
+      {limitMB > 0 && (
+        <FlexColumn style={{ gap: 2 }}>
+          <Typography style={{ fontSize: '0.9rem', fontWeight: 600 }}>
+            최대 업로드 용량 ({limitMB}MB)
+          </Typography>
+          <LinearProgress progress={fileProgressFraction} height={10} progressColor='#007bff' />
+        </FlexColumn>
+      )}
       <DropZone multiple={multiple} handleFiles={handleInnerFiles} />
       <AnimatePresence>
         {innerFiles.map((file) => {

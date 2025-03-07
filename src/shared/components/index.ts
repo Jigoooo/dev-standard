@@ -12,3 +12,4 @@ export * from './picker';
 export * from './view';
 export * from './file';
 export * from './scroll';
+export * from './progress';

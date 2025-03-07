@@ -39,6 +39,7 @@ export function FileUploadDownload() {
       <FlexRow style={{ width: '50%', minWidth: 500 }}>
         <FileUploadForm
           multiple={true}
+          limitMB={3}
           files={files}
           handleFiles={handleFiles}
           fileDelete={deleteFile}
