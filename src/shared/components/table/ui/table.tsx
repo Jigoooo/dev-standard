@@ -134,24 +134,24 @@ export function Table<TData extends { index: string } & Record<string, any>>({
     dataList: filteredDataList,
   });
 
+  const tableContextValue = {
+    tableStyle: applyTableStyle,
+    bodyMaxHeight,
+    headers,
+    sortedHeaders,
+    dataList: sortedDataList,
+    handelDataList,
+    filterRowEnabled,
+    onChangeFilterValue,
+    isChecked,
+    checkedState,
+    handleCheckAll,
+    handleCheck,
+    handleSort,
+  };
+
   return (
-    <TableContext
-      value={{
-        tableStyle: applyTableStyle,
-        bodyMaxHeight,
-        headers,
-        sortedHeaders,
-        dataList: sortedDataList,
-        handelDataList,
-        filterRowEnabled,
-        onChangeFilterValue,
-        isChecked,
-        checkedState,
-        handleCheckAll,
-        handleCheck,
-        handleSort,
-      }}
-    >
+    <TableContext value={tableContextValue}>
       <div
         ref={tableRef}
         className={'table-root selection-none'}
