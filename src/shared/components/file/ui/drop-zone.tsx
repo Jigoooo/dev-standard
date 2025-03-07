@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react';
 import FileUploadRoundedIcon from '@mui/icons-material/FileUploadRounded';
 
 import { colors } from '@/shared/constants';
-import { FlexRow, Link, Typography } from '@/shared/components';
+import { FlexRow, Link } from '@/shared/components';
 
 export function DropZone({
   multiple,
@@ -66,11 +66,12 @@ export function DropZone({
           alignItems: 'center',
           justifyContent: 'center',
           paddingInline: 36,
-          paddingBlock: 18,
+          paddingBlock: 12,
           flexGrow: 1,
           boxShadow: 'none',
-          minHeight: 115,
+          minHeight: 130,
           backgroundColor: dragOver ? colors.primary[50] : undefined,
+          cursor: 'pointer',
         },
       }}
       onDrop={fileDropChange}
@@ -84,6 +85,7 @@ export function DropZone({
         setEnterDragWithBoundary(event, false);
       }}
       onDragOver={handleDragOver}
+      onClick={() => inputRef.current && inputRef.current.click()}
     >
       <>
         <FlexRow
@@ -96,14 +98,10 @@ export function DropZone({
             backgroundColor: dragOver ? colors.primary[100] : '#eeeeee',
             transition: '0.2s',
           }}
-          onClick={() => inputRef.current && inputRef.current.click()}
         >
           <FileUploadRoundedIcon />
         </FlexRow>
-        <Link
-          style={{ fontWeight: 500, fontSize: '0.9rem' }}
-          onClick={() => inputRef.current && inputRef.current.click()}
-        >
+        <Link style={{ fontWeight: 500, fontSize: '0.9rem' }}>
           클릭 또는 드래그하여 파일 업로드
         </Link>
       </>
