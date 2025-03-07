@@ -146,7 +146,6 @@ export function CustomVerticalScrollbar({
         borderLeft: border,
       }}
       onMouseDown={(event) => {
-        console.log(event);
         handleTrackMouseDown({
           event,
           ref: bodyScrollHistoryRef,
