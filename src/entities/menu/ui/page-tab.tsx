@@ -40,7 +40,7 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
     });
   };
 
-  const destroyAllCacheNodes = () => {
+  const destroyOtherCacheNodes = () => {
     aliveRef?.current?.destroyOther().then(() => {
       setSortedCacheNodes((prevState) =>
         prevState.filter((node) => node.cacheKey === activeCacheKey),
@@ -170,18 +170,45 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
               })}
             </AnimatePresence>
           </FlexRow>
-          <FlexRow>
-            <FlexRow style={{ cursor: 'pointer' }} onClick={refreshCacheNode}>
+          <FlexRow style={{ gap: 2 }}>
+            {/*<Tooltip*/}
+            {/*  position={'bottomLeft'}*/}
+            {/*  style={{*/}
+            {/*    backgroundColor: 'rgba(0, 0, 0, 0.8)',*/}
+            {/*    paddingBlock: 4,*/}
+            {/*    paddingInline: 6,*/}
+            {/*    borderRadius: 4,*/}
+            {/*  }}*/}
+            {/*  content={<Typography style={{ fontSize: '0.88rem' }}>새로고침</Typography>}*/}
+            {/*>*/}
+            <FlexRow
+              as={motion.div}
+              style={{ cursor: 'pointer', backgroundColor: '#ffffff', borderRadius: '50%' }}
+              onClick={refreshCacheNode}
+              whileHover={{ backgroundColor: '#eeeeee' }}
+            >
               <IoRefreshCircleOutline style={{ fontSize: '1.6rem' }} />
             </FlexRow>
+            {/*</Tooltip>*/}
+            {/*<Tooltip*/}
+            {/*  position={'bottomLeft'}*/}
+            {/*  style={{*/}
+            {/*    backgroundColor: 'rgba(0, 0, 0, 0.8)',*/}
+            {/*    paddingBlock: 4,*/}
+            {/*    paddingInline: 6,*/}
+            {/*    borderRadius: 4,*/}
+            {/*  }}*/}
+            {/*  content={<Typography style={{ fontSize: '0.88rem' }}>전체삭제</Typography>}*/}
+            {/*>*/}
             <FlexRow
-              style={{ cursor: 'pointer' }}
-              onClick={() => {
-                destroyAllCacheNodes();
-              }}
+              as={motion.div}
+              style={{ cursor: 'pointer', backgroundColor: '#ffffff', borderRadius: '50%' }}
+              onClick={destroyOtherCacheNodes}
+              whileHover={{ backgroundColor: '#eeeeee' }}
             >
               <IoIosCloseCircleOutline style={{ fontSize: '1.6rem' }} />
             </FlexRow>
+            {/*</Tooltip>*/}
           </FlexRow>
         </FlexRow>
       </LayoutGroup>

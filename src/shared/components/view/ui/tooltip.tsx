@@ -26,8 +26,8 @@ const tooltipPositionStyles: Record<TooltipPosition, CSSProperties> = {
   topLeft: { bottom: '100%', right: '100%' },
   topRight: { bottom: '100%', left: '100%' },
   bottom: { top: '100%', left: '50%', transform: 'translateX(-50%)' },
-  bottomLeft: { top: '100%', left: 0 },
-  bottomRight: { top: '100%', right: 0 },
+  bottomLeft: { top: '100%', right: '100%' },
+  bottomRight: { top: '100%', left: '100%' },
   left: { right: '100%', top: 0, transform: 'translateY(-50%)' },
   right: { left: '100%', top: 0, transform: 'translateY(-50%)' },
 };
