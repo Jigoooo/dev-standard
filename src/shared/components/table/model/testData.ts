@@ -38,7 +38,3 @@ export async function* generateUsers({
     await new Promise((resolve) => setTimeout(resolve, delayMs));
   }
 }
-
-export const users = faker.helpers.multiple(createRandomUser, {
-  count: 2000,
-});
