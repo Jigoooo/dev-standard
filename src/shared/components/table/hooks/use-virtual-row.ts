@@ -6,7 +6,5 @@ export function useVirtualRow<TScrollElement extends Element, TItemElement exten
     'observeElementRect' | 'observeElementOffset' | 'scrollToFn'
   >,
 ) {
-  // 'use no memo';
-
   return useVirtualizer(options);
 }

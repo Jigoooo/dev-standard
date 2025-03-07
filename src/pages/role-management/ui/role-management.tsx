@@ -1,5 +1,5 @@
 import { Input, Table, THeader, useTableData } from '@/shared/components';
-import { users } from '@/shared/components/table/ui/testData.ts';
+import { users } from '@/shared/components/table/model/testData.ts';
 
 const tableHeaders: THeader[] = [
   {

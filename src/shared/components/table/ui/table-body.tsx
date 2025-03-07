@@ -1,4 +1,4 @@
-import { RefObject, useCallback, useMemo, useRef, useState } from 'react';
+import { memo, RefObject, useCallback, useMemo, useRef, useState } from 'react';
 import { VirtualItem } from '@tanstack/react-virtual';
 import { motion } from 'framer-motion';
 
@@ -16,7 +16,7 @@ import {
 } from '@/shared/components';
 import { colors } from '@/shared/constants';
 
-export function TableBody<TData extends { index: string }>({
+export const TableBody = memo(function TableBody<TData extends { index: string }>({
   ref,
 }: {
   ref: RefObject<HTMLDivElement | null>;
@@ -25,17 +25,33 @@ export function TableBody<TData extends { index: string }>({
 
   const { tableStyle, bodyMaxHeight, headers, dataList } = useTableContext();
 
-  const viewHeaders = headers.filter((header) => header.pin === 'view');
-  const viewHeight = tableStyle.tableBodyHeight * dataList.length;
-  const viewWidth = viewHeaders.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
+  const viewHeaders = useMemo(() => {
+    return headers.filter((header) => header.pin === 'view');
+  }, [headers]);
+  const viewHeight = useMemo(() => {
+    return tableStyle.tableBodyHeight * dataList.length;
+  }, [tableStyle.tableBodyHeight, dataList.length]);
+  const viewWidth = useMemo(() => {
+    return viewHeaders.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
+  }, [viewHeaders]);
 
-  const leftPinHeaders = headers.filter((header) => header.pin === 'left');
-  const scrollLeftOffset = leftPinHeaders.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
+  const leftPinHeaders = useMemo(() => {
+    return headers.filter((header) => header.pin === 'left');
+  }, [headers]);
+  const scrollLeftOffset = useMemo(() => {
+    return leftPinHeaders.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
+  }, [leftPinHeaders]);
 
-  const rightPinHeaders = headers.filter((header) => header.pin === 'right');
-  const scrollRightOffset = rightPinHeaders.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
+  const rightPinHeaders = useMemo(() => {
+    return headers.filter((header) => header.pin === 'right');
+  }, [headers]);
+  const scrollRightOffset = useMemo(() => {
+    return rightPinHeaders.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
+  }, [rightPinHeaders]);
 
-  const requiredKeys = headers.map((header) => header.id) as (keyof TData)[];
+  const requiredKeys = useMemo(() => {
+    return headers.map((header) => header.id) as (keyof TData)[];
+  }, [headers]);
   if (!validateTableDataList<TData>(dataList, requiredKeys)) {
     throw new Error(`dataList does not match the required type: ${JSON.stringify(requiredKeys)}`);
   }
@@ -61,6 +77,9 @@ export function TableBody<TData extends { index: string }>({
   }, [dataList.length]);
 
   const virtualItems = rowVirtualizer.getVirtualItems();
+  const memoizedItems = useMemo(() => {
+    return virtualItems;
+  }, [virtualItems]);
 
   return (
     <FlexRow style={{ position: 'relative' }}>
@@ -80,7 +99,7 @@ export function TableBody<TData extends { index: string }>({
           position={'left'}
           headers={leftPinHeaders}
           rowTotalSize={rowTotalSize}
-          virtualItems={virtualItems}
+          virtualItems={memoizedItems}
           hoverIndex={hoverIndex}
           setHoverIndex={setHoverIndex}
         />
@@ -90,7 +109,7 @@ export function TableBody<TData extends { index: string }>({
           ref={ref}
           headers={viewHeaders}
           rowTotalSize={rowTotalSize}
-          virtualItems={virtualItems}
+          virtualItems={memoizedItems}
           hoverIndex={hoverIndex}
           setHoverIndex={setHoverIndex}
         />
@@ -100,7 +119,7 @@ export function TableBody<TData extends { index: string }>({
           position={'right'}
           headers={rightPinHeaders}
           rowTotalSize={rowTotalSize}
-          virtualItems={virtualItems}
+          virtualItems={memoizedItems}
           hoverIndex={hoverIndex}
           setHoverIndex={setHoverIndex}
         />
@@ -117,9 +136,9 @@ export function TableBody<TData extends { index: string }>({
       />
     </FlexRow>
   );
-}
+});
 
-function TableBodyView({
+const TableBodyView = memo(function TableBodyView({
   ref,
   headers,
   rowTotalSize,
@@ -192,9 +211,9 @@ function TableBodyView({
       </div>
     </div>
   );
-}
+});
 
-function TableBodyPin({
+const TableBodyPin = memo(function TableBodyPin({
   position,
   headers,
   rowTotalSize,
@@ -270,9 +289,9 @@ function TableBodyPin({
       })}
     </div>
   );
-}
+});
 
-function TableBodyCell<TData extends Record<string, any>>({
+const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, any>>({
   rowIndex,
   data,
   index,
@@ -377,4 +396,4 @@ function TableBodyCell<TData extends Record<string, any>>({
       )}
     </FlexRow>
   );
-}
+});
