@@ -1,6 +1,7 @@
-import { ReactNode } from 'react';
+import { JSX, ReactNode, RefObject } from 'react';
 
 export type TTableContext<TData> = {
+  cacheCellRef: RefObject<Map<string, { data: any; element: JSX.Element }>>;
   tableStyle: TTableStyle;
   bodyMaxHeight: number;
   headers: THeader[];

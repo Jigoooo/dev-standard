@@ -1,4 +1,4 @@
-import { createContext, RefObject, Usable, use, useEffect, useRef, useState } from 'react';
+import { createContext, JSX, RefObject, Usable, use, useEffect, useRef, useState } from 'react';
 
 import {
   FlexRow,
@@ -137,7 +137,10 @@ export function Table<TData extends { index: string } & Record<string, any>>({
     dataList: filteredDataList,
   });
 
+  const cacheCellRef = useRef<Map<string, { data: any; element: JSX.Element }>>(new Map());
+
   const tableContextValue = {
+    cacheCellRef,
     tableStyle: applyTableStyle,
     bodyMaxHeight,
     headers,
