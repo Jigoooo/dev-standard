@@ -100,9 +100,9 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
               gap: 8,
               height: 32,
               overflowY: 'auto',
-              minWidth: 'calc(100% - 350px)',
-              width: 'calc(100vw - 350px)',
-              maxWidth: 'calc(100% - 350px)',
+              minWidth: 'calc(100% - 360px)',
+              width: 'calc(100vw - 360px)',
+              maxWidth: 'calc(100% - 360px)',
               borderLeft: '1px solid #cccccc',
               borderRight: '1px solid #cccccc',
               paddingInline: 8,
@@ -173,7 +173,7 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
               })}
             </AnimatePresence>
           </FlexRow>
-          <FlexRow style={{ flexGrow: 1, justifyContent: 'flex-end', gap: 4 }}>
+          <FlexRow style={{ flexGrow: 1, alignItems: 'center', gap: 4 }}>
             <FlexRow
               as={motion.div}
               style={{ cursor: 'pointer', backgroundColor: '#ffffff', borderRadius: '50%' }}
