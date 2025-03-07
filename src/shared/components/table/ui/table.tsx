@@ -11,7 +11,7 @@ import {
 } from '@/shared/components';
 import { TableHeader } from './table-header.tsx';
 import { TableBody } from './table-body.tsx';
-import { useElementHeight } from '@/shared/hooks';
+import { useElementSize } from '@/shared/hooks';
 
 /*
  * todo
@@ -81,7 +81,7 @@ export function Table<TData extends { index: string } & Record<string, any>>({
 
   useSyncScroll(headerRef, bodyRef);
 
-  const tableHeight = useElementHeight(tableRef);
+  const tableSize = useElementSize(tableRef);
 
   const [headers, setHeaders] = useState<THeader[]>(tableHeaders);
   const onChangeFilterValue = (headerId: string, value: string) => {
@@ -115,7 +115,7 @@ export function Table<TData extends { index: string } & Record<string, any>>({
     ? applyTableStyle.tableHeaderHeight * 2
     : applyTableStyle.tableHeaderHeight;
 
-  let bodyMaxHeight = tableHeight - headerHeight - applyTableStyle.tableFooterHeight;
+  let bodyMaxHeight = tableSize.height - headerHeight - applyTableStyle.tableFooterHeight;
   if (bodyMaxHeight < 0) {
     bodyMaxHeight = 0;
   }

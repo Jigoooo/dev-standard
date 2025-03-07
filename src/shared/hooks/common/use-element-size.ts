@@ -1,7 +1,10 @@
 import { RefObject, useState, useEffect } from 'react';
 
-export function useElementHeight(ref: RefObject<HTMLElement | null>): number {
-  const [height, setHeight] = useState(0);
+export function useElementSize(ref: RefObject<HTMLElement | null>): {
+  width: number;
+  height: number;
+} {
+  const [size, setSize] = useState({ width: 0, height: 0 });
 
   useEffect(() => {
     const element = ref.current;
@@ -9,7 +12,10 @@ export function useElementHeight(ref: RefObject<HTMLElement | null>): number {
 
     const observer = new ResizeObserver((entries) => {
       for (const entry of entries) {
-        setHeight(entry.contentRect.height);
+        setSize({
+          width: entry.contentRect.width,
+          height: entry.contentRect.height,
+        });
       }
     });
 
@@ -20,5 +26,5 @@ export function useElementHeight(ref: RefObject<HTMLElement | null>): number {
     };
   }, [ref]);
 
-  return height;
+  return size;
 }

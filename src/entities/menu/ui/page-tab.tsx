@@ -4,6 +4,8 @@ import { KeepAliveRef } from 'keepalive-for-react';
 import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
 
 import { IoClose } from 'react-icons/io5';
+import { IoRefreshCircleOutline } from 'react-icons/io5';
+import { IoIosCloseCircleOutline } from 'react-icons/io';
 
 import { Button, Divider, FlexColumn, FlexRow, Typography } from '@/shared/components';
 import { CacheNode, menus, TMenu, useMenuState } from '@/entities/menu';
@@ -11,6 +13,9 @@ import { CacheNode, menus, TMenu, useMenuState } from '@/entities/menu';
 export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undefined> }) {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const activeCacheKey = location.pathname + location.search;
+
   const menuState = useMenuState();
 
   const [sortedCacheNodes, setSortedCacheNodes] = useState<CacheNode[]>([]);
@@ -25,9 +30,21 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
     setSortedCacheNodes(sorted);
   }, [aliveRef, location]);
 
+  const refreshCacheNode = () => {
+    aliveRef?.current?.refresh();
+  };
+
   const destroyCacheNode = (cacheKey: string) => {
     aliveRef?.current?.destroy(cacheKey).then(() => {
-      setSortedCacheNodes((prev) => prev.filter((node) => node.cacheKey !== cacheKey));
+      setSortedCacheNodes((prevState) => prevState.filter((node) => node.cacheKey !== cacheKey));
+    });
+  };
+
+  const destroyAllCacheNodes = () => {
+    aliveRef?.current?.destroyOther().then(() => {
+      setSortedCacheNodes((prevState) =>
+        prevState.filter((node) => node.cacheKey === activeCacheKey),
+      );
     });
   };
 
@@ -50,7 +67,9 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
               height: 45,
               justifyContent: 'center',
               alignItems: 'center',
+              minWidth: 260,
               width: 260,
+              maxWidth: 260,
               borderTop: '1px solid #cccccc',
               borderLeft: '1px solid #cccccc',
               borderRight: '1px solid #cccccc',
@@ -74,7 +93,18 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
               {currentMenu?.name}
             </Typography>
           </FlexRow>
-          <FlexRow style={{ alignItems: 'center', gap: 8 }}>
+          <FlexRow
+            style={{
+              scrollbarWidth: 'none',
+              alignItems: 'center',
+              gap: 8,
+              height: 32,
+              overflowY: 'auto',
+              minWidth: 'calc(100vw - 260px - 390px)',
+              width: 'calc(100vw - 260px - 390px)',
+              maxWidth: 'calc(100vw - 260px - 390px)',
+            }}
+          >
             <AnimatePresence initial={false}>
               {sortedCacheNodes.map((cacheNode) => {
                 const findCacheMenu = menus.find((menu) =>
@@ -90,6 +120,7 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
                     as={motion.div}
                     key={cacheNode.cacheKey}
                     style={{
+                      maxWidth: 200,
                       backgroundColor: '#ffffff',
                       cursor: 'pointer',
                       border: '1px solid #bbbbbb',
@@ -108,7 +139,15 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
                     exit={{ opacity: 0, scale: 0.8 }}
                     transition={{ duration: 0.3, ease: 'easeInOut' }}
                   >
-                    <Typography style={{ fontWeight: 500, fontSize: '0.9rem' }}>
+                    <Typography
+                      style={{
+                        fontWeight: 500,
+                        fontSize: '0.9rem',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
                       {findCacheMenu.name}
                     </Typography>
                     <Button
@@ -130,6 +169,19 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
                 );
               })}
             </AnimatePresence>
+          </FlexRow>
+          <FlexRow>
+            <FlexRow style={{ cursor: 'pointer' }} onClick={refreshCacheNode}>
+              <IoRefreshCircleOutline style={{ fontSize: '1.6rem' }} />
+            </FlexRow>
+            <FlexRow
+              style={{ cursor: 'pointer' }}
+              onClick={() => {
+                destroyAllCacheNodes();
+              }}
+            >
+              <IoIosCloseCircleOutline style={{ fontSize: '1.6rem' }} />
+            </FlexRow>
           </FlexRow>
         </FlexRow>
       </LayoutGroup>
