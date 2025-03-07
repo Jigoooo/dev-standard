@@ -1,6 +1,5 @@
 import { memo, RefObject, useCallback, useMemo, useRef, useState } from 'react';
 import { VirtualItem } from '@tanstack/react-virtual';
-import { motion } from 'framer-motion';
 
 import {
   Checkbox,
@@ -67,7 +66,7 @@ export const TableBody = memo(function TableBody<TData extends { index: string }
     count: dataList.length,
     getScrollElement: () => bodyRef.current,
     estimateSize: () => tableStyle.tableBodyHeight,
-    overscan: 40,
+    overscan: 50,
     getItemKey,
     scrollToFn,
   });
@@ -354,7 +353,6 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
 
   return (
     <FlexRow
-      as={motion.div}
       className={'table-body-cell'}
       style={{
         boxSizing: 'border-box',
@@ -378,6 +376,7 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
     >
       {header.id === 'check' && (
         <Checkbox
+          isActiveAnimation={false}
           checked={isChecked!(data)}
           onClick={(e) => {
             e.stopPropagation();

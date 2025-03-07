@@ -13,6 +13,7 @@ export function Checkbox({
   isPartial = false,
   onClick,
   disabled = false,
+  isActiveAnimation = false,
 }: {
   label?: string;
   checked: boolean;
@@ -20,6 +21,7 @@ export function Checkbox({
   isPartial?: boolean;
   onClick: MouseEventHandler;
   disabled?: boolean;
+  isActiveAnimation?: boolean;
 }) {
   return (
     <FlexRow
@@ -31,41 +33,93 @@ export function Checkbox({
       onClick={(e) => !disabled && onClick(e)}
     >
       <input type='checkbox' checked={checked} onChange={() => {}} style={{ display: 'none' }} />
-      <FlexRow
-        as={motion.div}
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: 20,
-          height: 20,
-          border: `1px solid ${!disabled && checked ? color : '#cccccc'}`,
-          borderRadius: 4,
-          backgroundColor: disabled ? '#f5f5f5' : checked ? color : '#ffffff',
-        }}
-        variants={{
-          hover: {
-            borderColor: color,
-            backgroundColor: '#ffffff',
-          },
-          none: {},
-        }}
-        whileHover={checked ? 'none' : 'hover'}
-        transition={{
-          duration: 0.2,
-        }}
-      >
-        <AnimatePresence mode={'wait'}>
+      {isActiveAnimation ? (
+        <FlexRow
+          as={motion.div}
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: 20,
+            height: 20,
+            border: `1px solid ${!disabled && checked ? color : '#cccccc'}`,
+            borderRadius: 4,
+            backgroundColor: disabled ? '#f5f5f5' : checked ? color : '#ffffff',
+          }}
+          variants={{
+            hover: {
+              borderColor: color,
+              backgroundColor: '#ffffff',
+            },
+            none: {},
+          }}
+          whileHover={checked ? 'none' : 'hover'}
+          transition={{
+            duration: 0.2,
+          }}
+        >
+          <AnimatePresence mode={'wait'}>
+            {!disabled && checked && (
+              <FlexRow
+                as={motion.div}
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0, opacity: 0 }}
+                transition={{
+                  type: 'spring',
+                  stiffness: 260,
+                  damping: 20,
+                }}
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <CheckSolid
+                  style={{
+                    width: 14,
+                    height: 14,
+                    fill: '#ffffff',
+                    stroke: '#ffffff',
+                    strokeWidth: 30,
+                  }}
+                />
+              </FlexRow>
+            )}
+            {isPartial && (
+              <FlexRow
+                as={motion.div}
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0, opacity: 0 }}
+                transition={{
+                  type: 'spring',
+                  stiffness: 260,
+                  damping: 20,
+                }}
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <div style={{ width: 10, height: 10, backgroundColor: color }} />
+              </FlexRow>
+            )}
+          </AnimatePresence>
+        </FlexRow>
+      ) : (
+        <FlexRow
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: 20,
+            height: 20,
+            border: `1px solid ${!disabled && checked ? color : '#cccccc'}`,
+            borderRadius: 4,
+            backgroundColor: disabled ? '#f5f5f5' : checked ? color : '#ffffff',
+          }}
+        >
           {!disabled && checked && (
             <FlexRow
-              as={motion.div}
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0, opacity: 0 }}
-              transition={{
-                type: 'spring',
-                stiffness: 260,
-                damping: 20,
-              }}
               style={{
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -84,15 +138,6 @@ export function Checkbox({
           )}
           {isPartial && (
             <FlexRow
-              as={motion.div}
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0, opacity: 0 }}
-              transition={{
-                type: 'spring',
-                stiffness: 260,
-                damping: 20,
-              }}
               style={{
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -101,8 +146,8 @@ export function Checkbox({
               <div style={{ width: 10, height: 10, backgroundColor: color }} />
             </FlexRow>
           )}
-        </AnimatePresence>
-      </FlexRow>
+        </FlexRow>
+      )}
       <Typography
         style={{
           userSelect: 'none',
