@@ -103,8 +103,8 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
               minWidth: 'calc(100% - 360px)',
               width: 'calc(100vw - 360px)',
               maxWidth: 'calc(100% - 360px)',
-              borderLeft: '1px solid #cccccc',
-              borderRight: '1px solid #cccccc',
+              borderLeft: sortedCacheNodes.length === 0 ? 'none' : '1px solid #cccccc',
+              borderRight: sortedCacheNodes.length === 0 ? 'none' : '1px solid #cccccc',
               paddingInline: 8,
             }}
           >
@@ -173,24 +173,26 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
               })}
             </AnimatePresence>
           </FlexRow>
-          <FlexRow style={{ flexGrow: 1, alignItems: 'center', gap: 4 }}>
-            <FlexRow
-              as={motion.div}
-              style={{ cursor: 'pointer', backgroundColor: '#ffffff', borderRadius: '50%' }}
-              onClick={refreshCacheNode}
-              whileHover={{ backgroundColor: '#eeeeee' }}
-            >
-              <IoRefreshCircleOutline style={{ fontSize: '1.6rem' }} />
+          {sortedCacheNodes.length > 1 && (
+            <FlexRow style={{ flexGrow: 1, alignItems: 'center', gap: 4 }}>
+              <FlexRow
+                as={motion.div}
+                style={{ cursor: 'pointer', backgroundColor: '#ffffff', borderRadius: '50%' }}
+                onClick={refreshCacheNode}
+                whileHover={{ backgroundColor: '#eeeeee' }}
+              >
+                <IoRefreshCircleOutline style={{ fontSize: '1.6rem' }} />
+              </FlexRow>
+              <FlexRow
+                as={motion.div}
+                style={{ cursor: 'pointer', backgroundColor: '#ffffff', borderRadius: '50%' }}
+                onClick={destroyOtherCacheNodes}
+                whileHover={{ backgroundColor: '#eeeeee' }}
+              >
+                <IoIosCloseCircleOutline style={{ fontSize: '1.6rem' }} />
+              </FlexRow>
             </FlexRow>
-            <FlexRow
-              as={motion.div}
-              style={{ cursor: 'pointer', backgroundColor: '#ffffff', borderRadius: '50%' }}
-              onClick={destroyOtherCacheNodes}
-              whileHover={{ backgroundColor: '#eeeeee' }}
-            >
-              <IoIosCloseCircleOutline style={{ fontSize: '1.6rem' }} />
-            </FlexRow>
-          </FlexRow>
+          )}
         </FlexRow>
       </LayoutGroup>
 
