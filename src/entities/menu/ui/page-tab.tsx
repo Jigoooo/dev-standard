@@ -170,7 +170,7 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
               })}
             </AnimatePresence>
           </FlexRow>
-          <FlexRow style={{ gap: 4 }}>
+          <FlexRow style={{ flexGrow: 1, justifyContent: 'flex-end', gap: 4 }}>
             {/*<Tooltip*/}
             {/*  position={'bottomLeft'}*/}
             {/*  style={{*/}

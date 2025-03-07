@@ -28,37 +28,39 @@ export function Main() {
     >
       <Sidebar headerTitle={'Dev standard'} />
 
-      <FlexColumn
-        style={{
-          flexGrow: 1,
-          position: 'relative',
-          backgroundColor: '#ffffff',
-          width: '100%',
-          minWidth: 800,
-          maxWidth: `calc(100vw - ${menuState.sidebarWidth}px)`,
-          maxHeight: '98vh',
-          height: '100%',
-          overflow: 'hidden',
-          paddingBlock: 16,
-          paddingLeft: 16,
-          paddingRight: 8,
-          marginInline: 12,
-          marginBlock: '1vh',
-          borderRadius: 8,
-        }}
-      >
-        {isMatchedExcludeMenu ? (
-          <MainHeader title={menuState.selectedMenu.name} />
-        ) : (
-          <PageTab aliveRef={aliveRef} />
-        )}
+      <FlexRow style={{ width: '100%', overflowY: 'hidden', overflowX: 'auto' }}>
+        <FlexColumn
+          style={{
+            flexGrow: 1,
+            position: 'relative',
+            backgroundColor: '#ffffff',
+            width: '100%',
+            minWidth: 1000,
+            maxWidth: `calc(100vw - ${menuState.sidebarWidth}px)`,
+            maxHeight: '98vh',
+            height: '100%',
+            overflow: 'hidden',
+            paddingBlock: 16,
+            paddingLeft: 16,
+            paddingRight: 8,
+            marginInline: 12,
+            marginBlock: '1vh',
+            borderRadius: 8,
+          }}
+        >
+          {isMatchedExcludeMenu ? (
+            <MainHeader title={menuState.selectedMenu.name} />
+          ) : (
+            <PageTab aliveRef={aliveRef} />
+          )}
 
-        <KeepAliveRouteOutlet
-          wrapperComponent={KeepAliveWrapper}
-          exclude={excludeCacheMenuRouters}
-          aliveRef={aliveRef}
-        />
-      </FlexColumn>
+          <KeepAliveRouteOutlet
+            wrapperComponent={KeepAliveWrapper}
+            exclude={excludeCacheMenuRouters}
+            aliveRef={aliveRef}
+          />
+        </FlexColumn>
+      </FlexRow>
 
       <MenuController />
     </FlexRow>

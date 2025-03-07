@@ -6,6 +6,7 @@ export function KeepAliveWrapper({ children }: { children: ReactNode }) {
       style={{
         height: 'calc(100vh - 100px)',
         backgroundColor: '#ffffff',
+        overflowX: 'auto',
       }}
     >
       {children}
