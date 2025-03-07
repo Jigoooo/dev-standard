@@ -1,12 +1,23 @@
 import { useState } from 'react';
 
-import { FlexColumn, TFile, FileUploadForm } from '@/shared/components';
+import { FlexColumn, TFile, FileUploadForm, FlexRow } from '@/shared/components';
 
 export function FileUploadDownload() {
   const [files, setFiles] = useState<TFile[]>([]);
-  const handleFiles = (file: TFile) => {
-    console.log('file: ', file);
-    setFiles((prevState) => [...prevState, file]);
+  const handleFiles = async (files: TFile[]) => {
+    console.log('file: ', files);
+    // if (isExtensionNotAllowed(file.file.name)) {
+    //   dialogActions.openDialog({
+    //     dialogType: DialogType.ERROR,
+    //     title: '업로드 실패',
+    //     contents: '허용되지 않는 파일이에요',
+    //   });
+    //
+    //   return;
+    // }
+    // const compressedFile = (await resizeImage({ file })) as File;
+
+    setFiles((prevState) => [...prevState, ...files]);
   };
   const deleteFile = (fileUUID: string) => {
     setFiles((prevState) => {
@@ -25,7 +36,14 @@ export function FileUploadDownload() {
         justifyContent: 'center',
       }}
     >
-      <FileUploadForm files={files} handleFiles={handleFiles} fileDelete={deleteFile} />
+      <FlexRow style={{ width: '50%', minWidth: 500 }}>
+        <FileUploadForm
+          multiple={true}
+          files={files}
+          handleFiles={handleFiles}
+          fileDelete={deleteFile}
+        />
+      </FlexRow>
     </FlexColumn>
   );
 }

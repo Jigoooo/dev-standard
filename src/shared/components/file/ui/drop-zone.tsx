@@ -1,38 +1,23 @@
-import React, { ReactNode, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import FileUploadRoundedIcon from '@mui/icons-material/FileUploadRounded';
 
-import { isExtensionNotAllowed } from '@/shared/lib';
 import { colors } from '@/shared/constants';
-import { dialogActions, DialogType, FlexRow, Link, Typography } from '@/shared/components';
+import { FlexRow, Link, Typography } from '@/shared/components';
 
 export function DropZone({
-  handleFileList,
-  dropCautionContent,
+  multiple,
+  handleFiles,
 }: {
-  handleFileList: (file: File) => void;
-  dropCautionContent?: ReactNode;
+  multiple: boolean;
+  handleFiles: (file: FileList) => void;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
-
-  const fileHandler = async (file: File) => {
-    if (isExtensionNotAllowed(file.name)) {
-      dialogActions.openDialog({
-        dialogType: DialogType.ERROR,
-        title: '업로드 실패',
-        contents: '허용되지 않는 파일이에요',
-      });
-
-      return;
-    }
-
-    handleFileList(file);
-  };
 
   const fileInputChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target?.files?.[0]) return;
 
-    await fileHandler(event.target?.files?.[0]);
+    handleFiles(event.target?.files);
     event.target.value = '';
   };
 
@@ -44,7 +29,7 @@ export function DropZone({
     setDragOver(false);
     if (!event.dataTransfer?.files?.[0]) return;
 
-    await fileHandler(event.dataTransfer?.files?.[0]);
+    handleFiles(event.dataTransfer?.files);
   };
 
   const setEnterDragWithBoundary = (event: React.DragEvent<HTMLDivElement>, value: boolean) => {
@@ -73,7 +58,7 @@ export function DropZone({
         ...{
           boxSizing: 'border-box',
           borderRadius: 8,
-          border: dragOver ? `3px dashed ${colors.primary[500]}` : '3px dashed #bbbbbb',
+          border: dragOver ? `3px dashed ${colors.primary[400]}` : '3px dashed #bbbbbb',
           transition: '0.2s',
           display: 'flex',
           flexDirection: 'column',
@@ -85,7 +70,7 @@ export function DropZone({
           flexGrow: 1,
           boxShadow: 'none',
           minHeight: 115,
-          backgroundColor: dragOver ? colors.primary[100] : undefined,
+          backgroundColor: dragOver ? colors.primary[50] : undefined,
         },
       }}
       onDrop={fileDropChange}
@@ -107,20 +92,28 @@ export function DropZone({
             justifyContent: 'center',
             padding: 12,
             borderRadius: '50%',
-            backgroundColor: '#dddddd',
+            cursor: 'pointer',
+            backgroundColor: dragOver ? colors.primary[100] : '#eeeeee',
+            transition: '0.2s',
           }}
+          onClick={() => inputRef.current && inputRef.current.click()}
         >
           <FileUploadRoundedIcon />
         </FlexRow>
-        <Typography>
-          <Link onClick={() => inputRef.current && inputRef.current.click()}>
-            클릭 또는 드래그하여 파일 업로드
-          </Link>
-          <br />
-          {dropCautionContent && dropCautionContent}
-        </Typography>
+        <Link
+          style={{ fontWeight: 500, fontSize: '0.9rem' }}
+          onClick={() => inputRef.current && inputRef.current.click()}
+        >
+          클릭 또는 드래그하여 파일 업로드
+        </Link>
       </>
-      <input ref={inputRef} type={'file'} style={{ display: 'none' }} onChange={fileInputChange} />
+      <input
+        ref={inputRef}
+        type={'file'}
+        multiple={multiple}
+        style={{ display: 'none' }}
+        onChange={fileInputChange}
+      />
     </FlexRow>
   );
 }
