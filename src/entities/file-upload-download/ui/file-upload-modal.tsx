@@ -26,10 +26,10 @@ export function FileUploadModal() {
   };
 
   return (
-    <FlexRow style={{ padding: 16 }}>
+    <FlexRow style={{ height: '100%', padding: 16, overflow: 'hidden' }}>
       <FileUploadForm
         multiple={true}
-        limitMB={300}
+        limitMB={5}
         files={files}
         handleFiles={handleFiles}
         fileDelete={deleteFile}

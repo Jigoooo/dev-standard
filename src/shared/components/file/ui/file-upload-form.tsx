@@ -44,6 +44,8 @@ import {
   BsFiletypePhp,
 } from 'react-icons/bs';
 import { TbFavicon } from 'react-icons/tb';
+import { RiFileHwpFill } from 'react-icons/ri';
+import { MdDeleteOutline } from 'react-icons/md';
 
 import { DropZone } from './drop-zone.tsx';
 import { fileSizeFormatter } from '@/shared/lib';
@@ -55,6 +57,7 @@ import {
   LinearProgress,
   dialogActions,
   DialogType,
+  Button,
 } from '@/shared/components';
 import { BiLogoTypescript } from 'react-icons/bi';
 
@@ -153,11 +156,18 @@ export function FileUploadForm({
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                onClick={() => deleteFile(file)}
               >
-                {getFileIcon(fileExtension)}
-                <FlexColumn>
-                  <Typography style={{ fontWeight: 600, fontSize: '0.9rem' }}>
+                <FlexRow>{getFileIcon(fileExtension)}</FlexRow>
+                <FlexColumn style={{ alignItems: 'flex-start', width: '100%', maxWidth: '65%' }}>
+                  <Typography
+                    style={{
+                      fontWeight: 600,
+                      fontSize: '0.9rem',
+                      overflow: 'hidden',
+                      whiteSpace: 'nowrap',
+                      textOverflow: 'ellipsis',
+                    }}
+                  >
                     {fileNameWithoutExtension}
                   </Typography>
                   <FlexRow style={{ alignItems: 'center', gap: 4 }}>
@@ -170,6 +180,12 @@ export function FileUploadForm({
                     </Typography>
                   </FlexRow>
                 </FlexColumn>
+                <Button
+                  style={{ padding: 0, backgroundColor: '#ffffff' }}
+                  onClick={() => deleteFile(file)}
+                >
+                  <MdDeleteOutline style={{ fontSize: '1.6rem', color: '#555555' }} />
+                </Button>
               </FlexRow>
             );
           })}
@@ -196,6 +212,7 @@ const fileIconMap: { [extension: string]: IconType } = {
   '.txt': BsFiletypeTxt,
   '.rtf': FaFileAlt,
   '.odt': FaFileAlt,
+  '.hwp': RiFileHwpFill,
   // 스프레드시트
   '.xls': BsFiletypeXls,
   '.xlsx': BsFiletypeXlsx,
