@@ -59,7 +59,7 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
       style={{ userSelect: 'none', minHeight: 50, height: 50, maxHeight: 50, width: '100%' }}
     >
       <LayoutGroup>
-        <FlexRow style={{ alignItems: 'center', gap: 16 }}>
+        <FlexRow style={{ alignItems: 'center', gap: 12 }}>
           <FlexRow
             as={motion.div}
             layoutId='current-tab'
@@ -170,7 +170,7 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
               })}
             </AnimatePresence>
           </FlexRow>
-          <FlexRow style={{ gap: 2 }}>
+          <FlexRow style={{ gap: 4 }}>
             {/*<Tooltip*/}
             {/*  position={'bottomLeft'}*/}
             {/*  style={{*/}
