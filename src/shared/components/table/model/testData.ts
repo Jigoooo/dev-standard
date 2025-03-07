@@ -19,6 +19,26 @@ const createRandomUser = () => {
   };
 };
 
+export async function* generateUsers({
+  total = 2000,
+  batchSize = 200,
+  delayMs = 0,
+}: {
+  total?: number;
+  batchSize?: number;
+  delayMs?: number;
+} = {}) {
+  let generated = 0;
+  while (generated < total) {
+    const currentBatchSize = Math.min(batchSize, total - generated);
+    const batch = Array.from({ length: currentBatchSize }, () => createRandomUser());
+    generated += currentBatchSize;
+    yield batch;
+
+    await new Promise((resolve) => setTimeout(resolve, delayMs));
+  }
+}
+
 export const users = faker.helpers.multiple(createRandomUser, {
-  count: 500,
+  count: 2000,
 });

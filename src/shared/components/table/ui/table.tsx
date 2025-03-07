@@ -115,7 +115,10 @@ export function Table<TData extends { index: string } & Record<string, any>>({
     ? applyTableStyle.tableHeaderHeight * 2
     : applyTableStyle.tableHeaderHeight;
 
-  const bodyMaxHeight = tableHeight - headerHeight - applyTableStyle.tableFooterHeight;
+  let bodyMaxHeight = tableHeight - headerHeight - applyTableStyle.tableFooterHeight;
+  if (bodyMaxHeight < 0) {
+    bodyMaxHeight = 0;
+  }
 
   const filteredDataList = filterRowEnabled
     ? tableDataList.filter((data) => {

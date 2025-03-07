@@ -17,5 +17,5 @@ export function useTableData<TData extends { index: string }>(tableDataList: TDa
     });
   };
 
-  return { dataList, handelDataList };
+  return { dataList, setDataList, handelDataList };
 }

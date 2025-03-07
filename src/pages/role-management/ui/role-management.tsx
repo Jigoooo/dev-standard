@@ -1,5 +1,7 @@
+import { useEffect } from 'react';
+
 import { Input, Table, THeader, useTableData } from '@/shared/components';
-import { users } from '@/shared/components/table/model/testData.ts';
+import { generateUsers } from '@/shared/components/table/model/testData.ts';
 
 const tableHeaders: THeader[] = [
   {
@@ -170,7 +172,38 @@ const tableHeaders: THeader[] = [
 ];
 
 export function RoleManagement() {
-  const { dataList, handelDataList } = useTableData(users);
+  const { dataList, setDataList, handelDataList } = useTableData<{
+    index: string;
+    check: boolean;
+    name: string;
+    email: string;
+    age: number;
+    address: string;
+    phone: string;
+    jobTitle: string;
+    department: string;
+    salary: number;
+    hireDate: string;
+  }>([]);
+
+  useEffect(() => {
+    let isMounted = true;
+    const fetchUsers = async () => {
+      const allUsers = [];
+
+      for await (const batch of generateUsers()) {
+        allUsers.push(...batch);
+
+        if (isMounted) {
+          setDataList((prev) => [...prev, ...batch]);
+        }
+      }
+    };
+    fetchUsers();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <div
