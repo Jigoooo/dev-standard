@@ -191,7 +191,9 @@ export function RoleManagement() {
     const fetchUsers = async () => {
       const allUsers = [];
 
-      for await (const batch of generateUsers()) {
+      for await (const batch of generateUsers({
+        total: 10000,
+      })) {
         allUsers.push(...batch);
 
         if (isMounted) {

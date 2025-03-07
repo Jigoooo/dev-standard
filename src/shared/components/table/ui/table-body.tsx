@@ -153,7 +153,7 @@ const TableBodyView = memo(function TableBodyView({
   hoverIndex: string | null;
   setHoverIndex: (index: string | null) => void;
 }) {
-  const { tableStyle, dataList } = useTableContext();
+  const { dataList } = useTableContext();
 
   const viewWidth = useMemo(() => {
     return headers.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
@@ -178,36 +178,16 @@ const TableBodyView = memo(function TableBodyView({
         {virtualItems.map((virtualItem) => {
           const data = dataList[virtualItem.index];
           const index = data['index'];
-          const isOdd = virtualItem.index % 2 === 0;
 
           return (
-            <FlexRow
+            <TableBodyRow
               key={index}
-              className={'table-body-row'}
-              style={{
-                alignItems: 'center',
-                position: 'absolute',
-                transform: 'translateY(' + virtualItem.start + 'px)',
-                width: viewWidth,
-                height: tableStyle.tableBodyHeight,
-                borderBottom: tableStyle.tableBorder,
-              }}
-            >
-              {headers.map((header) => {
-                return (
-                  <TableBodyCell
-                    key={header.id + virtualItem.index}
-                    rowIndex={virtualItem.index}
-                    data={data}
-                    index={index}
-                    isOdd={isOdd}
-                    header={header}
-                    hoverIndex={hoverIndex}
-                    setHoverIndex={setHoverIndex}
-                  />
-                );
-              })}
-            </FlexRow>
+              headers={headers}
+              virtualItem={virtualItem}
+              rowWidth={viewWidth}
+              hoverIndex={hoverIndex}
+              setHoverIndex={setHoverIndex}
+            />
           );
         })}
       </div>
@@ -259,39 +239,68 @@ const TableBodyPin = memo(function TableBodyPin({
       {virtualItems.map((virtualItem) => {
         const data = dataList[virtualItem.index];
         const index = data['index'];
-        const isOdd = virtualItem.index % 2 === 0;
 
         return (
-          <FlexRow
+          <TableBodyRow
             key={index}
-            className={'pin-body-row'}
-            style={{
-              alignItems: 'center',
-              position: 'absolute',
-              transform: 'translateY(' + virtualItem.start + 'px)',
-              width: '100%',
-              height: tableStyle.tableBodyHeight,
-              borderBottom: tableStyle.tableBorder,
-            }}
-          >
-            {headers.map((header) => {
-              return (
-                <TableBodyCell
-                  key={header.id + virtualItem.index}
-                  rowIndex={virtualItem.index}
-                  data={data}
-                  index={index}
-                  isOdd={isOdd}
-                  header={header}
-                  hoverIndex={hoverIndex}
-                  setHoverIndex={setHoverIndex}
-                />
-              );
-            })}
-          </FlexRow>
+            headers={headers}
+            virtualItem={virtualItem}
+            rowWidth={'100%'}
+            hoverIndex={hoverIndex}
+            setHoverIndex={setHoverIndex}
+          />
         );
       })}
     </div>
+  );
+});
+
+const TableBodyRow = memo(function TableBodyRow({
+  headers,
+  virtualItem,
+  rowWidth,
+  hoverIndex,
+  setHoverIndex,
+}: {
+  headers: THeader[];
+  virtualItem: VirtualItem;
+  rowWidth: string | number;
+  hoverIndex: string | null;
+  setHoverIndex: (index: string | null) => void;
+}) {
+  const { tableStyle, dataList } = useTableContext();
+
+  const data = dataList[virtualItem.index];
+  const index = data['index'];
+  const isOdd = virtualItem.index % 2 === 0;
+
+  return (
+    <FlexRow
+      className={'table-body-row'}
+      style={{
+        alignItems: 'center',
+        position: 'absolute',
+        transform: 'translateY(' + virtualItem.start + 'px)',
+        width: rowWidth,
+        height: tableStyle.tableBodyHeight,
+        borderBottom: tableStyle.tableBorder,
+      }}
+    >
+      {headers.map((header) => {
+        return (
+          <TableBodyCell
+            key={header.id + virtualItem.index}
+            rowIndex={virtualItem.index}
+            data={data}
+            index={index}
+            isOdd={isOdd}
+            header={header}
+            hoverIndex={hoverIndex}
+            setHoverIndex={setHoverIndex}
+          />
+        );
+      })}
+    </FlexRow>
   );
 });
 
