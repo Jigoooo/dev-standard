@@ -100,9 +100,12 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
               gap: 8,
               height: 32,
               overflowY: 'auto',
-              minWidth: 'calc(100vw - 260px - 390px)',
-              width: 'calc(100vw - 260px - 390px)',
-              maxWidth: 'calc(100vw - 260px - 390px)',
+              minWidth: 'calc(100% - 350px)',
+              width: 'calc(100vw - 350px)',
+              maxWidth: 'calc(100% - 350px)',
+              borderLeft: '1px solid #cccccc',
+              borderRight: '1px solid #cccccc',
+              paddingInline: 8,
             }}
           >
             <AnimatePresence initial={false}>
@@ -171,16 +174,6 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
             </AnimatePresence>
           </FlexRow>
           <FlexRow style={{ flexGrow: 1, justifyContent: 'flex-end', gap: 4 }}>
-            {/*<Tooltip*/}
-            {/*  position={'bottomLeft'}*/}
-            {/*  style={{*/}
-            {/*    backgroundColor: 'rgba(0, 0, 0, 0.8)',*/}
-            {/*    paddingBlock: 4,*/}
-            {/*    paddingInline: 6,*/}
-            {/*    borderRadius: 4,*/}
-            {/*  }}*/}
-            {/*  content={<Typography style={{ fontSize: '0.88rem' }}>새로고침</Typography>}*/}
-            {/*>*/}
             <FlexRow
               as={motion.div}
               style={{ cursor: 'pointer', backgroundColor: '#ffffff', borderRadius: '50%' }}
@@ -189,17 +182,6 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
             >
               <IoRefreshCircleOutline style={{ fontSize: '1.6rem' }} />
             </FlexRow>
-            {/*</Tooltip>*/}
-            {/*<Tooltip*/}
-            {/*  position={'bottomLeft'}*/}
-            {/*  style={{*/}
-            {/*    backgroundColor: 'rgba(0, 0, 0, 0.8)',*/}
-            {/*    paddingBlock: 4,*/}
-            {/*    paddingInline: 6,*/}
-            {/*    borderRadius: 4,*/}
-            {/*  }}*/}
-            {/*  content={<Typography style={{ fontSize: '0.88rem' }}>전체삭제</Typography>}*/}
-            {/*>*/}
             <FlexRow
               as={motion.div}
               style={{ cursor: 'pointer', backgroundColor: '#ffffff', borderRadius: '50%' }}
@@ -208,7 +190,6 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
             >
               <IoIosCloseCircleOutline style={{ fontSize: '1.6rem' }} />
             </FlexRow>
-            {/*</Tooltip>*/}
           </FlexRow>
         </FlexRow>
       </LayoutGroup>
