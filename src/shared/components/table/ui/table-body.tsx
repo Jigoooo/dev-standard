@@ -155,7 +155,9 @@ const TableBodyView = memo(function TableBodyView({
 }) {
   const { tableStyle, dataList } = useTableContext();
 
-  const viewWidth = headers.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
+  const viewWidth = useMemo(() => {
+    return headers.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
+  }, [headers]);
 
   return (
     <div
@@ -230,7 +232,9 @@ const TableBodyPin = memo(function TableBodyPin({
 }) {
   const { tableStyle, dataList } = useTableContext();
 
-  const pinHeaderWidth = headers.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
+  const pinHeaderWidth = useMemo(() => {
+    return headers.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
+  }, [headers]);
 
   const tableBodyRef = useRef<HTMLDivElement>(null);
 
