@@ -104,8 +104,15 @@ export function CustomVerticalScrollbar({
   const isScrollbarNeeded = totalContentHeight > containerHeight;
 
   // thumb 높이 계산: 컨테이너 높이 * (컨테이너 높이 / 컨텐츠 전체 높이)
-  const thumbHeight = containerHeight * (containerHeight / totalContentHeight);
-  const safeThumbHeight = isNaN(thumbHeight) || thumbHeight === Infinity ? 1 : thumbHeight;
+  const minThumbHeight = 14;
+  const computedThumbHeight = containerHeight * (containerHeight / totalContentHeight);
+  const safeThumbHeight =
+    isNaN(computedThumbHeight) || computedThumbHeight === Infinity
+      ? minThumbHeight
+      : Math.max(minThumbHeight, computedThumbHeight);
+
+  // const thumbHeight = containerHeight * (containerHeight / totalContentHeight);
+  // const safeThumbHeight = isNaN(thumbHeight) || thumbHeight === Infinity ? 1 : thumbHeight;
 
   const prevTotalContentHeight = useRef(totalContentHeight);
 
