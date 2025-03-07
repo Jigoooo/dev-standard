@@ -17,8 +17,7 @@ import { FlexColumn, FlexRow } from '@/shared/components';
 import { useToggle } from '@/shared/hooks';
 import { createValidator, getFormValues } from '@/shared/lib';
 import { localStorageKey } from '@/shared/constants';
-// import { useSignInService } from '@/entities/auth/api';
-import { PSignIn } from '@/entities/auth/model';
+import { PSignIn, useSignInService } from '@/entities/auth';
 
 const signInFields: Record<
   keyof {
@@ -37,7 +36,7 @@ export function SignIn() {
 
   const [saveIdChecked, toggleSaveIdChecked] = useToggle(!!saveId);
 
-  // const signInService = useSignInService();
+  const signInService = useSignInService();
 
   const signIn = (formData: FormData) => {
     const { id, password } = getFormValues<PSignIn>(formData, signInFields);
@@ -62,40 +61,40 @@ export function SignIn() {
       });
     }
 
-    // signInService.mutate(
-    //   { id: idWithValidated.value, password: passwordWithValidated.value },
-    //   {
-    //     onSuccess: (data) => {
-    //       if (!data.success) {
-    //         dialogActions.openDialog({
-    //           dialogType: DialogType.WARNING,
-    //           title: '로그인 실패',
-    //           contents: data?.msg ?? '아이디 비밀번호를 다시 확인해 주세요.',
-    //         });
-    //
-    //         return;
-    //       }
-    //
-    //       console.log(data.data);
-    //
-    //       if (saveIdChecked) {
-    //         localStorage.setItem(localStorageKey.ID, id);
-    //       } else {
-    //         localStorage.removeItem(localStorageKey.ID);
-    //       }
-    //
-    //       navigate(`${Router.MAIN}/${menus[0].router}`, { viewTransition: true });
-    //     },
-    //   },
-    // );
+    signInService.mutate(
+      { id: idWithValidated.value, password: passwordWithValidated.value },
+      {
+        onSuccess: (data) => {
+          if (!data.success) {
+            dialogActions.openDialog({
+              dialogType: DialogType.WARNING,
+              title: '로그인 실패',
+              contents: data?.msg ?? '아이디 비밀번호를 다시 확인해 주세요.',
+            });
 
-    if (saveIdChecked) {
-      localStorage.setItem(localStorageKey.ID, id);
-    } else {
-      localStorage.removeItem(localStorageKey.ID);
-    }
+            return;
+          }
 
-    navigate(`${Router.MAIN}/${menus[0].router}`, { viewTransition: true });
+          console.log(data.data);
+
+          if (saveIdChecked) {
+            localStorage.setItem(localStorageKey.ID, id);
+          } else {
+            localStorage.removeItem(localStorageKey.ID);
+          }
+
+          navigate(`${Router.MAIN}/${menus[0].router}`, { viewTransition: true });
+        },
+      },
+    );
+
+    // if (saveIdChecked) {
+    //   localStorage.setItem(localStorageKey.ID, id);
+    // } else {
+    //   localStorage.removeItem(localStorageKey.ID);
+    // }
+    //
+    // navigate(`${Router.MAIN}/${menus[0].router}`, { viewTransition: true });
   };
 
   return (

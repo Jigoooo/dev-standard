@@ -14,7 +14,6 @@ export function DropZone({
   dropCautionContent?: ReactNode;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [fileUploadLoading, setFileUploadLoading] = useState<boolean>(false);
 
   const fileHandler = async (file: File) => {
     if (isExtensionNotAllowed(file.name)) {
@@ -27,9 +26,7 @@ export function DropZone({
       return;
     }
 
-    setFileUploadLoading(true);
     handleFileList(file);
-    setFileUploadLoading(false);
   };
 
   const fileInputChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,7 +80,8 @@ export function DropZone({
           gap: 8,
           alignItems: 'center',
           justifyContent: 'center',
-          paddingInline: 24,
+          paddingInline: 36,
+          paddingBlock: 18,
           flexGrow: 1,
           boxShadow: 'none',
           minHeight: 115,
@@ -102,31 +100,26 @@ export function DropZone({
       }}
       onDragOver={handleDragOver}
     >
-      {!fileUploadLoading ? (
-        <>
-          <FlexRow
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: 12,
-              borderRadius: '50%',
-              backgroundColor: '#dddddd',
-            }}
-          >
-            <FileUploadRoundedIcon />
-          </FlexRow>
-          <Typography>
-            <Link onClick={() => inputRef.current && inputRef.current.click()}>
-              클릭 또는 드래그하여 파일 업로드
-            </Link>
-            <br />
-            {dropCautionContent && dropCautionContent}
-          </Typography>
-        </>
-      ) : (
-        // <CircularProgress />
-        <></>
-      )}
+      <>
+        <FlexRow
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: 12,
+            borderRadius: '50%',
+            backgroundColor: '#dddddd',
+          }}
+        >
+          <FileUploadRoundedIcon />
+        </FlexRow>
+        <Typography>
+          <Link onClick={() => inputRef.current && inputRef.current.click()}>
+            클릭 또는 드래그하여 파일 업로드
+          </Link>
+          <br />
+          {dropCautionContent && dropCautionContent}
+        </Typography>
+      </>
       <input ref={inputRef} type={'file'} style={{ display: 'none' }} onChange={fileInputChange} />
     </FlexRow>
   );
