@@ -8,6 +8,7 @@ import {
   useTransform,
 } from 'framer-motion';
 import { useKeepAliveScrollHistoryRef } from '@/shared/hooks';
+import { handleTrackMouseDown } from '@/shared/components';
 
 type CustomVerticalScrollbarProps = {
   ref: RefObject<HTMLDivElement | null>;
@@ -144,28 +145,30 @@ export function CustomVerticalScrollbar({
         transition: 'opacity 0.16s',
         borderLeft: border,
       }}
-      // onClick={(event) => {
-      //   if (bodyScrollHistoryRef.current) {
-      //     const container = bodyScrollHistoryRef.current;
-      //     const rect = event.currentTarget.getBoundingClientRect();
-      //     const clickY = event.clientY - rect.top;
-      //     const clickRatio = clickY / containerHeight;
-      //     const scrollableHeight = container.scrollHeight - container.clientHeight;
-      //
-      //     container.scrollTop = scrollableHeight * (clickRatio + 0.06);
-      //     console.log(container.scrollTop);
-      //   }
-      // }}
+      onMouseDown={(event) => {
+        console.log(event);
+        handleTrackMouseDown({
+          event,
+          ref: bodyScrollHistoryRef,
+          containerHeight,
+        });
+      }}
     >
       <motion.div
         drag='y'
         dragConstraints={{ top: 0, bottom: 0 }}
         dragElastic={0}
         dragMomentum={false}
-        onDragStart={() => {
+        onPointerDown={(event) => {
+          event.stopPropagation();
+          event.preventDefault();
+        }}
+        onDragStart={(event) => {
+          event.stopPropagation();
           initialScrollTop.current = scrollY.get();
         }}
-        onDrag={(_, info) => {
+        onDrag={(event, info) => {
+          event.stopPropagation();
           if (bodyScrollHistoryRef.current) {
             const container = bodyScrollHistoryRef.current;
             const scrollableHeight = container.scrollHeight - container.clientHeight;

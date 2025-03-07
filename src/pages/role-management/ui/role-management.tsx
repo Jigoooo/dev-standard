@@ -192,7 +192,7 @@ export function RoleManagement() {
       const allUsers = [];
 
       for await (const batch of generateUsers({
-        total: 10000,
+        total: 100,
       })) {
         allUsers.push(...batch);
 

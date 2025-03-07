@@ -35,7 +35,7 @@ export function Main() {
             position: 'relative',
             backgroundColor: '#ffffff',
             width: '100%',
-            minWidth: 1000,
+            minWidth: 800,
             maxWidth: `calc(100vw - ${menuState.sidebarWidth}px)`,
             maxHeight: '98vh',
             height: '100%',

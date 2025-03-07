@@ -7,6 +7,7 @@ import {
   useTransform,
 } from 'framer-motion';
 import { useKeepAliveScrollHistoryRef } from '@/shared/hooks';
+import { handleTrackMouseDown } from '@/shared/components';
 
 type CustomHorizontalScrollbarProps = {
   ref: RefObject<HTMLDivElement | null>;
@@ -141,27 +142,30 @@ export function CustomHorizontalScrollbar({
           borderLeft: border,
           borderTop: border,
         }}
-        // onClick={(event) => {
-        //   if (bodyHorizontalScrollHistoryRef.current) {
-        //     const container = bodyHorizontalScrollHistoryRef.current;
-        //     const rect = event.currentTarget.getBoundingClientRect();
-        //     const clickX = event.clientX - rect.left;
-        //     const clickRatio = clickX / containerWidth;
-        //     const scrollableWidth = container.scrollWidth - container.clientWidth;
-        //
-        //     container.scrollLeft = scrollableWidth * clickRatio;
-        //   }
-        // }}
+        onMouseDown={(event) =>
+          handleTrackMouseDown({
+            event,
+            ref: bodyHorizontalScrollHistoryRef,
+            containerWidth,
+            axis: 'horizontal',
+          })
+        }
       >
         <motion.div
           drag='x'
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={0}
           dragMomentum={false}
-          onDragStart={() => {
+          onPointerDown={(event) => {
+            event.stopPropagation();
+            event.preventDefault();
+          }}
+          onDragStart={(event) => {
+            event.stopPropagation();
             initialScrollLeft.current = scrollX.get();
           }}
-          onDrag={(_, info) => {
+          onDrag={(event, info) => {
+            event.stopPropagation();
             if (bodyHorizontalScrollHistoryRef.current) {
               bodyHorizontalScrollHistoryRef.current.scrollLeft =
                 initialScrollLeft.current + info.offset.x * 2.4;

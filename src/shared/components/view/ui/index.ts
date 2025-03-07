@@ -4,6 +4,4 @@ export { FlexColumn } from './flex-column.tsx';
 export { Form } from './form.tsx';
 export { Tooltip } from './tooltip.tsx';
 export { Divider } from './divider.tsx';
-export { CustomVerticalScrollbar } from './custom-vertical-scrollbar.tsx';
-export { CustomHorizontalScrollbar } from './custom-horizontal-scrollbar.tsx';
 export { Typography } from './typography.tsx';
