@@ -1,27 +1,19 @@
-import { useState } from 'react';
-
-import { FlexColumn, TFile, FileUploadForm, FlexRow } from '@/shared/components';
+import { FlexColumn, FlexRow, Button, useModal, ModalLayout } from '@/shared/components';
+import { FileUploadModal } from '@/entities/file-upload-download';
 
 export function FileUploadDownload() {
-  const [files, setFiles] = useState<TFile[]>([]);
-  const handleFiles = async (files: TFile[]) => {
-    console.log('file: ', files);
-    // if (isExtensionNotAllowed(file.file.name)) {
-    //   dialogActions.openDialog({
-    //     dialogType: DialogType.ERROR,
-    //     title: '업로드 실패',
-    //     contents: '허용되지 않는 파일이에요',
-    //   });
-    //
-    //   return;
-    // }
-    // const compressedFile = (await resizeImage({ file })) as File;
-
-    setFiles((prevState) => [...prevState, ...files]);
-  };
-  const deleteFile = (fileUUID: string) => {
-    setFiles((prevState) => {
-      return prevState.filter((file) => file.fileUUID !== fileUUID);
+  const fileUploadModal = useModal();
+  const fileUploadModalOpen = () => {
+    fileUploadModal.open(({ close }) => {
+      return (
+        <ModalLayout
+          containerStyle={{ width: 800, height: 900 }}
+          title={'파일 업로드'}
+          close={close}
+        >
+          <FileUploadModal />
+        </ModalLayout>
+      );
     });
   };
 
@@ -37,13 +29,7 @@ export function FileUploadDownload() {
       }}
     >
       <FlexRow style={{ width: '50%', minWidth: 500 }}>
-        <FileUploadForm
-          multiple={true}
-          limitMB={3}
-          files={files}
-          handleFiles={handleFiles}
-          fileDelete={deleteFile}
-        />
+        <Button onClick={fileUploadModalOpen}>파일 업로드</Button>
       </FlexRow>
     </FlexColumn>
   );

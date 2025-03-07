@@ -1,20 +1,49 @@
 import { useEffect, useMemo, useState, JSX } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
 import { v4 as uuidV4 } from 'uuid';
 import { IconType } from 'react-icons';
 
 import {
   FaFilePdf,
-  FaFileWord,
   FaFileExcel,
   FaFilePowerpoint,
   FaFileAlt,
-  FaFileImage,
   FaFileArchive,
   FaFileVideo,
   FaFileAudio,
   FaFileCode,
 } from 'react-icons/fa';
+import {
+  BsFiletypePng,
+  BsFiletypeJpg,
+  BsFiletypeGif,
+  BsFiletypeBmp,
+  BsFiletypeTiff,
+  BsFiletypeSvg,
+  BsFiletypeDoc,
+  BsFiletypeDocx,
+  BsFiletypeTxt,
+  BsFiletypeXls,
+  BsFiletypeXlsx,
+  BsFiletypeCsv,
+  BsFiletypePpt,
+  BsFiletypePptx,
+  BsFiletypeMp4,
+  BsFiletypeMp3,
+  BsFiletypeWav,
+  BsFiletypeHtml,
+  BsFiletypeCss,
+  BsFiletypeJs,
+  BsFiletypeJsx,
+  BsFiletypeTsx,
+  BsFiletypeJson,
+  BsFiletypeXml,
+  BsFiletypePy,
+  BsFiletypeJava,
+  BsFiletypeCs,
+  BsFiletypePhp,
+} from 'react-icons/bs';
+import { TbFavicon } from 'react-icons/tb';
 
 import { DropZone } from './drop-zone.tsx';
 import { fileSizeFormatter } from '@/shared/lib';
@@ -27,6 +56,7 @@ import {
   dialogActions,
   DialogType,
 } from '@/shared/components';
+import { BiLogoTypescript } from 'react-icons/bi';
 
 export function FileUploadForm({
   files,
@@ -95,82 +125,85 @@ export function FileUploadForm({
         </FlexColumn>
       )}
       <DropZone multiple={multiple} handleFiles={handleInnerFiles} />
-      <AnimatePresence>
-        {innerFiles.map((file) => {
-          const { sizeInKB, sizeInMB, isUnder1MB } = fileSizeFormatter(file.file.size);
+      <LayoutGroup>
+        <AnimatePresence initial={false}>
+          {innerFiles.map((file) => {
+            const { sizeInKB, sizeInMB, isUnder1MB } = fileSizeFormatter(file.file.size);
 
-          const fileSize = !isUnder1MB ? sizeInMB.toFixed(2) : sizeInKB.toFixed(2);
-          const fileName = file.file.name;
-          const fileNameWithoutExtension = fileName.split('.').slice(0, -1).join('.');
-          const fileExtension = '.' + fileName.split('.').pop()?.toLowerCase?.();
-          const fileExtensionWithDot = fileName.split('.').pop()?.toUpperCase?.();
+            const fileSize = !isUnder1MB ? sizeInMB.toFixed(2) : sizeInKB.toFixed(2);
+            const fileName = file.file.name;
+            const fileNameWithoutExtension = fileName.split('.').slice(0, -1).join('.');
+            const fileExtension = '.' + fileName.split('.').pop()?.toLowerCase?.();
+            const fileExtensionWithDot = fileName.split('.').pop()?.toUpperCase?.();
 
-          return (
-            <FlexRow
-              as={motion.div}
-              key={file.fileUUID}
-              style={{
-                height: 60,
-                paddingInline: 12,
-                paddingBlock: 8,
-                border: '1px solid #d1d1d1',
-                borderRadius: 6,
-                gap: 10,
-                alignItems: 'center',
-              }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => deleteFile(file)}
-            >
-              {getFileIcon(fileExtension)}
-              <FlexColumn>
-                <Typography style={{ fontWeight: 600, fontSize: '0.9rem' }}>
-                  {fileNameWithoutExtension}
-                </Typography>
-                <FlexRow style={{ alignItems: 'center', gap: 4 }}>
-                  <Typography style={{ fontWeight: 500, fontSize: '0.82rem', color: '#777777' }}>
-                    {fileExtensionWithDot}
+            return (
+              <FlexRow
+                as={motion.div}
+                layout
+                key={file.fileUUID}
+                style={{
+                  height: 60,
+                  paddingInline: 12,
+                  paddingBlock: 8,
+                  border: '1px solid #d1d1d1',
+                  borderRadius: 6,
+                  gap: 10,
+                  alignItems: 'center',
+                }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => deleteFile(file)}
+              >
+                {getFileIcon(fileExtension)}
+                <FlexColumn>
+                  <Typography style={{ fontWeight: 600, fontSize: '0.9rem' }}>
+                    {fileNameWithoutExtension}
                   </Typography>
-                  <Typography style={{ color: '#777777' }}>&middot;</Typography>
-                  <Typography style={{ fontWeight: 500, fontSize: '0.82rem', color: '#777777' }}>
-                    {`${fileSize} ${isUnder1MB ? 'KB' : 'MB'}`}
-                  </Typography>
-                </FlexRow>
-              </FlexColumn>
-            </FlexRow>
-          );
-        })}
-      </AnimatePresence>
+                  <FlexRow style={{ alignItems: 'center', gap: 4 }}>
+                    <Typography style={{ fontWeight: 500, fontSize: '0.82rem', color: '#777777' }}>
+                      {fileExtensionWithDot}
+                    </Typography>
+                    <Typography style={{ color: '#777777' }}>&middot;</Typography>
+                    <Typography style={{ fontWeight: 500, fontSize: '0.82rem', color: '#777777' }}>
+                      {`${fileSize} ${isUnder1MB ? 'KB' : 'MB'}`}
+                    </Typography>
+                  </FlexRow>
+                </FlexColumn>
+              </FlexRow>
+            );
+          })}
+        </AnimatePresence>
+      </LayoutGroup>
     </FlexColumn>
   );
 }
 
 const fileIconMap: { [extension: string]: IconType } = {
   // 이미지
-  '.png': FaFileImage,
-  '.jpg': FaFileImage,
-  '.jpeg': FaFileImage,
-  '.gif': FaFileImage,
-  '.bmp': FaFileImage,
-  '.tiff': FaFileImage,
-  '.ico': FaFileImage,
-  '.svg': FaFileImage,
+  '.png': BsFiletypePng,
+  '.jpg': BsFiletypeJpg,
+  '.jpeg': BsFiletypeJpg,
+  '.gif': BsFiletypeGif,
+  '.bmp': BsFiletypeBmp,
+  '.tiff': BsFiletypeTiff,
+  '.ico': TbFavicon,
+  '.svg': BsFiletypeSvg,
   // 문서
   '.pdf': FaFilePdf,
-  '.doc': FaFileWord,
-  '.docx': FaFileWord,
-  '.txt': FaFileAlt,
+  '.doc': BsFiletypeDoc,
+  '.docx': BsFiletypeDocx,
+  '.txt': BsFiletypeTxt,
   '.rtf': FaFileAlt,
   '.odt': FaFileAlt,
   // 스프레드시트
-  '.xls': FaFileExcel,
-  '.xlsx': FaFileExcel,
-  '.csv': FaFileExcel,
+  '.xls': BsFiletypeXls,
+  '.xlsx': BsFiletypeXlsx,
+  '.csv': BsFiletypeCsv,
   '.ods': FaFileExcel,
   // 프레젠테이션
-  '.ppt': FaFilePowerpoint,
-  '.pptx': FaFilePowerpoint,
+  '.ppt': BsFiletypePpt,
+  '.pptx': BsFiletypePptx,
   '.odp': FaFilePowerpoint,
   // 압축 파일
   '.zip': FaFileArchive,
@@ -180,37 +213,37 @@ const fileIconMap: { [extension: string]: IconType } = {
   '.gz': FaFileArchive,
   '.bz2': FaFileArchive,
   // 비디오
-  '.mp4': FaFileVideo,
+  '.mp4': BsFiletypeMp4,
   '.avi': FaFileVideo,
   '.mov': FaFileVideo,
   '.mkv': FaFileVideo,
   '.wmv': FaFileVideo,
   '.flv': FaFileVideo,
   // 오디오
-  '.mp3': FaFileAudio,
-  '.wav': FaFileAudio,
+  '.mp3': BsFiletypeMp3,
+  '.wav': BsFiletypeWav,
   '.ogg': FaFileAudio,
   '.m4a': FaFileAudio,
   '.flac': FaFileAudio,
   // 코드
-  '.html': FaFileCode,
-  '.css': FaFileCode,
-  '.js': FaFileCode,
-  '.jsx': FaFileCode,
-  '.ts': FaFileCode,
-  '.tsx': FaFileCode,
-  '.json': FaFileCode,
-  '.xml': FaFileCode,
-  '.py': FaFileCode,
-  '.java': FaFileCode,
+  '.html': BsFiletypeHtml,
+  '.css': BsFiletypeCss,
+  '.js': BsFiletypeJs,
+  '.jsx': BsFiletypeJsx,
+  '.ts': BiLogoTypescript,
+  '.tsx': BsFiletypeTsx,
+  '.json': BsFiletypeJson,
+  '.xml': BsFiletypeXml,
+  '.py': BsFiletypePy,
+  '.java': BsFiletypeJava,
   '.c': FaFileCode,
   '.cpp': FaFileCode,
-  '.cs': FaFileCode,
-  '.php': FaFileCode,
+  '.cs': BsFiletypeCs,
+  '.php': BsFiletypePhp,
 };
 
 export function getFileIcon(extension: string): JSX.Element {
   const ext = extension.toLowerCase();
   const IconComponent = fileIconMap[ext] || FaFileAlt;
-  return <IconComponent style={{ fontSize: '1.6rem', color: '#888888' }} />;
+  return <IconComponent style={{ fontSize: '1.6rem', color: '#555555' }} />;
 }

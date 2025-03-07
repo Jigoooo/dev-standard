@@ -13,7 +13,7 @@ export function LinearProgress({
   const displayedPercentage = (clampedProgress * 100).toFixed(1);
 
   return (
-    <FlexRow style={{ width: '100%', alignItems: 'center', gap: 12 }}>
+    <FlexRow style={{ width: '100%', alignItems: 'center', gap: 10 }}>
       <FlexRow
         as={motion.div}
         style={{
@@ -34,7 +34,9 @@ export function LinearProgress({
           transition={{ type: 'spring', stiffness: 100, damping: 20 }}
         />
       </FlexRow>
-      <Typography>{displayedPercentage}%</Typography>
+      <Typography style={{ fontWeight: 500, fontSize: '0.9rem' }}>
+        {displayedPercentage}%
+      </Typography>
     </FlexRow>
   );
 }
