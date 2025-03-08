@@ -45,7 +45,7 @@ export function ModalLayout({
         </Button>
       </FlexRow>
       <Divider />
-      <FlexColumn style={{ overflow: 'auto' }}>{children}</FlexColumn>
+      <FlexColumn style={{ height: '100%', overflow: 'auto' }}>{children}</FlexColumn>
     </FlexColumn>
   );
 }

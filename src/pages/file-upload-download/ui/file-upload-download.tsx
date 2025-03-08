@@ -7,7 +7,7 @@ export function FileUploadDownload() {
     fileUploadModal.open(({ close }) => {
       return (
         <ModalLayout
-          containerStyle={{ width: 300, height: 900 }}
+          containerStyle={{ width: 800, height: 900 }}
           title={'파일 업로드'}
           close={close}
         >

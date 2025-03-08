@@ -118,7 +118,7 @@ export function FileUploadForm({
   };
 
   return (
-    <FlexColumn style={{ width: '100%', gap: 8 }}>
+    <FlexColumn style={{ width: '100%', height: '100%', gap: 8 }}>
       {limitMB > 0 && (
         <FlexColumn style={{ gap: 2 }}>
           <Typography style={{ fontSize: '0.9rem', fontWeight: 600 }}>
@@ -128,69 +128,78 @@ export function FileUploadForm({
         </FlexColumn>
       )}
       <DropZone multiple={multiple} handleFiles={handleInnerFiles} />
-      <LayoutGroup>
-        <AnimatePresence initial={false}>
-          {innerFiles.map((file) => {
-            const { sizeInKB, sizeInMB, isUnder1MB } = fileSizeFormatter(file.file.size);
+      <FlexColumn style={{ gap: 8 }}>
+        <LayoutGroup>
+          <AnimatePresence initial={false}>
+            {innerFiles.map((file) => {
+              const { sizeInKB, sizeInMB, isUnder1MB } = fileSizeFormatter(file.file.size);
 
-            const fileSize = !isUnder1MB ? sizeInMB.toFixed(2) : sizeInKB.toFixed(2);
-            const fileName = file.file.name;
-            const fileNameWithoutExtension = fileName.split('.').slice(0, -1).join('.');
-            const fileExtension = '.' + fileName.split('.').pop()?.toLowerCase?.();
-            const fileExtensionWithDot = fileName.split('.').pop()?.toUpperCase?.();
+              const fileSize = !isUnder1MB ? sizeInMB.toFixed(2) : sizeInKB.toFixed(2);
+              const fileName = file.file.name;
+              const fileNameWithoutExtension = fileName.split('.').slice(0, -1).join('.');
+              const fileExtension = '.' + fileName.split('.').pop()?.toLowerCase?.();
+              const fileExtensionWithDot = fileName.split('.').pop()?.toUpperCase?.();
 
-            return (
-              <FlexRow
-                as={motion.div}
-                layout
-                key={file.fileUUID}
-                style={{
-                  height: 60,
-                  paddingInline: 12,
-                  paddingBlock: 8,
-                  border: '1px solid #d1d1d1',
-                  borderRadius: 6,
-                  gap: 10,
-                  alignItems: 'center',
-                }}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              >
-                <FlexRow>{getFileIcon(fileExtension)}</FlexRow>
-                <FlexColumn style={{ alignItems: 'flex-start', width: '100%', maxWidth: '65%' }}>
-                  <Typography
-                    style={{
-                      fontWeight: 600,
-                      fontSize: '0.9rem',
-                      overflow: 'hidden',
-                      whiteSpace: 'nowrap',
-                      textOverflow: 'ellipsis',
-                    }}
-                  >
-                    {fileNameWithoutExtension}
-                  </Typography>
-                  <FlexRow style={{ alignItems: 'center', gap: 4 }}>
-                    <Typography style={{ fontWeight: 500, fontSize: '0.82rem', color: '#777777' }}>
-                      {fileExtensionWithDot}
-                    </Typography>
-                    <Typography style={{ color: '#777777' }}>&middot;</Typography>
-                    <Typography style={{ fontWeight: 500, fontSize: '0.82rem', color: '#777777' }}>
-                      {`${fileSize} ${isUnder1MB ? 'KB' : 'MB'}`}
-                    </Typography>
-                  </FlexRow>
-                </FlexColumn>
-                <Button
-                  style={{ padding: 0, backgroundColor: '#ffffff' }}
-                  onClick={() => deleteFile(file)}
+              return (
+                <FlexRow
+                  as={motion.div}
+                  layout
+                  key={file.fileUUID}
+                  style={{
+                    height: 60,
+                    paddingInline: 12,
+                    paddingBlock: 8,
+                    border: '1px solid #d1d1d1',
+                    borderRadius: 6,
+                    gap: 10,
+                    alignItems: 'center',
+                  }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
                 >
-                  <MdDeleteOutline style={{ fontSize: '1.6rem', color: '#555555' }} />
-                </Button>
-              </FlexRow>
-            );
-          })}
-        </AnimatePresence>
-      </LayoutGroup>
+                  <FlexRow>{getFileIcon(fileExtension)}</FlexRow>
+                  <FlexColumn style={{ alignItems: 'flex-start', width: '100%', maxWidth: '65%' }}>
+                    <Typography
+                      style={{
+                        fontWeight: 600,
+                        fontSize: '0.9rem',
+                        overflow: 'hidden',
+                        whiteSpace: 'nowrap',
+                        textOverflow: 'ellipsis',
+                        maxWidth: '100%',
+                      }}
+                    >
+                      {fileNameWithoutExtension}
+                    </Typography>
+                    <FlexRow style={{ alignItems: 'center', gap: 4 }}>
+                      <Typography
+                        style={{ fontWeight: 500, fontSize: '0.82rem', color: '#777777' }}
+                      >
+                        {fileExtensionWithDot}
+                      </Typography>
+                      <Typography style={{ color: '#777777' }}>&middot;</Typography>
+                      <Typography
+                        style={{ fontWeight: 500, fontSize: '0.82rem', color: '#777777' }}
+                      >
+                        {`${fileSize} ${isUnder1MB ? 'KB' : 'MB'}`}
+                      </Typography>
+                    </FlexRow>
+                  </FlexColumn>
+                  <FlexRow style={{ flexGrow: 1, justifyContent: 'flex-end' }}>
+                    <Button
+                      style={{ padding: 0, backgroundColor: '#ffffff' }}
+                      onClick={() => deleteFile(file)}
+                    >
+                      <MdDeleteOutline style={{ fontSize: '1.6rem', color: '#555555' }} />
+                    </Button>
+                  </FlexRow>
+                </FlexRow>
+              );
+            })}
+          </AnimatePresence>
+        </LayoutGroup>
+      </FlexColumn>
     </FlexColumn>
   );
 }

@@ -70,6 +70,8 @@ export function DropZone({
           flexGrow: 1,
           boxShadow: 'none',
           minHeight: 130,
+          height: 130,
+          maxHeight: 130,
           backgroundColor: dragOver ? colors.primary[50] : undefined,
           cursor: 'pointer',
         },
