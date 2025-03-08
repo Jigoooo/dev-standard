@@ -67,13 +67,17 @@ export const TableBody = memo(function TableBody<TData extends { index: string }
     count: dataList.length,
     getScrollElement: () => bodyRef.current,
     estimateSize: () => tableStyle.tableBodyHeight,
-    overscan: 50,
+    overscan: 20,
     getItemKey,
     scrollToFn,
   });
 
   const rowTotalSize = rowVirtualizer.getTotalSize();
   const virtualItems = rowVirtualizer.getVirtualItems();
+
+  const memoizedRowTotalSize = useMemo(() => {
+    return rowTotalSize;
+  }, [rowTotalSize]);
 
   const memoizedItems = useMemo(() => {
     return virtualItems;
@@ -96,7 +100,7 @@ export const TableBody = memo(function TableBody<TData extends { index: string }
         <TableBodyPin
           position={'left'}
           headers={leftPinHeaders}
-          rowTotalSize={rowTotalSize}
+          rowTotalSize={memoizedRowTotalSize}
           virtualItems={memoizedItems}
           hoverIndex={hoverIndex}
           setHoverIndex={setHoverIndex}
@@ -106,7 +110,7 @@ export const TableBody = memo(function TableBody<TData extends { index: string }
         <TableBodyView
           ref={ref}
           headers={viewHeaders}
-          rowTotalSize={rowTotalSize}
+          rowTotalSize={memoizedRowTotalSize}
           virtualItems={memoizedItems}
           hoverIndex={hoverIndex}
           setHoverIndex={setHoverIndex}
@@ -116,7 +120,7 @@ export const TableBody = memo(function TableBody<TData extends { index: string }
         <TableBodyPin
           position={'right'}
           headers={rightPinHeaders}
-          rowTotalSize={rowTotalSize}
+          rowTotalSize={memoizedRowTotalSize}
           virtualItems={memoizedItems}
           hoverIndex={hoverIndex}
           setHoverIndex={setHoverIndex}
