@@ -32,7 +32,7 @@ export function ModalContextWrapper({ children }: { children: ReactNode }) {
   return (
     <ModalContext value={{ open, close, setIsPossibleOverlayClose }}>
       {children}
-      <AnimatePresence>
+      <AnimatePresence initial={false}>
         {isOpen && modalRender && (
           <motion.div
             key='modal-overlay'

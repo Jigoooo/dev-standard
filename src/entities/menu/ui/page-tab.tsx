@@ -19,6 +19,7 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
   const menuState = useMenuState();
 
   const [sortedCacheNodes, setSortedCacheNodes] = useState<CacheNode[]>([]);
+  const remainingCacheNodes = sortedCacheNodes.filter((node) => node.cacheKey !== activeCacheKey);
 
   useEffect(() => {
     const nodes = aliveRef?.current?.getCacheNodes() ?? [];
@@ -87,7 +88,6 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 whiteSpace: 'nowrap',
-                // color: '#ffffff',
               }}
             >
               {currentMenu?.name}
@@ -103,8 +103,8 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
               minWidth: 'calc(100% - 360px)',
               width: 'calc(100vw - 360px)',
               maxWidth: 'calc(100% - 360px)',
-              borderLeft: '1px solid #cccccc',
-              borderRight: '1px solid #cccccc',
+              borderLeft: remainingCacheNodes.length > 0 ? '1px solid #cccccc' : undefined,
+              borderRight: remainingCacheNodes.length > 0 ? '1px solid #cccccc' : undefined,
               paddingInline: 8,
             }}
           >
@@ -173,7 +173,13 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
               })}
             </AnimatePresence>
           </FlexRow>
-          <FlexRow style={{ flexGrow: 1, alignItems: 'center', gap: 4 }}>
+          <FlexRow
+            style={{
+              flexGrow: 1,
+              alignItems: 'center',
+              gap: 4,
+            }}
+          >
             <FlexRow
               as={motion.div}
               style={{ cursor: 'pointer', backgroundColor: '#ffffff', borderRadius: '50%' }}
@@ -182,14 +188,17 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
             >
               <IoRefreshCircleOutline style={{ fontSize: '1.6rem' }} />
             </FlexRow>
-            <FlexRow
-              as={motion.div}
-              style={{ cursor: 'pointer', backgroundColor: '#ffffff', borderRadius: '50%' }}
-              onClick={destroyOtherCacheNodes}
-              whileHover={{ backgroundColor: '#eeeeee' }}
-            >
-              <IoIosCloseCircleOutline style={{ fontSize: '1.6rem' }} />
-            </FlexRow>
+            {remainingCacheNodes.length > 0 && (
+              <FlexRow
+                as={motion.div}
+                layout
+                style={{ cursor: 'pointer', backgroundColor: '#ffffff', borderRadius: '50%' }}
+                onClick={destroyOtherCacheNodes}
+                whileHover={{ backgroundColor: '#eeeeee' }}
+              >
+                <IoIosCloseCircleOutline style={{ fontSize: '1.6rem' }} />
+              </FlexRow>
+            )}
           </FlexRow>
         </FlexRow>
       </LayoutGroup>

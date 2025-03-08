@@ -14,13 +14,13 @@ import {
 function App() {
   return (
     <QueryProvider>
-      <ModalProvider>
-        <ThemeProvider>
+      <ThemeProvider>
+        <ModalProvider>
           <RouterProvider router={browserRouter} />
-          <LoadingProvider />
-          <AlertProvider />
-        </ThemeProvider>
-      </ModalProvider>
+        </ModalProvider>
+        <LoadingProvider />
+        <AlertProvider />
+      </ThemeProvider>
     </QueryProvider>
   );
 }
