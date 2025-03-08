@@ -184,6 +184,7 @@ const TableBodyView = memo(function TableBodyView({
               rowWidth={viewWidth}
               hoverIndex={hoverIndex}
               setHoverIndex={setHoverIndex}
+              index={index}
             />
           );
         })}
@@ -245,6 +246,7 @@ const TableBodyPin = memo(function TableBodyPin({
             rowWidth={'100%'}
             hoverIndex={hoverIndex}
             setHoverIndex={setHoverIndex}
+            index={index}
           />
         );
       })}
@@ -252,19 +254,32 @@ const TableBodyPin = memo(function TableBodyPin({
   );
 });
 
+type TableBodyRowProps = {
+  headers: THeader[];
+  virtualItem: { index: number; start: number };
+  rowWidth: string | number;
+  hoverIndex: string | null;
+  setHoverIndex: (index: string | null) => void;
+  index: string;
+};
+
+function areEqual(prevProps: TableBodyRowProps, nextProps: TableBodyRowProps) {
+  const prevHovered = prevProps.hoverIndex === prevProps.index;
+  const nextHovered = nextProps.hoverIndex === nextProps.index;
+  return (
+    prevHovered === nextHovered &&
+    prevProps.virtualItem.start === nextProps.virtualItem.start &&
+    prevProps.rowWidth === nextProps.rowWidth
+  );
+}
+
 const TableBodyRow = memo(function TableBodyRow({
   headers,
   virtualItem,
   rowWidth,
   hoverIndex,
   setHoverIndex,
-}: {
-  headers: THeader[];
-  virtualItem: VirtualItem;
-  rowWidth: string | number;
-  hoverIndex: string | null;
-  setHoverIndex: (index: string | null) => void;
-}) {
+}: TableBodyRowProps) {
   const { tableStyle, dataList } = useTableContext();
 
   const data = dataList[virtualItem.index];
@@ -282,6 +297,8 @@ const TableBodyRow = memo(function TableBodyRow({
         height: tableStyle.tableBodyHeight,
         borderBottom: tableStyle.tableBorder,
       }}
+      onMouseEnter={() => setHoverIndex(index)}
+      onMouseLeave={() => setHoverIndex(null)}
     >
       {headers.map((header) => {
         return (
@@ -293,13 +310,13 @@ const TableBodyRow = memo(function TableBodyRow({
             isOdd={isOdd}
             header={header}
             hoverIndex={hoverIndex}
-            setHoverIndex={setHoverIndex}
+            // setHoverIndex={setHoverIndex}
           />
         );
       })}
     </FlexRow>
   );
-});
+}, areEqual);
 
 const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, any>>({
   rowIndex,
@@ -308,7 +325,7 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
   isOdd,
   header,
   hoverIndex,
-  setHoverIndex,
+  // setHoverIndex,
 }: {
   rowIndex: number;
   data: TData;
@@ -316,7 +333,7 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
   isOdd: boolean;
   header: THeader;
   hoverIndex: string | null;
-  setHoverIndex: (index: string | null) => void;
+  // setHoverIndex: (index: string | null) => void;
 }) {
   const { tableStyle, handelDataList, isChecked, handleCheck } = useTableContext();
 
@@ -362,12 +379,12 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
         backgroundColor: getBackgroundColor(),
         contain: 'paint',
       }}
-      onMouseEnter={() => {
-        setHoverIndex(index);
-      }}
-      onMouseLeave={() => {
-        setHoverIndex(null);
-      }}
+      // onMouseEnter={() => {
+      //   setHoverIndex(index);
+      // }}
+      // onMouseLeave={() => {
+      //   setHoverIndex(null);
+      // }}
       onClick={() => {
         handleCheck!(data);
       }}
