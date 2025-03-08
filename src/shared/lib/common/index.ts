@@ -21,4 +21,5 @@ export {
   copyToClipboard,
   isLightColor,
   getFormValues,
+  deepEqual,
 } from './common-lib.ts';

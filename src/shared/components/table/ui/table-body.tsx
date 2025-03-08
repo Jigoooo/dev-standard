@@ -6,6 +6,7 @@ import {
   CustomHorizontalScrollbar,
   CustomVerticalScrollbar,
   FlexRow,
+  TableBodyRowProps,
   THeader,
   Typography,
   useTableContext,
@@ -254,16 +255,7 @@ const TableBodyPin = memo(function TableBodyPin({
   );
 });
 
-type TableBodyRowProps = {
-  headers: THeader[];
-  virtualItem: { index: number; start: number };
-  rowWidth: string | number;
-  hoverIndex: string | null;
-  setHoverIndex: (index: string | null) => void;
-  index: string;
-};
-
-function areEqual(prevProps: TableBodyRowProps, nextProps: TableBodyRowProps) {
+function areEqualTableRow(prevProps: TableBodyRowProps, nextProps: TableBodyRowProps) {
   const prevHovered = prevProps.hoverIndex === prevProps.index;
   const nextHovered = nextProps.hoverIndex === nextProps.index;
   return (
@@ -310,13 +302,12 @@ const TableBodyRow = memo(function TableBodyRow({
             isOdd={isOdd}
             header={header}
             hoverIndex={hoverIndex}
-            // setHoverIndex={setHoverIndex}
           />
         );
       })}
     </FlexRow>
   );
-}, areEqual);
+}, areEqualTableRow);
 
 const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, any>>({
   rowIndex,
@@ -325,7 +316,6 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
   isOdd,
   header,
   hoverIndex,
-  // setHoverIndex,
 }: {
   rowIndex: number;
   data: TData;
@@ -333,7 +323,6 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
   isOdd: boolean;
   header: THeader;
   hoverIndex: string | null;
-  // setHoverIndex: (index: string | null) => void;
 }) {
   const { tableStyle, handelDataList, isChecked, handleCheck } = useTableContext();
 

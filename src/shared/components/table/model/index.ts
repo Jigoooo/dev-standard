@@ -6,4 +6,10 @@ export type {
   TTableContextLegacy,
   TTablePagination,
 } from './table-type-legacy.ts';
-export type { TTableContext, TTableStyle, THeader } from './table-type.ts';
+export type {
+  TTableContext,
+  TTableStyle,
+  THeader,
+  TableBodyRowProps,
+  TableBodyCellProps,
+} from './table-type.ts';

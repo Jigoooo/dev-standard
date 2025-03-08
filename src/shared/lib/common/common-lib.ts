@@ -232,3 +232,47 @@ export function getFormValues<T extends Record<string, string | null>>(
     return acc;
   }, {} as Partial<T>) as T;
 }
+
+export function deepEqual(a: any, b: any, seen = new Map<any, any>()): boolean {
+  // 동일한 객체이거나 원시값인 경우
+  if (a === b) return true;
+
+  // 함수 비교: 두 함수라면 toString()으로 비교 (참조값 비교보다 더 깊은 비교)
+  if (typeof a === 'function' && typeof b === 'function') {
+    return a.toString() === b.toString();
+  }
+
+  // 둘 중 하나라도 null 이거나 객체가 아닌 경우
+  if (a === null || b === null || typeof a !== 'object' || typeof b !== 'object') {
+    return false;
+  }
+
+  // 순환 참조 처리를 위해, a를 이미 봤다면 b와 비교해서 같으면 true
+  if (seen.has(a)) {
+    return seen.get(a) === b;
+  }
+  // 현재 a와 b를 비교 대상으로 기록
+  seen.set(a, b);
+
+  // 배열 비교
+  if (Array.isArray(a)) {
+    if (!Array.isArray(b) || a.length !== b.length) return false;
+    for (let i = 0; i < a.length; i++) {
+      if (!deepEqual(a[i], b[i], seen)) return false;
+    }
+    return true;
+  }
+
+  // 하나는 배열인데 다른 하나는 배열이 아닌 경우
+  if (Array.isArray(b)) return false;
+
+  // 일반 객체 비교: 키 개수와 각 키의 값 비교
+  const keysA = Object.keys(a);
+  const keysB = Object.keys(b);
+  if (keysA.length !== keysB.length) return false;
+  for (const key of keysA) {
+    if (!Object.prototype.hasOwnProperty.call(b, key)) return false;
+    if (!deepEqual(a[key], b[key], seen)) return false;
+  }
+  return true;
+}

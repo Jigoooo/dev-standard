@@ -61,3 +61,21 @@ export type THeader = {
     filterValue: string;
   };
 };
+
+export type TableBodyRowProps = {
+  headers: THeader[];
+  virtualItem: { index: number; start: number };
+  rowWidth: string | number;
+  hoverIndex: string | null;
+  setHoverIndex: (index: string | null) => void;
+  index: string;
+};
+
+export type TableBodyCellProps<TData> = {
+  rowIndex: number;
+  data: TData;
+  index: string;
+  isOdd: boolean;
+  header: THeader;
+  hoverIndex: string | null;
+};
