@@ -48,7 +48,9 @@ function TableHeaderView({
   ref: RefObject<HTMLDivElement | null>;
   headers: THeader[];
 }) {
-  const { tableStyle, filterRowEnabled } = useTableContext();
+  const { tableStyle, headerGroups, filterRowEnabled } = useTableContext();
+
+  console.log(headerGroups);
 
   const viewWidth = headers.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
   return (

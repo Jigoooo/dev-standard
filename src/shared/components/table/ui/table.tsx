@@ -56,7 +56,7 @@ export const useTableContext = <TData extends Record<string, any>>() => {
 };
 
 export function Table<TData extends { index: string } & Record<string, any>>({
-  tableHeaderGroups,
+  tableHeaderGroups = [],
   tableHeaders,
   tableDataList,
   handelDataList,
@@ -117,7 +117,11 @@ export function Table<TData extends { index: string } & Record<string, any>>({
 
   const headerHeight =
     applyTableStyle.tableHeaderHeight *
-    (filterRowEnabled && tableHeaderGroups ? 3 : filterRowEnabled || tableHeaderGroups ? 2 : 1);
+    (filterRowEnabled && tableHeaderGroups.length > 0
+      ? 3
+      : filterRowEnabled || tableHeaderGroups.length > 0
+        ? 2
+        : 1);
 
   let bodyMaxHeight = tableSize.height - headerHeight - applyTableStyle.tableFooterHeight;
 
