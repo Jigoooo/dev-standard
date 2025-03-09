@@ -14,7 +14,7 @@ import {
 } from '@/shared/components';
 
 export function TableHeader({ ref }: { ref: RefObject<HTMLDivElement | null> }) {
-  const { tableStyle, sortedHeaders: headers, filterRowEnabled } = useTableContext();
+  const { tableStyle, headerHeight, sortedHeaders: headers } = useTableContext();
 
   const viewHeaders = headers.filter((header) => header.pin === 'view');
 
@@ -26,7 +26,7 @@ export function TableHeader({ ref }: { ref: RefObject<HTMLDivElement | null> }) 
       className={'table-header'}
       style={{
         backgroundColor: tableStyle.tableHeaderBackgroundColor,
-        height: filterRowEnabled ? tableStyle.tableHeaderHeight * 2 : tableStyle.tableHeaderHeight,
+        height: headerHeight,
         borderBottom: tableStyle.tableBorder,
       }}
     >

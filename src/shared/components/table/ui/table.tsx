@@ -147,6 +147,7 @@ export function Table<TData extends { index: string } & Record<string, any>>({
     cacheCellRef,
     tableStyle: applyTableStyle,
     bodyMaxHeight,
+    headerHeight,
     headerGroups: tableHeaderGroups,
     headers,
     sortedHeaders,
