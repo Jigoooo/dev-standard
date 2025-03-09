@@ -50,7 +50,15 @@ function TableHeaderView({
 }) {
   const { tableStyle, headerGroups, filterRowEnabled } = useTableContext();
 
-  console.log(headerGroups);
+  const mappingHeaderGroups = headers.map((header) => {
+    const findGroups = headerGroups.find((group) => group.headerIds.includes(header.id));
+    return {
+      id: header.id,
+      groupLabel: findGroups?.groupLabel ?? '',
+    };
+  });
+
+  console.log(mappingHeaderGroups);
 
   const viewWidth = headers.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
   return (

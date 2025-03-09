@@ -5,7 +5,7 @@ export type TTableContext<TData> = {
   tableStyle: TTableStyle;
   bodyMaxHeight: number;
   headerHeight: number;
-  headerGroups?: THeaderGroup<TData>[];
+  headerGroups: THeaderGroup<TData>[];
   headers: THeader<TData>[];
   sortedHeaders: THeader<TData>[];
   dataList: (TData & { index: string })[];
