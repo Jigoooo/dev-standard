@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode } from 'react';
+import { CSSProperties, ReactNode, RefObject } from 'react';
 
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -15,23 +15,15 @@ const modalContainerDefaultStyle: CSSProperties = {
   gap: 6,
 };
 
-const parseDimension = (size: string | number | undefined, total: number): number => {
-  if (size == null) return 0;
-  if (typeof size === 'number') return size;
-  if (size.trim().endsWith('%')) {
-    const percent = parseFloat(size);
-    return total * (percent / 100);
-  }
-  return Number(size);
-};
-
 export function ModalLayout({
+  overlayRef,
   close,
   drag = true,
   title = '',
   containerStyle,
   children,
 }: {
+  overlayRef: RefObject<HTMLDivElement>;
   close: () => void;
   drag?: boolean;
   title?: string;
@@ -39,12 +31,6 @@ export function ModalLayout({
   children: ReactNode;
 }) {
   const dragControls = useDragControls();
-
-  const modalWidth = containerStyle?.width ?? modalContainerDefaultStyle.width;
-  const modalHeight = containerStyle?.height ?? modalContainerDefaultStyle.height;
-
-  const parsedWidth = parseDimension(modalWidth, window.innerWidth);
-  const parsedHeight = parseDimension(modalHeight, window.innerHeight);
 
   return (
     <FlexColumn
@@ -56,12 +42,9 @@ export function ModalLayout({
       drag={drag}
       dragControls={dragControls}
       dragListener={false}
-      dragConstraints={{
-        top: 0,
-        left: 0,
-        right: window.innerWidth - parsedWidth,
-        bottom: window.innerHeight - parsedHeight,
-      }}
+      dragConstraints={overlayRef}
+      dragMomentum={false}
+      dragElastic={0}
     >
       <FlexRow
         style={{

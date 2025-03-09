@@ -1,17 +1,19 @@
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
-import { FlexRow, ModalContext } from '@/shared/components';
+import { FlexRow, ModalContext, TModalRenderProps } from '@/shared/components';
 import { MODAL_Z_INDEX } from '@/shared/constants';
 
 export function ModalContextWrapper({ children }: { children: ReactNode }) {
-  const [modalRender, setModalRender] = useState<
-    null | ((props: { isOpen: boolean; close: () => void }) => ReactNode)
-  >(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+
+  const [modalRender, setModalRender] = useState<null | ((props: TModalRenderProps) => ReactNode)>(
+    null,
+  );
   const [isOpen, setIsOpen] = useState(false);
   const [isPossibleOverlayClose, setIsPossibleOverlayClose] = useState(false);
 
-  const open = (render: (props: { isOpen: boolean; close: () => void }) => ReactNode) => {
+  const open = (render: (props: TModalRenderProps) => ReactNode) => {
     setModalRender(() => render);
     setIsOpen(true);
   };
@@ -35,6 +37,7 @@ export function ModalContextWrapper({ children }: { children: ReactNode }) {
       <AnimatePresence initial={false}>
         {isOpen && modalRender && (
           <motion.div
+            ref={overlayRef}
             key='modal-overlay'
             initial={{ opacity: 0, pointerEvents: 'none' }}
             animate={{ opacity: 1, pointerEvents: 'auto' }}
@@ -76,7 +79,7 @@ export function ModalContextWrapper({ children }: { children: ReactNode }) {
                 minHeight: '100vh',
               }}
             >
-              {modalRender({ isOpen, close })}
+              {modalRender({ overlayRef, isOpen, close })}
             </FlexRow>
           </motion.div>
         )}

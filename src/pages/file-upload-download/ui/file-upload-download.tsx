@@ -4,9 +4,10 @@ import { FileUploadModal } from '@/entities/file-upload-download';
 export function FileUploadDownload() {
   const fileUploadModal = useModal();
   const fileUploadModalOpen = () => {
-    fileUploadModal.open(({ close }) => {
+    fileUploadModal.open(({ overlayRef, close }) => {
       return (
         <ModalLayout
+          overlayRef={overlayRef}
           containerStyle={{ width: 800, height: 900 }}
           title={'파일 업로드'}
           close={close}

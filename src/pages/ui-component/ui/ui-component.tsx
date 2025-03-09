@@ -62,9 +62,9 @@ export function UiComponent() {
 
   const modal = useModal();
   const openModal = () => {
-    modal.open(({ close }) => {
+    modal.open(({ overlayRef, close }) => {
       return (
-        <ModalLayout title={'Modal Title'} close={close}>
+        <ModalLayout title={'Modal Title'} overlayRef={overlayRef} close={close}>
           <Typography>Modal Contents</Typography>
         </ModalLayout>
       );
