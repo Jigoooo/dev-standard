@@ -24,7 +24,7 @@ export function FileUploadModal() {
       return prevState.filter((file) => file.fileUUID !== fileUUID);
     });
   };
-  //todo 파일 목록 스크롤 구현
+
   return (
     <FlexRow style={{ height: '100%', padding: 16, overflow: 'hidden' }}>
       <FileUploadForm

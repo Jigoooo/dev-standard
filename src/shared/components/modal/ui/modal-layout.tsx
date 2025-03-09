@@ -23,7 +23,7 @@ export function ModalLayout({
   containerStyle,
   children,
 }: {
-  overlayRef: RefObject<HTMLDivElement>;
+  overlayRef: RefObject<HTMLDivElement | null>;
   close: () => void;
   drag?: boolean;
   title?: string;
