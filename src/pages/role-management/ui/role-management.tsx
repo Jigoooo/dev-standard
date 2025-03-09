@@ -227,6 +227,7 @@ export function RoleManagement() {
       }}
     >
       <Table
+        tableHeaderGroups={headerGroups}
         tableHeaders={tableHeaders}
         tableDataList={dataList}
         handelDataList={handelDataList}

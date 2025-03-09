@@ -4,6 +4,7 @@ export type TTableContext<TData> = {
   cacheCellRef: RefObject<Map<string, { data: any; element: JSX.Element }>>;
   tableStyle: TTableStyle;
   bodyMaxHeight: number;
+  headerGroups?: THeaderGroup<TData>[];
   headers: THeader<TData>[];
   sortedHeaders: THeader<TData>[];
   dataList: (TData & { index: string })[];

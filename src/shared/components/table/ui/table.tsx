@@ -8,6 +8,7 @@ import {
   useTableChecked,
   useTableSorting,
   Typography,
+  THeaderGroup,
 } from '@/shared/components';
 import { TableHeader } from './table-header.tsx';
 import { TableBody } from './table-body.tsx';
@@ -55,6 +56,7 @@ export const useTableContext = <T extends Record<string, any>>() => {
 };
 
 export function Table<TData extends { index: string } & Record<string, any>>({
+  tableHeaderGroups,
   tableHeaders,
   tableDataList,
   handelDataList,
@@ -63,6 +65,7 @@ export function Table<TData extends { index: string } & Record<string, any>>({
   dataKey = 'index',
   filterRowEnabled = true,
 }: {
+  tableHeaderGroups?: THeaderGroup<TData>[];
   tableHeaders: THeader<TData>[];
   tableDataList: TData[];
   handelDataList: (index: string, key: string, value: any) => void;
@@ -144,6 +147,7 @@ export function Table<TData extends { index: string } & Record<string, any>>({
     cacheCellRef,
     tableStyle: applyTableStyle,
     bodyMaxHeight,
+    headerGroups: tableHeaderGroups,
     headers,
     sortedHeaders,
     dataList: sortedDataList,
