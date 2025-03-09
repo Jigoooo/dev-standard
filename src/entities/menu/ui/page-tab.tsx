@@ -57,10 +57,23 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
 
   return (
     <FlexColumn
-      style={{ userSelect: 'none', minHeight: 50, height: 50, maxHeight: 50, width: '100%' }}
+      style={{
+        userSelect: 'none',
+        minHeight: 50,
+        height: 50,
+        maxHeight: 50,
+        width: '100%',
+      }}
     >
       <LayoutGroup>
-        <FlexRow style={{ alignItems: 'center', gap: 12 }}>
+        <FlexRow
+          style={{
+            alignItems: 'center',
+            gap: 12,
+            justifyContent: 'space-between',
+            paddingRight: 12,
+          }}
+        >
           <FlexRow
             as={motion.div}
             layoutId='current-tab'
@@ -100,9 +113,9 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
               gap: 8,
               height: 32,
               overflowY: 'auto',
-              minWidth: 'calc(100% - 360px)',
-              width: 'calc(100vw - 360px)',
-              maxWidth: 'calc(100% - 360px)',
+              minWidth: 'calc(100% - 340px)',
+              width: 'calc(100vw - 340px)',
+              maxWidth: 'calc(100% - 340px)',
               borderLeft: remainingCacheNodes.length > 0 ? '1px solid #cccccc' : undefined,
               borderRight: remainingCacheNodes.length > 0 ? '1px solid #cccccc' : undefined,
               paddingInline: 8,
@@ -175,7 +188,6 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
           </FlexRow>
           <FlexRow
             style={{
-              flexGrow: 1,
               alignItems: 'center',
               gap: 4,
             }}
