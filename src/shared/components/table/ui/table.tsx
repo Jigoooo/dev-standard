@@ -114,9 +114,10 @@ export function Table<TData extends { index: string } & Record<string, any>>({
   }, [checkList]);
 
   const totalWidth = headers.reduce((acc, cur) => acc + (cur?.width ?? 0), 0) + 2;
-  const headerHeight = filterRowEnabled
-    ? applyTableStyle.tableHeaderHeight * 2
-    : applyTableStyle.tableHeaderHeight;
+
+  const headerHeight =
+    applyTableStyle.tableHeaderHeight *
+    (filterRowEnabled && tableHeaderGroups ? 3 : filterRowEnabled || tableHeaderGroups ? 2 : 1);
 
   let bodyMaxHeight = tableSize.height - headerHeight - applyTableStyle.tableFooterHeight;
 

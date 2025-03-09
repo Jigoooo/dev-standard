@@ -17,7 +17,6 @@ export function TableHeader({ ref }: { ref: RefObject<HTMLDivElement | null> }) 
   const { tableStyle, headerHeight, sortedHeaders: headers } = useTableContext();
 
   const viewHeaders = headers.filter((header) => header.pin === 'view');
-
   const leftPinHeaders = headers.filter((header) => header.pin === 'left');
   const rightPinHeaders = headers.filter((header) => header.pin === 'right');
 
@@ -82,13 +81,27 @@ function TableHeaderView({
             return <TableHeaderCell key={header.id} header={header} />;
           })}
         </FlexRow>
+        <FlexRow
+          className={'table-header-row'}
+          style={{
+            alignItems: 'center',
+            position: 'absolute',
+            top: tableStyle.tableHeaderHeight,
+            width: viewWidth,
+            height: tableStyle.tableHeaderHeight,
+          }}
+        >
+          {headers.map((header) => {
+            return <TableHeaderCell key={header.id} header={header} />;
+          })}
+        </FlexRow>
         {filterRowEnabled && (
           <FlexRow
             className={'table-header-row'}
             style={{
               alignItems: 'center',
               position: 'absolute',
-              top: tableStyle.tableHeaderHeight,
+              top: tableStyle.tableHeaderHeight * 2,
               width: viewWidth,
               height: tableStyle.tableHeaderHeight,
               borderTop: tableStyle.tableBorder,
@@ -139,13 +152,27 @@ function TableHeaderPin({ position, headers }: { position: 'left' | 'right'; hea
           return <TableHeaderCell key={header.id} header={header} />;
         })}
       </FlexRow>
+      <FlexRow
+        className={'pin-header-row'}
+        style={{
+          alignItems: 'center',
+          position: 'absolute',
+          top: tableStyle.tableHeaderHeight,
+          width: '100%',
+          height: tableStyle.tableHeaderHeight,
+        }}
+      >
+        {headers.map((header) => {
+          return <TableHeaderCell key={header.id} header={header} />;
+        })}
+      </FlexRow>
       {filterRowEnabled && (
         <FlexRow
           className={'pin-filter-row'}
           style={{
             alignItems: 'center',
             position: 'absolute',
-            top: tableStyle.tableHeaderHeight,
+            top: tableStyle.tableHeaderHeight * 2,
             width: '100%',
             height: tableStyle.tableHeaderHeight,
             borderTop: tableStyle.tableBorder,
