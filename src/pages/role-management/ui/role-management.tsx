@@ -1,9 +1,21 @@
 import { useEffect } from 'react';
 
-import { Input, Table, THeader, useTableData } from '@/shared/components';
+import { Input, Table, THeader, THeaderGroup, useTableData } from '@/shared/components';
 import { generateUsers } from '@/shared/components/table/model/testData.ts';
+import { RRoleManagement } from '@/entities/role-management';
 
-const tableHeaders: THeader[] = [
+const headerGroups: THeaderGroup<RRoleManagement>[] = [
+  {
+    groupLabel: 'Personal Info',
+    headerIds: ['name', 'email', 'phone'],
+  },
+  {
+    groupLabel: 'Employment',
+    headerIds: ['jobTitle', 'department', 'salary', 'hireDate'],
+  },
+];
+
+const tableHeaders: THeader<RRoleManagement>[] = [
   {
     id: 'index',
     pin: 'left',

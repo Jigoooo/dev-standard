@@ -4,8 +4,8 @@ export type TTableContext<TData> = {
   cacheCellRef: RefObject<Map<string, { data: any; element: JSX.Element }>>;
   tableStyle: TTableStyle;
   bodyMaxHeight: number;
-  headers: THeader[];
-  sortedHeaders: THeader[];
+  headers: THeader<TData>[];
+  sortedHeaders: THeader<TData>[];
   dataList: (TData & { index: string })[];
   handelDataList: (index: string, key: string, value: any) => void;
   filterRowEnabled: boolean;
@@ -36,8 +36,13 @@ export type TTableStyle = {
   tableBodyHoverBackgroundColor: string;
 };
 
-export type THeader = {
-  id: string;
+export type THeaderGroup<TData> = {
+  groupLabel: string;
+  headerIds: (keyof TData)[];
+};
+
+export type THeader<TData = Record<string, any>> = {
+  id: Extract<keyof TData, string> | 'index' | 'check';
   label: string;
   width: number;
   cell?: ({

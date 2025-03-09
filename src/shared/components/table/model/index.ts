@@ -9,6 +9,7 @@ export type {
 export type {
   TTableContext,
   TTableStyle,
+  THeaderGroup,
   THeader,
   TableBodyRowProps,
   TableBodyCellProps,

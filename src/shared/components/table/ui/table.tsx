@@ -63,7 +63,7 @@ export function Table<TData extends { index: string } & Record<string, any>>({
   dataKey = 'index',
   filterRowEnabled = true,
 }: {
-  tableHeaders: THeader[];
+  tableHeaders: THeader<TData>[];
   tableDataList: TData[];
   handelDataList: (index: string, key: string, value: any) => void;
   handleSyncCheckList?: (checkedList: string[]) => void;
@@ -83,7 +83,7 @@ export function Table<TData extends { index: string } & Record<string, any>>({
 
   const tableSize = useElementSize(tableRef);
 
-  const [headers, setHeaders] = useState<THeader[]>(tableHeaders);
+  const [headers, setHeaders] = useState<THeader<TData>[]>(tableHeaders);
   const onChangeFilterValue = (headerId: string, value: string) => {
     setHeaders((prevState) => {
       return prevState.map((header) => {

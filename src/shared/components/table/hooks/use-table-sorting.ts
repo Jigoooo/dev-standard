@@ -2,17 +2,17 @@ import { useEffect, useState } from 'react';
 
 import { THeader } from '@/shared/components';
 
-export function useTableSorting<T>({
+export function useTableSorting<TData>({
   headers,
   dataList,
   isMultipleSorting = false,
 }: {
-  headers: THeader[];
-  dataList: T[];
+  headers: THeader<TData>[];
+  dataList: TData[];
   isMultipleSorting?: boolean;
 }) {
   const [sortState, setSortState] = useState<Record<string, 'asc' | 'desc' | null>>({});
-  const [sortedDataList, setSortedDataList] = useState<T[]>([...dataList]);
+  const [sortedDataList, setSortedDataList] = useState<TData[]>([...dataList]);
 
   const sortedHeaders = headers.map((header) => ({
     ...header,
@@ -105,8 +105,8 @@ export function useTableSorting<T>({
 
       const key = activeHeader.id;
       const direction = activeHeader.sorter.direction;
-      const aValue = a[key as keyof T];
-      const bValue = b[key as keyof T];
+      const aValue = a[key as keyof TData];
+      const bValue = b[key as keyof TData];
 
       const collator = new Intl.Collator('ko', { numeric: true, sensitivity: 'base' });
       const cmp = collator.compare(String(aValue), String(bValue));
