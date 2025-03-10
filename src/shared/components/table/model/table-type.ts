@@ -25,9 +25,12 @@ export type TTableContext<TData> = {
 };
 
 export type TTableStyle = {
+  tableContainerAutoWidth: boolean;
+  showVerticalLines: boolean;
   tableResizeColor: string;
   tableBorderColor: string;
   tableBorder: string;
+  tableFixedBorder: string;
   tableBorderRadius: number;
   tableHeaderHeight: number;
   tableBodyHeight: number;

@@ -15,6 +15,9 @@ import {
 } from '@/entities/file-upload-download';
 import { useEffect } from 'react';
 
+// 테이블 상단 버튼
+// 테이블 세로선 옵션
+// 테이블 헤더 세로선 뚜렷하게
 export function FileUploadDownload() {
   const { dataList, setDataList, handelDataList } = useTableData<TFileDownload>([]);
 
@@ -66,7 +69,10 @@ export function FileUploadDownload() {
         <Button onClick={fileUploadModalOpen}>파일 업로드</Button>
       </FlexRow>
       <Table
-        autoWidth
+        tableStyle={{
+          showVerticalLines: true,
+          tableContainerAutoWidth: true,
+        }}
         tableHeaders={fileDownloadHeaders}
         tableDataList={dataList}
         handelDataList={handelDataList}

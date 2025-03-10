@@ -232,8 +232,8 @@ const TableBodyPin = memo(function TableBodyPin({
           minWidth: pinHeaderWidth,
           maxWidth: pinHeaderWidth,
           ...(position === 'left'
-            ? { borderRight: tableStyle.tableBorder }
-            : { borderLeft: tableStyle.tableBorder }),
+            ? { borderRight: tableStyle.tableFixedBorder }
+            : { borderLeft: tableStyle.tableFixedBorder }),
           marginBottom: 14,
         },
       }}
@@ -295,11 +295,12 @@ const TableBodyRow = memo(function TableBodyRow({
       onMouseEnter={() => setHoverIndex(index)}
       onMouseLeave={() => setHoverIndex(null)}
     >
-      {headers.map((header, headerIndex) => {
+      {headers.map((header, headerIndex, array) => {
         return (
           <TableBodyCell
             key={header.id + virtualItem.index + headerIndex}
             rowIndex={virtualItem.index}
+            isLastHeaderIndex={headerIndex === array.length - 1}
             data={data}
             index={index}
             isOdd={isOdd}
@@ -314,6 +315,7 @@ const TableBodyRow = memo(function TableBodyRow({
 
 const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, any>>({
   rowIndex,
+  isLastHeaderIndex,
   data,
   index,
   isOdd,
@@ -321,6 +323,7 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
   hoverIndex,
 }: {
   rowIndex: number;
+  isLastHeaderIndex: boolean;
   data: TData;
   index: string;
   isOdd: boolean;
@@ -372,14 +375,9 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
         height: '100%',
         backgroundColor: getBackgroundColor(),
         contain: 'paint',
-        // borderRight: tableStyle.tableBorder,
+        borderRight:
+          tableStyle.showVerticalLines && !isLastHeaderIndex ? tableStyle.tableBorder : undefined,
       }}
-      // onMouseEnter={() => {
-      //   setHoverIndex(index);
-      // }}
-      // onMouseLeave={() => {
-      //   setHoverIndex(null);
-      // }}
       onClick={() => {
         if (isCheckedAvailableHeader) {
           handleCheck(data);

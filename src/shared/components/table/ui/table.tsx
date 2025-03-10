@@ -29,9 +29,12 @@ import { useElementSize } from '@/shared/hooks';
  * */
 
 const defaultTableStyle: TTableStyle = {
+  tableContainerAutoWidth: false,
+  showVerticalLines: false,
   tableResizeColor: '#cecece',
   tableBorderColor: '#bdc3c7',
   tableBorder: '1px solid #bdc3c7',
+  tableFixedBorder: '1px solid #aaaaaa',
   tableBorderRadius: 4,
   tableHeaderHeight: 36,
   tableBodyHeight: 42,
@@ -56,7 +59,6 @@ export const useTableContext = <TData extends Record<string, any>>() => {
 };
 
 export function Table<TData extends { index: string } & Record<string, any>>({
-  autoWidth = false,
   tableHeaderGroups = [],
   tableHeaders,
   tableDataList,
@@ -66,7 +68,6 @@ export function Table<TData extends { index: string } & Record<string, any>>({
   dataKey = 'index',
   filterRowEnabled = true,
 }: {
-  autoWidth?: boolean;
   tableHeaderGroups?: THeaderGroup<TData>[];
   tableHeaders: THeader<TData>[];
   tableDataList: TData[];
@@ -218,7 +219,7 @@ export function Table<TData extends { index: string } & Record<string, any>>({
           ...{
             position: 'relative',
             height: '100%',
-            maxWidth: autoWidth ? '100%' : totalWidth,
+            maxWidth: applyTableStyle.tableContainerAutoWidth ? '100%' : totalWidth,
             border: applyTableStyle.tableBorder,
             borderRadius: applyTableStyle.tableBorderRadius,
             overflow: 'hidden',

@@ -179,8 +179,8 @@ function TableHeaderPin({ position, headers }: { position: 'left' | 'right'; hea
           maxWidth: pinHeaderWidth,
         },
         ...(position === 'left'
-          ? { borderRight: tableStyle.tableBorder }
-          : { borderLeft: tableStyle.tableBorder }),
+          ? { borderRight: tableStyle.tableFixedBorder }
+          : { borderLeft: tableStyle.tableFixedBorder }),
       }}
     >
       {headerGroups.length > 0 && (
