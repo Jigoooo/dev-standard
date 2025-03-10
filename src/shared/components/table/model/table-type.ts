@@ -4,7 +4,7 @@ export type TTableContext<TData> = {
   cacheCellRef: RefObject<Map<string, { data: any; element: JSX.Element }>>;
   tableStyle: TTableStyle;
   bodyYRef: RefObject<HTMLDivElement | null>;
-  totalWidth: number;
+  viewportWidth: number;
   bodyMaxHeight: number;
   headerHeight: number;
   headerGroups: THeaderGroup<TData>[];

@@ -82,7 +82,7 @@ export const TableBody = memo(function TableBody<TData extends { index: string }
   }, [virtualItems]);
 
   return (
-    <FlexRow style={{ position: 'relative' }}>
+    <FlexRow style={{ position: 'relative', width: '100%' }}>
       <FlexRow
         ref={bodyYRef}
         className={'table-body no-scrollbar'}
@@ -153,7 +153,7 @@ const TableBodyView = memo(function TableBodyView({
   hoverIndex: string | null;
   setHoverIndex: (index: string | null) => void;
 }) {
-  const { dataList } = useTableContext();
+  const { viewportWidth, dataList } = useTableContext();
 
   const viewWidth = useMemo(() => {
     return headers.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
@@ -169,6 +169,7 @@ const TableBodyView = memo(function TableBodyView({
         flexGrow: 1,
         overflowX: 'auto',
         scrollbarWidth: 'none',
+        minWidth: viewportWidth,
       }}
     >
       <div

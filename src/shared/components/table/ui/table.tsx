@@ -143,6 +143,15 @@ export function Table<TData extends { index: string } & Record<string, any>>({
   }, [bodyYRef]);
 
   const totalWidth = headers.reduce((acc, cur) => acc + (cur?.width ?? 0), 0) + verticalScrollWidth;
+  const leftPinWidth = headers
+    .filter((header) => header.pin === 'left')
+    .reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
+  const rightPinWidth = headers
+    .filter((header) => header.pin === 'right')
+    .reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
+
+  const viewportWidth =
+    tableSize.width - leftPinWidth - rightPinWidth + (verticalScrollWidth === 0 ? 2 : 0);
 
   const headerHeight =
     applyTableStyle.tableHeaderHeight *
@@ -181,7 +190,7 @@ export function Table<TData extends { index: string } & Record<string, any>>({
     cacheCellRef,
     tableStyle: applyTableStyle,
     bodyYRef,
-    totalWidth,
+    viewportWidth,
     bodyMaxHeight,
     headerHeight,
     headerGroups: tableHeaderGroups,

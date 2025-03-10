@@ -42,6 +42,7 @@ export function TableHeader({ ref }: { ref: RefObject<HTMLDivElement | null> }) 
         backgroundColor: tableStyle.tableHeaderBackgroundColor,
         height: headerHeight,
         borderBottom: tableStyle.tableBorder,
+        width: '100%',
       }}
     >
       {/* 왼쪽 고정 영역 */}
