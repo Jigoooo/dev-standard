@@ -5,6 +5,7 @@ import { Router } from '@/entities/router';
 import { RouteErrorPage } from '@/shared/components';
 import { SignIn } from '@/pages/sign-in';
 import { Main } from '@/pages/main';
+import { GridExample } from 'pages/grid-example';
 // import { MyProfile } from '@/pages/my-profile';
 // import { UiComponent } from '@/pages/ui-component';
 // import { FileUploadDownload } from '@/pages/file-upload-download';
@@ -46,6 +47,10 @@ export const browserRouter = createBrowserRouter([
       {
         path: Router.UI,
         element: <UiComponent />,
+      },
+      {
+        path: Router.GRID_EXAMPLE,
+        element: <GridExample />,
       },
       {
         path: Router.FILE_UPLOAD_DOWNLOAD,

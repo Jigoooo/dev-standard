@@ -5,6 +5,7 @@ import { RiFileExcel2Line } from 'react-icons/ri';
 import { FaRegFile } from 'react-icons/fa';
 import { MdOutlineManageAccounts } from 'react-icons/md';
 import { IoPersonCircleOutline } from 'react-icons/io5';
+import { GoTable } from 'react-icons/go';
 
 import { TMenuState, TMenuStore } from '@/entities/menu/model/menu-type.ts';
 import { TMenu } from '@/entities/menu';
@@ -20,18 +21,24 @@ export const menus: TMenu[] = [
   },
   {
     menuIndex: 1,
+    name: '그리드 예시',
+    icon: GoTable,
+    router: Router.GRID_EXAMPLE,
+  },
+  {
+    menuIndex: 2,
     name: '파일 업로드/다운로드',
     icon: FaRegFile,
     router: Router.FILE_UPLOAD_DOWNLOAD,
   },
   {
-    menuIndex: 2,
+    menuIndex: 3,
     name: '엑셀 업로드/다운로드',
     icon: RiFileExcel2Line,
     router: Router.EXCEL_UPLOAD_DOWNLOAD,
   },
   {
-    menuIndex: 3,
+    menuIndex: 4,
     name: '메뉴/버튼 권한관리',
     icon: MdOutlineManageAccounts,
     router: Router.ROLE_MANAGEMENT,
@@ -39,7 +46,7 @@ export const menus: TMenu[] = [
 ] as const;
 
 export const myProfileMenu: TMenu = {
-  menuIndex: 4,
+  menuIndex: 5,
   name: '내 정보',
   icon: IoPersonCircleOutline,
   router: Router.MY_PROFILE,
