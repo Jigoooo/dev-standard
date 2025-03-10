@@ -121,8 +121,8 @@ function TableHeaderView({
             height: tableStyle.tableHeaderHeight,
           }}
         >
-          {headers.map((header) => {
-            return <TableHeaderCell key={header.id} header={header} />;
+          {headers.map((header, index) => {
+            return <TableHeaderCell key={header.id + index} header={header} />;
           })}
         </FlexRow>
         {filterRowEnabled && (
@@ -137,8 +137,10 @@ function TableHeaderView({
               borderTop: tableStyle.tableBorder,
             }}
           >
-            {headers.map((header) => {
-              return <TableHeaderFilterCell key={header.id} position={'right'} header={header} />;
+            {headers.map((header, index) => {
+              return (
+                <TableHeaderFilterCell key={header.id + index} position={'right'} header={header} />
+              );
             })}
           </FlexRow>
         )}
@@ -205,8 +207,8 @@ function TableHeaderPin({ position, headers }: { position: 'left' | 'right'; hea
           height: tableStyle.tableHeaderHeight,
         }}
       >
-        {headers.map((header) => {
-          return <TableHeaderCell key={header.id} header={header} />;
+        {headers.map((header, index) => {
+          return <TableHeaderCell key={header.id + index} header={header} />;
         })}
       </FlexRow>
       {filterRowEnabled && (
@@ -221,8 +223,10 @@ function TableHeaderPin({ position, headers }: { position: 'left' | 'right'; hea
             borderTop: tableStyle.tableBorder,
           }}
         >
-          {headers.map((header) => {
-            return <TableHeaderFilterCell key={header.id} position={position} header={header} />;
+          {headers.map((header, index) => {
+            return (
+              <TableHeaderFilterCell key={header.id + index} position={position} header={header} />
+            );
           })}
         </FlexRow>
       )}
@@ -249,7 +253,7 @@ function TableGroupHeaders({
         if (isSamePrevGroup) {
           return (
             <FlexRow
-              key={header.id}
+              key={header.id + index}
               className={'table-header-cell'}
               style={{
                 boxSizing: 'border-box',
@@ -275,7 +279,7 @@ function TableGroupHeaders({
 
         return (
           <FlexRow
-            key={header.id}
+            key={header.id + index}
             className={'table-header-cell'}
             style={{
               boxSizing: 'border-box',

@@ -17,7 +17,7 @@ export function useElementSize(ref: RefObject<HTMLElement | null>): {
           height: entry.contentRect.height,
         });
         // 최초 측정 후 바로 observer를 해제하여 이후 업데이트를 막음
-        observer.disconnect();
+        // observer.disconnect();
       }
     });
 

@@ -1,4 +1,4 @@
-import { THeader } from '@/shared/components';
+import { Button, ButtonStyle, THeader } from '@/shared/components';
 import { TFileDownload } from '@/entities/file-upload-download';
 
 export const fileDownloadHeaders: THeader<TFileDownload>[] = [
@@ -70,6 +70,27 @@ export const fileDownloadHeaders: THeader<TFileDownload>[] = [
     filter: {
       filterType: 'text',
       filterValue: '',
+    },
+  },
+  {
+    id: 'button',
+    pin: 'view',
+    align: 'center',
+    label: '',
+    width: 80,
+    cell: () => {
+      return (
+        <Button
+          buttonStyle={ButtonStyle.OUTLINED}
+          style={{ width: '100%', height: 30, fontSize: '0.76rem' }}
+        >
+          상세
+        </Button>
+      );
+    },
+    sorter: {
+      sortable: false,
+      direction: null,
     },
   },
 ];

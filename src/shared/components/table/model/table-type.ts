@@ -46,7 +46,7 @@ export type THeaderGroup<TData> = {
 };
 
 export type THeader<TData = Record<string, any>> = {
-  id: Extract<keyof TData, string> | 'index' | 'check';
+  id: Extract<keyof TData, string> | 'index' | 'check' | 'button';
   label: string;
   width: number;
   cell?: ({

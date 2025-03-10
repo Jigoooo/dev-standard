@@ -295,10 +295,10 @@ const TableBodyRow = memo(function TableBodyRow({
       onMouseEnter={() => setHoverIndex(index)}
       onMouseLeave={() => setHoverIndex(null)}
     >
-      {headers.map((header) => {
+      {headers.map((header, headerIndex) => {
         return (
           <TableBodyCell
-            key={header.id + virtualItem.index}
+            key={header.id + virtualItem.index + headerIndex}
             rowIndex={virtualItem.index}
             data={data}
             index={index}
