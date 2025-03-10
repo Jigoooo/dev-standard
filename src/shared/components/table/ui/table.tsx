@@ -31,7 +31,7 @@ import { useElementSize } from '@/shared/hooks';
 const defaultTableStyle: TTableStyle = {
   tableContainerAutoWidth: false,
   showVerticalLines: false,
-  tableResizeColor: '#cecece',
+  tableResizeColor: '#bbbbbb',
   tableBorderColor: '#bdc3c7',
   tableBorder: '1px solid #bdc3c7',
   tableFixedBorder: '1.6px solid #bdc3c7',

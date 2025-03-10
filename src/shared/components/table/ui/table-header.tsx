@@ -449,7 +449,7 @@ function ResizeHandle({
         ...(position === 'right' && { right: -4 }),
       }}
     >
-      <div style={{ width: 1.6, height: '50%', backgroundColor: tableStyle.tableResizeColor }} />
+      <div style={{ width: 1.6, height: '60%', backgroundColor: tableStyle.tableResizeColor }} />
     </div>
   );
 }
