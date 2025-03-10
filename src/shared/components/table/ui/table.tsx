@@ -34,7 +34,7 @@ const defaultTableStyle: TTableStyle = {
   tableResizeColor: '#cecece',
   tableBorderColor: '#bdc3c7',
   tableBorder: '1px solid #bdc3c7',
-  tableFixedBorder: '2px solid #bdc3c7',
+  tableFixedBorder: '1.6px solid #bdc3c7',
   tableBorderRadius: 4,
   tableHeaderHeight: 36,
   tableBodyHeight: 42,
