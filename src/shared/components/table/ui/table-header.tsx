@@ -64,7 +64,7 @@ function TableHeaderView({
   ref: RefObject<HTMLDivElement | null>;
   headers: THeader[];
 }) {
-  const { tableStyle, headerGroups, filterRowEnabled } = useTableContext();
+  const { tableStyle, headerGroups, viewportWidth, filterRowEnabled } = useTableContext();
 
   const mappingHeaderGroups = headers.map((header) => {
     const findGroups = headerGroups.find((group) => group.headerIds.includes(header.id));
@@ -90,6 +90,7 @@ function TableHeaderView({
         flexGrow: 1,
         overflowX: 'auto',
         scrollbarWidth: 'none',
+        minWidth: viewportWidth,
       }}
     >
       <div

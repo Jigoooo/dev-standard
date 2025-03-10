@@ -74,7 +74,7 @@ export const fileDownloadHeaders: THeader<TFileDownload>[] = [
   },
   {
     id: 'button',
-    pin: 'view',
+    pin: 'right',
     align: 'center',
     label: '',
     width: 80,

@@ -12,6 +12,10 @@ export function useElementSize(ref: RefObject<HTMLElement | null>): {
 
     const observer = new ResizeObserver((entries) => {
       for (const entry of entries) {
+        if (entry.contentRect.width === 0 || entry.contentRect.height === 0) {
+          return;
+        }
+
         setSize({
           width: entry.contentRect.width,
           height: entry.contentRect.height,
@@ -26,7 +30,7 @@ export function useElementSize(ref: RefObject<HTMLElement | null>): {
     return () => {
       observer.disconnect();
     };
-  }, [ref]);
+  }, []);
 
   return size;
 }

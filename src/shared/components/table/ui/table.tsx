@@ -32,7 +32,7 @@ const defaultTableStyle: TTableStyle = {
   tableResizeColor: '#cecece',
   tableBorderColor: '#bdc3c7',
   tableBorder: '1px solid #bdc3c7',
-  tableBorderRadius: 2,
+  tableBorderRadius: 4,
   tableHeaderHeight: 36,
   tableBodyHeight: 40,
   tableHeaderBackgroundColor: '#efefef',
@@ -151,7 +151,7 @@ export function Table<TData extends { index: string } & Record<string, any>>({
     .reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
 
   const viewportWidth =
-    tableSize.width - leftPinWidth - rightPinWidth + (verticalScrollWidth === 0 ? 2 : 0);
+    tableSize.width - leftPinWidth - rightPinWidth + (verticalScrollWidth === 0 ? 2 : 2);
 
   const headerHeight =
     applyTableStyle.tableHeaderHeight *
