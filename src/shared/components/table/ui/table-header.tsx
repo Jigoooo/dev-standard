@@ -264,7 +264,9 @@ function TableGroupHeaders({
                 contain: 'paint',
               }}
             >
-              <ResizeHandle tableStyle={tableStyle} position={'right'} disabled={true} />
+              {!isSameNextGroup && (
+                <ResizeHandle tableStyle={tableStyle} position={'right'} disabled={true} />
+              )}
             </FlexRow>
           );
         }
@@ -283,6 +285,7 @@ function TableGroupHeaders({
             key={header.id + index}
             className={'table-header-cell'}
             style={{
+              position: 'relative',
               boxSizing: 'border-box',
               alignItems: 'center',
               paddingInline: 12,
@@ -292,10 +295,10 @@ function TableGroupHeaders({
             }}
           >
             {!isSamePrevGroup && groupLabel && (
-              <FlexRow style={{ fontSize: '0.88rem', alignItems: 'center', gap: 6 }}>
+              <FlexRow style={{ position: 'sticky', left: 10, alignItems: 'center', gap: 6 }}>
                 <Typography
                   style={{
-                    fontSize: 'inherit',
+                    fontSize: '0.88rem',
                     fontWeight: 600,
                     color: tableStyle.tableHeaderColor,
                     whiteSpace: 'nowrap',

@@ -16,7 +16,6 @@ import {
 import { useEffect } from 'react';
 
 // 테이블 상단 버튼
-// 테이블 세로선 옵션
 // 테이블 헤더 세로선 뚜렷하게
 export function FileUploadDownload() {
   const { dataList, setDataList, handelDataList } = useTableData<TFileDownload>([]);

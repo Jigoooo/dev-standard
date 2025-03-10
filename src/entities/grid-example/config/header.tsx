@@ -138,7 +138,7 @@ export const gridExampleHeaders: THeader<RGridExample>[] = [
     pin: 'view',
     align: 'left',
     label: '부서',
-    width: 150,
+    width: 300,
     sorter: {
       sortable: true,
       direction: null,
@@ -153,7 +153,7 @@ export const gridExampleHeaders: THeader<RGridExample>[] = [
     pin: 'view',
     align: 'left',
     label: '급여',
-    width: 150,
+    width: 300,
     sorter: {
       sortable: true,
       direction: null,
