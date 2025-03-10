@@ -24,7 +24,7 @@ export function FileUploadDownload() {
       const allUsers = [];
 
       for await (const batch of generateFileUploads({
-        total: 100,
+        total: 10,
       })) {
         allUsers.push(...batch);
 

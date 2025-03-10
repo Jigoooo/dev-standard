@@ -17,13 +17,13 @@ import {
 import { colors } from '@/shared/constants';
 
 export const TableBody = memo(function TableBody<TData extends { index: string }>({
-  ref,
+  bodyXRef,
 }: {
-  ref: RefObject<HTMLDivElement | null>;
+  bodyXRef: RefObject<HTMLDivElement | null>;
 }) {
   'use no memo';
 
-  const { tableStyle, bodyMaxHeight, headers, dataList } = useTableContext();
+  const { tableStyle, bodyYRef, bodyMaxHeight, headers, dataList } = useTableContext();
 
   const viewHeaders = useMemo(() => {
     return headers.filter((header) => header.pin === 'view');
@@ -56,16 +56,14 @@ export const TableBody = memo(function TableBody<TData extends { index: string }
     throw new Error(`dataList does not match the required type: ${JSON.stringify(requiredKeys)}`);
   }
 
-  const bodyRef = useRef<HTMLDivElement>(null);
-
   const [hoverIndex, setHoverIndex] = useState<string | null>(null);
 
   const getItemKey = useCallback((index: number) => dataList[index].index, [dataList]);
-  const scrollToFn = useTableScrollToFn(bodyRef);
+  const scrollToFn = useTableScrollToFn(bodyYRef);
 
   const rowVirtualizer = useVirtualRow({
     count: dataList.length,
-    getScrollElement: () => bodyRef.current,
+    getScrollElement: () => bodyYRef.current,
     estimateSize: () => tableStyle.tableBodyHeight,
     overscan: 20,
     getItemKey,
@@ -86,7 +84,7 @@ export const TableBody = memo(function TableBody<TData extends { index: string }
   return (
     <FlexRow style={{ position: 'relative' }}>
       <FlexRow
-        ref={bodyRef}
+        ref={bodyYRef}
         className={'table-body no-scrollbar'}
         style={{
           backgroundColor: tableStyle.tableBodyBackgroundColor,
@@ -108,7 +106,7 @@ export const TableBody = memo(function TableBody<TData extends { index: string }
 
         {/* 중앙 영역 */}
         <TableBodyView
-          ref={ref}
+          ref={bodyXRef}
           headers={viewHeaders}
           rowTotalSize={memoizedRowTotalSize}
           virtualItems={memoizedItems}
@@ -127,10 +125,10 @@ export const TableBody = memo(function TableBody<TData extends { index: string }
         />
       </FlexRow>
 
-      <CustomVerticalScrollbar ref={bodyRef} totalContentHeight={viewHeight} />
+      <CustomVerticalScrollbar ref={bodyYRef} totalContentHeight={viewHeight} />
 
       <CustomHorizontalScrollbar
-        ref={ref}
+        ref={bodyXRef}
         totalContentWidth={viewWidth}
         leftOffset={scrollLeftOffset}
         rightOffset={scrollRightOffset}
@@ -328,7 +326,7 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
   header: THeader;
   hoverIndex: string | null;
 }) {
-  const { tableStyle, handelDataList, isChecked, handleCheck } = useTableContext();
+  const { tableStyle, headers, handelDataList, isChecked, handleCheck } = useTableContext();
 
   if (header.id === 'check' && (isChecked === undefined || handleCheck === undefined)) {
     throw new Error('checkedState is required for check header');
@@ -359,6 +357,8 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
     return tableStyle.tableBodyBackgroundColor;
   };
 
+  const isCheckedAvailableHeader = headers.find((header) => header.id === 'check');
+
   return (
     <FlexRow
       className={'table-body-cell'}
@@ -379,7 +379,9 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
       //   setHoverIndex(null);
       // }}
       onClick={() => {
-        handleCheck!(data);
+        if (isCheckedAvailableHeader) {
+          handleCheck(data);
+        }
       }}
     >
       {header.id === 'check' && (
@@ -388,7 +390,7 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
           checked={isChecked!(data)}
           onClick={(e) => {
             e.stopPropagation();
-            handleCheck!(data);
+            handleCheck(data);
           }}
         />
       )}

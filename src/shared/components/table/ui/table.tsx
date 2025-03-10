@@ -80,9 +80,10 @@ export function Table<TData extends { index: string } & Record<string, any>>({
   };
   const tableRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
-  const bodyRef = useRef<HTMLDivElement>(null);
+  const bodyXRef = useRef<HTMLDivElement>(null);
+  const bodyYRef = useRef<HTMLDivElement>(null);
 
-  useSyncScroll(headerRef, bodyRef);
+  useSyncScroll(headerRef, bodyXRef);
 
   const tableSize = useElementSize(tableRef);
 
@@ -113,7 +114,35 @@ export function Table<TData extends { index: string } & Record<string, any>>({
     handleSyncCheckList?.(checkList);
   }, [checkList]);
 
-  const totalWidth = headers.reduce((acc, cur) => acc + (cur?.width ?? 0), 0) + 2;
+  const [verticalScrollWidth, setVerticalScrollWidth] = useState(0);
+  useEffect(() => {
+    const element = bodyYRef.current;
+    if (!element) return;
+
+    const checkScroll = () => {
+      if (element.scrollHeight > element.clientHeight) {
+        setVerticalScrollWidth(14);
+      } else {
+        setVerticalScrollWidth(0);
+      }
+    };
+
+    checkScroll();
+
+    const resizeObserver = new ResizeObserver(() => {
+      checkScroll();
+    });
+    resizeObserver.observe(element);
+
+    element.addEventListener('scroll', checkScroll);
+
+    return () => {
+      resizeObserver.disconnect();
+      element.removeEventListener('scroll', checkScroll);
+    };
+  }, [bodyYRef]);
+
+  const totalWidth = headers.reduce((acc, cur) => acc + (cur?.width ?? 0), 0) + verticalScrollWidth;
 
   const headerHeight =
     applyTableStyle.tableHeaderHeight *
@@ -148,9 +177,11 @@ export function Table<TData extends { index: string } & Record<string, any>>({
 
   const cacheCellRef = useRef<Map<string, { data: any; element: JSX.Element }>>(new Map());
 
-  const tableContextValue = {
+  const tableContextValue: TTableContext<TData> = {
     cacheCellRef,
     tableStyle: applyTableStyle,
+    bodyYRef,
+    totalWidth,
     bodyMaxHeight,
     headerHeight,
     headerGroups: tableHeaderGroups,
@@ -185,7 +216,7 @@ export function Table<TData extends { index: string } & Record<string, any>>({
       >
         <TableHeader ref={headerRef} />
 
-        <TableBody ref={bodyRef} />
+        <TableBody bodyXRef={bodyXRef} />
 
         <FlexRow
           style={{
