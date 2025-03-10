@@ -11,12 +11,12 @@ import {
   fileDownloadHeaders,
   FileUploadModal,
   generateFileUploads,
-  RFileDownload,
+  TFileDownload,
 } from '@/entities/file-upload-download';
 import { useEffect } from 'react';
 
 export function FileUploadDownload() {
-  const { dataList, setDataList, handelDataList } = useTableData<RFileDownload>([]);
+  const { dataList, setDataList, handelDataList } = useTableData<TFileDownload>([]);
 
   useEffect(() => {
     let isMounted = true;

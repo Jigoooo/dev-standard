@@ -1,7 +1,7 @@
 import { THeader } from '@/shared/components';
-import { RFileDownload } from '@/entities/file-upload-download';
+import { TFileDownload } from '@/entities/file-upload-download';
 
-export const fileDownloadHeaders: THeader<RFileDownload>[] = [
+export const fileDownloadHeaders: THeader<TFileDownload>[] = [
   {
     id: 'index',
     pin: 'left',

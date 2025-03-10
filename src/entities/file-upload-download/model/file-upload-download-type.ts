@@ -1,8 +1,10 @@
 import { TDataWithIndex } from '@/shared/components';
 
-export type RFileDownload = TDataWithIndex & {
+export type RFileDownload = {
   fileUploadTitle: string;
   note: string;
   uploadDateTime: string;
   uploadUser: string;
 };
+
+export type TFileDownload = TDataWithIndex & RFileDownload;
