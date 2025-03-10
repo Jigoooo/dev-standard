@@ -53,7 +53,7 @@ export const gridExampleHeaders: THeader<RGridExample>[] = [
     pin: 'view',
     align: 'left',
     label: '이메일',
-    width: 220,
+    width: 250,
     sorter: {
       sortable: true,
       direction: null,
@@ -68,7 +68,7 @@ export const gridExampleHeaders: THeader<RGridExample>[] = [
     pin: 'view',
     align: 'left',
     label: '나이',
-    width: 200,
+    width: 100,
     sorter: {
       sortable: true,
       direction: null,
@@ -83,7 +83,7 @@ export const gridExampleHeaders: THeader<RGridExample>[] = [
     pin: 'view',
     align: 'left',
     label: '주소',
-    width: 300,
+    width: 250,
     sorter: {
       sortable: true,
       direction: null,
@@ -98,7 +98,7 @@ export const gridExampleHeaders: THeader<RGridExample>[] = [
     pin: 'view',
     align: 'left',
     label: '휴대폰번호',
-    width: 150,
+    width: 250,
     cell: ({ cellData, setCellData }) => {
       return (
         <Input
