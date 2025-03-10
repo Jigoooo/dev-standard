@@ -7,36 +7,24 @@ import {
   useTableData,
   Table,
 } from '@/shared/components';
-import { FileUploadModal } from '@/entities/file-upload-download';
-import { useEffect } from 'react';
 import {
-  generateUsers,
-  gridExampleHeaderGroups,
-  gridExampleHeaders,
-} from '@/entities/grid-example';
+  fileDownloadHeaders,
+  FileUploadModal,
+  generateFileUploads,
+  RFileDownload,
+} from '@/entities/file-upload-download';
+import { useEffect } from 'react';
 
 export function FileUploadDownload() {
-  const { dataList, setDataList, handelDataList } = useTableData<{
-    index: string;
-    check: boolean;
-    name: string;
-    email: string;
-    age: number;
-    address: string;
-    phone: string;
-    jobTitle: string;
-    department: string;
-    salary: number;
-    hireDate: string;
-  }>([]);
+  const { dataList, setDataList, handelDataList } = useTableData<RFileDownload>([]);
 
   useEffect(() => {
     let isMounted = true;
     const fetchUsers = async () => {
       const allUsers = [];
 
-      for await (const batch of generateUsers({
-        total: 10000,
+      for await (const batch of generateFileUploads({
+        total: 100,
       })) {
         allUsers.push(...batch);
 
@@ -78,8 +66,7 @@ export function FileUploadDownload() {
         <Button onClick={fileUploadModalOpen}>파일 업로드</Button>
       </FlexRow>
       <Table
-        tableHeaderGroups={gridExampleHeaderGroups}
-        tableHeaders={gridExampleHeaders}
+        tableHeaders={fileDownloadHeaders}
         tableDataList={dataList}
         handelDataList={handelDataList}
         handleSyncCheckList={(checkedList) => {

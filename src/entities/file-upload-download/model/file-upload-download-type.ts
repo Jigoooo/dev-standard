@@ -1,11 +1,8 @@
-export type RFileDownload = {
-  name: string;
-  email: string;
-  age: number;
-  address: string;
-  phone: string;
-  jobTitle: string;
-  department: string;
-  salary: number;
-  hireDate: string;
+import { TDataWithIndex } from '@/shared/components';
+
+export type RFileDownload = TDataWithIndex & {
+  fileUploadTitle: string;
+  note: string;
+  uploadDateTime: string;
+  uploadUser: string;
 };

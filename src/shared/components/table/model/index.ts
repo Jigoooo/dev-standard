@@ -11,6 +11,8 @@ export type {
   TTableStyle,
   THeaderGroup,
   THeader,
+  TDataWithIndex,
+  TDataWithCheck,
   TableBodyRowProps,
   TableBodyCellProps,
 } from './table-type.ts';

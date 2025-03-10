@@ -1,7 +1,7 @@
-import { Input, THeader } from '@/shared/components';
-import { RGridExample } from '@/entities/grid-example';
+import { THeader } from '@/shared/components';
+import { RFileDownload } from '@/entities/file-upload-download';
 
-export const fileDownloadHeaders: THeader<RGridExample>[] = [
+export const fileDownloadHeaders: THeader<RFileDownload>[] = [
   {
     id: 'index',
     pin: 'left',
@@ -13,50 +13,10 @@ export const fileDownloadHeaders: THeader<RGridExample>[] = [
     },
   },
   {
-    id: 'check',
-    pin: 'left',
-    align: 'center',
-    label: '',
-    width: 60,
-    sorter: {
-      sortable: false,
-    },
-  },
-  {
-    id: 'name',
-    pin: 'left',
-    align: 'left',
-    label: '이름',
-    width: 150,
-    sorter: {
-      sortable: true,
-      direction: null,
-    },
-    filter: {
-      filterType: 'text',
-      filterValue: '',
-    },
-  },
-  {
-    id: 'email',
+    id: 'fileUploadTitle',
     pin: 'view',
     align: 'left',
-    label: '이메일',
-    width: 220,
-    sorter: {
-      sortable: true,
-      direction: null,
-    },
-    filter: {
-      filterType: 'text',
-      filterValue: '',
-    },
-  },
-  {
-    id: 'age',
-    pin: 'view',
-    align: 'left',
-    label: '나이',
+    label: '업로드 제목',
     width: 200,
     sorter: {
       sortable: true,
@@ -68,10 +28,10 @@ export const fileDownloadHeaders: THeader<RGridExample>[] = [
     },
   },
   {
-    id: 'address',
+    id: 'note',
     pin: 'view',
     align: 'left',
-    label: '주소',
+    label: '비고',
     width: 300,
     sorter: {
       sortable: true,
@@ -83,35 +43,10 @@ export const fileDownloadHeaders: THeader<RGridExample>[] = [
     },
   },
   {
-    id: 'phone',
+    id: 'uploadDateTime',
     pin: 'view',
     align: 'left',
-    label: '휴대폰번호',
-    width: 150,
-    cell: ({ cellData, setCellData }) => {
-      return (
-        <Input
-          style={{ width: '100%', height: 30 }}
-          value={cellData}
-          onChange={(event) => setCellData(event.target.value)}
-          isFocusEffect={false}
-        />
-      );
-    },
-    sorter: {
-      sortable: false,
-      direction: null,
-    },
-    filter: {
-      filterType: 'text',
-      filterValue: '',
-    },
-  },
-  {
-    id: 'jobTitle',
-    pin: 'view',
-    align: 'left',
-    label: '직업',
+    label: '업로드 일자',
     width: 150,
     sorter: {
       sortable: true,
@@ -123,40 +58,10 @@ export const fileDownloadHeaders: THeader<RGridExample>[] = [
     },
   },
   {
-    id: 'department',
+    id: 'uploadUser',
     pin: 'view',
     align: 'left',
-    label: '부서',
-    width: 150,
-    sorter: {
-      sortable: true,
-      direction: null,
-    },
-    filter: {
-      filterType: 'text',
-      filterValue: '',
-    },
-  },
-  {
-    id: 'salary',
-    pin: 'view',
-    align: 'left',
-    label: '급여',
-    width: 150,
-    sorter: {
-      sortable: true,
-      direction: null,
-    },
-    filter: {
-      filterType: 'text',
-      filterValue: '',
-    },
-  },
-  {
-    id: 'hireDate',
-    pin: 'right',
-    align: 'left',
-    label: '고용일',
+    label: '등록자',
     width: 150,
     sorter: {
       sortable: true,

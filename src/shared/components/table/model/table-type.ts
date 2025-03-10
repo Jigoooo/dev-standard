@@ -69,6 +69,14 @@ export type THeader<TData = Record<string, any>> = {
   };
 };
 
+export type TDataWithIndex = {
+  index: string;
+};
+
+export type TDataWithCheck = {
+  check: boolean;
+};
+
 export type TableBodyRowProps = {
   headers: THeader[];
   virtualItem: { index: number; start: number };
