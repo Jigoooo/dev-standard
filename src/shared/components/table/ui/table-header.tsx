@@ -109,7 +109,7 @@ function TableHeaderView({
               borderBottom: tableStyle.tableBorder,
             }}
           >
-            <TableGroupHeaders mappingHeaderGroups={mappingHeaderGroups} />
+            <TableGroupHeaders mappingHeaderGroups={mappingHeaderGroups} position={'right'} />
           </FlexRow>
         )}
         <FlexRow
@@ -123,7 +123,14 @@ function TableHeaderView({
           }}
         >
           {headers.map((header, index) => {
-            return <TableHeaderCell key={header.id + index} header={header} />;
+            return (
+              <TableHeaderCell
+                key={header.id + index}
+                position={'right'}
+                header={header}
+                isVisibleHandler={index !== 0}
+              />
+            );
           })}
         </FlexRow>
         {filterRowEnabled && (
@@ -140,7 +147,12 @@ function TableHeaderView({
           >
             {headers.map((header, index) => {
               return (
-                <TableHeaderFilterCell key={header.id + index} position={'right'} header={header} />
+                <TableHeaderFilterCell
+                  key={header.id + index}
+                  position={'right'}
+                  header={header}
+                  isVisibleHandler={index !== 0}
+                />
               );
             })}
           </FlexRow>
@@ -195,7 +207,7 @@ function TableHeaderPin({ position, headers }: { position: 'left' | 'right'; hea
             borderBottom: tableStyle.tableBorder,
           }}
         >
-          <TableGroupHeaders mappingHeaderGroups={mappingHeaderGroups} />
+          <TableGroupHeaders mappingHeaderGroups={mappingHeaderGroups} position={position} />
         </FlexRow>
       )}
       <FlexRow
@@ -208,8 +220,18 @@ function TableHeaderPin({ position, headers }: { position: 'left' | 'right'; hea
           height: tableStyle.tableHeaderHeight,
         }}
       >
-        {headers.map((header, index) => {
-          return <TableHeaderCell key={header.id + index} header={header} />;
+        {headers.map((header, index, array) => {
+          const isVisibleHandler =
+            position === 'left' ? index !== 0 && index !== array.length - 1 : index !== 0;
+
+          return (
+            <TableHeaderCell
+              key={header.id + index}
+              position={position}
+              header={header}
+              isVisibleHandler={isVisibleHandler}
+            />
+          );
         })}
       </FlexRow>
       {filterRowEnabled && (
@@ -224,9 +246,17 @@ function TableHeaderPin({ position, headers }: { position: 'left' | 'right'; hea
             borderTop: tableStyle.tableBorder,
           }}
         >
-          {headers.map((header, index) => {
+          {headers.map((header, index, array) => {
+            const isVisibleHandler =
+              position === 'left' ? index !== 0 && index !== array.length - 1 : index !== 0;
+
             return (
-              <TableHeaderFilterCell key={header.id + index} position={position} header={header} />
+              <TableHeaderFilterCell
+                key={header.id + index}
+                position={position}
+                header={header}
+                isVisibleHandler={isVisibleHandler}
+              />
             );
           })}
         </FlexRow>
@@ -237,8 +267,10 @@ function TableHeaderPin({ position, headers }: { position: 'left' | 'right'; hea
 
 function TableGroupHeaders({
   mappingHeaderGroups,
+  position,
 }: {
   mappingHeaderGroups: { header: THeader; groupLabel: string }[];
+  position: 'left' | 'right';
 }) {
   const { tableStyle } = useTableContext();
 
@@ -250,6 +282,9 @@ function TableGroupHeaders({
 
         const nextGroupLabel = array[index + 1]?.groupLabel;
         const isSameNextGroup = nextGroupLabel === groupLabel;
+
+        const isVisibleHandler =
+          position === 'left' ? index !== 0 && index !== array.length - 1 : index !== 0;
 
         if (isSamePrevGroup) {
           return (
@@ -265,7 +300,11 @@ function TableGroupHeaders({
               }}
             >
               {!isSameNextGroup && (
-                <ResizeHandle tableStyle={tableStyle} position={'right'} disabled={true} />
+                <ResizeHandle
+                  tableStyle={tableStyle}
+                  position={position === 'left' ? 'right' : 'left'}
+                  isVisible={isVisibleHandler}
+                />
               )}
             </FlexRow>
           );
@@ -311,7 +350,11 @@ function TableGroupHeaders({
               </FlexRow>
             )}
             {!isSameNextGroup && (
-              <ResizeHandle tableStyle={tableStyle} position={'right'} disabled={true} />
+              <ResizeHandle
+                tableStyle={tableStyle}
+                position={position === 'left' ? 'right' : 'left'}
+                isVisible={isVisibleHandler}
+              />
             )}
           </FlexRow>
         );
@@ -320,7 +363,15 @@ function TableGroupHeaders({
   );
 }
 
-function TableHeaderCell({ header }: { header: THeader }) {
+function TableHeaderCell({
+  header,
+  position,
+  isVisibleHandler,
+}: {
+  header: THeader;
+  position: 'left' | 'right';
+  isVisibleHandler: boolean;
+}) {
   const { tableStyle, checkedState, handleCheckAll, handleSort } = useTableContext();
 
   if (header.id === 'check' && checkedState === undefined) {
@@ -371,8 +422,8 @@ function TableHeaderCell({ header }: { header: THeader }) {
           {header.sorter.direction === 'desc' && <SouthIcon style={{ fontSize: 'inherit' }} />}
         </FlexRow>
       )}
-      {header.id !== 'index' && header.id !== 'check' && (
-        <ResizeHandle tableStyle={tableStyle} position={'right'} />
+      {header.id !== 'index' && header.id !== 'check' && isVisibleHandler && (
+        <ResizeHandle tableStyle={tableStyle} position={position === 'left' ? 'right' : 'left'} />
       )}
     </FlexRow>
   );
@@ -381,9 +432,11 @@ function TableHeaderCell({ header }: { header: THeader }) {
 function TableHeaderFilterCell({
   position,
   header,
+  isVisibleHandler,
 }: {
   position: 'left' | 'right';
   header: THeader;
+  isVisibleHandler: boolean;
 }) {
   const { tableStyle, onChangeFilterValue } = useTableContext();
 
@@ -411,22 +464,20 @@ function TableHeaderFilterCell({
           isFocusEffect={false}
         />
       )}
-      {header.id !== 'index' && header.id !== 'check' && (
-        <ResizeHandle
-          tableStyle={tableStyle}
-          position={position === 'left' ? 'right' : 'left'}
-          disabled={true}
-        />
+      {header.id !== 'index' && header.id !== 'check' && isVisibleHandler && (
+        <ResizeHandle tableStyle={tableStyle} position={position === 'left' ? 'right' : 'left'} />
       )}
     </FlexRow>
   );
 }
 
 function ResizeHandle({
+  isVisible = true,
   tableStyle,
   position,
   disabled = true,
 }: {
+  isVisible?: boolean;
   tableStyle: TTableStyle;
   position: 'left' | 'right';
   disabled?: boolean;
@@ -449,7 +500,13 @@ function ResizeHandle({
         ...(position === 'right' && { right: -4 }),
       }}
     >
-      <div style={{ width: 1.6, height: '60%', backgroundColor: tableStyle.tableResizeColor }} />
+      <div
+        style={{
+          width: 1.6,
+          height: '60%',
+          backgroundColor: isVisible ? tableStyle.tableResizeColor : 'transparent',
+        }}
+      />
     </div>
   );
 }
