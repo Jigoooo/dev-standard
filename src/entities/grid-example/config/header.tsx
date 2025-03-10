@@ -50,7 +50,7 @@ export const gridExampleHeaders: THeader<RGridExample>[] = [
   },
   {
     id: 'email',
-    pin: 'right',
+    pin: 'view',
     align: 'left',
     label: '이메일',
     width: 250,
