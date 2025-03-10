@@ -32,7 +32,7 @@ export const fileDownloadHeaders: THeader<TFileDownload>[] = [
     pin: 'view',
     align: 'left',
     label: '비고',
-    width: 300,
+    width: 400,
     sorter: {
       sortable: true,
       direction: null,
@@ -74,7 +74,7 @@ export const fileDownloadHeaders: THeader<TFileDownload>[] = [
   },
   {
     id: 'button',
-    pin: 'right',
+    pin: 'view',
     align: 'center',
     label: '',
     width: 80,

@@ -59,13 +59,14 @@ export function FileUploadDownload() {
     <FlexColumn
       style={{
         height: '100%',
-        maxHeight: 'calc(100vh - 200px)',
+        maxHeight: 'calc(100vh - 180px)',
       }}
     >
       <FlexRow>
         <Button onClick={fileUploadModalOpen}>파일 업로드</Button>
       </FlexRow>
       <Table
+        autoWidth
         tableHeaders={fileDownloadHeaders}
         tableDataList={dataList}
         handelDataList={handelDataList}
