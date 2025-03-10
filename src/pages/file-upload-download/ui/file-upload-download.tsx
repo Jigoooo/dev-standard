@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import {
   FlexColumn,
   FlexRow,
@@ -13,8 +15,8 @@ import {
   generateFileUploads,
   TFileDownload,
 } from '@/entities/file-upload-download';
-import { useEffect } from 'react';
 
+// 메뉴 뎁스 구현
 // 테이블 상단 버튼
 export function FileUploadDownload() {
   const { dataList, setDataList, handelDataList } = useTableData<TFileDownload>([]);
