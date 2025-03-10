@@ -372,6 +372,7 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
         height: '100%',
         backgroundColor: getBackgroundColor(),
         contain: 'paint',
+        // borderRight: tableStyle.tableBorder,
       }}
       // onMouseEnter={() => {
       //   setHoverIndex(index);
