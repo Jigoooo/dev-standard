@@ -1,1 +1,1 @@
-export * from './browser-router';
+export { routeComponentMap, generateRoutesFromMenu } from './router.tsx';

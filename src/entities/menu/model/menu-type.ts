@@ -8,9 +8,11 @@ export type TMenu = {
   name: string;
   icon: IconType;
   router: Router;
+  children?: TMenu[];
 };
 
 export type TMenuState = {
+  menus: TMenu[];
   sidebarCollapsed: boolean;
   delayedSidebarCollapsed: boolean;
   sidebarWidth: number;
@@ -20,6 +22,7 @@ export type TMenuState = {
 export type TMenuStore = {
   state: TMenuState;
   actions: {
+    setMenus: (menus: TMenu[]) => void;
     toggleSidebarCollapsed: () => void;
     setSelectedMenu: (menu: TMenu) => void;
   };

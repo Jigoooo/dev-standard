@@ -12,7 +12,7 @@ import { TMenu } from '@/entities/menu';
 import { Router } from '@/entities/router';
 import { useShallow } from 'zustand/react/shallow';
 
-export const menus: TMenu[] = [
+const menus: TMenu[] = [
   {
     menuIndex: 0,
     name: 'UI 컴포넌트',
@@ -46,13 +46,14 @@ export const menus: TMenu[] = [
 ] as const;
 
 export const myProfileMenu: TMenu = {
-  menuIndex: 5,
+  menuIndex: 9999,
   name: '내 정보',
   icon: IoPersonCircleOutline,
   router: Router.MY_PROFILE,
 };
 
 const initialState: TMenuState = {
+  menus,
   sidebarCollapsed: false,
   delayedSidebarCollapsed: false,
   sidebarWidth: 250,
@@ -65,6 +66,15 @@ const useMenuStore = create<TMenuStore>()((setState, getState) => {
       ...initialState,
     },
     actions: {
+      setMenus: (menus) => {
+        setState((state) => ({
+          ...state,
+          state: {
+            ...state.state,
+            menus,
+          },
+        }));
+      },
       toggleSidebarCollapsed: () => {
         const newSidebarCollapsed = !getState().state.sidebarCollapsed;
 

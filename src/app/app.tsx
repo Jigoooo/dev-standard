@@ -1,8 +1,7 @@
 import '@/app/providers/css';
 
-import { RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import { browserRouter } from '@/app/router';
 import {
   LoadingProvider,
   AlertProvider,
@@ -10,13 +9,42 @@ import {
   ModalProvider,
   ThemeProvider,
 } from '@/app/providers';
+import { Router } from '@/entities/router';
+import { SignIn } from '@/pages/sign-in';
+import { RouteErrorPage } from '@/shared/components';
+import { Main } from '@/pages/main';
+import { MyProfile } from '@/pages/my-profile';
+import { generateRoutesFromMenu } from '@/app/router';
+import { useMenuState } from '@/entities/menu';
 
 function App() {
+  const menuState = useMenuState();
+
+  const router = createBrowserRouter([
+    {
+      path: Router.SIGN_IN,
+      element: <SignIn />,
+      errorElement: <RouteErrorPage />,
+    },
+    {
+      path: Router.MAIN,
+      element: <Main />,
+      errorElement: <RouteErrorPage />,
+      children: [
+        {
+          path: Router.MY_PROFILE,
+          element: <MyProfile />,
+        },
+        ...generateRoutesFromMenu(menuState.menus),
+      ],
+    },
+  ]);
+
   return (
     <QueryProvider>
       <ThemeProvider>
         <ModalProvider>
-          <RouterProvider router={browserRouter} />
+          <RouterProvider router={router} />
         </ModalProvider>
         <LoadingProvider />
         <AlertProvider />

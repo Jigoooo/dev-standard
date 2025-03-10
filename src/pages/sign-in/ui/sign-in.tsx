@@ -12,7 +12,7 @@ import {
   DialogType,
   Typography,
 } from '@/shared/components';
-import { menus } from '@/entities/menu';
+import { useMenuState } from '@/entities/menu';
 import { FlexColumn, FlexRow } from '@/shared/components';
 import { useToggle } from '@/shared/hooks';
 import { createValidator, getFormValues } from '@/shared/lib';
@@ -32,6 +32,7 @@ const signInFields: Record<
 
 export function SignIn() {
   const navigate = useNavigate();
+  const menuState = useMenuState();
   const saveId = localStorage.getItem(localStorageKey.ID) ?? '';
 
   const [saveIdChecked, toggleSaveIdChecked] = useToggle(!!saveId);
@@ -83,7 +84,7 @@ export function SignIn() {
             localStorage.removeItem(localStorageKey.ID);
           }
 
-          navigate(`${Router.MAIN}/${menus[0].router}`, { viewTransition: true });
+          navigate(`${Router.MAIN}/${menuState.menus[0].router}`, { viewTransition: true });
         },
       },
     );

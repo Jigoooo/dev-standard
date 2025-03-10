@@ -8,7 +8,7 @@ import { IoRefreshCircleOutline } from 'react-icons/io5';
 import { IoIosCloseCircleOutline } from 'react-icons/io';
 
 import { Button, Divider, FlexColumn, FlexRow, Typography } from '@/shared/components';
-import { CacheNode, menus, TMenu, useMenuState } from '@/entities/menu';
+import { CacheNode, TMenu, useMenuState } from '@/entities/menu';
 
 export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undefined> }) {
   const navigate = useNavigate();
@@ -24,8 +24,8 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
   useEffect(() => {
     const nodes = aliveRef?.current?.getCacheNodes() ?? [];
     const sorted = [...nodes].sort((a, b) => {
-      const menuA = menus.find((menu) => a.cacheKey.includes(menu.router));
-      const menuB = menus.find((menu) => b.cacheKey.includes(menu.router));
+      const menuA = menuState.menus.find((menu) => a.cacheKey.includes(menu.router));
+      const menuB = menuState.menus.find((menu) => b.cacheKey.includes(menu.router));
       return (menuA?.menuIndex ?? 0) - (menuB?.menuIndex ?? 0);
     });
     setSortedCacheNodes(sorted);
@@ -123,7 +123,7 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
           >
             <AnimatePresence initial={false}>
               {sortedCacheNodes.map((cacheNode) => {
-                const findCacheMenu = menus.find((menu) =>
+                const findCacheMenu = menuState.menus.find((menu) =>
                   cacheNode.cacheKey.includes(menu.router),
                 );
 
