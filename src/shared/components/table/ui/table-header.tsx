@@ -13,6 +13,21 @@ import {
   useTableContext,
 } from '@/shared/components';
 
+// function sortHeadersByGroup<TData>(
+//   headers: THeader<TData>[],
+//   headerGroups?: THeaderGroup<TData>[],
+// ): THeader[] {
+//   if (!headerGroups || headerGroups.length === 0) {
+//     return headers;
+//   }
+//
+//   return [...headers].sort((a, b) => {
+//     const groupIndexA = headerGroups.findIndex((group) => group.headerIds.includes(a.id));
+//     const groupIndexB = headerGroups.findIndex((group) => group.headerIds.includes(b.id));
+//     return groupIndexA - groupIndexB;
+//   });
+// }
+
 export function TableHeader({ ref }: { ref: RefObject<HTMLDivElement | null> }) {
   const { tableStyle, headerHeight, sortedHeaders: headers } = useTableContext();
 
@@ -53,14 +68,17 @@ function TableHeaderView({
   const mappingHeaderGroups = headers.map((header) => {
     const findGroups = headerGroups.find((group) => group.headerIds.includes(header.id));
     return {
-      id: header.id,
+      header,
       groupLabel: findGroups?.groupLabel ?? '',
     };
   });
 
-  console.log(mappingHeaderGroups);
+  const groupHeaderHeight =
+    headerGroups && headerGroups.length > 0 ? tableStyle.tableHeaderHeight : 0;
+  const headerRowHeight = tableStyle.tableHeaderHeight;
 
   const viewWidth = headers.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
+
   return (
     <div
       ref={ref}
@@ -77,26 +95,27 @@ function TableHeaderView({
         className={'table-header-container'}
         style={{ position: 'relative', width: viewWidth, height: '100%' }}
       >
+        {headerGroups.length > 0 && (
+          <FlexRow
+            className={'table-header-row'}
+            style={{
+              alignItems: 'center',
+              position: 'absolute',
+              top: 0,
+              width: viewWidth,
+              height: tableStyle.tableHeaderHeight,
+              borderBottom: tableStyle.tableBorder,
+            }}
+          >
+            <TableGroupHeaders mappingHeaderGroups={mappingHeaderGroups} />
+          </FlexRow>
+        )}
         <FlexRow
           className={'table-header-row'}
           style={{
             alignItems: 'center',
             position: 'absolute',
-            top: 0,
-            width: viewWidth,
-            height: tableStyle.tableHeaderHeight,
-          }}
-        >
-          {headers.map((header) => {
-            return <TableHeaderCell key={header.id} header={header} />;
-          })}
-        </FlexRow>
-        <FlexRow
-          className={'table-header-row'}
-          style={{
-            alignItems: 'center',
-            position: 'absolute',
-            top: tableStyle.tableHeaderHeight,
+            top: groupHeaderHeight,
             width: viewWidth,
             height: tableStyle.tableHeaderHeight,
           }}
@@ -111,7 +130,7 @@ function TableHeaderView({
             style={{
               alignItems: 'center',
               position: 'absolute',
-              top: tableStyle.tableHeaderHeight * 2,
+              top: groupHeaderHeight + headerRowHeight,
               width: viewWidth,
               height: tableStyle.tableHeaderHeight,
               borderTop: tableStyle.tableBorder,
@@ -128,7 +147,19 @@ function TableHeaderView({
 }
 
 function TableHeaderPin({ position, headers }: { position: 'left' | 'right'; headers: THeader[] }) {
-  const { tableStyle, filterRowEnabled } = useTableContext();
+  const { tableStyle, headerGroups, filterRowEnabled } = useTableContext();
+
+  const mappingHeaderGroups = headers.map((header) => {
+    const findGroups = headerGroups.find((group) => group.headerIds.includes(header.id));
+    return {
+      header,
+      groupLabel: findGroups?.groupLabel ?? '',
+    };
+  });
+
+  const groupHeaderHeight =
+    headerGroups && headerGroups.length > 0 ? tableStyle.tableHeaderHeight : 0;
+  const headerRowHeight = tableStyle.tableHeaderHeight;
 
   const pinHeaderWidth = headers.reduce((acc, cur) => acc + (cur?.width ?? 0), 0);
 
@@ -148,26 +179,27 @@ function TableHeaderPin({ position, headers }: { position: 'left' | 'right'; hea
           : { borderLeft: tableStyle.tableBorder }),
       }}
     >
+      {headerGroups.length > 0 && (
+        <FlexRow
+          className={'pin-header-row'}
+          style={{
+            alignItems: 'center',
+            position: 'absolute',
+            top: 0,
+            width: '100%',
+            height: tableStyle.tableHeaderHeight,
+            borderBottom: tableStyle.tableBorder,
+          }}
+        >
+          <TableGroupHeaders mappingHeaderGroups={mappingHeaderGroups} />
+        </FlexRow>
+      )}
       <FlexRow
         className={'pin-header-row'}
         style={{
           alignItems: 'center',
           position: 'absolute',
-          top: 0,
-          width: '100%',
-          height: tableStyle.tableHeaderHeight,
-        }}
-      >
-        {headers.map((header) => {
-          return <TableHeaderCell key={header.id} header={header} />;
-        })}
-      </FlexRow>
-      <FlexRow
-        className={'pin-header-row'}
-        style={{
-          alignItems: 'center',
-          position: 'absolute',
-          top: tableStyle.tableHeaderHeight,
+          top: groupHeaderHeight,
           width: '100%',
           height: tableStyle.tableHeaderHeight,
         }}
@@ -182,7 +214,7 @@ function TableHeaderPin({ position, headers }: { position: 'left' | 'right'; hea
           style={{
             alignItems: 'center',
             position: 'absolute',
-            top: tableStyle.tableHeaderHeight * 2,
+            top: groupHeaderHeight + headerRowHeight,
             width: '100%',
             height: tableStyle.tableHeaderHeight,
             borderTop: tableStyle.tableBorder,
@@ -197,6 +229,88 @@ function TableHeaderPin({ position, headers }: { position: 'left' | 'right'; hea
   );
 }
 
+function TableGroupHeaders({
+  mappingHeaderGroups,
+}: {
+  mappingHeaderGroups: { header: THeader; groupLabel: string }[];
+}) {
+  const { tableStyle } = useTableContext();
+
+  return (
+    <>
+      {mappingHeaderGroups.map(({ header, groupLabel }, index, array) => {
+        const prevGroupLabel = array[index - 1]?.groupLabel;
+        const isSamePrevGroup = prevGroupLabel === groupLabel;
+
+        const nextGroupLabel = array[index + 1]?.groupLabel;
+        const isSameNextGroup = nextGroupLabel === groupLabel;
+
+        if (isSamePrevGroup) {
+          return (
+            <FlexRow
+              key={header.id}
+              className={'table-header-cell'}
+              style={{
+                boxSizing: 'border-box',
+                alignItems: 'center',
+                height: tableStyle.tableHeaderHeight,
+                width: 1.4,
+                contain: 'paint',
+              }}
+            >
+              <ResizeHandle tableStyle={tableStyle} position={'right'} disabled={true} />
+            </FlexRow>
+          );
+        }
+
+        let totalWidth = 0;
+        for (let i = index; i < array.length; i++) {
+          if (array[i].groupLabel === groupLabel) {
+            totalWidth += array[i].header.width;
+          } else {
+            break;
+          }
+        }
+
+        return (
+          <FlexRow
+            key={header.id}
+            className={'table-header-cell'}
+            style={{
+              boxSizing: 'border-box',
+              alignItems: 'center',
+              paddingInline: 12,
+              width: totalWidth,
+              height: tableStyle.tableHeaderHeight,
+              contain: 'paint',
+            }}
+          >
+            {!isSamePrevGroup && groupLabel && (
+              <FlexRow style={{ fontSize: '0.88rem', alignItems: 'center', gap: 6 }}>
+                <Typography
+                  style={{
+                    fontSize: 'inherit',
+                    fontWeight: 600,
+                    color: tableStyle.tableHeaderColor,
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
+                  {groupLabel}
+                </Typography>
+              </FlexRow>
+            )}
+            {!isSameNextGroup && (
+              <ResizeHandle tableStyle={tableStyle} position={'right'} disabled={true} />
+            )}
+          </FlexRow>
+        );
+      })}
+    </>
+  );
+}
+
 function TableHeaderCell({ header }: { header: THeader }) {
   const { tableStyle, checkedState, handleCheckAll, handleSort } = useTableContext();
 
@@ -206,7 +320,6 @@ function TableHeaderCell({ header }: { header: THeader }) {
 
   return (
     <FlexRow
-      key={header.id}
       className={'table-header-cell'}
       style={{
         boxSizing: 'border-box',
@@ -267,7 +380,6 @@ function TableHeaderFilterCell({
 
   return (
     <FlexRow
-      key={header.id}
       className={'table-header-cell'}
       style={{
         alignItems: 'center',

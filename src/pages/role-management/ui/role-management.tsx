@@ -7,7 +7,7 @@ import { RRoleManagement } from '@/entities/role-management';
 const headerGroups: THeaderGroup<RRoleManagement>[] = [
   {
     groupLabel: 'Personal Info',
-    headerIds: ['name', 'email', 'phone'],
+    headerIds: ['name', 'age', 'email', 'phone'],
   },
   {
     groupLabel: 'Employment',
