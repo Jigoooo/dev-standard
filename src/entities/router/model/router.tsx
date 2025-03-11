@@ -12,7 +12,6 @@ import { Router, TMenu } from './router-type.ts';
 import { RouteErrorPage } from '@/shared/components';
 import { SignIn } from '@/pages/sign-in';
 import { Main } from '@/pages/main';
-import { GridExample } from '@/pages/grid-example';
 import { IconType } from 'react-icons';
 
 const MyProfile = lazy(() =>
@@ -20,6 +19,9 @@ const MyProfile = lazy(() =>
 );
 const UiComponent = lazy(() =>
   import('@/pages/ui-component').then((module) => ({ default: module.UiComponent })),
+);
+const GridExample = lazy(() =>
+  import('@/pages/grid-example').then((module) => ({ default: module.GridExample })),
 );
 const FileUploadDownload = lazy(() =>
   import('@/pages/file-upload-download').then((module) => ({ default: module.FileUploadDownload })),
