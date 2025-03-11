@@ -7,6 +7,7 @@ export function RouteErrorPage() {
   console.error('error: --- ', error);
 
   if (error.status === 404 && location.pathname !== Router.SIGN_IN) {
+    // todo 토큰 체크 로직도 추가
     return <Navigate to={Router.MAIN} replace />;
   }
 
