@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 import TriphosLogo from '@/shared/assets/images/triphos_logo.png';
 
-import { menus, Router } from '@/entities/router';
+import { sidebarMainMenus } from '@/entities/router';
 import {
   Form,
   Input,
@@ -82,18 +82,12 @@ export function SignIn() {
             localStorage.removeItem(localStorageKey.ID);
           }
 
-          navigate(`${Router.MAIN}/${menus[0].router}`, { viewTransition: true });
+          if (sidebarMainMenus.length > 0) {
+            navigate(sidebarMainMenus[0].fullRouterPath, { viewTransition: true });
+          }
         },
       },
     );
-
-    // if (saveIdChecked) {
-    //   localStorage.setItem(localStorageKey.ID, id);
-    // } else {
-    //   localStorage.removeItem(localStorageKey.ID);
-    // }
-    //
-    // navigate(`${Router.MAIN}/${menus[0].router}`, { viewTransition: true });
   };
 
   return (
@@ -145,6 +139,7 @@ export function SignIn() {
                 name={signInFields.id}
                 defaultValue={saveId}
                 style={{ width: '100%', height: 42 }}
+                autoComplete={'current-password'}
               />
             </FlexColumn>
             <FlexColumn style={{ width: '100%', gap: 4 }}>
@@ -155,6 +150,7 @@ export function SignIn() {
                 name={signInFields.password}
                 style={{ width: '100%', height: 42 }}
                 type={'password'}
+                autoComplete={'current-password'}
               />
             </FlexColumn>
 
