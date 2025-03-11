@@ -56,6 +56,17 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
     setRoutes((prevState) => updater(prevState));
   };
 
+  const updateRouteName = (fullRouterPath: string, newName: string) => {
+    setRoutes((prevState) => {
+      return prevState.map((route) => {
+        if (route.path === fullRouterPath) {
+          return { ...route, name: newName };
+        }
+        return route;
+      });
+    });
+  };
+
   return (
     <RouterMenuContext
       value={{
@@ -63,6 +74,7 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
         ...routerMenus,
         updateRouteChildren,
         updateRoutes,
+        updateRouteName,
       }}
     >
       {children}

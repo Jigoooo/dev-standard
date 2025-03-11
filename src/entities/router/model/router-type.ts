@@ -49,4 +49,5 @@ export type TRouterMenuContext = {
   myProfileMenu: TMenu;
   updateRouteChildren: (parentPath: string, newChildren: RouteObject[], merge?: boolean) => void;
   updateRoutes: (updater: (prevRoutes: RouteObject[]) => RouteObject[]) => void;
+  updateRouteName: (fullRouterPath: string, newName: string) => void;
 } | null;
