@@ -8,7 +8,7 @@ import {
   QueryProvider,
   ModalProvider,
   ThemeProvider,
-  withRouterMenuProvider,
+  withRouterMenuHoc,
 } from '@/app/providers';
 import { useRouterMenuContext } from '@/entities/router';
 
@@ -29,4 +29,4 @@ function App() {
   );
 }
 
-export default withRouterMenuProvider(App);
+export default withRouterMenuHoc(App);

@@ -1,7 +1,7 @@
 import { ComponentType } from 'react';
 import { RouterMenuContextWrapper } from '@/entities/router';
 
-export function withRouterMenuProvider<P extends object>(
+export function withRouterMenuHoc<P extends object>(
   WrappedComponent: ComponentType<P>,
 ): ComponentType<P> {
   return function WithRouterMenuProvider(props: P) {
