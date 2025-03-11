@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { FlexColumn, FlexRow } from '@/shared/components';
 import { PageTab, Router, Sidebar, useRouterMenuContext, useRouterState } from '@/entities/router';
 import { KeepAliveWrapper, MainHeader } from '@/entities/main';
+import { localStorageKey } from '@/shared/constants';
 
 export function Main() {
   const navigate = useNavigate();
@@ -24,9 +25,25 @@ export function Main() {
 
   useEffect(() => {
     if (sidebarMainMenus.length > 0) {
-      navigate(sidebarMainMenus[0].fullRouterPath);
+      const lastLocation = sessionStorage.getItem(localStorageKey.LAST_LOCATION);
+      if (lastLocation) {
+        navigate(lastLocation);
+      } else {
+        navigate(sidebarMainMenus[0].fullRouterPath);
+      }
     }
   }, [sidebarMainMenus]);
+
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      sessionStorage.setItem(localStorageKey.LAST_LOCATION, location.pathname);
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [location.pathname]);
 
   useEffect(() => {
     updateMainRouteChildren([
