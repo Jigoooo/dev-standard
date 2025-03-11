@@ -10,11 +10,12 @@ import { MdOutlineManageAccounts } from 'react-icons/md';
 import { IoPersonCircleOutline } from 'react-icons/io5';
 
 import { Router, TMenu } from './router-type.ts';
-import { RouterMenuContext } from '@/entities/router';
+import { componentMap, RouterMenuContext } from '@/entities/router';
 import { SignIn } from '@/pages/sign-in';
 import { RouteErrorPage } from '@/shared/components';
 import { Main } from '@/pages/main';
 import { MyProfile } from '@/pages/my-profile';
+import { RMenu } from './router-type.ts';
 
 const defaultRoutes: RouteObject[] = [
   {
@@ -38,7 +39,7 @@ const defaultRoutes: RouteObject[] = [
 export function RouterMenuContextWrapper({ children }: { children: ReactNode }) {
   const [routes, setRoutes] = useState(defaultRoutes);
 
-  const routerMenus = useRouterMenus(routes);
+  const routerMenus = useRouterMenus();
 
   const updateRouteChildren = (parentPath: string, newChildren: RouteObject[], merge?: boolean) => {
     setRoutes((prevState) => {
@@ -51,6 +52,31 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
         return route;
       });
     });
+  };
+  const updateMainRouteChildren = (responseMenus: RMenu[]) => {
+    const newMenus: TMenu[] = responseMenus.map((responseMenu) => {
+      const menuIndex = Number(responseMenu.MAIN_CD + responseMenu.SUB1_CD + responseMenu.SUB2_CD);
+      const menuId = responseMenu.MENU_ID as Router;
+
+      return {
+        menuIndex,
+        name: responseMenu.MENU_TITLE,
+        icon: routerMappedIconName[menuId].icon,
+        router: menuId,
+        fullRouterPath: responseMenu.MENU_LINK,
+      };
+    });
+    const newChildren = newMenus.map((menu) => {
+      const Component = componentMap[menu.router]!;
+      return {
+        path: menu.fullRouterPath,
+        element: <Component />,
+      };
+    });
+
+    updateRouteChildren(Router.MAIN, newChildren, true);
+
+    routerMenus.setMenus(newMenus);
   };
   const updateRoutes = (updater: (prevRoutes: RouteObject[]) => RouteObject[]) => {
     setRoutes((prevState) => updater(prevState));
@@ -73,6 +99,7 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
         routes,
         ...routerMenus,
         updateRouteChildren,
+        updateMainRouteChildren,
         updateRoutes,
         updateRouteName,
       }}
@@ -95,24 +122,11 @@ const routerMappedIconName: Record<string, { icon: IconType; name: string }> = {
   [Router.MY_PROFILE]: { icon: IoPersonCircleOutline, name: '내정보' },
 };
 
-function useRouterMenus(routes: RouteObject[]) {
-  const mainRouter = routes.find((route) => route.path === Router.MAIN);
-  const mainChildren = mainRouter?.children ?? [];
-
-  const menus: TMenu[] = mainChildren.map((child) => {
-    const menuIndex = Number(child.id?.split('-')[1] ?? '0');
-    const childPath = child.path ?? '';
-    return {
-      menuIndex,
-      name: routerMappedIconName[childPath].name,
-      icon: routerMappedIconName[childPath].icon,
-      router: childPath as Router,
-      fullRouterPath: `${mainRouter?.path}/${child.path}`,
-    };
-  });
+function useRouterMenus() {
+  const [menus, setMenus] = useState<TMenu[]>([]);
 
   const sidebarMainMenus = menus.filter((menu) => menu.router !== Router.MY_PROFILE);
   const myProfileMenu = menus.find((menu) => menu.router === Router.MY_PROFILE)!;
 
-  return { menus, sidebarMainMenus, myProfileMenu };
+  return { menus, setMenus, sidebarMainMenus, myProfileMenu };
 }

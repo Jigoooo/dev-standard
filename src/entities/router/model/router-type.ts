@@ -42,12 +42,24 @@ export type TRouterStore = {
   };
 };
 
+export type RMenu = {
+  MAIN_CD: number;
+  SUB1_CD: number;
+  SUB2_CD: number;
+  ORDER_BY: number;
+  MENU_ID: string;
+  MENU_TITLE: string;
+  MENU_LINK: string;
+  DISPLAY_YN: string;
+};
+
 export type TRouterMenuContext = {
   routes: RouteObject[];
   menus: TMenu[];
   sidebarMainMenus: TMenu[];
   myProfileMenu: TMenu;
   updateRouteChildren: (parentPath: string, newChildren: RouteObject[], merge?: boolean) => void;
+  updateMainRouteChildren: (responseMenus: RMenu[]) => void;
   updateRoutes: (updater: (prevRoutes: RouteObject[]) => RouteObject[]) => void;
   updateRouteName: (fullRouterPath: string, newName: string) => void;
 } | null;

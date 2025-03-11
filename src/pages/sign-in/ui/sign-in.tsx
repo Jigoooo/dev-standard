@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 import TriphosLogo from '@/shared/assets/images/triphos_logo.png';
 
-import { Router, useRouterMenuContext, componentMap } from '@/entities/router';
+import { Router, useRouterMenuContext } from '@/entities/router';
 import {
   Form,
   Input,
@@ -31,7 +31,7 @@ const signInFields: Record<
 
 export function SignIn() {
   const navigate = useNavigate();
-  const { updateRouteChildren } = useRouterMenuContext();
+  const { updateMainRouteChildren } = useRouterMenuContext();
 
   const saveId = localStorage.getItem(localStorageKey.ID) ?? '';
 
@@ -84,38 +84,58 @@ export function SignIn() {
             localStorage.removeItem(localStorageKey.ID);
           }
 
-          const UiComponent = componentMap[Router.UI]!;
-          const GridExample = componentMap[Router.GRID_EXAMPLE]!;
-          const FileUploadDownload = componentMap[Router.FILE_UPLOAD_DOWNLOAD]!;
-          const ExcelUploadDownload = componentMap[Router.EXCEL_UPLOAD_DOWNLOAD]!;
-          const RoleManagement = componentMap[Router.ROLE_MANAGEMENT]!;
-
-          updateRouteChildren(
-            Router.MAIN,
-            [
-              {
-                path: Router.UI,
-                element: <UiComponent />,
-              },
-              {
-                path: Router.GRID_EXAMPLE,
-                element: <GridExample />,
-              },
-              {
-                path: Router.FILE_UPLOAD_DOWNLOAD,
-                element: <FileUploadDownload />,
-              },
-              {
-                path: Router.EXCEL_UPLOAD_DOWNLOAD,
-                element: <ExcelUploadDownload />,
-              },
-              {
-                path: Router.ROLE_MANAGEMENT,
-                element: <RoleManagement />,
-              },
-            ],
-            true,
-          );
+          updateMainRouteChildren([
+            {
+              MAIN_CD: 0,
+              SUB1_CD: 0,
+              SUB2_CD: 1,
+              ORDER_BY: 0,
+              MENU_ID: 'ui-component',
+              MENU_TITLE: 'UI 컴포넌트',
+              MENU_LINK: '/main/ui-component',
+              DISPLAY_YN: 'Y',
+            },
+            {
+              MAIN_CD: 0,
+              SUB1_CD: 0,
+              SUB2_CD: 2,
+              ORDER_BY: 1,
+              MENU_ID: 'grid-example',
+              MENU_TITLE: '그리드 예시',
+              MENU_LINK: '/main/grid-example',
+              DISPLAY_YN: 'Y',
+            },
+            {
+              MAIN_CD: 0,
+              SUB1_CD: 0,
+              SUB2_CD: 3,
+              ORDER_BY: 2,
+              MENU_ID: 'file-upload-download',
+              MENU_TITLE: '파일 업로드/다운로드',
+              MENU_LINK: '/main/file-upload-download',
+              DISPLAY_YN: 'Y',
+            },
+            {
+              MAIN_CD: 0,
+              SUB1_CD: 0,
+              SUB2_CD: 4,
+              ORDER_BY: 3,
+              MENU_ID: 'excel-upload-download',
+              MENU_TITLE: 'Excel 업로드/다운로드',
+              MENU_LINK: '/main/excel-upload-download',
+              DISPLAY_YN: 'Y',
+            },
+            {
+              MAIN_CD: 0,
+              SUB1_CD: 0,
+              SUB2_CD: 5,
+              ORDER_BY: 4,
+              MENU_ID: 'role-management',
+              MENU_TITLE: '메뉴/버튼 권한관리',
+              MENU_LINK: '/main/role-management',
+              DISPLAY_YN: 'Y',
+            },
+          ]);
 
           navigate(Router.MAIN, { viewTransition: true, replace: true });
         },

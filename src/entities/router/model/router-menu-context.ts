@@ -1,5 +1,5 @@
 import { createContext, use } from 'react';
-import { TRouterMenuContext } from '@/entities/router/model/router-type.ts';
+import { TRouterMenuContext } from './router-type.ts';
 
 export const RouterMenuContext = createContext<TRouterMenuContext>(null);
 
