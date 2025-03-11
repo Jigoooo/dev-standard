@@ -1,12 +1,14 @@
 import { useKeepAliveRef } from 'keepalive-for-react';
 import KeepAliveRouteOutlet from 'keepalive-for-react-router';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { FlexColumn, FlexRow } from '@/shared/components';
 import { PageTab, Router, Sidebar, useRouterMenuContext, useRouterState } from '@/entities/router';
 import { KeepAliveWrapper, MainHeader } from '@/entities/main';
+import { useEffect } from 'react';
 
 export function Main() {
+  const navigate = useNavigate();
   const aliveRef = useKeepAliveRef();
 
   const location = useLocation();
@@ -19,6 +21,12 @@ export function Main() {
     (sidebarMainMenus.length > 0 ? sidebarMainMenus[0] : undefined);
 
   const isMatchedExcludeMenu = excludeCacheMenuRouters.includes(currentMenu?.fullRouterPath ?? '');
+
+  useEffect(() => {
+    if (sidebarMainMenus.length > 0) {
+      navigate(sidebarMainMenus[0].fullRouterPath);
+    }
+  }, [sidebarMainMenus]);
 
   return (
     <FlexRow

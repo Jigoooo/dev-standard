@@ -1,21 +1,14 @@
 import { ReactNode, useState } from 'react';
 import { RouteObject } from 'react-router-dom';
-import { IconType } from 'react-icons';
-
-import { RxComponent1 } from 'react-icons/rx';
-import { GoTable } from 'react-icons/go';
-import { FaRegFile } from 'react-icons/fa';
-import { RiFileExcel2Line } from 'react-icons/ri';
-import { MdOutlineManageAccounts } from 'react-icons/md';
-import { IoPersonCircleOutline } from 'react-icons/io5';
 
 import { Router, TMenu } from './router-type.ts';
-import { componentMap, RouterMenuContext } from '@/entities/router';
+import { routerComponentMap, routerMappedIcon } from './router-map.tsx';
+import { RouterMenuContext } from '@/entities/router';
+import { RMenu } from './router-type.ts';
 import { SignIn } from '@/pages/sign-in';
 import { RouteErrorPage } from '@/shared/components';
 import { Main } from '@/pages/main';
 import { MyProfile } from '@/pages/my-profile';
-import { RMenu } from './router-type.ts';
 
 const defaultRoutes: RouteObject[] = [
   {
@@ -36,19 +29,26 @@ const defaultRoutes: RouteObject[] = [
   },
 ];
 
-const routerMappedIconName: Record<string, { icon: IconType; name: string }> = {
-  [Router.UI]: { icon: RxComponent1, name: 'UI 컴포넌트' },
-  [Router.GRID_EXAMPLE]: { icon: GoTable, name: '그리드 예시' },
-  [Router.FILE_UPLOAD_DOWNLOAD]: { icon: FaRegFile, name: '파일 업로드/다운로드' },
-  [Router.EXCEL_UPLOAD_DOWNLOAD]: { icon: RiFileExcel2Line, name: 'Excel 업로드/다운로드' },
-  [Router.ROLE_MANAGEMENT]: { icon: MdOutlineManageAccounts, name: '메뉴/버튼 권한관리' },
-  [Router.MY_PROFILE]: { icon: IoPersonCircleOutline, name: '내정보' },
-};
+const defaultMenus: TMenu[] = [
+  {
+    menuIndex: 9999,
+    name: '내정보',
+    icon: routerMappedIcon[Router.MY_PROFILE],
+    router: Router.MY_PROFILE,
+    fullRouterPath: `${Router.MAIN}/${Router.MY_PROFILE}`,
+  },
+];
+
+function isNonIndexRoute(route: RouteObject): route is Exclude<RouteObject, { index: true }> {
+  return !('index' in route);
+}
 
 export function RouterMenuContextWrapper({ children }: { children: ReactNode }) {
   const [routes, setRoutes] = useState(defaultRoutes);
+  const [menus, setMenus] = useState(defaultMenus);
 
-  const routerMenus = useRouterMenus();
+  const sidebarMainMenus = menus.filter((menu) => menu.router !== Router.MY_PROFILE);
+  const myProfileMenu = menus.find((menu) => menu.router === Router.MY_PROFILE)!;
 
   const updateRouteChildren = (parentPath: string, newChildren: RouteObject[], merge?: boolean) => {
     setRoutes((prevState) => {
@@ -70,14 +70,14 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
       return {
         menuIndex,
         name: responseMenu.MENU_TITLE,
-        icon: routerMappedIconName[menuId]?.icon,
+        icon: routerMappedIcon[menuId],
         router: menuId,
         fullRouterPath: responseMenu.MENU_LINK,
       };
     });
 
     const newChildren = newMenus.map((menu) => {
-      const Component = componentMap[menu.router]!;
+      const Component = routerComponentMap[menu.router]!;
       return {
         path: menu.fullRouterPath,
         element: <Component />,
@@ -86,7 +86,7 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
 
     updateRouteChildren(Router.MAIN, newChildren, true);
 
-    routerMenus.setMenus((prevState) => {
+    setMenus((prevState) => {
       return [...prevState, ...newMenus];
     });
   };
@@ -109,7 +109,9 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
     <RouterMenuContext
       value={{
         routes,
-        ...routerMenus,
+        menus,
+        sidebarMainMenus,
+        myProfileMenu,
         updateRouteChildren,
         updateMainRouteChildren,
         updateRoutes,
@@ -119,25 +121,4 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
       {children}
     </RouterMenuContext>
   );
-}
-
-function isNonIndexRoute(route: RouteObject): route is Exclude<RouteObject, { index: true }> {
-  return !('index' in route);
-}
-
-function useRouterMenus() {
-  const [menus, setMenus] = useState<TMenu[]>([
-    {
-      menuIndex: 9999,
-      name: routerMappedIconName[Router.MY_PROFILE].name,
-      icon: routerMappedIconName[Router.MY_PROFILE].icon,
-      router: Router.MY_PROFILE,
-      fullRouterPath: `${Router.MAIN}/${Router.MY_PROFILE}`,
-    },
-  ]);
-
-  const sidebarMainMenus = menus.filter((menu) => menu.router !== Router.MY_PROFILE);
-  const myProfileMenu = menus.find((menu) => menu.router === Router.MY_PROFILE)!;
-
-  return { menus, setMenus, sidebarMainMenus, myProfileMenu };
 }

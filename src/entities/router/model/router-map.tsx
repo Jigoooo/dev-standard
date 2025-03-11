@@ -1,4 +1,13 @@
 import { ComponentType, lazy, LazyExoticComponent } from 'react';
+import { IconType } from 'react-icons';
+
+import { RxComponent1 } from 'react-icons/rx';
+import { GoTable } from 'react-icons/go';
+import { FaRegFile } from 'react-icons/fa';
+import { RiFileExcel2Line } from 'react-icons/ri';
+import { MdOutlineManageAccounts } from 'react-icons/md';
+import { IoPersonCircleOutline } from 'react-icons/io5';
+
 import { Router } from '@/entities/router';
 
 const UiComponent = lazy(() =>
@@ -32,10 +41,20 @@ const RoleManagement = lazy(() =>
 //   );
 // }
 
-export const componentMap: Partial<Record<Router, LazyExoticComponent<ComponentType<any>>>> = {
-  [Router.UI]: UiComponent,
-  [Router.GRID_EXAMPLE]: GridExample,
-  [Router.FILE_UPLOAD_DOWNLOAD]: FileUploadDownload,
-  [Router.EXCEL_UPLOAD_DOWNLOAD]: ExcelUploadDownload,
-  [Router.ROLE_MANAGEMENT]: RoleManagement,
+export const routerComponentMap: Partial<Record<Router, LazyExoticComponent<ComponentType<any>>>> =
+  {
+    [Router.UI]: UiComponent,
+    [Router.GRID_EXAMPLE]: GridExample,
+    [Router.FILE_UPLOAD_DOWNLOAD]: FileUploadDownload,
+    [Router.EXCEL_UPLOAD_DOWNLOAD]: ExcelUploadDownload,
+    [Router.ROLE_MANAGEMENT]: RoleManagement,
+  };
+
+export const routerMappedIcon: Record<string, IconType> = {
+  [Router.UI]: RxComponent1,
+  [Router.GRID_EXAMPLE]: GoTable,
+  [Router.FILE_UPLOAD_DOWNLOAD]: FaRegFile,
+  [Router.EXCEL_UPLOAD_DOWNLOAD]: RiFileExcel2Line,
+  [Router.ROLE_MANAGEMENT]: MdOutlineManageAccounts,
+  [Router.MY_PROFILE]: IoPersonCircleOutline,
 };
