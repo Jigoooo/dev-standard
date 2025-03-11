@@ -15,6 +15,10 @@ export function SidebarItems({ menus }: { menus: TMenu[] }) {
   return (
     <FlexColumn style={{ width: '100%', alignItems: 'center' }}>
       {menus.map((menu, menuIndex) => {
+        if (!menu.display) {
+          return null;
+        }
+
         const isSelected = location.pathname.includes(menu.router);
 
         return (

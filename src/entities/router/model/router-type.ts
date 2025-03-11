@@ -19,6 +19,7 @@ export type TMenu = {
   icon?: IconType;
   router: Router;
   fullRouterPath: string;
+  display: boolean;
   children?: TMenu[];
 };
 

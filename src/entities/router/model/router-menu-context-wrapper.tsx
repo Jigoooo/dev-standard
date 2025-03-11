@@ -35,6 +35,7 @@ const defaultMenus: TMenu[] = [
     icon: routerMappedIcon[Router.MY_PROFILE],
     router: Router.MY_PROFILE,
     fullRouterPath: `${Router.MAIN}/${Router.MY_PROFILE}`,
+    display: true,
   },
 ];
 
@@ -66,6 +67,7 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
     const newMenus: TMenu[] = responseMenus.map((responseMenu) => {
       const menuIndex = Number(responseMenu.MAIN_CD + responseMenu.SUB1_CD + responseMenu.SUB2_CD);
       const menuId = responseMenu.MENU_ID as Router;
+      const display = responseMenu.DISPLAY_YN === 'Y';
 
       return {
         menuIndex,
@@ -73,6 +75,7 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
         icon: routerMappedIcon[menuId],
         router: menuId,
         fullRouterPath: responseMenu.MENU_LINK,
+        display,
       };
     });
 
@@ -80,7 +83,7 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
       const Component = routerComponentMap[menu.router]!;
       return {
         path: menu.router,
-        element: <Component />,
+        element: menu.display ? <Component /> : null,
       };
     });
 

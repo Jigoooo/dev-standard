@@ -128,7 +128,7 @@ export function SidebarFooter() {
               animate={{ fontSize: routerState.sidebarCollapsed ? '2rem' : '2.4rem' }}
               exit={{ fontSize: '2.4rem' }}
             >
-              <myProfileMenu.icon style={{ color: '#ffffff' }} />
+              {myProfileMenu.icon && <myProfileMenu.icon style={{ color: '#ffffff' }} />}
             </FlexRow>
           </AnchorPicker>
           <AnimatePresence initial={false}>
