@@ -17,7 +17,7 @@ export type TMenu = {
   menuIndex: number;
   name: string;
   icon?: IconType;
-  router: Router;
+  routerPath: Router;
   fullRouterPath: string;
   display: boolean;
   children?: TMenu[];
@@ -51,7 +51,7 @@ export type RMenu = {
   MENU_ID: string;
   MENU_TITLE: string;
   MENU_LINK: string;
-  DISPLAY_YN: string;
+  DISPLAY_YN: 'Y' | 'N';
 };
 
 export type TRouterMenuContext = {

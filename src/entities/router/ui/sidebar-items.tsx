@@ -9,7 +9,7 @@ export function SidebarItems({ menus }: { menus: TMenu[] }) {
   const location = useLocation();
 
   const onClickMenu = (menu: TMenu) => {
-    navigate(menu.router);
+    navigate(menu.routerPath);
   };
 
   return (
@@ -19,10 +19,10 @@ export function SidebarItems({ menus }: { menus: TMenu[] }) {
           return null;
         }
 
-        const isSelected = location.pathname.includes(menu.router);
+        const isSelected = location.pathname.includes(menu.routerPath);
 
         return (
-          <FlexColumn style={{ width: '100%' }} key={menu.router}>
+          <FlexColumn style={{ width: '100%' }} key={menu.routerPath}>
             <SidebarItem isSelected={isSelected} menu={menu} onClickMenu={onClickMenu} />
             {menuIndex < menus.length - 1 && (
               <div style={{ width: '100%', height: 1, backgroundColor: '#424242' }} />
