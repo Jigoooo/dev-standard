@@ -1,8 +1,9 @@
 import { CSSProperties, ReactNode } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import { MainHeader } from './main-header.tsx';
 import { FlexColumn } from '@/shared/components';
-import { useMenuState } from '@/entities/menu';
+import { menus, sidebarMainMenus, useRouterState } from '@/entities/router';
 
 export function MainLayout({
   layoutStyle,
@@ -13,7 +14,11 @@ export function MainLayout({
   headerTitle?: string;
   children: ReactNode;
 }) {
-  const menuState = useMenuState();
+  const location = useLocation();
+  const routerState = useRouterState();
+  const currentMenu =
+    menus.find((menu) => location.pathname.startsWith(menu.fullRouterPath)) ??
+    (sidebarMainMenus.length > 0 ? sidebarMainMenus[0] : undefined);
 
   return (
     <FlexColumn
@@ -22,7 +27,7 @@ export function MainLayout({
           position: 'relative',
           backgroundColor: '#ffffff',
           width: '100%',
-          maxWidth: `calc(100vw - ${menuState.sidebarWidth}px)`,
+          maxWidth: `calc(100vw - ${routerState.sidebarWidth}px)`,
           maxHeight: '100vh',
           height: '100%',
           overflow: 'hidden',
@@ -32,7 +37,7 @@ export function MainLayout({
         ...layoutStyle,
       }}
     >
-      <MainHeader title={headerTitle ?? menuState.selectedMenu.name} />
+      <MainHeader title={headerTitle ?? currentMenu?.name ?? ''} />
       {children}
     </FlexColumn>
   );

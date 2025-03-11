@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 
-import { TMenu, useMenuState } from '@/entities/menu';
 import { FlexRow, Tooltip } from '@/shared/components';
+import { TMenu, useRouterState } from '@/entities/router';
 
 export function SidebarItem({
   isSelected,
@@ -12,14 +12,14 @@ export function SidebarItem({
   menu: TMenu;
   onClickMenu: (menu: TMenu) => void;
 }) {
-  const menuState = useMenuState();
+  const routerState = useRouterState();
 
   return (
     <Tooltip
       style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
       position={'right'}
       content={menu.name}
-      disabled={!menuState.sidebarCollapsed}
+      disabled={!routerState.sidebarCollapsed}
     >
       <FlexRow
         as={motion.div}
@@ -51,7 +51,7 @@ export function SidebarItem({
         <menu.icon style={{ color: 'inherit', fontSize: '1.2rem', flexShrink: 0 }} />
 
         <AnimatePresence>
-          {!menuState.delayedSidebarCollapsed && (
+          {!routerState.delayedSidebarCollapsed && (
             <motion.span
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

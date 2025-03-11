@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 import TriphosLogo from '@/shared/assets/images/triphos_logo.png';
 
-import { Router } from '@/entities/router';
+import { menus, Router } from '@/entities/router';
 import {
   Form,
   Input,
@@ -12,7 +12,6 @@ import {
   DialogType,
   Typography,
 } from '@/shared/components';
-import { useMenuState } from '@/entities/menu';
 import { FlexColumn, FlexRow } from '@/shared/components';
 import { useToggle } from '@/shared/hooks';
 import { createValidator, getFormValues } from '@/shared/lib';
@@ -32,7 +31,6 @@ const signInFields: Record<
 
 export function SignIn() {
   const navigate = useNavigate();
-  const menuState = useMenuState();
   const saveId = localStorage.getItem(localStorageKey.ID) ?? '';
 
   const [saveIdChecked, toggleSaveIdChecked] = useToggle(!!saveId);
@@ -84,7 +82,7 @@ export function SignIn() {
             localStorage.removeItem(localStorageKey.ID);
           }
 
-          navigate(`${Router.MAIN}/${menuState.menus[0].router}`, { viewTransition: true });
+          navigate(`${Router.MAIN}/${menus[0].router}`, { viewTransition: true });
         },
       },
     );

@@ -12,11 +12,11 @@ import {
   Typography,
 } from '@/shared/components';
 import { Router } from '@/entities/router';
-import { myProfileMenu, useMenuState } from '@/entities/menu';
+import { myProfileMenu, useRouterState } from '@/entities/router';
 import { useToggle } from '@/shared/hooks';
 
 export function SidebarFooter() {
-  const menuState = useMenuState();
+  const routerState = useRouterState();
 
   const navigate = useNavigate();
   const logout = useLogout();
@@ -57,7 +57,7 @@ export function SidebarFooter() {
           justifyContent: 'space-between',
           cursor: 'pointer',
         }}
-        onClick={menuState.sidebarCollapsed ? toggleFooterMenu : undefined}
+        onClick={routerState.sidebarCollapsed ? toggleFooterMenu : undefined}
       >
         <FlexRow
           style={{
@@ -69,7 +69,7 @@ export function SidebarFooter() {
             paddingInline: 4,
             paddingBlock: 4,
           }}
-          onClick={!menuState.sidebarCollapsed ? goMyProfile : undefined}
+          onClick={!routerState.sidebarCollapsed ? goMyProfile : undefined}
         >
           <AnchorPicker
             open={openFooterMenu}
@@ -120,14 +120,14 @@ export function SidebarFooter() {
             <FlexRow
               as={motion.div}
               initial={{ fontSize: '2.4rem' }}
-              animate={{ fontSize: menuState.sidebarCollapsed ? '2rem' : '2.4rem' }}
+              animate={{ fontSize: routerState.sidebarCollapsed ? '2rem' : '2.4rem' }}
               exit={{ fontSize: '2.4rem' }}
             >
               <myProfileMenu.icon style={{ color: '#ffffff' }} />
             </FlexRow>
           </AnchorPicker>
           <AnimatePresence initial={false}>
-            {!menuState.sidebarCollapsed && (
+            {!routerState.sidebarCollapsed && (
               <FlexColumn
                 as={motion.div}
                 initial={{ opacity: 0 }}
@@ -156,7 +156,7 @@ export function SidebarFooter() {
           </AnimatePresence>
         </FlexRow>
         <AnimatePresence initial={false}>
-          {!menuState.sidebarCollapsed && (
+          {!routerState.sidebarCollapsed && (
             <Button
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

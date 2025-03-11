@@ -8,7 +8,7 @@ import { IoRefreshCircleOutline } from 'react-icons/io5';
 import { IoIosCloseCircleOutline } from 'react-icons/io';
 
 import { Button, Divider, FlexColumn, FlexRow, Typography } from '@/shared/components';
-import { CacheNode, TMenu, useMenuState } from '@/entities/menu';
+import { CacheNode, TMenu, sidebarMainMenus, menus } from '@/entities/router';
 
 export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undefined> }) {
   const navigate = useNavigate();
@@ -16,16 +16,14 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
 
   const activeCacheKey = location.pathname + location.search;
 
-  const menuState = useMenuState();
-
   const [sortedCacheNodes, setSortedCacheNodes] = useState<CacheNode[]>([]);
   const remainingCacheNodes = sortedCacheNodes.filter((node) => node.cacheKey !== activeCacheKey);
 
   useEffect(() => {
     const nodes = aliveRef?.current?.getCacheNodes() ?? [];
     const sorted = [...nodes].sort((a, b) => {
-      const menuA = menuState.menus.find((menu) => a.cacheKey.includes(menu.router));
-      const menuB = menuState.menus.find((menu) => b.cacheKey.includes(menu.router));
+      const menuA = sidebarMainMenus.find((menu) => a.cacheKey.includes(menu.router));
+      const menuB = sidebarMainMenus.find((menu) => b.cacheKey.includes(menu.router));
       return (menuA?.menuIndex ?? 0) - (menuB?.menuIndex ?? 0);
     });
     setSortedCacheNodes(sorted);
@@ -49,7 +47,9 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
     });
   };
 
-  const currentMenu = menuState.selectedMenu;
+  const currentMenu =
+    menus.find((menu) => location.pathname.startsWith(menu.fullRouterPath)) ??
+    (sidebarMainMenus.length > 0 ? sidebarMainMenus[0] : undefined);
 
   const toMenu = (menu: TMenu) => {
     navigate(menu.router);
@@ -123,7 +123,7 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
           >
             <AnimatePresence initial={false}>
               {sortedCacheNodes.map((cacheNode) => {
-                const findCacheMenu = menuState.menus.find((menu) =>
+                const findCacheMenu = sidebarMainMenus.find((menu) =>
                   cacheNode.cacheKey.includes(menu.router),
                 );
 

@@ -1,15 +1,18 @@
 import { motion } from 'framer-motion';
 
 import { FlexColumn } from '@/shared/components';
-import { SidebarFooter, SidebarHeader, SidebarItems, useMenuState } from '@/entities/menu';
+import { SidebarHeader } from './sidebar-header';
+import { SidebarItems } from './sidebar-items';
+import { SidebarFooter } from './sidebar-footer';
+import { sidebarMainMenus, useRouterState } from '@/entities/router';
 
 export function Sidebar({ headerTitle }: { headerTitle: string }) {
-  const menuState = useMenuState();
+  const routerState = useRouterState();
 
   return (
-    <div style={{ minWidth: menuState.sidebarWidth }}>
+    <div style={{ minWidth: routerState.sidebarWidth }}>
       <motion.div
-        animate={{ width: menuState.sidebarWidth }}
+        animate={{ width: routerState.sidebarWidth }}
         transition={{ duration: 0.2 }}
         style={{
           position: 'relative',
@@ -27,7 +30,7 @@ export function Sidebar({ headerTitle }: { headerTitle: string }) {
           }}
         >
           <SidebarHeader title={headerTitle} />
-          <SidebarItems menus={menuState.menus} />
+          <SidebarItems menus={sidebarMainMenus} />
           <SidebarFooter />
         </FlexColumn>
       </motion.div>

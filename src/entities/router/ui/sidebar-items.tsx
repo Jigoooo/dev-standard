@@ -1,8 +1,8 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { TMenu } from '@/entities/menu';
-import { SidebarItem } from './sidebar-item';
+import { SidebarItem } from './sidebar-item.tsx';
 import { FlexColumn } from '@/shared/components';
+import { TMenu } from '@/entities/router';
 
 export function SidebarItems({ menus }: { menus: TMenu[] }) {
   const navigate = useNavigate();

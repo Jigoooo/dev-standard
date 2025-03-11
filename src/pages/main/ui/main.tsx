@@ -1,20 +1,30 @@
 import { useKeepAliveRef } from 'keepalive-for-react';
 import KeepAliveRouteOutlet from 'keepalive-for-react-router';
+import { useLocation } from 'react-router-dom';
 
-import { MenuController, Sidebar, PageTab, useMenuState } from '@/entities/menu';
 import { FlexColumn, FlexRow } from '@/shared/components';
-import { Router } from '@/entities/router';
+import {
+  menus,
+  PageTab,
+  Router,
+  Sidebar,
+  sidebarMainMenus,
+  useRouterState,
+} from '@/entities/router';
 import { KeepAliveWrapper, MainHeader } from '@/entities/main';
 
 export function Main() {
   const aliveRef = useKeepAliveRef();
 
-  const menuState = useMenuState();
+  const location = useLocation();
+  const routerState = useRouterState();
   const excludeCacheMenuRouters = [`${Router.MAIN}/${Router.MY_PROFILE}`];
 
-  const isMatchedExcludeMenu = excludeCacheMenuRouters.includes(
-    `${Router.MAIN}/${menuState.selectedMenu.router}`,
-  );
+  const currentMenu =
+    menus.find((menu) => location.pathname.startsWith(menu.fullRouterPath)) ??
+    (sidebarMainMenus.length > 0 ? sidebarMainMenus[0] : undefined);
+
+  const isMatchedExcludeMenu = excludeCacheMenuRouters.includes(currentMenu?.fullRouterPath ?? '');
 
   return (
     <FlexRow
@@ -36,7 +46,7 @@ export function Main() {
             backgroundColor: '#ffffff',
             width: '100%',
             minWidth: 800,
-            maxWidth: `calc(100vw - ${menuState.sidebarWidth}px)`,
+            maxWidth: `calc(100vw - ${routerState.sidebarWidth}px)`,
             maxHeight: '98vh',
             height: '100%',
             overflow: 'hidden',
@@ -49,7 +59,7 @@ export function Main() {
           }}
         >
           {isMatchedExcludeMenu ? (
-            <MainHeader title={menuState.selectedMenu.name} />
+            <MainHeader title={currentMenu?.name ?? ''} />
           ) : (
             <PageTab aliveRef={aliveRef} />
           )}
@@ -61,8 +71,6 @@ export function Main() {
           />
         </FlexColumn>
       </FlexRow>
-
-      <MenuController />
     </FlexRow>
   );
 }
