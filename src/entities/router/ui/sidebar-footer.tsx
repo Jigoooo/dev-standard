@@ -27,6 +27,10 @@ export function SidebarFooter() {
 
   const [openFooterMenu, toggleFooterMenu] = useToggle();
 
+  if (myProfileMenu === undefined) {
+    return null;
+  }
+
   return (
     <FlexColumn
       style={{

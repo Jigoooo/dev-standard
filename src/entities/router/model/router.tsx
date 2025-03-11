@@ -13,6 +13,7 @@ import { RouteErrorPage } from '@/shared/components';
 import { SignIn } from '@/pages/sign-in';
 import { Main } from '@/pages/main';
 import { GridExample } from '@/pages/grid-example';
+import { IconType } from 'react-icons';
 
 const MyProfile = lazy(() =>
   import('@/pages/my-profile').then((module) => ({ default: module.MyProfile })),
@@ -71,50 +72,30 @@ export const router = createBrowserRouter([
   },
 ]);
 
-export const sidebarMainMenus: TMenu[] = [
-  {
-    menuIndex: 0,
-    name: 'UI 컴포넌트',
-    icon: RxComponent1,
-    router: Router.UI,
-    fullRouterPath: `${Router.MAIN}/${Router.UI}`,
-  },
-  {
-    menuIndex: 1,
-    name: '그리드 예시',
-    icon: GoTable,
-    router: Router.GRID_EXAMPLE,
-    fullRouterPath: `${Router.MAIN}/${Router.GRID_EXAMPLE}`,
-  },
-  {
-    menuIndex: 2,
-    name: '파일 업로드/다운로드',
-    icon: FaRegFile,
-    router: Router.FILE_UPLOAD_DOWNLOAD,
-    fullRouterPath: `${Router.MAIN}/${Router.FILE_UPLOAD_DOWNLOAD}`,
-  },
-  {
-    menuIndex: 3,
-    name: '엑셀 업로드/다운로드',
-    icon: RiFileExcel2Line,
-    router: Router.EXCEL_UPLOAD_DOWNLOAD,
-    fullRouterPath: `${Router.MAIN}/${Router.EXCEL_UPLOAD_DOWNLOAD}`,
-  },
-  {
-    menuIndex: 4,
-    name: '메뉴/버튼 권한관리',
-    icon: MdOutlineManageAccounts,
-    router: Router.ROLE_MANAGEMENT,
-    fullRouterPath: `${Router.MAIN}/${Router.ROLE_MANAGEMENT}`,
-  },
-] as const;
-
-export const myProfileMenu: TMenu = {
-  menuIndex: 9999,
-  name: '내 정보',
-  icon: IoPersonCircleOutline,
-  router: Router.MY_PROFILE,
-  fullRouterPath: `${Router.MAIN}/${Router.MY_PROFILE}`,
+const routerMappedIconName: Record<string, { icon: IconType; name: string }> = {
+  [Router.UI]: { icon: RxComponent1, name: 'UI 컴포넌트' },
+  [Router.GRID_EXAMPLE]: { icon: GoTable, name: '그리드 예시' },
+  [Router.FILE_UPLOAD_DOWNLOAD]: { icon: FaRegFile, name: '파일 업로드/다운로드' },
+  [Router.EXCEL_UPLOAD_DOWNLOAD]: { icon: RiFileExcel2Line, name: 'Excel 업로드/다운로드' },
+  [Router.ROLE_MANAGEMENT]: { icon: MdOutlineManageAccounts, name: '메뉴/버튼 권한관리' },
+  [Router.MY_PROFILE]: { icon: IoPersonCircleOutline, name: '내정보' },
 };
 
-export const menus = [...sidebarMainMenus, myProfileMenu];
+const mainRouter = router.routes.find((route) => route.path === Router.MAIN);
+const mainChildren = mainRouter?.children ?? [];
+
+export const menus: TMenu[] = mainChildren.map((child) => {
+  const menuIndex = Number(child.id?.split('-')[1] ?? '0');
+  const childPath = child.path ?? '';
+
+  return {
+    menuIndex,
+    name: routerMappedIconName[childPath].name,
+    icon: routerMappedIconName[childPath].icon,
+    router: childPath as Router,
+    fullRouterPath: `${mainRouter?.path}/${child.path}`,
+  };
+});
+
+export const sidebarMainMenus = menus.filter((menu) => menu.router !== Router.MY_PROFILE);
+export const myProfileMenu = menus.find((menu) => menu.router === Router.MY_PROFILE);
