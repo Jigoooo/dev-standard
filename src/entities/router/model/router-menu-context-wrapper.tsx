@@ -47,7 +47,7 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
   const [menus, setMenus] = useState(defaultMenus);
 
   const sidebarMainMenus = menus.filter((menu) => menu.router !== Router.MY_PROFILE);
-  const myProfileMenu = menus.find((menu) => menu.router === Router.MY_PROFILE)!;
+  const myProfileMenu = defaultMenus[0];
 
   const updateRouteChildren = (parentPath: string, newChildren: RouteObject[], merge?: boolean) => {
     setRoutes((prevState) => {
@@ -102,13 +102,17 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
     setRoutes((prevState) => updater(prevState));
   };
 
-  const updateRouteName = (fullRouterPath: string, newName: string) => {
-    setRoutes((prevState) => {
-      return prevState.map((route) => {
-        if (route.path === fullRouterPath) {
-          return { ...route, name: newName };
+  const updateRouteName = (router: Router, newName: string) => {
+    setMenus((prevState) => {
+      return prevState.map((menu) => {
+        if (menu.router === router) {
+          return {
+            ...menu,
+            name: newName,
+          };
         }
-        return route;
+
+        return menu;
       });
     });
   };

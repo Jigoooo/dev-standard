@@ -61,5 +61,5 @@ export type TRouterMenuContext = {
   updateRouteChildren: (parentPath: string, newChildren: RouteObject[], merge?: boolean) => void;
   updateMainRouteChildren: (responseMenus: RMenu[]) => void;
   updateRoutes: (updater: (prevRoutes: RouteObject[]) => RouteObject[]) => void;
-  updateRouteName: (fullRouterPath: string, newName: string) => void;
+  updateRouteName: (router: Router, newName: string) => void;
 } | null;
