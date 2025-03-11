@@ -58,6 +58,7 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
             merge && route.children ? [...route.children, ...newChildren] : newChildren;
           return { ...route, children: updatedChildren };
         }
+
         return route;
       });
     });
@@ -79,16 +80,24 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
     const newChildren = newMenus.map((menu) => {
       const Component = routerComponentMap[menu.router]!;
       return {
-        path: menu.fullRouterPath,
+        path: menu.router,
         element: <Component />,
       };
     });
 
-    updateRouteChildren(Router.MAIN, newChildren, true);
-
     setMenus((prevState) => {
-      return [...prevState, ...newMenus];
+      const updatedMenus = prevState.map((menu) => {
+        const matching = newMenus.find((m) => m.router === menu.router);
+        return matching ? matching : menu;
+      });
+
+      const newEntries = newMenus.filter(
+        (m) => !prevState.some((menu) => menu.router === m.router),
+      );
+      return [...updatedMenus, ...newEntries];
     });
+
+    updateRouteChildren(Router.MAIN, newChildren, true);
   };
   const updateRoutes = (updater: (prevRoutes: RouteObject[]) => RouteObject[]) => {
     setRoutes((prevState) => updater(prevState));
