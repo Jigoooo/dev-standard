@@ -1,5 +1,6 @@
 import { IconType } from 'react-icons';
 import { JSX, ReactElement, ReactNode } from 'react';
+import { RouteObject } from 'react-router-dom';
 
 export enum Router {
   SIGN_IN = '/',
@@ -40,3 +41,12 @@ export type TRouterStore = {
     toggleSidebarCollapsed: () => void;
   };
 };
+
+export type TRouterMenuContext = {
+  routes: RouteObject[];
+  menus: TMenu[];
+  sidebarMainMenus: TMenu[];
+  myProfileMenu: TMenu;
+  updateRouteChildren: (parentPath: string, newChildren: RouteObject[], merge?: boolean) => void;
+  updateRoutes: (updater: (prevRoutes: RouteObject[]) => RouteObject[]) => void;
+} | null;

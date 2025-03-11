@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 import TriphosLogo from '@/shared/assets/images/triphos_logo.png';
 
-import { sidebarMainMenus } from '@/entities/router';
+import { Router, useRouterMenuContext } from '@/entities/router';
 import {
   Form,
   Input,
@@ -17,6 +17,25 @@ import { useToggle } from '@/shared/hooks';
 import { createValidator, getFormValues } from '@/shared/lib';
 import { localStorageKey } from '@/shared/constants';
 import { PSignIn, useSignInService } from '@/entities/auth';
+import { lazy } from 'react';
+
+const UiComponent = lazy(() =>
+  import('@/pages/ui-component').then((module) => ({ default: module.UiComponent })),
+);
+const GridExample = lazy(() =>
+  import('@/pages/grid-example').then((module) => ({ default: module.GridExample })),
+);
+const FileUploadDownload = lazy(() =>
+  import('@/pages/file-upload-download').then((module) => ({ default: module.FileUploadDownload })),
+);
+const ExcelUploadDownload = lazy(() =>
+  import('@/pages/excel-upload-download').then((module) => ({
+    default: module.ExcelUploadDownload,
+  })),
+);
+const RoleManagement = lazy(() =>
+  import('@/pages/role-management').then((module) => ({ default: module.RoleManagement })),
+);
 
 const signInFields: Record<
   keyof {
@@ -31,6 +50,8 @@ const signInFields: Record<
 
 export function SignIn() {
   const navigate = useNavigate();
+  const { updateRouteChildren } = useRouterMenuContext();
+
   const saveId = localStorage.getItem(localStorageKey.ID) ?? '';
 
   const [saveIdChecked, toggleSaveIdChecked] = useToggle(!!saveId);
@@ -82,9 +103,34 @@ export function SignIn() {
             localStorage.removeItem(localStorageKey.ID);
           }
 
-          if (sidebarMainMenus.length > 0) {
-            navigate(sidebarMainMenus[0].fullRouterPath, { viewTransition: true });
-          }
+          updateRouteChildren(
+            Router.MAIN,
+            [
+              {
+                path: Router.UI,
+                element: <UiComponent />,
+              },
+              {
+                path: Router.GRID_EXAMPLE,
+                element: <GridExample />,
+              },
+              {
+                path: Router.FILE_UPLOAD_DOWNLOAD,
+                element: <FileUploadDownload />,
+              },
+              {
+                path: Router.EXCEL_UPLOAD_DOWNLOAD,
+                element: <ExcelUploadDownload />,
+              },
+              {
+                path: Router.ROLE_MANAGEMENT,
+                element: <RoleManagement />,
+              },
+            ],
+            true,
+          );
+
+          navigate(Router.MAIN, { viewTransition: true, replace: true });
         },
       },
     );

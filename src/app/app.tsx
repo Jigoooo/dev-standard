@@ -1,6 +1,6 @@
 import '@/app/providers/css';
 
-import { RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import {
   LoadingProvider,
@@ -8,10 +8,14 @@ import {
   QueryProvider,
   ModalProvider,
   ThemeProvider,
+  withRouterMenuProvider,
 } from '@/app/providers';
-import { router } from '@/entities/router';
+import { useRouterMenuContext } from '@/entities/router';
 
 function App() {
+  const { routes } = useRouterMenuContext();
+  const router = createBrowserRouter(routes);
+
   return (
     <QueryProvider>
       <ThemeProvider>
@@ -25,4 +29,4 @@ function App() {
   );
 }
 
-export default App;
+export default withRouterMenuProvider(App);

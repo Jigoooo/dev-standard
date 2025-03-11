@@ -44,7 +44,8 @@ export function GridExample() {
     <div
       style={{
         height: '100%',
-        maxHeight: 'calc(100vh - 200px)',
+        maxHeight: 'calc(100vh - 120px)',
+        paddingTop: 12,
       }}
     >
       <Table

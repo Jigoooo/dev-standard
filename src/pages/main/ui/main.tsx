@@ -3,14 +3,7 @@ import KeepAliveRouteOutlet from 'keepalive-for-react-router';
 import { useLocation } from 'react-router-dom';
 
 import { FlexColumn, FlexRow } from '@/shared/components';
-import {
-  menus,
-  PageTab,
-  Router,
-  Sidebar,
-  sidebarMainMenus,
-  useRouterState,
-} from '@/entities/router';
+import { PageTab, Router, Sidebar, useRouterMenuContext, useRouterState } from '@/entities/router';
 import { KeepAliveWrapper, MainHeader } from '@/entities/main';
 
 export function Main() {
@@ -18,6 +11,7 @@ export function Main() {
 
   const location = useLocation();
   const routerState = useRouterState();
+  const { menus, sidebarMainMenus } = useRouterMenuContext();
   const excludeCacheMenuRouters = [`${Router.MAIN}/${Router.MY_PROFILE}`];
 
   const currentMenu =

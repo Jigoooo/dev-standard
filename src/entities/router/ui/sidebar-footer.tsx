@@ -11,12 +11,13 @@ import {
   FlexRow,
   Typography,
 } from '@/shared/components';
-import { Router } from '@/entities/router';
-import { myProfileMenu, useRouterState } from '@/entities/router';
+import { Router, useRouterMenuContext } from '@/entities/router';
+import { useRouterState } from '@/entities/router';
 import { useToggle } from '@/shared/hooks';
 
 export function SidebarFooter() {
   const routerState = useRouterState();
+  const { myProfileMenu } = useRouterMenuContext();
 
   const navigate = useNavigate();
   const logout = useLogout();

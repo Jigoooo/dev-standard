@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 
 import { MainHeader } from './main-header.tsx';
 import { FlexColumn } from '@/shared/components';
-import { menus, sidebarMainMenus, useRouterState } from '@/entities/router';
+import { useRouterMenuContext, useRouterState } from '@/entities/router';
 
 export function MainLayout({
   layoutStyle,
@@ -16,6 +16,8 @@ export function MainLayout({
 }) {
   const location = useLocation();
   const routerState = useRouterState();
+  const { menus, sidebarMainMenus } = useRouterMenuContext();
+
   const currentMenu =
     menus.find((menu) => location.pathname.startsWith(menu.fullRouterPath)) ??
     (sidebarMainMenus.length > 0 ? sidebarMainMenus[0] : undefined);
