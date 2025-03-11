@@ -371,7 +371,7 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
         justifyContent,
         alignItems: 'center',
         paddingInline: 12,
-        width: header.width,
+        width: header.id === 'check' ? header.width + 1 : header.width,
         height: '100%',
         backgroundColor: getBackgroundColor(),
         contain: 'paint',

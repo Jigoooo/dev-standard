@@ -1,1 +1,1 @@
-export { useLogout } from './useLogout.ts';
+export { useLogout } from './use-logout.ts';

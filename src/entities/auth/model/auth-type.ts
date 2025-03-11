@@ -6,4 +6,5 @@ export type PSignIn = {
 export type RSignIn = {
   accessToken: string;
   refreshToken: string;
+  menuList: any[];
 };

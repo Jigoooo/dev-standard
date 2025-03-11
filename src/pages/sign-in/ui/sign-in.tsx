@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import secureLocalStorage from 'react-secure-storage';
 
 import TriphosLogo from '@/shared/assets/images/triphos_logo.png';
 
@@ -15,7 +16,7 @@ import {
 import { FlexColumn, FlexRow } from '@/shared/components';
 import { useToggle } from '@/shared/hooks';
 import { createValidator, getFormValues } from '@/shared/lib';
-import { localStorageKey } from '@/shared/constants';
+import { localStorageKey, secureStorageKey } from '@/shared/constants';
 import { PSignIn, useSignInService } from '@/entities/auth';
 
 const signInFields: Record<
@@ -77,6 +78,16 @@ export function SignIn() {
           }
 
           console.log(data.data);
+
+          if (data.data) {
+            secureLocalStorage.setItem(
+              secureStorageKey.TOKEN,
+              JSON.stringify({
+                accessToken: data.data.accessToken,
+                refreshToken: data.data.refreshToken,
+              }),
+            );
+          }
 
           if (saveIdChecked) {
             localStorage.setItem(localStorageKey.ID, id);
