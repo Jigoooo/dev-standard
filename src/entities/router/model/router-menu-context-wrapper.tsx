@@ -1,5 +1,6 @@
-import { createContext, ReactNode, use, useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { RouteObject } from 'react-router-dom';
+import { IconType } from 'react-icons';
 
 import { RxComponent1 } from 'react-icons/rx';
 import { GoTable } from 'react-icons/go';
@@ -8,14 +9,12 @@ import { RiFileExcel2Line } from 'react-icons/ri';
 import { MdOutlineManageAccounts } from 'react-icons/md';
 import { IoPersonCircleOutline } from 'react-icons/io5';
 
-import { IconType } from 'react-icons';
-import { Router, TMenu, TRouterMenuContext } from '@/entities/router/model/router-type.ts';
+import { Router, TMenu } from './router-type.ts';
+import { RouterMenuContext } from '@/entities/router';
 import { SignIn } from '@/pages/sign-in';
 import { RouteErrorPage } from '@/shared/components';
 import { Main } from '@/pages/main';
 import { MyProfile } from '@/pages/my-profile';
-
-const RouterMenuContext = createContext<TRouterMenuContext>(null);
 
 const defaultRoutes: RouteObject[] = [
   {
@@ -35,16 +34,6 @@ const defaultRoutes: RouteObject[] = [
     ],
   },
 ];
-
-export const useRouterMenuContext = () => {
-  const context = use(RouterMenuContext);
-
-  if (!context) {
-    throw new Error('useRouterMenuContext must be used within a RouterMenuContextProvider');
-  } else {
-    return context;
-  }
-};
 
 export function RouterMenuContextWrapper({ children }: { children: ReactNode }) {
   const [routes, setRoutes] = useState(defaultRoutes);
