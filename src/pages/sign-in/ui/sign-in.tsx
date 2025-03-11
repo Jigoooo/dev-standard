@@ -84,11 +84,11 @@ export function SignIn() {
             localStorage.removeItem(localStorageKey.ID);
           }
 
-          const UiComponent = componentMap[Router.UI];
-          const GridExample = componentMap[Router.GRID_EXAMPLE];
-          const FileUploadDownload = componentMap[Router.FILE_UPLOAD_DOWNLOAD];
-          const ExcelUploadDownload = componentMap[Router.EXCEL_UPLOAD_DOWNLOAD];
-          const RoleManagement = componentMap[Router.ROLE_MANAGEMENT];
+          const UiComponent = componentMap[Router.UI]!;
+          const GridExample = componentMap[Router.GRID_EXAMPLE]!;
+          const FileUploadDownload = componentMap[Router.FILE_UPLOAD_DOWNLOAD]!;
+          const ExcelUploadDownload = componentMap[Router.EXCEL_UPLOAD_DOWNLOAD]!;
+          const RoleManagement = componentMap[Router.ROLE_MANAGEMENT]!;
 
           updateRouteChildren(
             Router.MAIN,

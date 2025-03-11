@@ -32,7 +32,7 @@ const RoleManagement = lazy(() =>
 //   );
 // }
 
-export const componentMap: Record<Router, LazyExoticComponent<ComponentType<any>>> = {
+export const componentMap: Partial<Record<Router, LazyExoticComponent<ComponentType<any>>>> = {
   [Router.UI]: UiComponent,
   [Router.GRID_EXAMPLE]: GridExample,
   [Router.FILE_UPLOAD_DOWNLOAD]: FileUploadDownload,
