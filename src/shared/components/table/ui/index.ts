@@ -1,1 +1,1 @@
-export { Table, useTableContext } from './table.tsx';
+export { Table } from './table.tsx';

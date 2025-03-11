@@ -1,1 +1,1 @@
-export { withRouterMenuHoc } from './router-menu-provider.tsx';
+export { withRouterMenuHoc } from './with-router-menu-hoc.tsx';

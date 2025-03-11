@@ -1,4 +1,4 @@
-import { createContext, JSX, RefObject, Usable, use, useEffect, useRef, useState } from 'react';
+import { JSX, RefObject, useEffect, useRef, useState } from 'react';
 
 import {
   FlexRow,
@@ -9,6 +9,7 @@ import {
   useTableSorting,
   Typography,
   THeaderGroup,
+  TableContext,
 } from '@/shared/components';
 import { TableHeader } from './table-header.tsx';
 import { TableBody } from './table-body.tsx';
@@ -45,17 +46,6 @@ const defaultTableStyle: TTableStyle = {
   tableBodyColor: 'rgba(0, 0, 0, 1)',
   tableFooterHeight: 40,
   tableBodyHoverBackgroundColor: '#eaeaea',
-};
-
-const TableContext = createContext<TTableContext<any> | null>(null);
-export const useTableContext = <TData extends Record<string, any>>() => {
-  const tableContext = use(TableContext as Usable<TTableContext<TData>>);
-
-  if (tableContext === null) {
-    throw new Error('Table context is null. Please check the Table context ');
-  }
-
-  return tableContext;
 };
 
 export function Table<TData extends { index: string } & Record<string, any>>({

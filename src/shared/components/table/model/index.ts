@@ -16,3 +16,4 @@ export type {
   TableBodyRowProps,
   TableBodyCellProps,
 } from './table-type.ts';
+export { TableContext, useTableContext } from './table-context.ts';

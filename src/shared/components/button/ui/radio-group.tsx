@@ -1,26 +1,9 @@
 import { motion } from 'framer-motion';
-import { createContext, ReactNode, use } from 'react';
+import { ReactNode } from 'react';
+
 import { colors } from '@/shared/constants';
 import { useWindowStyle } from '@/shared/hooks';
-import { Typography } from '@/shared/components';
-
-const RadioGroupContext = createContext<
-  | {
-      name: string;
-      selectedRadio: string;
-      handleSelectedRadio: (value: string) => void;
-      groupDisabled: boolean;
-    }
-  | undefined
->(undefined);
-
-function useRadioGroupContext() {
-  const context = use(RadioGroupContext);
-  if (!context) {
-    throw new Error('Radio must be used within a RadioGroup');
-  }
-  return context;
-}
+import { RadioGroupContext, Typography, useRadioGroupContext } from '@/shared/components';
 
 export function RadioGroup({
   name,
