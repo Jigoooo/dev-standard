@@ -90,9 +90,9 @@ export function SignIn() {
               SUB1_CD: 0,
               SUB2_CD: 1,
               ORDER_BY: 0,
-              MENU_ID: 'ui-component',
+              MENU_ID: 'ui',
               MENU_TITLE: 'UI 컴포넌트',
-              MENU_LINK: '/main/ui-component',
+              MENU_LINK: '/main/ui',
               DISPLAY_YN: 'Y',
             },
             {

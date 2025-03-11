@@ -36,6 +36,15 @@ const defaultRoutes: RouteObject[] = [
   },
 ];
 
+const routerMappedIconName: Record<string, { icon: IconType; name: string }> = {
+  [Router.UI]: { icon: RxComponent1, name: 'UI 컴포넌트' },
+  [Router.GRID_EXAMPLE]: { icon: GoTable, name: '그리드 예시' },
+  [Router.FILE_UPLOAD_DOWNLOAD]: { icon: FaRegFile, name: '파일 업로드/다운로드' },
+  [Router.EXCEL_UPLOAD_DOWNLOAD]: { icon: RiFileExcel2Line, name: 'Excel 업로드/다운로드' },
+  [Router.ROLE_MANAGEMENT]: { icon: MdOutlineManageAccounts, name: '메뉴/버튼 권한관리' },
+  [Router.MY_PROFILE]: { icon: IoPersonCircleOutline, name: '내정보' },
+};
+
 export function RouterMenuContextWrapper({ children }: { children: ReactNode }) {
   const [routes, setRoutes] = useState(defaultRoutes);
 
@@ -61,11 +70,12 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
       return {
         menuIndex,
         name: responseMenu.MENU_TITLE,
-        icon: routerMappedIconName[menuId].icon,
+        icon: routerMappedIconName[menuId]?.icon,
         router: menuId,
         fullRouterPath: responseMenu.MENU_LINK,
       };
     });
+
     const newChildren = newMenus.map((menu) => {
       const Component = componentMap[menu.router]!;
       return {
@@ -76,7 +86,9 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
 
     updateRouteChildren(Router.MAIN, newChildren, true);
 
-    routerMenus.setMenus(newMenus);
+    routerMenus.setMenus((prevState) => {
+      return [...prevState, ...newMenus];
+    });
   };
   const updateRoutes = (updater: (prevRoutes: RouteObject[]) => RouteObject[]) => {
     setRoutes((prevState) => updater(prevState));
@@ -113,17 +125,16 @@ function isNonIndexRoute(route: RouteObject): route is Exclude<RouteObject, { in
   return !('index' in route);
 }
 
-const routerMappedIconName: Record<string, { icon: IconType; name: string }> = {
-  [Router.UI]: { icon: RxComponent1, name: 'UI 컴포넌트' },
-  [Router.GRID_EXAMPLE]: { icon: GoTable, name: '그리드 예시' },
-  [Router.FILE_UPLOAD_DOWNLOAD]: { icon: FaRegFile, name: '파일 업로드/다운로드' },
-  [Router.EXCEL_UPLOAD_DOWNLOAD]: { icon: RiFileExcel2Line, name: 'Excel 업로드/다운로드' },
-  [Router.ROLE_MANAGEMENT]: { icon: MdOutlineManageAccounts, name: '메뉴/버튼 권한관리' },
-  [Router.MY_PROFILE]: { icon: IoPersonCircleOutline, name: '내정보' },
-};
-
 function useRouterMenus() {
-  const [menus, setMenus] = useState<TMenu[]>([]);
+  const [menus, setMenus] = useState<TMenu[]>([
+    {
+      menuIndex: 9999,
+      name: routerMappedIconName[Router.MY_PROFILE].name,
+      icon: routerMappedIconName[Router.MY_PROFILE].icon,
+      router: Router.MY_PROFILE,
+      fullRouterPath: `${Router.MAIN}/${Router.MY_PROFILE}`,
+    },
+  ]);
 
   const sidebarMainMenus = menus.filter((menu) => menu.router !== Router.MY_PROFILE);
   const myProfileMenu = menus.find((menu) => menu.router === Router.MY_PROFILE)!;

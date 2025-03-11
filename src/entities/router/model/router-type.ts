@@ -16,7 +16,7 @@ export enum Router {
 export type TMenu = {
   menuIndex: number;
   name: string;
-  icon: IconType;
+  icon?: IconType;
   router: Router;
   fullRouterPath: string;
   children?: TMenu[];

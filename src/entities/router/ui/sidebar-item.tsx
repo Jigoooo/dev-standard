@@ -48,7 +48,7 @@ export function SidebarItem({
           onClickMenu(menu);
         }}
       >
-        <menu.icon style={{ color: 'inherit', fontSize: '1.2rem', flexShrink: 0 }} />
+        {menu.icon && <menu.icon style={{ color: 'inherit', fontSize: '1.2rem', flexShrink: 0 }} />}
 
         <AnimatePresence>
           {!routerState.delayedSidebarCollapsed && (
