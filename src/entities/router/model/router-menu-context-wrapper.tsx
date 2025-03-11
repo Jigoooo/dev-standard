@@ -6,9 +6,9 @@ import { routerComponentMap, routerMappedIcon } from './router-map.tsx';
 import { RouterMenuContext } from '@/entities/router';
 import { RMenu } from './router-type.ts';
 import { SignIn } from '@/pages/sign-in';
-import { RouteErrorPage } from '@/shared/components';
 import { Main } from '@/pages/main';
 import { MyProfile } from '@/pages/my-profile';
+import { RouteErrorPage } from '@/shared/components';
 
 const defaultRoutes: RouteObject[] = [
   {
@@ -19,7 +19,6 @@ const defaultRoutes: RouteObject[] = [
   {
     path: Router.MAIN,
     element: <Main />,
-    errorElement: <RouteErrorPage />,
     children: [
       {
         path: Router.MY_PROFILE,

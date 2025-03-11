@@ -3,7 +3,7 @@ import secureLocalStorage from 'react-secure-storage';
 
 import TriphosLogo from '@/shared/assets/images/triphos_logo.png';
 
-import { Router, useRouterMenuContext } from '@/entities/router';
+import { Router } from '@/entities/router';
 import {
   Form,
   Input,
@@ -32,7 +32,6 @@ const signInFields: Record<
 
 export function SignIn() {
   const navigate = useNavigate();
-  const { updateMainRouteChildren } = useRouterMenuContext();
 
   const saveId = localStorage.getItem(localStorageKey.ID) ?? '';
 
@@ -94,59 +93,6 @@ export function SignIn() {
           } else {
             localStorage.removeItem(localStorageKey.ID);
           }
-
-          updateMainRouteChildren([
-            {
-              MAIN_CD: 0,
-              SUB1_CD: 0,
-              SUB2_CD: 1,
-              ORDER_BY: 0,
-              MENU_ID: 'ui',
-              MENU_TITLE: 'UI 컴포넌트',
-              MENU_LINK: '/main/ui',
-              DISPLAY_YN: 'Y',
-            },
-            {
-              MAIN_CD: 0,
-              SUB1_CD: 0,
-              SUB2_CD: 2,
-              ORDER_BY: 1,
-              MENU_ID: 'grid-example',
-              MENU_TITLE: '그리드 예시',
-              MENU_LINK: '/main/grid-example',
-              DISPLAY_YN: 'Y',
-            },
-            {
-              MAIN_CD: 0,
-              SUB1_CD: 0,
-              SUB2_CD: 3,
-              ORDER_BY: 2,
-              MENU_ID: 'file-upload-download',
-              MENU_TITLE: '파일 업로드/다운로드',
-              MENU_LINK: '/main/file-upload-download',
-              DISPLAY_YN: 'Y',
-            },
-            {
-              MAIN_CD: 0,
-              SUB1_CD: 0,
-              SUB2_CD: 4,
-              ORDER_BY: 3,
-              MENU_ID: 'excel-upload-download',
-              MENU_TITLE: 'Excel 업로드/다운로드',
-              MENU_LINK: '/main/excel-upload-download',
-              DISPLAY_YN: 'Y',
-            },
-            {
-              MAIN_CD: 0,
-              SUB1_CD: 0,
-              SUB2_CD: 5,
-              ORDER_BY: 4,
-              MENU_ID: 'role-management',
-              MENU_TITLE: '메뉴/버튼 권한관리',
-              MENU_LINK: '/main/role-management',
-              DISPLAY_YN: 'Y',
-            },
-          ]);
 
           navigate(Router.MAIN, { viewTransition: true, replace: true });
         },

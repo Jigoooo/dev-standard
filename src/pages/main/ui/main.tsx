@@ -22,11 +22,11 @@ export function Main() {
 
   const isMatchedExcludeMenu = excludeCacheMenuRouters.includes(currentMenu?.fullRouterPath ?? '');
 
-  // useEffect(() => {
-  //   if (sidebarMainMenus.length > 0) {
-  //     navigate(sidebarMainMenus[0].fullRouterPath);
-  //   }
-  // }, [sidebarMainMenus]);
+  useEffect(() => {
+    if (sidebarMainMenus.length > 0) {
+      navigate(sidebarMainMenus[0].fullRouterPath);
+    }
+  }, [sidebarMainMenus]);
 
   useEffect(() => {
     updateMainRouteChildren([

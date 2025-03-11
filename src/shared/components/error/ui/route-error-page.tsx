@@ -1,10 +1,15 @@
-import { useRouteError } from 'react-router-dom';
+import { Navigate, useLocation, useRouteError } from 'react-router-dom';
+import { Router } from '@/entities/router';
 
 export function RouteErrorPage() {
   const error: any = useRouteError();
+  const location = useLocation();
   console.error('error: --- ', error);
 
-  // 인라인 스타일 정의
+  if (error.status === 404 && location.pathname !== Router.SIGN_IN) {
+    return <Navigate to={Router.MAIN} replace />;
+  }
+
   const styles = {
     errorContainer: {
       display: 'flex',
