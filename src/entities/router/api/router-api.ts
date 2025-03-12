@@ -1,6 +1,6 @@
-import { RSignIn } from '@/entities/auth';
 import { apiRequest, customedAxios } from '@/shared/api';
+import { RMenuList } from '@/entities/router';
 
 export async function getMenuListApi() {
-  return apiRequest<RSignIn>(customedAxios.post('/member/getMemberMenuList', {}));
+  return apiRequest<RMenuList>(customedAxios.get('/member/getMemberMenuList'));
 }

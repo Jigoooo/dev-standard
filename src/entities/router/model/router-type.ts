@@ -57,13 +57,18 @@ export type RMenu = {
   displayYn: 'Y' | 'N';
 };
 
+export type RMenuList = {
+  menuList: RMenu[];
+};
+
 export type TRouterMenuContext = {
   routes: RouteObject[];
   menus: TMenu[];
   sidebarMainMenus: TMenu[];
   myProfileMenu: TMenu;
   excludeCacheMenuRouters: string[];
-  findRecursiveCurrentMenu: (currentPath: string) => TMenu | null;
+  findCurrentMenu: (currentPath: string) => TMenu | null;
+  findMenuWithFullRouterPath: (menus: TMenu[], targetFullRouterPath: string) => TMenu | null;
   updateRouteChildren: (parentPath: string, newChildren: RouteObject[], merge?: boolean) => void;
   updateMainRouteChildren: (responseMenus: RMenu[]) => void;
   updateRoutes: (updater: (prevRoutes: RouteObject[]) => RouteObject[]) => void;

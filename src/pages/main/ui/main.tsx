@@ -4,7 +4,13 @@ import KeepAliveRouteOutlet from 'keepalive-for-react-router';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { FlexColumn, FlexRow } from '@/shared/components';
-import { PageTab, Sidebar, useRouterMenuContext, useRouterState } from '@/entities/router';
+import {
+  PageTab,
+  Sidebar,
+  useGetMenuListService,
+  useRouterMenuContext,
+  useRouterState,
+} from '@/entities/router';
 import { KeepAliveWrapper, MainHeader } from '@/entities/main';
 import { localStorageKey } from '@/shared/constants';
 
@@ -14,9 +20,11 @@ export function Main() {
 
   const location = useLocation();
   const routerState = useRouterState();
-  const { sidebarMainMenus, findRecursiveCurrentMenu, excludeCacheMenuRouters } =
+
+  const { sidebarMainMenus, updateMainRouteChildren, findCurrentMenu, excludeCacheMenuRouters } =
     useRouterMenuContext();
-  const currentMenu = findRecursiveCurrentMenu(location.pathname);
+  const getMenuListService = useGetMenuListService();
+  const currentMenu = findCurrentMenu(location.pathname);
   const isMatchedExcludeMenu = excludeCacheMenuRouters.includes(currentMenu?.fullRouterPath ?? '');
 
   useEffect(() => {
@@ -41,8 +49,19 @@ export function Main() {
     };
   }, [location.pathname]);
 
+  const getMenuList = () => {
+    getMenuListService.mutate(undefined, {
+      onSuccess: (data) => {
+        if (data.data) {
+          console.log(data.data.menuList);
+          updateMainRouteChildren(data.data.menuList);
+        }
+      },
+    });
+  };
+
   useEffect(() => {
-    // updateMainRouteChildren([]);
+    getMenuList();
   }, []);
 
   return (

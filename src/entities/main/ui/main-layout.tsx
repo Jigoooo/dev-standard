@@ -16,8 +16,8 @@ export function MainLayout({
 }) {
   const location = useLocation();
   const routerState = useRouterState();
-  const { findRecursiveCurrentMenu } = useRouterMenuContext();
-  const currentMenu = findRecursiveCurrentMenu(location.pathname);
+  const { findCurrentMenu } = useRouterMenuContext();
+  const currentMenu = findCurrentMenu(location.pathname);
 
   return (
     <FlexColumn

@@ -45,6 +45,8 @@ function isNonIndexRoute(route: RouteObject): route is Exclude<RouteObject, { in
 }
 
 function makeGroupMenus(responseMenus: RMenu[]): TMenu[] {
+  //todo 데이터 잘못 들어 왔을 때 판단
+
   const mainGroups = new Map<number, RMenu[]>();
   responseMenus.forEach((menu) => {
     if (!mainGroups.has(menu.mainCd)) {
@@ -52,9 +54,6 @@ function makeGroupMenus(responseMenus: RMenu[]): TMenu[] {
     }
     mainGroups.get(menu.mainCd)!.push(menu);
   });
-
-  console.log(responseMenus);
-  console.log(mainGroups);
 
   const mainMenus: TMenu[] = [];
 
@@ -203,11 +202,27 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
     setMenus((prevState) => updateRecursively(prevState));
   };
 
-  function findRecursiveCurrentMenu(menus: TMenu[], currentPath: string): TMenu | null {
+  function findCurrentMenu(menus: TMenu[], currentPath: string): TMenu | null {
     for (const menu of menus) {
       if (currentPath.startsWith(menu.fullRouterPath)) {
         if (menu.children) {
-          const foundChild = findRecursiveCurrentMenu(menu.children, currentPath);
+          const foundChild = findCurrentMenu(menu.children, currentPath);
+          if (foundChild) {
+            return foundChild;
+          }
+        }
+
+        return menu;
+      }
+    }
+    return null;
+  }
+
+  function findMenuWithFullRouterPath(menus: TMenu[], targetFullRouterPath: string): TMenu | null {
+    for (const menu of menus) {
+      if (targetFullRouterPath.startsWith(menu.fullRouterPath)) {
+        if (menu.children) {
+          const foundChild = findMenuWithFullRouterPath(menu.children, targetFullRouterPath);
           if (foundChild) {
             return foundChild;
           }
@@ -228,7 +243,8 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
           sidebarMainMenus,
           myProfileMenu,
           excludeCacheMenuRouters,
-          findRecursiveCurrentMenu: (currentPath) => findRecursiveCurrentMenu(menus, currentPath),
+          findCurrentMenu: (currentPath) => findCurrentMenu(menus, currentPath),
+          findMenuWithFullRouterPath,
           updateRouteChildren,
           updateMainRouteChildren,
           updateRoutes,

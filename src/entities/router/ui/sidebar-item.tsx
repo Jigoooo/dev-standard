@@ -44,7 +44,6 @@ export function SidebarItem({
           duration: 0.04,
         }}
         onClick={() => {
-          if (isSelected) return;
           onClickMenu(menu);
         }}
       >
