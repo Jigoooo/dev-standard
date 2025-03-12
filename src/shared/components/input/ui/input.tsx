@@ -17,7 +17,7 @@ const defaultInputStyle: CSSProperties = {
   borderRadius: 4,
   fontSize: '0.94rem',
   fontWeight: 500,
-  height: 38,
+  height: 36,
   outline: 'none',
 } as const;
 
