@@ -46,7 +46,7 @@ function isNonIndexRoute(route: RouteObject): route is Exclude<RouteObject, { in
 }
 
 function makeGroupMenus(responseMenus: RMenu[]): TMenu[] {
-  //todo 데이터 잘못 들어 왔을 때 판단
+  //todo 데이터 잘못 들어 왔을 때 판단로직 추가 필요
 
   const mainGroups = new Map<number, RMenu[]>();
   responseMenus.forEach((menu) => {

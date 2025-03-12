@@ -16,20 +16,21 @@ export function SidebarItems({ menus }: { menus: TMenu[] }) {
     [],
   );
   useEffect(() => {
-    const openState = menus.map((menu) => {
-      console.log(menu);
-      if (lastLocation && lastLocation.includes(menu.fullRouterPath)) {
+    const openState = menus
+      .filter((menu) => menu.isHeader)
+      .map((menu) => {
+        if (lastLocation && lastLocation.includes(menu.fullRouterPath)) {
+          return {
+            menuIndex: menu.menuIndex,
+            open: true,
+          };
+        }
+
         return {
           menuIndex: menu.menuIndex,
-          open: true,
+          open: false,
         };
-      }
-
-      return {
-        menuIndex: menu.menuIndex,
-        open: false,
-      };
-    });
+      });
 
     setSecondDepthOpen(openState);
   }, [lastLocation, menus]);
