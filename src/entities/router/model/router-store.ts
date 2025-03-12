@@ -7,6 +7,7 @@ const initialState: TRouterState = {
   sidebarCollapsed: false,
   delayedSidebarCollapsed: false,
   sidebarWidth: 280,
+  sidebarCollapsedWidth: 50,
 };
 
 const useRouterStore = create<TRouterStore>()((setState, getState) => {
@@ -28,7 +29,9 @@ const useRouterStore = create<TRouterStore>()((setState, getState) => {
                 ...state.state,
                 delayedSidebarCollapsed: newSidebarCollapsed,
                 sidebarCollapsed: newSidebarCollapsed,
-                sidebarWidth: newSidebarCollapsed ? 50 : initialState.sidebarWidth,
+                sidebarWidth: newSidebarCollapsed
+                  ? initialState.sidebarCollapsedWidth
+                  : initialState.sidebarWidth,
               },
             };
           }
@@ -38,7 +41,9 @@ const useRouterStore = create<TRouterStore>()((setState, getState) => {
             state: {
               ...state.state,
               sidebarCollapsed: newSidebarCollapsed,
-              sidebarWidth: newSidebarCollapsed ? 50 : initialState.sidebarWidth,
+              sidebarWidth: newSidebarCollapsed
+                ? initialState.sidebarCollapsedWidth
+                : initialState.sidebarWidth,
             },
           };
         });

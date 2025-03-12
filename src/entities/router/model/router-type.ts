@@ -37,6 +37,7 @@ export type TRouterState = {
   sidebarCollapsed: boolean;
   delayedSidebarCollapsed: boolean;
   sidebarWidth: number;
+  sidebarCollapsedWidth: number;
 };
 
 export type TRouterStore = {
