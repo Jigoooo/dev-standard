@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 
-import { Table, useTableData } from '@/shared/components';
+import { FiSearch } from 'react-icons/fi';
+
+import { FlexRow, Input, Table, useTableData } from '@/shared/components';
 import { generateUsers } from '@/entities/grid-example/config/test-data.ts';
 import { gridExampleHeaderGroups, gridExampleHeaders } from '@/entities/grid-example';
 
@@ -44,10 +46,26 @@ export function GridExample() {
     <div
       style={{
         height: '100%',
-        maxHeight: 'calc(100vh - 120px)',
+        maxHeight: 'calc(100vh - 180px)',
         paddingTop: 12,
       }}
     >
+      <FlexRow
+        style={{
+          width: '100%',
+          paddingBlock: 12,
+          paddingRight: 14,
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 6,
+        }}
+      >
+        <Input
+          startDecorator={<FiSearch style={{ color: '#999999', fontSize: '1.1rem' }} />}
+          style={{ height: 34, width: 400 }}
+          placeholder={'이름'}
+        />
+      </FlexRow>
       <Table
         tableHeaderGroups={gridExampleHeaderGroups}
         tableHeaders={gridExampleHeaders}

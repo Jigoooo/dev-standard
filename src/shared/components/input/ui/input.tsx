@@ -90,8 +90,8 @@ export function Input({
         <div
           style={{
             position: 'absolute',
-            left: 6,
-            top: '40%',
+            left: inputStyle === InputStyle.UNDERLINE ? 6 : 8,
+            top: inputStyle === InputStyle.UNDERLINE ? '40%' : '50%',
             transform: 'translateY(-40%)',
             pointerEvents: 'none',
           }}

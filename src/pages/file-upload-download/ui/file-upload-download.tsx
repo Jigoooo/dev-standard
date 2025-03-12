@@ -8,6 +8,7 @@ import {
   ModalLayout,
   useTableData,
   Table,
+  DateFromToPicker,
 } from '@/shared/components';
 import {
   fileDownloadHeaders,
@@ -65,7 +66,17 @@ export function FileUploadDownload() {
         maxHeight: 'calc(100vh - 180px)',
       }}
     >
-      <FlexRow>
+      <FlexRow
+        style={{
+          width: '100%',
+          paddingBlock: 12,
+          paddingRight: 14,
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 6,
+        }}
+      >
+        <DateFromToPicker />
         <Button onClick={fileUploadModalOpen}>파일 업로드</Button>
       </FlexRow>
       <Table
