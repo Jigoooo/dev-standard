@@ -47,14 +47,14 @@ export type TRouterStore = {
 };
 
 export type RMenu = {
-  MAIN_CD: number;
-  SUB1_CD: number;
-  SUB2_CD: number;
-  ORDER_BY: number;
-  MENU_ID: string;
-  MENU_TITLE: string;
-  MENU_LINK: string;
-  DISPLAY_YN: 'Y' | 'N';
+  mainCd: number;
+  sub1Cd: number;
+  sub2Cd: number;
+  orderBy: number;
+  menuId: string;
+  menuTitle: string;
+  menuLink: string;
+  displayYn: 'Y' | 'N';
 };
 
 export type TRouterMenuContext = {

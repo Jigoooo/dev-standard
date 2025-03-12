@@ -47,10 +47,10 @@ function isNonIndexRoute(route: RouteObject): route is Exclude<RouteObject, { in
 function makeGroupMenus(responseMenus: RMenu[]): TMenu[] {
   const mainGroups = new Map<number, RMenu[]>();
   responseMenus.forEach((menu) => {
-    if (!mainGroups.has(menu.MAIN_CD)) {
-      mainGroups.set(menu.MAIN_CD, []);
+    if (!mainGroups.has(menu.mainCd)) {
+      mainGroups.set(menu.mainCd, []);
     }
-    mainGroups.get(menu.MAIN_CD)!.push(menu);
+    mainGroups.get(menu.mainCd)!.push(menu);
   });
 
   const mainMenus: TMenu[] = [];
@@ -60,45 +60,45 @@ function makeGroupMenus(responseMenus: RMenu[]): TMenu[] {
     let mainMenu: TMenu | null = null;
 
     menus.forEach((menu) => {
-      if (!subGroups.has(menu.SUB1_CD)) {
-        subGroups.set(menu.SUB1_CD, []);
+      if (!subGroups.has(menu.sub1Cd)) {
+        subGroups.set(menu.sub1Cd, []);
       }
 
-      if (menu.SUB2_CD === 0) {
-        const routerPath = menu.MENU_ID as Router;
+      if (menu.sub2Cd === 0) {
+        const routerPath = menu.menuId as Router;
         const hasRouterComponent = !!routerComponentMap[routerPath];
 
         mainMenu = {
           menuIndex: mainCd,
           isHeader: !hasRouterComponent,
-          name: menu.MENU_TITLE,
+          name: menu.menuTitle,
           icon: routerMappedIcon[routerPath],
-          display: menu.DISPLAY_YN === 'Y',
+          display: menu.displayYn === 'Y',
           router: routerPath,
-          fullRouterPath: menu.MENU_LINK,
+          fullRouterPath: menu.menuLink,
         };
       } else {
-        subGroups.get(menu.SUB1_CD)!.push(menu);
+        subGroups.get(menu.sub1Cd)!.push(menu);
       }
     });
 
     let subMenus: TMenu[] = [];
 
     for (const [, subMenusArr] of subGroups.entries()) {
-      subMenusArr.sort((a, b) => a.ORDER_BY - b.ORDER_BY);
+      subMenusArr.sort((a, b) => a.orderBy - b.orderBy);
 
       subMenus = subMenusArr.map((menu) => {
-        const routerPath = menu.MENU_ID as Router;
+        const routerPath = menu.menuId as Router;
         const hasRouterComponent = !!routerComponentMap[routerPath];
 
         return {
-          menuIndex: Number(`${menu.MAIN_CD}${menu.SUB1_CD}${menu.SUB2_CD}`),
+          menuIndex: Number(`${menu.mainCd}${menu.sub1Cd}${menu.sub2Cd}`),
           isHeader: !hasRouterComponent,
-          name: menu.MENU_TITLE,
+          name: menu.menuTitle,
           icon: routerMappedIcon[routerPath],
           router: routerPath,
-          fullRouterPath: menu.MENU_LINK,
-          display: menu.DISPLAY_YN === 'Y',
+          fullRouterPath: menu.menuLink,
+          display: menu.displayYn === 'Y',
         };
       });
     }

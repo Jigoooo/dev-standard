@@ -1,3 +1,5 @@
+import { RMenu } from '@/entities/router';
+
 export type PSignIn = {
   id: string;
   password: string;
@@ -6,5 +8,5 @@ export type PSignIn = {
 export type RSignIn = {
   accessToken: string;
   refreshToken: string;
-  menuList: any[];
+  menuList: RMenu[];
 };

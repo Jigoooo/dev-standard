@@ -3,7 +3,7 @@ import secureLocalStorage from 'react-secure-storage';
 
 import TriphosLogo from '@/shared/assets/images/triphos_logo.png';
 
-import { Router } from '@/entities/router';
+import { Router, useRouterMenuContext } from '@/entities/router';
 import {
   Form,
   Input,
@@ -38,7 +38,7 @@ export function SignIn() {
   const [saveIdChecked, toggleSaveIdChecked] = useToggle(!!saveId);
 
   const signInService = useSignInService();
-
+  const { updateMainRouteChildren } = useRouterMenuContext();
   const signIn = (formData: FormData) => {
     const { id, password } = getFormValues<PSignIn>(formData, signInFields);
     const idWithValidated = createValidator(id)
@@ -76,8 +76,6 @@ export function SignIn() {
             return;
           }
 
-          console.log(data.data);
-
           if (data.data) {
             secureLocalStorage.setItem(
               secureStorageKey.TOKEN,
@@ -86,6 +84,8 @@ export function SignIn() {
                 refreshToken: data.data.refreshToken,
               }),
             );
+
+            updateMainRouteChildren(data.data.menuList);
           }
 
           if (saveIdChecked) {
