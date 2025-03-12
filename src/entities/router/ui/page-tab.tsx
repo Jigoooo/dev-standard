@@ -13,7 +13,8 @@ import { CacheNode, TMenu, useRouterMenuContext } from '@/entities/router';
 export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undefined> }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const { menus, sidebarMainMenus } = useRouterMenuContext();
+  const { sidebarMainMenus, findRecursiveCurrentMenu } = useRouterMenuContext();
+  const currentMenu = findRecursiveCurrentMenu(location.pathname);
 
   const activeCacheKey = location.pathname + location.search;
 
@@ -47,10 +48,6 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
       );
     });
   };
-
-  const currentMenu =
-    menus.find((menu) => location.pathname.startsWith(menu.fullRouterPath)) ??
-    (sidebarMainMenus.length > 0 ? sidebarMainMenus[0] : undefined);
 
   const toMenu = (menu: TMenu) => {
     if (menu.isHeader) {

@@ -62,8 +62,10 @@ export type TRouterMenuContext = {
   menus: TMenu[];
   sidebarMainMenus: TMenu[];
   myProfileMenu: TMenu;
+  excludeCacheMenuRouters: string[];
+  findRecursiveCurrentMenu: (currentPath: string) => TMenu | null;
   updateRouteChildren: (parentPath: string, newChildren: RouteObject[], merge?: boolean) => void;
   updateMainRouteChildren: (responseMenus: RMenu[]) => void;
   updateRoutes: (updater: (prevRoutes: RouteObject[]) => RouteObject[]) => void;
   updateRouteName: (router: Router, newName: string) => void;
-} | null;
+};

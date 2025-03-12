@@ -7,6 +7,7 @@ import axios, {
 } from 'axios';
 
 import { logOnDev } from '@/shared/lib';
+import { getToken } from '@/entities/auth';
 
 const onRequest = (config: AxiosRequestConfig): Promise<InternalAxiosRequestConfig> => {
   const { method, url, headers } = config;
@@ -17,11 +18,12 @@ const onRequest = (config: AxiosRequestConfig): Promise<InternalAxiosRequestConf
     throw new Error(`axios header is undefined`);
   }
 
-  const token = '';
+  const token = getToken();
+  const accessToken = token?.accessToken;
 
-  if (!!token) {
+  if (accessToken) {
     // headers.Authorization = `Bearer ${token}`;
-    headers.Authorization = token;
+    headers.Authorization = `Bearer ${accessToken}`;
   }
 
   return Promise.resolve({ ...config } as InternalAxiosRequestConfig);

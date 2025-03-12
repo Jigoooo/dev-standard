@@ -1,7 +1,7 @@
 import { ReactNode, useState } from 'react';
 import { Outlet, RouteObject } from 'react-router-dom';
 
-import { Router, TMenu } from './router-type.ts';
+import { Router, TMenu, TRouterMenuContext } from './router-type.ts';
 import { routerComponentMap, routerMappedIcon } from './router-map.tsx';
 import { RouterMenuContext } from '@/entities/router';
 import { RMenu } from './router-type.ts';
@@ -52,6 +52,9 @@ function makeGroupMenus(responseMenus: RMenu[]): TMenu[] {
     }
     mainGroups.get(menu.mainCd)!.push(menu);
   });
+
+  console.log(responseMenus);
+  console.log(mainGroups);
 
   const mainMenus: TMenu[] = [];
 
@@ -130,6 +133,11 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
 
   const sidebarMainMenus = menus.filter((menu) => menu.router !== Router.MY_PROFILE);
   const myProfileMenu = defaultMenus[0];
+  const excludeCacheMenuRouters = [
+    `${Router.MAIN}/${Router.COMPONENT}`,
+    `${Router.MAIN}/${Router.FILE}`,
+    `${Router.MAIN}/${Router.MY_PROFILE}`,
+  ];
 
   const updateRouteChildren = (parentPath: string, newChildren: RouteObject[], merge?: boolean) => {
     setRoutes((prevState) => {
@@ -195,18 +203,38 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
     setMenus((prevState) => updateRecursively(prevState));
   };
 
+  function findRecursiveCurrentMenu(menus: TMenu[], currentPath: string): TMenu | null {
+    for (const menu of menus) {
+      if (currentPath.startsWith(menu.fullRouterPath)) {
+        if (menu.children) {
+          const foundChild = findRecursiveCurrentMenu(menu.children, currentPath);
+          if (foundChild) {
+            return foundChild;
+          }
+        }
+
+        return menu;
+      }
+    }
+    return null;
+  }
+
   return (
     <RouterMenuContext
-      value={{
-        routes,
-        menus,
-        sidebarMainMenus,
-        myProfileMenu,
-        updateRouteChildren,
-        updateMainRouteChildren,
-        updateRoutes,
-        updateRouteName,
-      }}
+      value={
+        {
+          routes,
+          menus,
+          sidebarMainMenus,
+          myProfileMenu,
+          excludeCacheMenuRouters,
+          findRecursiveCurrentMenu: (currentPath) => findRecursiveCurrentMenu(menus, currentPath),
+          updateRouteChildren,
+          updateMainRouteChildren,
+          updateRoutes,
+          updateRouteName,
+        } as TRouterMenuContext
+      }
     >
       {children}
     </RouterMenuContext>

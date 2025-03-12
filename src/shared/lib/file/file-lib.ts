@@ -54,7 +54,7 @@ export const isImageFile = (file: File): boolean => {
 };
 
 export const getImageBlobToFetch = async (url: string) => {
-  // const token = getToken();
+  // const token = tokenLib();
 
   const responseImage = await fetch(url, {
     headers: {

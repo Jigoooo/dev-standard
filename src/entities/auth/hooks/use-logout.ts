@@ -1,10 +1,9 @@
 import { useNavigate } from 'react-router-dom';
-import secureLocalStorage from 'react-secure-storage';
 
 import { Router } from '@/entities/router';
 
 import { dialogActions, DialogType } from '@/shared/components';
-import { secureStorageKey } from '@/shared/constants';
+import { removeToken } from '@/entities/auth';
 
 export function useLogout() {
   const navigate = useNavigate();
@@ -19,7 +18,7 @@ export function useLogout() {
       confirmText: '로그아웃',
       onConfirm: () => {
         navigate(Router.SIGN_IN, { replace: true });
-        secureLocalStorage.removeItem(secureStorageKey.TOKEN);
+        removeToken();
       },
     });
   };

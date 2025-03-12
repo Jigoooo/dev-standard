@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import secureLocalStorage from 'react-secure-storage';
 
 import TriphosLogo from '@/shared/assets/images/triphos_logo.png';
 
@@ -16,8 +15,8 @@ import {
 import { FlexColumn, FlexRow } from '@/shared/components';
 import { useToggle } from '@/shared/hooks';
 import { createValidator, getFormValues } from '@/shared/lib';
-import { localStorageKey, secureStorageKey } from '@/shared/constants';
-import { PSignIn, useSignInService } from '@/entities/auth';
+import { localStorageKey } from '@/shared/constants';
+import { PSignIn, setToken, useSignInService } from '@/entities/auth';
 
 const signInFields: Record<
   keyof {
@@ -77,13 +76,10 @@ export function SignIn() {
           }
 
           if (data.data) {
-            secureLocalStorage.setItem(
-              secureStorageKey.TOKEN,
-              JSON.stringify({
-                accessToken: data.data.accessToken,
-                refreshToken: data.data.refreshToken,
-              }),
-            );
+            setToken({
+              accessToken: data.data.accessToken,
+              refreshToken: data.data.refreshToken,
+            });
 
             updateMainRouteChildren(data.data.menuList);
           }

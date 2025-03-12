@@ -1,9 +1,9 @@
 import { CSSProperties, ReactNode } from 'react';
-import { useLocation } from 'react-router-dom';
 
 import { MainHeader } from './main-header.tsx';
 import { FlexColumn } from '@/shared/components';
 import { useRouterMenuContext, useRouterState } from '@/entities/router';
+import { useLocation } from 'react-router-dom';
 
 export function MainLayout({
   layoutStyle,
@@ -16,11 +16,8 @@ export function MainLayout({
 }) {
   const location = useLocation();
   const routerState = useRouterState();
-  const { menus, sidebarMainMenus } = useRouterMenuContext();
-
-  const currentMenu =
-    menus.find((menu) => location.pathname.startsWith(menu.fullRouterPath)) ??
-    (sidebarMainMenus.length > 0 ? sidebarMainMenus[0] : undefined);
+  const { findRecursiveCurrentMenu } = useRouterMenuContext();
+  const currentMenu = findRecursiveCurrentMenu(location.pathname);
 
   return (
     <FlexColumn

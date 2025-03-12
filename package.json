@@ -35,6 +35,7 @@
     "react-device-detect": "^2.2.3",
     "react-dom": "^19.0.0",
     "react-error-boundary": "^5.0.0",
+    "react-ga4": "^2.1.0",
     "react-icons": "^5.5.0",
     "react-image-file-resizer": "^0.4.8",
     "react-intersection-observer": "^9.16.0",

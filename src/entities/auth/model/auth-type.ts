@@ -5,8 +5,11 @@ export type PSignIn = {
   password: string;
 };
 
-export type RSignIn = {
+export type RToken = {
   accessToken: string;
   refreshToken: string;
+};
+
+export type RSignIn = RToken & {
   menuList: RMenu[];
 };
