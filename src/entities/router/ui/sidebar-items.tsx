@@ -2,7 +2,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import { SidebarItem } from './sidebar-item.tsx';
 import { Divider, FlexColumn } from '@/shared/components';
-import { TMenu } from '@/entities/router';
+import { TMenu, useRouterMenuContext } from '@/entities/router';
 import { useEffect, useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 
@@ -10,11 +10,21 @@ export function SidebarItems({ menus }: { menus: TMenu[] }) {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const { lastLocation } = useRouterMenuContext();
+
   const [secondDepthOpen, setSecondDepthOpen] = useState<{ menuIndex: number; open: boolean }[]>(
     [],
   );
   useEffect(() => {
     const openState = menus.map((menu) => {
+      console.log(menu);
+      if (lastLocation && lastLocation.includes(menu.fullRouterPath)) {
+        return {
+          menuIndex: menu.menuIndex,
+          open: true,
+        };
+      }
+
       return {
         menuIndex: menu.menuIndex,
         open: false,
@@ -22,7 +32,7 @@ export function SidebarItems({ menus }: { menus: TMenu[] }) {
     });
 
     setSecondDepthOpen(openState);
-  }, [menus]);
+  }, [lastLocation, menus]);
 
   const getSecondDepthOpen = (menuIndex: number) => {
     return secondDepthOpen.find((openState) => openState.menuIndex === menuIndex)?.open ?? false;
