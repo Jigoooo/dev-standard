@@ -28,6 +28,7 @@ export function SidebarItem({
     >
       <FlexRow
         as={motion.div}
+        layout
         style={{
           ...{
             width: '100%',

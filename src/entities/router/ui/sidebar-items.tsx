@@ -1,9 +1,9 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
 
 import { SidebarItem } from './sidebar-item.tsx';
-import { Divider, FlexColumn, FlexRow } from '@/shared/components';
+import { Divider, FlexColumn } from '@/shared/components';
 import { TMenu, useRouterMenuContext } from '@/entities/router';
 
 export function SidebarItems({ menus }: { menus: TMenu[] }) {
@@ -76,31 +76,33 @@ export function SidebarItems({ menus }: { menus: TMenu[] }) {
   };
 
   return (
-    <FlexColumn style={{ width: '100%', alignItems: 'center' }}>
-      {menus.map((menu, menuIndex) => {
-        if (!menu.display) {
-          return null;
-        }
+    <LayoutGroup>
+      <FlexColumn style={{ width: '100%', alignItems: 'center' }}>
+        {menus.map((menu, menuIndex) => {
+          if (!menu.display) {
+            return null;
+          }
 
-        const isSelected = menu.router ? location.pathname.includes(menu.router) : false;
-        const secondDepthMenus = menu.children;
+          const isSelected = menu.router ? location.pathname.includes(menu.router) : false;
+          const secondDepthMenus = menu.children;
 
-        return (
-          <FlexColumn style={{ width: '100%' }} key={menu.router}>
-            <SidebarItem
-              isSelected={isSelected}
-              menu={menu}
-              onClickMenu={(menu) => onClickMenu(menu, isSelected)}
-            />
+          return (
+            <FlexColumn style={{ width: '100%' }} key={menu.router}>
+              <SidebarItem
+                isSelected={isSelected}
+                menu={menu}
+                onClickMenu={(menu) => onClickMenu(menu, isSelected)}
+              />
 
-            <AnimatePresence initial={false}>
-              {secondDepthMenus && getSecondDepthOpen(menu.menuIndex) && (
-                <FlexRow style={{ position: 'relative' }}>
-                  {/*<Divider*/}
-                  {/*  style={{ position: 'absolute', left: 22, top: 10, height: '80%' }}*/}
-                  {/*  direction={'vertical'}*/}
-                  {/*/>*/}
-                  <FlexColumn style={{ width: '100%', marginTop: 4 }}>
+              <AnimatePresence initial={false}>
+                {secondDepthMenus && getSecondDepthOpen(menu.menuIndex) && (
+                  <FlexColumn
+                    as={motion.div}
+                    style={{ width: '100%', marginTop: 4 }}
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                  >
                     {secondDepthMenus.map((secondDepthMenu) => {
                       if (!secondDepthMenu.display) {
                         return null;
@@ -123,14 +125,14 @@ export function SidebarItems({ menus }: { menus: TMenu[] }) {
                       );
                     })}
                   </FlexColumn>
-                </FlexRow>
-              )}
-            </AnimatePresence>
+                )}
+              </AnimatePresence>
 
-            {menuIndex < menus.length - 1 && <Divider style={{ backgroundColor: '#424242' }} />}
-          </FlexColumn>
-        );
-      })}
-    </FlexColumn>
+              {menuIndex < menus.length - 1 && <Divider style={{ backgroundColor: '#424242' }} />}
+            </FlexColumn>
+          );
+        })}
+      </FlexColumn>
+    </LayoutGroup>
   );
 }
