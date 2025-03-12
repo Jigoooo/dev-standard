@@ -91,6 +91,7 @@ export function SidebarItems({ menus }: { menus: TMenu[] }) {
               <SidebarItem
                 isSelected={isSelected}
                 menu={menu}
+                depthOpen={getSecondDepthOpen(menu.menuIndex)}
                 onClickMenu={(menu) => onClickMenu(menu, isSelected)}
               />
 

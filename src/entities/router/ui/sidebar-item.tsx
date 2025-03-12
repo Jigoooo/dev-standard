@@ -10,11 +10,13 @@ export function SidebarItem({
   style,
   isSelected,
   menu,
+  depthOpen = false,
   onClickMenu,
 }: {
   style?: CSSProperties;
   isSelected: boolean;
   menu: TMenu;
+  depthOpen?: boolean;
   onClickMenu: (menu: TMenu) => void;
 }) {
   const routerState = useRouterState();
@@ -82,7 +84,16 @@ export function SidebarItem({
           </AnimatePresence>
         </FlexRow>
 
-        {menu.isHeader && <IoChevronDownOutline style={{ color: '#ffffff', fontSize: '1.2rem' }} />}
+        {menu.isHeader && (
+          <IoChevronDownOutline
+            style={{
+              color: '#ffffff',
+              fontSize: '1.2rem',
+              transition: 'transform 0.3s ease',
+              transform: depthOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+            }}
+          />
+        )}
       </FlexRow>
     </Tooltip>
   );
