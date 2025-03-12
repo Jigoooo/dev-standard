@@ -67,6 +67,8 @@ export type TRouterMenuContext = {
   sidebarMainMenus: TMenu[];
   myProfileMenu: TMenu;
   excludeCacheMenuRouters: string[];
+  lastLocation: string | null;
+  setLastLocation: (lastLocation: string) => void;
   findCurrentMenu: (currentPath: string) => TMenu | null;
   findMenuWithFullRouterPath: (menus: TMenu[], targetFullRouterPath: string) => TMenu | null;
   updateRouteChildren: (parentPath: string, newChildren: RouteObject[], merge?: boolean) => void;

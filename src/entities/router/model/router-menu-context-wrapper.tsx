@@ -9,6 +9,7 @@ import { SignIn } from '@/pages/sign-in';
 import { Main } from '@/pages/main';
 import { MyProfile } from '@/pages/my-profile';
 import { RouteErrorPage } from '@/shared/components';
+import { localStorageKey } from '@/shared/constants';
 
 const defaultRoutes: RouteObject[] = [
   {
@@ -137,6 +138,11 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
     `${Router.MAIN}/${Router.FILE}`,
     `${Router.MAIN}/${Router.MY_PROFILE}`,
   ];
+  const lastLocation = sessionStorage.getItem(localStorageKey.LAST_LOCATION);
+
+  const setLastLocation = (lastLocation: string) => {
+    sessionStorage.setItem(localStorageKey.LAST_LOCATION, lastLocation);
+  };
 
   const updateRouteChildren = (parentPath: string, newChildren: RouteObject[], merge?: boolean) => {
     setRoutes((prevState) => {
@@ -243,6 +249,8 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
           sidebarMainMenus,
           myProfileMenu,
           excludeCacheMenuRouters,
+          lastLocation,
+          setLastLocation,
           findCurrentMenu: (currentPath) => findCurrentMenu(menus, currentPath),
           findMenuWithFullRouterPath,
           updateRouteChildren,
