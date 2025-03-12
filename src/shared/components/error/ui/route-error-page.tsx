@@ -6,7 +6,8 @@ export function RouteErrorPage() {
   const location = useLocation();
 
   if (error.status === 404 && location.pathname !== Router.SIGN_IN) {
-    // todo 토큰 체크 로직도 추가
+    // todo 토큰 체크 로직도 추가, 무한 루프 방지 필요
+    console.log('진입');
     return <Navigate to={Router.MAIN} replace />;
   }
 

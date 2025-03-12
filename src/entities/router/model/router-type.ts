@@ -6,8 +6,10 @@ export enum Router {
   SIGN_IN = '/',
   MAIN = '/main',
   MY_PROFILE = 'my-profile',
+  COMPONENT = 'component',
   UI = 'ui',
   GRID_EXAMPLE = 'grid-example',
+  FILE = 'file',
   FILE_UPLOAD_DOWNLOAD = 'file-upload-download',
   EXCEL_UPLOAD_DOWNLOAD = 'excel-upload-download',
   ROLE_MANAGEMENT = 'role-management',
@@ -17,7 +19,7 @@ export type TMenu = {
   menuIndex: number;
   name: string;
   icon?: IconType;
-  routerPath: Router;
+  router: Router;
   fullRouterPath: string;
   display: boolean;
   children?: TMenu[];

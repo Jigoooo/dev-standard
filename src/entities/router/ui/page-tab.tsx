@@ -23,8 +23,8 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
   useEffect(() => {
     const nodes = aliveRef?.current?.getCacheNodes() ?? [];
     const sorted = [...nodes].sort((a, b) => {
-      const menuA = sidebarMainMenus.find((menu) => a.cacheKey.includes(menu.routerPath));
-      const menuB = sidebarMainMenus.find((menu) => b.cacheKey.includes(menu.routerPath));
+      const menuA = sidebarMainMenus.find((menu) => a.cacheKey.includes(menu.router));
+      const menuB = sidebarMainMenus.find((menu) => b.cacheKey.includes(menu.router));
       return (menuA?.menuIndex ?? 0) - (menuB?.menuIndex ?? 0);
     });
     setSortedCacheNodes(sorted);
@@ -53,7 +53,7 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
     (sidebarMainMenus.length > 0 ? sidebarMainMenus[0] : undefined);
 
   const toMenu = (menu: TMenu) => {
-    navigate(menu.routerPath);
+    navigate(menu.router);
   };
 
   return (
@@ -125,7 +125,7 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
             <AnimatePresence initial={false}>
               {sortedCacheNodes.map((cacheNode) => {
                 const findCacheMenu = sidebarMainMenus.find((menu) =>
-                  cacheNode.cacheKey.includes(menu.routerPath),
+                  cacheNode.cacheKey.includes(menu.router),
                 );
 
                 if (currentMenu === findCacheMenu || !findCacheMenu) {
