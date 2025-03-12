@@ -2,14 +2,14 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import { SidebarItem } from './sidebar-item.tsx';
 import { FlexColumn } from '@/shared/components';
-import { routerComponentMap, TMenu } from '@/entities/router';
+import { TMenu } from '@/entities/router';
 
 export function SidebarItems({ menus }: { menus: TMenu[] }) {
   const navigate = useNavigate();
   const location = useLocation();
 
   const onClickMenu = (menu: TMenu) => {
-    if (!routerComponentMap[menu.router]) {
+    if (menu.isHeader) {
       return;
     }
 

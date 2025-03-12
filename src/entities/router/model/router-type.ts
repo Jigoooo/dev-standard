@@ -16,6 +16,7 @@ export enum Router {
 }
 
 export type TMenu = {
+  isHeader: boolean;
   menuIndex: number;
   name: string;
   icon?: IconType;

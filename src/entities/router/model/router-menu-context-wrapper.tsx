@@ -1,5 +1,5 @@
 import { ReactNode, useState } from 'react';
-import { RouteObject } from 'react-router-dom';
+import { Outlet, RouteObject } from 'react-router-dom';
 
 import { Router, TMenu } from './router-type.ts';
 import { routerComponentMap, routerMappedIcon } from './router-map.tsx';
@@ -31,6 +31,7 @@ const defaultRoutes: RouteObject[] = [
 const defaultMenus: TMenu[] = [
   {
     menuIndex: 9999,
+    isHeader: false,
     name: '내정보',
     icon: routerMappedIcon[Router.MY_PROFILE],
     router: Router.MY_PROFILE,
@@ -65,9 +66,11 @@ function makeGroupMenus(responseMenus: RMenu[]): TMenu[] {
 
       if (menu.SUB2_CD === 0) {
         const routerPath = menu.MENU_ID as Router;
+        const hasRouterComponent = !!routerComponentMap[routerPath];
 
         mainMenu = {
           menuIndex: mainCd,
+          isHeader: !hasRouterComponent,
           name: menu.MENU_TITLE,
           icon: routerMappedIcon[routerPath],
           display: menu.DISPLAY_YN === 'Y',
@@ -86,9 +89,11 @@ function makeGroupMenus(responseMenus: RMenu[]): TMenu[] {
 
       subMenus = subMenusArr.map((menu) => {
         const routerPath = menu.MENU_ID as Router;
+        const hasRouterComponent = !!routerComponentMap[routerPath];
 
         return {
           menuIndex: Number(`${menu.MAIN_CD}${menu.SUB1_CD}${menu.SUB2_CD}`),
+          isHeader: !hasRouterComponent,
           name: menu.MENU_TITLE,
           icon: routerMappedIcon[routerPath],
           router: routerPath,
@@ -113,7 +118,7 @@ function generateRoutesFromMenus(menus: TMenu[]): RouteObject[] {
     const Component = routerComponentMap[menu.router];
     return {
       path: menu.router,
-      element: menu.display && Component ? <Component /> : null,
+      element: menu.display && Component ? <Component /> : <Outlet />,
       children: menu.children ? generateRoutesFromMenus(menu.children) : undefined,
     };
   });
@@ -173,18 +178,21 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
   };
 
   const updateRouteName = (router: Router, newName: string) => {
-    setMenus((prevState) => {
-      return prevState.map((menu) => {
-        if (menu.router === router) {
-          return {
-            ...menu,
-            name: newName,
+    const updateRecursively = (menus: TMenu[]): TMenu[] => {
+      return menus.map((menu) => {
+        let updatedMenu = menu.router === router ? { ...menu, name: newName } : menu;
+
+        if (menu.children && menu.children.length > 0) {
+          updatedMenu = {
+            ...updatedMenu,
+            children: updateRecursively(menu.children),
           };
         }
-
-        return menu;
+        return updatedMenu;
       });
-    });
+    };
+
+    setMenus((prevState) => updateRecursively(prevState));
   };
 
   return (
