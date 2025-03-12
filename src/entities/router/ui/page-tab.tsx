@@ -8,7 +8,7 @@ import { IoRefreshCircleOutline } from 'react-icons/io5';
 import { IoIosCloseCircleOutline } from 'react-icons/io';
 
 import { Button, Divider, FlexColumn, FlexRow, Typography } from '@/shared/components';
-import { CacheNode, TMenu, useRouterMenuContext } from '@/entities/router';
+import { CacheNode, routerComponentMap, TMenu, useRouterMenuContext } from '@/entities/router';
 
 export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undefined> }) {
   const navigate = useNavigate();
@@ -53,6 +53,10 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
     (sidebarMainMenus.length > 0 ? sidebarMainMenus[0] : undefined);
 
   const toMenu = (menu: TMenu) => {
+    if (!routerComponentMap[menu.router]) {
+      return;
+    }
+
     navigate(menu.router);
   };
 
