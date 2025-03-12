@@ -54,7 +54,7 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
       return;
     }
 
-    navigate(menu.router);
+    navigate(menu.fullRouterPath);
   };
 
   return (
