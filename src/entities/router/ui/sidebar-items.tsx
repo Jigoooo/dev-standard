@@ -95,7 +95,7 @@ export function SidebarItems({ menus }: { menus: TMenu[] }) {
 
             <AnimatePresence initial={false}>
               {secondDepthMenus && getSecondDepthOpen(menu.menuIndex) && (
-                <FlexColumn style={{ width: '100%' }}>
+                <FlexColumn style={{ width: '100%', marginTop: 4 }}>
                   {secondDepthMenus.map((secondDepthMenu) => {
                     if (!secondDepthMenu.display) {
                       return null;
@@ -108,6 +108,7 @@ export function SidebarItems({ menus }: { menus: TMenu[] }) {
                     return (
                       <SidebarItem
                         key={secondDepthMenu.router}
+                        style={{ paddingLeft: 32 }}
                         isSelected={isSelected}
                         menu={secondDepthMenu}
                         onClickMenu={(childMenu) => {
