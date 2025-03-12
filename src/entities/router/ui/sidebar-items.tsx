@@ -1,10 +1,10 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-
-import { SidebarItem } from './sidebar-item.tsx';
-import { Divider, FlexColumn } from '@/shared/components';
-import { TMenu, useRouterMenuContext } from '@/entities/router';
 import { useEffect, useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
+
+import { SidebarItem } from './sidebar-item.tsx';
+import { Divider, FlexColumn, FlexRow } from '@/shared/components';
+import { TMenu, useRouterMenuContext } from '@/entities/router';
 
 export function SidebarItems({ menus }: { menus: TMenu[] }) {
   const navigate = useNavigate();
@@ -95,29 +95,35 @@ export function SidebarItems({ menus }: { menus: TMenu[] }) {
 
             <AnimatePresence initial={false}>
               {secondDepthMenus && getSecondDepthOpen(menu.menuIndex) && (
-                <FlexColumn style={{ width: '100%', marginTop: 4 }}>
-                  {secondDepthMenus.map((secondDepthMenu) => {
-                    if (!secondDepthMenu.display) {
-                      return null;
-                    }
+                <FlexRow style={{ position: 'relative' }}>
+                  {/*<Divider*/}
+                  {/*  style={{ position: 'absolute', left: 22, top: 10, height: '80%' }}*/}
+                  {/*  direction={'vertical'}*/}
+                  {/*/>*/}
+                  <FlexColumn style={{ width: '100%', marginTop: 4 }}>
+                    {secondDepthMenus.map((secondDepthMenu) => {
+                      if (!secondDepthMenu.display) {
+                        return null;
+                      }
 
-                    const isSelected = secondDepthMenu.router
-                      ? location.pathname.includes(secondDepthMenu.router)
-                      : false;
+                      const isSelected = secondDepthMenu.router
+                        ? location.pathname.includes(secondDepthMenu.router)
+                        : false;
 
-                    return (
-                      <SidebarItem
-                        key={secondDepthMenu.router}
-                        style={{ paddingLeft: 32 }}
-                        isSelected={isSelected}
-                        menu={secondDepthMenu}
-                        onClickMenu={(childMenu) => {
-                          onClickSecondDepthMenu(menu, childMenu, isSelected);
-                        }}
-                      />
-                    );
-                  })}
-                </FlexColumn>
+                      return (
+                        <SidebarItem
+                          key={secondDepthMenu.router}
+                          style={{ paddingLeft: 32 }}
+                          isSelected={isSelected}
+                          menu={secondDepthMenu}
+                          onClickMenu={(childMenu) => {
+                            onClickSecondDepthMenu(menu, childMenu, isSelected);
+                          }}
+                        />
+                      );
+                    })}
+                  </FlexColumn>
+                </FlexRow>
               )}
             </AnimatePresence>
 

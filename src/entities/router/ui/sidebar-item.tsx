@@ -1,8 +1,10 @@
+import { CSSProperties } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+
+import { IoChevronDownOutline } from 'react-icons/io5';
 
 import { FlexRow, Tooltip } from '@/shared/components';
 import { TMenu, useRouterState } from '@/entities/router';
-import { CSSProperties } from 'react';
 
 export function SidebarItem({
   style,
@@ -29,7 +31,7 @@ export function SidebarItem({
         style={{
           ...{
             width: '100%',
-            gap: 12,
+            justifyContent: 'space-between',
             alignItems: 'center',
             paddingBlock: 4,
             paddingInline: 14,
@@ -53,27 +55,33 @@ export function SidebarItem({
           onClickMenu(menu);
         }}
       >
-        {menu.icon && <menu.icon style={{ color: 'inherit', fontSize: '1.2rem', flexShrink: 0 }} />}
-
-        <AnimatePresence>
-          {!routerState.delayedSidebarCollapsed && (
-            <motion.span
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              style={{
-                color: 'inherit',
-                fontSize: '0.84rem',
-                fontWeight: 700,
-                overflow: 'hidden',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              {menu.name}
-            </motion.span>
+        <FlexRow style={{ gap: 12 }}>
+          {menu.icon && (
+            <menu.icon style={{ color: 'inherit', fontSize: '1.2rem', flexShrink: 0 }} />
           )}
-        </AnimatePresence>
+
+          <AnimatePresence>
+            {!routerState.delayedSidebarCollapsed && (
+              <motion.span
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                style={{
+                  color: 'inherit',
+                  fontSize: '0.84rem',
+                  fontWeight: 700,
+                  overflow: 'hidden',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {menu.name}
+              </motion.span>
+            )}
+          </AnimatePresence>
+        </FlexRow>
+
+        {menu.isHeader && <IoChevronDownOutline style={{ color: '#ffffff', fontSize: '1.2rem' }} />}
       </FlexRow>
     </Tooltip>
   );
