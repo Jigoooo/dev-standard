@@ -7,7 +7,7 @@ import { FlexColumn, FlexRow } from '@/shared/components';
 import {
   PageTab,
   Sidebar,
-  useGetMenuListService,
+  useGetMenuListQuery,
   useRouterMenuContext,
   useRouterState,
 } from '@/entities/router';
@@ -23,7 +23,7 @@ export function Main() {
 
   const { sidebarMainMenus, updateMainRouteChildren, findCurrentMenu, excludeCacheMenuRouters } =
     useRouterMenuContext();
-  const getMenuListService = useGetMenuListService();
+  const getMenuListQuery = useGetMenuListQuery();
   const currentMenu = findCurrentMenu(location.pathname);
   const isMatchedExcludeMenu = excludeCacheMenuRouters.includes(currentMenu?.fullRouterPath ?? '');
 
@@ -49,20 +49,15 @@ export function Main() {
     };
   }, [location.pathname]);
 
-  const getMenuList = () => {
-    getMenuListService.mutate(undefined, {
-      onSuccess: (data) => {
-        if (data.data) {
-          console.log(data.data.menuList);
-          updateMainRouteChildren(data.data.menuList);
-        }
-      },
-    });
-  };
-
   useEffect(() => {
-    getMenuList();
-  }, []);
+    if (getMenuListQuery?.data?.data) {
+      updateMainRouteChildren(getMenuListQuery?.data.data.menuList);
+    }
+  }, [getMenuListQuery.data]);
+
+  if (getMenuListQuery.isFetching) {
+    return null;
+  }
 
   return (
     <FlexRow

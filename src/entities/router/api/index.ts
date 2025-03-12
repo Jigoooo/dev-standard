@@ -1,1 +1,1 @@
-export { useGetMenuListService } from './router-service.ts';
+export { useGetMenuListQuery } from './router-service.ts';
