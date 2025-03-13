@@ -277,15 +277,15 @@ const TableBodyPin = memo(function TableBodyPin({
   );
 });
 
-function areEqualTableRow(prevProps: TableBodyRowProps, nextProps: TableBodyRowProps) {
-  const prevHovered = prevProps.hoverIndex === prevProps.index;
-  const nextHovered = nextProps.hoverIndex === nextProps.index;
-  return (
-    prevHovered === nextHovered &&
-    prevProps.virtualItem.start === nextProps.virtualItem.start &&
-    prevProps.rowWidth === nextProps.rowWidth
-  );
-}
+// function areEqualTableRow(prevProps: TableBodyRowProps, nextProps: TableBodyRowProps) {
+//   const prevHovered = prevProps.hoverIndex === prevProps.index;
+//   const nextHovered = nextProps.hoverIndex === nextProps.index;
+//   return (
+//     prevHovered === nextHovered &&
+//     prevProps.virtualItem.start === nextProps.virtualItem.start &&
+//     prevProps.rowWidth === nextProps.rowWidth
+//   );
+// }
 
 const TableBodyRow = memo(function TableBodyRow({
   headers,
@@ -317,7 +317,7 @@ const TableBodyRow = memo(function TableBodyRow({
       onMouseLeave={() => setHoverIndex(null)}
       onClick={() => {
         if (tableRowClick) {
-          tableRowClick(index);
+          tableRowClick(data);
           setRowClickIndex(index);
           setHoverIndex(null);
         }
@@ -340,7 +340,7 @@ const TableBodyRow = memo(function TableBodyRow({
       })}
     </FlexRow>
   );
-}, areEqualTableRow);
+});
 
 const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, any>>({
   rowIndex,

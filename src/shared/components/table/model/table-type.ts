@@ -22,7 +22,7 @@ export type TTableContext<TData> = {
   handleCheck: (data: TData) => void;
   handleCheckAll: () => void;
   handleSort: (key: string) => void;
-  tableRowClick?: (index: string) => void;
+  tableRowClick?: (data: TData) => void;
 };
 
 export type TTableStyle = {

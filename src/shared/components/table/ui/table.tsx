@@ -67,7 +67,7 @@ export function Table<TData extends { index: string } & Record<string, any>>({
   tableStyle?: Partial<TTableStyle>;
   dataKey?: keyof TData;
   filterRowEnabled?: boolean;
-  tableRowClick?: (index: string) => void;
+  tableRowClick?: (data: TData) => void;
 }) {
   const applyTableStyle = {
     ...defaultTableStyle,
