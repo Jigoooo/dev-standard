@@ -41,7 +41,6 @@ export function RoleManagement() {
       setMenuAuthList(dataWithIndex);
     }
   }, [getMenuMemberAuthListQuery.data?.data]);
-  console.log(menuAuthList);
 
   return (
     <div
