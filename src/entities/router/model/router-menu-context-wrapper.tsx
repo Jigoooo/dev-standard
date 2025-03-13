@@ -241,6 +241,20 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
     return null;
   }
 
+  function findFirstNonHeaderMenu(menus: TMenu[]): TMenu | null {
+    for (const menu of menus) {
+      if (!menu.isHeader) {
+        return menu;
+      } else if (menu.children) {
+        const foundChild = findFirstNonHeaderMenu(menu.children);
+        if (foundChild) {
+          return foundChild;
+        }
+      }
+    }
+    return null;
+  }
+
   return (
     <RouterMenuContext
       value={
@@ -254,6 +268,7 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
           setLastLocation,
           findCurrentMenu: (currentPath) => findCurrentMenu(menus, currentPath),
           findMenuWithFullRouterPath,
+          findFirstNonHeaderMenu,
           updateRouteChildren,
           updateMainRouteChildren,
           updateRoutes,

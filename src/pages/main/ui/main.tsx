@@ -26,6 +26,7 @@ export function Main() {
     sidebarMainMenus,
     updateMainRouteChildren,
     findCurrentMenu,
+    findFirstNonHeaderMenu,
     excludeCacheMenuRouters,
     lastLocation,
     setLastLocation,
@@ -46,7 +47,10 @@ export function Main() {
       if (lastLocation) {
         navigate(lastLocation);
       } else {
-        navigate(sidebarMainMenus[0].fullRouterPath);
+        const firstNonHeaderMenu = findFirstNonHeaderMenu(sidebarMainMenus);
+        if (firstNonHeaderMenu !== null) {
+          navigate(firstNonHeaderMenu.fullRouterPath);
+        }
       }
     }
   }, [lastLocation, sidebarMainMenus]);

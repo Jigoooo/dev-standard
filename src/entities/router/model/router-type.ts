@@ -72,6 +72,7 @@ export type TRouterMenuContext = {
   setLastLocation: (lastLocation: string) => void;
   findCurrentMenu: (currentPath: string) => TMenu | null;
   findMenuWithFullRouterPath: (menus: TMenu[], targetFullRouterPath: string) => TMenu | null;
+  findFirstNonHeaderMenu: (menus: TMenu[]) => TMenu | null;
   updateRouteChildren: (parentPath: string, newChildren: RouteObject[], merge?: boolean) => void;
   updateMainRouteChildren: (responseMenus: RMenu[]) => void;
   updateRoutes: (updater: (prevRoutes: RouteObject[]) => RouteObject[]) => void;

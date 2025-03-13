@@ -377,6 +377,7 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
         contain: 'paint',
         borderRight:
           tableStyle.showVerticalLines && !isLastHeaderIndex ? tableStyle.tableBorder : undefined,
+        overflow: 'hidden',
       }}
       onClick={() => {
         if (isCheckedAvailableHeader) {

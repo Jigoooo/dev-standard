@@ -10,7 +10,7 @@ export function SidebarItems({ menus }: { menus: TMenu[] }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { lastLocation } = useRouterMenuContext();
+  const { findFirstNonHeaderMenu, lastLocation } = useRouterMenuContext();
 
   const [secondDepthOpen, setSecondDepthOpen] = useState<{ menuIndex: number; open: boolean }[]>(
     [],
@@ -19,7 +19,17 @@ export function SidebarItems({ menus }: { menus: TMenu[] }) {
     const openState = menus
       .filter((menu) => menu.isHeader)
       .map((menu) => {
+        const firstNonHeaderMenu = findFirstNonHeaderMenu(menus);
+
         if (lastLocation && lastLocation.includes(menu.fullRouterPath)) {
+          return {
+            menuIndex: menu.menuIndex,
+            open: true,
+          };
+        } else if (
+          firstNonHeaderMenu &&
+          firstNonHeaderMenu.fullRouterPath.includes(menu.fullRouterPath)
+        ) {
           return {
             menuIndex: menu.menuIndex,
             open: true,
