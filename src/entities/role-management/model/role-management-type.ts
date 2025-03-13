@@ -1,3 +1,7 @@
+export type RRoleUser = {
+  name: string;
+};
+
 export type RRoleManagement = {
   name: string;
   email: string;

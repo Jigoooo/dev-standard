@@ -209,6 +209,7 @@ export function Table<TData extends { index: string } & Record<string, any>>({
           ...{
             position: 'relative',
             height: '100%',
+            width: '100%',
             maxWidth: applyTableStyle.tableContainerAutoWidth ? '100%' : totalWidth,
             border: applyTableStyle.tableBorder,
             borderRadius: applyTableStyle.tableBorderRadius,

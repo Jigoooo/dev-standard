@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
 
-import { Table, useTableData } from '@/shared/components';
+import { FlexRow, Table, useTableData } from '@/shared/components';
 import { generateUsers } from '@/entities/role-management/config/test-data.ts';
-import { roleManagementHeaderGroups, roleManagementHeaders } from '@/entities/role-management';
+import { roleManagementHeaders } from '@/entities/role-management';
+import { roleUserHeaders } from '@/entities/role-management/config/header.tsx';
 
 export function RoleManagement() {
   const { dataList, setDataList, handelDataList } = useTableData<{
@@ -25,7 +26,7 @@ export function RoleManagement() {
       const allUsers = [];
 
       for await (const batch of generateUsers({
-        total: 10000,
+        total: 100,
       })) {
         allUsers.push(...batch);
 
@@ -47,15 +48,24 @@ export function RoleManagement() {
         maxHeight: 'calc(100vh - 200px)',
       }}
     >
-      <Table
-        tableHeaderGroups={roleManagementHeaderGroups}
-        tableHeaders={roleManagementHeaders}
-        tableDataList={dataList}
-        handelDataList={handelDataList}
-        handleSyncCheckList={(checkedList) => {
-          console.log(checkedList);
-        }}
-      />
+      <FlexRow style={{ height: '100%', gap: 12 }}>
+        <Table
+          tableHeaders={roleUserHeaders}
+          tableDataList={dataList}
+          handelDataList={handelDataList}
+          handleSyncCheckList={(checkedList) => {
+            console.log(checkedList);
+          }}
+        />
+        <Table
+          tableHeaders={roleManagementHeaders}
+          tableDataList={dataList}
+          handelDataList={handelDataList}
+          handleSyncCheckList={(checkedList) => {
+            console.log(checkedList);
+          }}
+        />
+      </FlexRow>
     </div>
   );
 }
