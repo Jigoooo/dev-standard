@@ -1,4 +1,4 @@
-import { THeader } from '@/shared/components';
+import { Checkbox, THeader } from '@/shared/components';
 import { RRoleUser, RAuthMenu } from '@/entities/role-management';
 export function useRoleManagementHeaders() {
   const roleUserHeaders: THeader<RRoleUser>[] = [
@@ -77,6 +77,16 @@ export function useRoleManagementHeaders() {
       dataAlign: 'center',
       label: '사용',
       width: 60,
+      cell: ({ cellData, setCellData }) => {
+        return (
+          <Checkbox
+            checked={cellData === 'Y'}
+            onClick={() => {
+              setCellData(cellData === 'Y' ? 'N' : 'Y');
+            }}
+          />
+        );
+      },
       sorter: {
         sortable: true,
         direction: null,
@@ -89,6 +99,16 @@ export function useRoleManagementHeaders() {
       dataAlign: 'center',
       label: '조회',
       width: 60,
+      cell: ({ cellData, setCellData }) => {
+        return (
+          <Checkbox
+            checked={cellData === 'Y'}
+            onClick={() => {
+              setCellData(cellData === 'Y' ? 'N' : 'Y');
+            }}
+          />
+        );
+      },
       sorter: {
         sortable: true,
         direction: null,
@@ -101,6 +121,16 @@ export function useRoleManagementHeaders() {
       dataAlign: 'center',
       label: '생성',
       width: 60,
+      cell: ({ cellData, setCellData }) => {
+        return (
+          <Checkbox
+            checked={cellData === 'Y'}
+            onClick={() => {
+              setCellData(cellData === 'Y' ? 'N' : 'Y');
+            }}
+          />
+        );
+      },
       sorter: {
         sortable: true,
         direction: null,
@@ -113,6 +143,16 @@ export function useRoleManagementHeaders() {
       dataAlign: 'center',
       label: '수정',
       width: 60,
+      cell: ({ cellData, setCellData }) => {
+        return (
+          <Checkbox
+            checked={cellData === 'Y'}
+            onClick={() => {
+              setCellData(cellData === 'Y' ? 'N' : 'Y');
+            }}
+          />
+        );
+      },
       sorter: {
         sortable: true,
         direction: null,
@@ -125,6 +165,16 @@ export function useRoleManagementHeaders() {
       dataAlign: 'center',
       label: '삭제',
       width: 60,
+      cell: ({ cellData, setCellData }) => {
+        return (
+          <Checkbox
+            checked={cellData === 'Y'}
+            onClick={() => {
+              setCellData(cellData === 'Y' ? 'N' : 'Y');
+            }}
+          />
+        );
+      },
       sorter: {
         sortable: true,
         direction: null,

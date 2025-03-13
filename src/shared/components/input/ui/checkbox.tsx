@@ -29,6 +29,7 @@ export function Checkbox({
   return (
     <FlexRow
       style={{
+        justifyContent: 'center',
         alignItems: 'center',
         gap: 6,
         cursor: 'pointer',
@@ -151,16 +152,18 @@ export function Checkbox({
           )}
         </FlexRow>
       )}
-      <Typography
-        style={{
-          userSelect: 'none',
-          fontSize: '0.9rem',
-          color: disabled ? '#999999' : '#666666',
-          fontWeight: 500,
-        }}
-      >
-        {label}
-      </Typography>
+      {!!label && (
+        <Typography
+          style={{
+            userSelect: 'none',
+            fontSize: '0.9rem',
+            color: disabled ? '#999999' : '#666666',
+            fontWeight: 500,
+          }}
+        >
+          {label}
+        </Typography>
+      )}
     </FlexRow>
   );
 }
