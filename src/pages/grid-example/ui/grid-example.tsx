@@ -4,22 +4,36 @@ import { FiSearch } from 'react-icons/fi';
 
 import { FlexRow, Input, SearchButton, Table, useTableData } from '@/shared/components';
 import { generateUsers } from '@/entities/grid-example/config/test-data.ts';
-import { gridExampleHeaderGroups, gridExampleHeaders } from '@/entities/grid-example';
+import { RGridExample, useGridExampleHeaders } from '@/entities/grid-example';
 
 export function GridExample() {
-  const { dataList, setDataList, handelDataList } = useTableData<{
-    index: string;
-    check: boolean;
-    name: string;
-    email: string;
-    age: number;
-    address: string;
-    phone: string;
-    jobTitle: string;
-    department: string;
-    salary: number;
-    hireDate: string;
-  }>([]);
+  // const [searchParams, setSearchParams] = useState<{
+  //   name: string;
+  // }>({
+  //   name: '',
+  // });
+
+  const { gridExampleHeaderGroups, gridExampleHeaders } = useGridExampleHeaders();
+  const { dataList, setDataList, handelDataList } = useTableData<
+    {
+      index: string;
+      check: boolean;
+    } & RGridExample
+  >([]);
+
+  // const handelSearchParams = (key: string, value: string) => {
+  //   setSearchParams((prev) => ({
+  //     ...prev,
+  //     [key]: value,
+  //   }));
+  // };
+
+  // const filteredDataList = dataList.filter((item) => {
+  //   if (searchParams.name) {
+  //     return item.name.toLowerCase().includes(searchParams.name.toLowerCase());
+  //   }
+  //   return true;
+  // });
 
   useEffect(() => {
     let isMounted = true;

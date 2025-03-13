@@ -1,1 +1,1 @@
-export type { RRoleManagement } from './role-management-type.ts';
+export type { RAuthMenu, RMenuMemberAuth } from './role-management-type.ts';

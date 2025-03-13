@@ -1,45 +1,26 @@
 import { useEffect } from 'react';
 
-import { FlexRow, Table, useTableData } from '@/shared/components';
-import { generateUsers } from '@/entities/role-management/config/test-data.ts';
-import { roleManagementHeaders } from '@/entities/role-management';
-import { roleUserHeaders } from '@/entities/role-management/config/header.tsx';
+import { FlexRow, Table, TDataWithIndex, useTableData } from '@/shared/components';
+import {
+  RAuthMenu,
+  useGetMenuMemberAuthListQuery,
+  useRoleManagementHeaders,
+} from '@/entities/role-management';
 
 export function RoleManagement() {
-  const { dataList, setDataList, handelDataList } = useTableData<{
-    index: string;
-    check: boolean;
-    name: string;
-    email: string;
-    age: number;
-    address: string;
-    phone: string;
-    jobTitle: string;
-    department: string;
-    salary: number;
-    hireDate: string;
-  }>([]);
+  const { roleUserHeaders, roleManagementHeaders } = useRoleManagementHeaders();
+  const { dataList, setDataList, handelDataList } = useTableData<TDataWithIndex & RAuthMenu>([]);
 
+  const getMenuMemberAuthListQuery = useGetMenuMemberAuthListQuery();
   useEffect(() => {
-    let isMounted = true;
-    const fetchUsers = async () => {
-      const allUsers = [];
-
-      for await (const batch of generateUsers({
-        total: 100,
-      })) {
-        allUsers.push(...batch);
-
-        if (isMounted) {
-          setDataList((prev) => [...prev, ...batch]);
-        }
-      }
-    };
-    fetchUsers();
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+    if (getMenuMemberAuthListQuery.data?.data) {
+      const dataWithIndex = getMenuMemberAuthListQuery.data.data.menuList.map((item, index) => ({
+        ...item,
+        index: (index + 1).toString(),
+      }));
+      setDataList(dataWithIndex);
+    }
+  }, [getMenuMemberAuthListQuery.data?.data]);
 
   return (
     <div
@@ -51,7 +32,12 @@ export function RoleManagement() {
       <FlexRow style={{ height: '100%', gap: 12 }}>
         <Table
           tableHeaders={roleUserHeaders}
-          tableDataList={dataList}
+          tableDataList={[
+            {
+              index: '1',
+              name: '',
+            },
+          ]}
           handelDataList={handelDataList}
           handleSyncCheckList={(checkedList) => {
             console.log(checkedList);

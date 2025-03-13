@@ -12,16 +12,17 @@ import {
   useTableData,
 } from '@/shared/components';
 import {
-  fileDownloadHeaders,
   FileUploadModal,
   generateFileUploads,
   TFileDownload,
+  useFileUploadDownloadHeaders,
 } from '@/entities/file-upload-download';
 import { addMonths, format } from 'date-fns';
 
 // 메뉴 뎁스 구현
 // 테이블 상단 버튼
 export function FileUploadDownload() {
+  const fileDownloadHeaders = useFileUploadDownloadHeaders();
   const { dataList, setDataList, handelDataList } = useTableData<TFileDownload>([]);
   const [fromToDateString, setFromToDateString] = useState({
     from: format(new Date(), 'yyyy-MM-dd'),
