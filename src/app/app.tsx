@@ -12,14 +12,19 @@ import {
   withRouterMenuHoc,
 } from '@/app/providers';
 import { useRouterMenuContext } from '@/entities/router';
-
-ReactGA.initialize([
-  {
-    trackingId: import.meta.env.VITE_GOOGLE_ANALYTICS_ID,
-  },
-]);
+import { useEffect } from 'react';
 
 function App() {
+  useEffect(() => {
+    if (!window.location.href.includes('localhost')) {
+      ReactGA.initialize([
+        {
+          trackingId: import.meta.env.VITE_GOOGLE_ANALYTICS_ID,
+        },
+      ]);
+    }
+  }, []);
+
   const { routes } = useRouterMenuContext();
   const router = createBrowserRouter(routes);
 
