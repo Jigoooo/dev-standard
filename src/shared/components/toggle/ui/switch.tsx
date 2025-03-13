@@ -20,8 +20,8 @@ export function Switch({
   labelStyle,
   isOn,
   onClick,
-  width = 38,
-  height = 22,
+  width = 34,
+  height = 18,
   disabled = false,
 }: FramerMotionSwitchProps) {
   const padding = height * 0.15;

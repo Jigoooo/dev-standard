@@ -16,7 +16,7 @@ export function Checkbox({
   isPartial = false,
   onClick,
   disabled = false,
-  isActiveAnimation = false,
+  isActiveAnimation = true,
 }: {
   label?: string;
   checked: boolean;
