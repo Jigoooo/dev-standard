@@ -319,7 +319,6 @@ const TableBodyRow = memo(function TableBodyRow({
         if (tableRowClick) {
           tableRowClick(data);
           setRowClickIndex(index);
-          setHoverIndex(null);
         }
       }}
     >
@@ -377,17 +376,21 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
   const cellData = data[header.id];
 
   const getBackgroundColor = () => {
-    if (header.id === 'index') {
+    if (header.id === 'index' && rowClickIndex !== index) {
       return tableStyle.tableHeaderBackgroundColor;
     }
-    if (isChecked!(data) && hoverIndex === index) {
+    if (
+      (isChecked!(data) && hoverIndex === index) ||
+      (hoverIndex === index && rowClickIndex === index)
+    ) {
       return colors.primary[100];
     }
     if (isChecked!(data)) {
       return colors.primary[50];
     }
     if (rowClickIndex === index) {
-      return tableStyle.tableBodyHoverBackgroundColor;
+      // return tableStyle.tableBodyHoverBackgroundColor;
+      return colors.primary[50];
     }
     if (hoverIndex === index) {
       return tableStyle.tableBodyHoverBackgroundColor;
