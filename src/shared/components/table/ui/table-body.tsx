@@ -368,7 +368,11 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
   }
 
   const justifyContent =
-    header.align === 'left' ? 'flex-start' : header.align === 'right' ? 'flex-end' : 'center';
+    header.dataAlign === 'left'
+      ? 'flex-start'
+      : header.dataAlign === 'right'
+        ? 'flex-end'
+        : 'center';
 
   const cellData = data[header.id];
 

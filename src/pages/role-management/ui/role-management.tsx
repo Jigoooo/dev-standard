@@ -69,10 +69,8 @@ export function RoleManagement() {
           tableStyle={{
             showVerticalLines: true,
           }}
-          tableRowClick={(index) => {
-            console.log(index);
-          }}
           tableHeaders={roleManagementHeaders}
+          filterRowEnabled={false}
           tableDataList={menuAuthList}
           handelDataList={handelMenuAuthList}
           handleSyncCheckList={(checkedList) => {

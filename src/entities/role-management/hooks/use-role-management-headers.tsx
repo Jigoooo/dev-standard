@@ -5,7 +5,7 @@ export function useRoleManagementHeaders() {
     {
       id: 'index',
       pin: 'left',
-      align: 'right',
+      dataAlign: 'right',
       label: '',
       width: 60,
       sorter: {
@@ -15,7 +15,7 @@ export function useRoleManagementHeaders() {
     {
       id: 'memberId',
       pin: 'view',
-      align: 'left',
+      dataAlign: 'left',
       label: '아이디',
       width: 150,
       sorter: {
@@ -30,7 +30,7 @@ export function useRoleManagementHeaders() {
     {
       id: 'memberNm',
       pin: 'view',
-      align: 'left',
+      dataAlign: 'left',
       label: '이름',
       width: 150,
       sorter: {
@@ -48,7 +48,7 @@ export function useRoleManagementHeaders() {
     {
       id: 'index',
       pin: 'left',
-      align: 'right',
+      dataAlign: 'right',
       label: '',
       width: 60,
       sorter: {
@@ -56,10 +56,10 @@ export function useRoleManagementHeaders() {
       },
     },
     {
-      id: 'menuId',
+      id: 'menuTitle',
       pin: 'view',
-      align: 'left',
-      label: '이름',
+      dataAlign: 'left',
+      label: '메뉴명',
       width: 150,
       sorter: {
         sortable: true,
@@ -68,6 +68,66 @@ export function useRoleManagementHeaders() {
       filter: {
         filterType: 'text',
         filterValue: '',
+      },
+    },
+    {
+      id: 'useYn',
+      pin: 'view',
+      headerAlign: 'center',
+      dataAlign: 'center',
+      label: '사용',
+      width: 60,
+      sorter: {
+        sortable: true,
+        direction: null,
+      },
+    },
+    {
+      id: 'authSearch',
+      pin: 'view',
+      headerAlign: 'center',
+      dataAlign: 'center',
+      label: '조회',
+      width: 60,
+      sorter: {
+        sortable: true,
+        direction: null,
+      },
+    },
+    {
+      id: 'authIns',
+      pin: 'view',
+      headerAlign: 'center',
+      dataAlign: 'center',
+      label: '생성',
+      width: 60,
+      sorter: {
+        sortable: true,
+        direction: null,
+      },
+    },
+    {
+      id: 'authMod',
+      pin: 'view',
+      headerAlign: 'center',
+      dataAlign: 'center',
+      label: '수정',
+      width: 60,
+      sorter: {
+        sortable: true,
+        direction: null,
+      },
+    },
+    {
+      id: 'authDel',
+      pin: 'view',
+      headerAlign: 'center',
+      dataAlign: 'center',
+      label: '삭제',
+      width: 60,
+      sorter: {
+        sortable: true,
+        direction: null,
       },
     },
   ];

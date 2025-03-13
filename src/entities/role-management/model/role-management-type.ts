@@ -9,6 +9,7 @@ export type RRoleUser = {
 
 export type RAuthMenu = {
   menuId: string;
+  menuTitle: string;
   mainCd: number;
   sub2Cd: number;
   sub1Cd: number;

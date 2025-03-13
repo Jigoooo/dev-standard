@@ -63,7 +63,8 @@ export type THeader<TData = Record<string, any>> = {
     setCellData: (value: any) => void;
   }) => ReactNode;
   pin: 'view' | 'left' | 'right';
-  align: 'left' | 'center' | 'right';
+  headerAlign?: 'left' | 'center' | 'right';
+  dataAlign: 'left' | 'center' | 'right';
   sorter: {
     sortable: boolean;
     direction?: 'asc' | 'desc' | null;

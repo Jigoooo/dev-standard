@@ -6,7 +6,7 @@ export function useFileUploadDownloadHeaders(): THeader<TFileDownload>[] {
     {
       id: 'index',
       pin: 'left',
-      align: 'right',
+      dataAlign: 'right',
       label: '',
       width: 60,
       sorter: {
@@ -16,7 +16,7 @@ export function useFileUploadDownloadHeaders(): THeader<TFileDownload>[] {
     {
       id: 'fileUploadTitle',
       pin: 'view',
-      align: 'left',
+      dataAlign: 'left',
       label: '업로드 제목',
       width: 200,
       sorter: {
@@ -31,7 +31,7 @@ export function useFileUploadDownloadHeaders(): THeader<TFileDownload>[] {
     {
       id: 'note',
       pin: 'view',
-      align: 'left',
+      dataAlign: 'left',
       label: '비고',
       width: 400,
       sorter: {
@@ -46,7 +46,7 @@ export function useFileUploadDownloadHeaders(): THeader<TFileDownload>[] {
     {
       id: 'uploadDateTime',
       pin: 'view',
-      align: 'left',
+      dataAlign: 'left',
       label: '업로드 일자',
       width: 150,
       sorter: {
@@ -61,7 +61,7 @@ export function useFileUploadDownloadHeaders(): THeader<TFileDownload>[] {
     {
       id: 'uploadUser',
       pin: 'view',
-      align: 'left',
+      dataAlign: 'left',
       label: '등록자',
       width: 150,
       sorter: {
@@ -76,7 +76,7 @@ export function useFileUploadDownloadHeaders(): THeader<TFileDownload>[] {
     {
       id: 'button',
       pin: 'view',
-      align: 'center',
+      dataAlign: 'center',
       label: '',
       width: 80,
       cell: () => {

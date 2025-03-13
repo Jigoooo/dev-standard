@@ -17,7 +17,7 @@ export function useGridExampleHeaders() {
     {
       id: 'index',
       pin: 'left',
-      align: 'right',
+      dataAlign: 'right',
       label: '',
       width: 60,
       sorter: {
@@ -27,7 +27,7 @@ export function useGridExampleHeaders() {
     {
       id: 'check',
       pin: 'left',
-      align: 'center',
+      dataAlign: 'center',
       label: '',
       width: 60,
       sorter: {
@@ -37,7 +37,7 @@ export function useGridExampleHeaders() {
     {
       id: 'name',
       pin: 'left',
-      align: 'left',
+      dataAlign: 'left',
       label: '이름',
       width: 150,
       sorter: {
@@ -52,7 +52,7 @@ export function useGridExampleHeaders() {
     {
       id: 'email',
       pin: 'view',
-      align: 'left',
+      dataAlign: 'left',
       label: '이메일',
       width: 250,
       sorter: {
@@ -67,7 +67,7 @@ export function useGridExampleHeaders() {
     {
       id: 'age',
       pin: 'view',
-      align: 'left',
+      dataAlign: 'left',
       label: '나이',
       width: 100,
       sorter: {
@@ -82,7 +82,7 @@ export function useGridExampleHeaders() {
     {
       id: 'address',
       pin: 'view',
-      align: 'left',
+      dataAlign: 'left',
       label: '주소',
       width: 250,
       sorter: {
@@ -97,7 +97,7 @@ export function useGridExampleHeaders() {
     {
       id: 'phone',
       pin: 'view',
-      align: 'left',
+      dataAlign: 'left',
       label: '휴대폰번호',
       width: 250,
       cell: ({ cellData, setCellData }) => {
@@ -122,7 +122,7 @@ export function useGridExampleHeaders() {
     {
       id: 'jobTitle',
       pin: 'view',
-      align: 'left',
+      dataAlign: 'left',
       label: '직업',
       width: 150,
       sorter: {
@@ -137,7 +137,7 @@ export function useGridExampleHeaders() {
     {
       id: 'department',
       pin: 'view',
-      align: 'left',
+      dataAlign: 'left',
       label: '부서',
       width: 300,
       sorter: {
@@ -152,7 +152,7 @@ export function useGridExampleHeaders() {
     {
       id: 'salary',
       pin: 'view',
-      align: 'left',
+      dataAlign: 'left',
       label: '급여',
       width: 300,
       sorter: {
@@ -167,7 +167,7 @@ export function useGridExampleHeaders() {
     {
       id: 'hireDate',
       pin: 'right',
-      align: 'left',
+      dataAlign: 'left',
       label: '고용일',
       width: 150,
       sorter: {

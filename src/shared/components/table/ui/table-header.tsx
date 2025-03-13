@@ -378,12 +378,19 @@ function TableHeaderCell({
     throw new Error('checkedState is required for check header');
   }
 
+  const justifyContent =
+    header.headerAlign === 'left' || header.headerAlign === undefined
+      ? 'flex-start'
+      : header.headerAlign === 'right'
+        ? 'flex-end'
+        : 'center';
+
   return (
     <FlexRow
       className={'table-header-cell'}
       style={{
         boxSizing: 'border-box',
-        justifyContent: header.id === 'check' ? 'center' : 'flex-start',
+        justifyContent: header.id === 'check' ? 'center' : justifyContent,
         alignItems: 'center',
         paddingInline: 12,
         width: header.width,
