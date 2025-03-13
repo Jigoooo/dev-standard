@@ -41,6 +41,7 @@ export function RoleManagement() {
       setMenuAuthList(dataWithIndex);
     }
   }, [getMenuMemberAuthListQuery.data?.data]);
+  console.log(menuAuthList);
 
   return (
     <div
@@ -54,6 +55,9 @@ export function RoleManagement() {
           tableStyle={{
             showVerticalLines: true,
           }}
+          tableRowClick={(index) => {
+            console.log(index);
+          }}
           tableHeaders={roleUserHeaders}
           tableDataList={dataList}
           handelDataList={handelDataList}
@@ -64,6 +68,9 @@ export function RoleManagement() {
         <Table
           tableStyle={{
             showVerticalLines: true,
+          }}
+          tableRowClick={(index) => {
+            console.log(index);
           }}
           tableHeaders={roleManagementHeaders}
           tableDataList={menuAuthList}

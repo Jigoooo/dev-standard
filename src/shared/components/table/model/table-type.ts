@@ -22,6 +22,7 @@ export type TTableContext<TData> = {
   handleCheck: (data: TData) => void;
   handleCheckAll: () => void;
   handleSort: (key: string) => void;
+  tableRowClick?: (index: string) => void;
 };
 
 export type TTableStyle = {
@@ -89,6 +90,8 @@ export type TableBodyRowProps = {
   hoverIndex: string | null;
   setHoverIndex: (index: string | null) => void;
   index: string;
+  rowClickIndex: string | null;
+  setRowClickIndex: (index: string | null) => void;
 };
 
 export type TableBodyCellProps<TData> = {

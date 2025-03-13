@@ -57,6 +57,7 @@ export const TableBody = memo(function TableBody<TData extends { index: string }
   }
 
   const [hoverIndex, setHoverIndex] = useState<string | null>(null);
+  const [rowClickIndex, setRowClickIndex] = useState<string | null>(null);
 
   const getItemKey = useCallback((index: number) => dataList[index].index, [dataList]);
   const scrollToFn = useTableScrollToFn(bodyYRef);
@@ -102,6 +103,8 @@ export const TableBody = memo(function TableBody<TData extends { index: string }
           virtualItems={memoizedItems}
           hoverIndex={hoverIndex}
           setHoverIndex={setHoverIndex}
+          rowClickIndex={rowClickIndex}
+          setRowClickIndex={setRowClickIndex}
         />
 
         {/* 중앙 영역 */}
@@ -112,6 +115,8 @@ export const TableBody = memo(function TableBody<TData extends { index: string }
           virtualItems={memoizedItems}
           hoverIndex={hoverIndex}
           setHoverIndex={setHoverIndex}
+          rowClickIndex={rowClickIndex}
+          setRowClickIndex={setRowClickIndex}
         />
 
         {/* 오른쪽 고정 영역 */}
@@ -122,6 +127,8 @@ export const TableBody = memo(function TableBody<TData extends { index: string }
           virtualItems={memoizedItems}
           hoverIndex={hoverIndex}
           setHoverIndex={setHoverIndex}
+          rowClickIndex={rowClickIndex}
+          setRowClickIndex={setRowClickIndex}
         />
       </FlexRow>
 
@@ -145,6 +152,8 @@ const TableBodyView = memo(function TableBodyView({
   virtualItems,
   hoverIndex,
   setHoverIndex,
+  rowClickIndex,
+  setRowClickIndex,
 }: {
   ref: RefObject<HTMLDivElement | null>;
   headers: THeader[];
@@ -152,6 +161,8 @@ const TableBodyView = memo(function TableBodyView({
   virtualItems: VirtualItem[];
   hoverIndex: string | null;
   setHoverIndex: (index: string | null) => void;
+  rowClickIndex: string | null;
+  setRowClickIndex: (index: string | null) => void;
 }) {
   const { viewportWidth, dataList } = useTableContext();
 
@@ -189,6 +200,8 @@ const TableBodyView = memo(function TableBodyView({
               hoverIndex={hoverIndex}
               setHoverIndex={setHoverIndex}
               index={index}
+              rowClickIndex={rowClickIndex}
+              setRowClickIndex={setRowClickIndex}
             />
           );
         })}
@@ -204,6 +217,8 @@ const TableBodyPin = memo(function TableBodyPin({
   virtualItems,
   hoverIndex,
   setHoverIndex,
+  rowClickIndex,
+  setRowClickIndex,
 }: {
   position: 'left' | 'right';
   headers: THeader[];
@@ -211,6 +226,8 @@ const TableBodyPin = memo(function TableBodyPin({
   virtualItems: VirtualItem[];
   hoverIndex: string | null;
   setHoverIndex: (index: string | null) => void;
+  rowClickIndex: string | null;
+  setRowClickIndex: (index: string | null) => void;
 }) {
   const { tableStyle, dataList } = useTableContext();
 
@@ -251,6 +268,8 @@ const TableBodyPin = memo(function TableBodyPin({
             hoverIndex={hoverIndex}
             setHoverIndex={setHoverIndex}
             index={index}
+            rowClickIndex={rowClickIndex}
+            setRowClickIndex={setRowClickIndex}
           />
         );
       })}
@@ -274,8 +293,10 @@ const TableBodyRow = memo(function TableBodyRow({
   rowWidth,
   hoverIndex,
   setHoverIndex,
+  rowClickIndex,
+  setRowClickIndex,
 }: TableBodyRowProps) {
-  const { tableStyle, dataList } = useTableContext();
+  const { tableStyle, dataList, tableRowClick } = useTableContext();
 
   const data = dataList[virtualItem.index];
   const index = data['index'];
@@ -294,6 +315,13 @@ const TableBodyRow = memo(function TableBodyRow({
       }}
       onMouseEnter={() => setHoverIndex(index)}
       onMouseLeave={() => setHoverIndex(null)}
+      onClick={() => {
+        if (tableRowClick) {
+          tableRowClick(index);
+          setRowClickIndex(index);
+          setHoverIndex(null);
+        }
+      }}
     >
       {headers.map((header, headerIndex, array) => {
         return (
@@ -306,6 +334,7 @@ const TableBodyRow = memo(function TableBodyRow({
             isOdd={isOdd}
             header={header}
             hoverIndex={hoverIndex}
+            rowClickIndex={rowClickIndex}
           />
         );
       })}
@@ -321,6 +350,7 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
   isOdd,
   header,
   hoverIndex,
+  rowClickIndex,
 }: {
   rowIndex: number;
   isLastHeaderIndex: boolean;
@@ -329,6 +359,7 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
   isOdd: boolean;
   header: THeader;
   hoverIndex: string | null;
+  rowClickIndex: string | null;
 }) {
   const { tableStyle, headers, handelDataList, isChecked, handleCheck } = useTableContext();
 
@@ -350,6 +381,9 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
     }
     if (isChecked!(data)) {
       return colors.primary[50];
+    }
+    if (rowClickIndex === index) {
+      return tableStyle.tableBodyHoverBackgroundColor;
     }
     if (hoverIndex === index) {
       return tableStyle.tableBodyHoverBackgroundColor;

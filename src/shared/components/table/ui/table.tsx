@@ -57,6 +57,7 @@ export function Table<TData extends { index: string } & Record<string, any>>({
   tableStyle = {},
   dataKey = 'index',
   filterRowEnabled = true,
+  tableRowClick,
 }: {
   tableHeaderGroups?: THeaderGroup<TData>[];
   tableHeaders: THeader<TData>[];
@@ -66,6 +67,7 @@ export function Table<TData extends { index: string } & Record<string, any>>({
   tableStyle?: Partial<TTableStyle>;
   dataKey?: keyof TData;
   filterRowEnabled?: boolean;
+  tableRowClick?: (index: string) => void;
 }) {
   const applyTableStyle = {
     ...defaultTableStyle,
@@ -198,6 +200,7 @@ export function Table<TData extends { index: string } & Record<string, any>>({
     handleCheckAll,
     handleCheck,
     handleSort,
+    tableRowClick,
   };
 
   return (
