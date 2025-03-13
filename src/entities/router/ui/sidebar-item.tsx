@@ -1,10 +1,11 @@
-import { CSSProperties } from 'react';
+import { CSSProperties, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { IoChevronDownOutline } from 'react-icons/io5';
 
 import { FlexRow, Tooltip } from '@/shared/components';
 import { TMenu, useRouterState } from '@/entities/router';
+import { useElementSize } from '@/shared/hooks';
 
 export function SidebarItem({
   style,
@@ -20,6 +21,8 @@ export function SidebarItem({
   onClickMenu: (menu: TMenu) => void;
 }) {
   const routerState = useRouterState();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const itemContainerSize = useElementSize(containerRef);
 
   return (
     <Tooltip
@@ -29,6 +32,7 @@ export function SidebarItem({
       disabled={!routerState.sidebarCollapsed}
     >
       <FlexRow
+        ref={containerRef}
         as={motion.div}
         layout
         style={{
@@ -77,6 +81,11 @@ export function SidebarItem({
                   fontWeight: 700,
                   overflow: 'hidden',
                   whiteSpace: 'nowrap',
+                  textOverflow: 'ellipsis',
+                  maxWidth:
+                    style?.paddingLeft && !isNaN(Number(style?.paddingLeft))
+                      ? itemContainerSize.width - Number(style.paddingLeft)
+                      : itemContainerSize.width,
                 }}
               >
                 {menu.name}
