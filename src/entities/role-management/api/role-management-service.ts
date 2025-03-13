@@ -1,6 +1,10 @@
-import { useQuery } from '@tanstack/react-query';
-import { getMemberListApi, getMenuMemberAuthListApi } from './role-management-api.ts';
-import { PMemberList } from '@/entities/role-management';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import {
+  getMemberListApi,
+  getMenuMemberAuthListApi,
+  updateMenuMemberAuthApi,
+} from './role-management-api.ts';
+import { PMemberList, RAuthMenu } from '@/entities/role-management';
 
 export const GET_MEMBER_LIST_QUERY_KEY = 'getMemberListQueryKey';
 export const GET_MENU_LIST_QUERY_KEY = 'getMemberAuthListQueryKey';
@@ -21,5 +25,15 @@ export function useGetMenuMemberAuthListQuery(params: PMemberList) {
     refetchOnMount: true,
     refetchOnReconnect: false,
     enabled: params.memberId !== '',
+  });
+}
+
+export function useUpdateMenuMemberAuthService() {
+  return useMutation({
+    mutationFn: (data: RAuthMenu[]) => updateMenuMemberAuthApi(data),
+    onMutate: () => {},
+    onSuccess: () => {},
+    onError: () => {},
+    onSettled: () => {},
   });
 }

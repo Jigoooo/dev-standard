@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { FlexRow, Table, TDataWithIndex, useTableData } from '@/shared/components';
+import { Button, FlexRow, Table, TDataWithIndex, useTableData } from '@/shared/components';
 import {
   RRoleUser,
   RAuthMenu,
@@ -8,6 +8,7 @@ import {
   useGetMenuMemberAuthListQuery,
   useRoleManagementHeaders,
 } from '@/entities/role-management';
+import { useUpdateMenuMemberAuthService } from '@/entities/role-management/api/role-management-service.ts';
 
 export function RoleManagement() {
   const { roleUserHeaders, roleManagementHeaders } = useRoleManagementHeaders();
@@ -24,6 +25,7 @@ export function RoleManagement() {
   const getMenuMemberAuthListQuery = useGetMenuMemberAuthListQuery({
     memberId,
   });
+  const updateMenuMemberAuthService = useUpdateMenuMemberAuthService();
 
   useEffect(() => {
     if (getMemberListQuery.data?.data) {
@@ -44,6 +46,10 @@ export function RoleManagement() {
     }
   }, [getMenuMemberAuthListQuery.data?.data]);
 
+  const updateMenuMemberAuth = () => {
+    updateMenuMemberAuthService.mutate(menuAuthList);
+  };
+
   return (
     <div
       style={{
@@ -51,6 +57,7 @@ export function RoleManagement() {
         maxHeight: 'calc(100vh - 200px)',
       }}
     >
+      <Button onClick={updateMenuMemberAuth}>저장</Button>
       <FlexRow style={{ height: '100%', gap: 12 }}>
         <Table
           tableStyle={{
