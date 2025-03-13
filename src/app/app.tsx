@@ -1,6 +1,7 @@
 import '@/app/providers/css';
 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import ReactGA from 'react-ga4';
 
 import {
   LoadingProvider,
@@ -11,6 +12,12 @@ import {
   withRouterMenuHoc,
 } from '@/app/providers';
 import { useRouterMenuContext } from '@/entities/router';
+
+ReactGA.initialize([
+  {
+    trackingId: 'G-0B1B9PCQN2',
+  },
+]);
 
 function App() {
   const { routes } = useRouterMenuContext();

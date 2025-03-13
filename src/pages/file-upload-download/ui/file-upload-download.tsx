@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   FlexColumn,
@@ -16,11 +16,16 @@ import {
   generateFileUploads,
   TFileDownload,
 } from '@/entities/file-upload-download';
+import { addMonths, format } from 'date-fns';
 
 // 메뉴 뎁스 구현
 // 테이블 상단 버튼
 export function FileUploadDownload() {
   const { dataList, setDataList, handelDataList } = useTableData<TFileDownload>([]);
+  const [fromToDateString, setFromToDateString] = useState({
+    from: format(new Date(), 'yyyy-MM-dd'),
+    to: format(addMonths(new Date(), 1), 'yyyy-MM-dd'),
+  });
 
   useEffect(() => {
     let isMounted = true;
@@ -76,7 +81,7 @@ export function FileUploadDownload() {
           gap: 6,
         }}
       >
-        <DateFromToPicker />
+        <DateFromToPicker fromToDateString={fromToDateString} onChange={setFromToDateString} />
         <Button onClick={fileUploadModalOpen}>파일 업로드</Button>
       </FlexRow>
       <Table

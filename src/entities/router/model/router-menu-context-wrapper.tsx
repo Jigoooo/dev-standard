@@ -20,6 +20,7 @@ const defaultRoutes: RouteObject[] = [
   {
     path: Router.MAIN,
     element: <Main />,
+    errorElement: <RouteErrorPage />,
     children: [
       {
         path: Router.MY_PROFILE,

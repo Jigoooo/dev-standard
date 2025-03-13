@@ -83,10 +83,15 @@ function useDateFromToPicker({
 
   useEffect(() => {
     if (fromToDateString) {
-      setSelectedFromToDate({
-        from: new Date(fromToDateString.from),
-        to: new Date(fromToDateString.to),
-      });
+      const fromDate = new Date(fromToDateString.from);
+      const toDate = new Date(fromToDateString.to);
+
+      if (isValid(fromDate) && isValid(toDate)) {
+        setSelectedFromToDate({
+          from: fromDate,
+          to: toDate,
+        });
+      }
     }
   }, [fromToDateString]);
 

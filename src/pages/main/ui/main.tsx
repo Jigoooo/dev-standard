@@ -6,12 +6,14 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { FlexColumn, FlexRow } from '@/shared/components';
 import {
   PageTab,
+  Router,
   Sidebar,
   useGetMenuListQuery,
   useRouterMenuContext,
   useRouterState,
 } from '@/entities/router';
 import { KeepAliveWrapper, MainHeader } from '@/entities/main';
+import ReactGA from 'react-ga4';
 
 export function Main() {
   const navigate = useNavigate();
@@ -32,6 +34,14 @@ export function Main() {
   const isMatchedExcludeMenu = excludeCacheMenuRouters.includes(currentMenu?.fullRouterPath ?? '');
 
   useEffect(() => {
+    ReactGA.send({
+      hitType: 'pageview',
+      page: location.pathname + location.search,
+      title: currentMenu?.name ?? 'title',
+    });
+  }, [currentMenu?.name, location.pathname, location.search]);
+
+  useEffect(() => {
     if (sidebarMainMenus.length > 0) {
       if (lastLocation) {
         navigate(lastLocation);
@@ -43,7 +53,9 @@ export function Main() {
 
   useEffect(() => {
     const handleBeforeUnload = () => {
-      setLastLocation(location.pathname);
+      if (location.pathname !== Router.MAIN) {
+        setLastLocation(location.pathname);
+      }
     };
 
     window.addEventListener('beforeunload', handleBeforeUnload);
