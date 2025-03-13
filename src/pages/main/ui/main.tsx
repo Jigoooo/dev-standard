@@ -35,11 +35,13 @@ export function Main() {
   const isMatchedExcludeMenu = excludeCacheMenuRouters.includes(currentMenu?.fullRouterPath ?? '');
 
   useEffect(() => {
-    ReactGA.send({
-      hitType: 'pageview',
-      page: location.pathname + location.search,
-      title: currentMenu?.name ?? 'title',
-    });
+    if (!window.location.href.includes('localhost')) {
+      ReactGA.send({
+        hitType: 'pageview',
+        page: location.pathname + location.search,
+        title: currentMenu?.name ?? 'title',
+      });
+    }
   }, [currentMenu?.name, location.pathname, location.search]);
 
   useEffect(() => {

@@ -15,7 +15,7 @@ import { useRouterMenuContext } from '@/entities/router';
 
 ReactGA.initialize([
   {
-    trackingId: 'G-0B1B9PCQN2',
+    trackingId: import.meta.env.VITE_GOOGLE_ANALYTICS_ID,
   },
 ]);
 
