@@ -24,6 +24,19 @@ export function SidebarItem({
   const containerRef = useRef<HTMLDivElement>(null);
   const itemContainerSize = useElementSize(containerRef);
 
+  const getTextMaxWidth = () => {
+    let maxWidth = itemContainerSize.width;
+
+    if (style?.paddingLeft && !isNaN(Number(style?.paddingLeft))) {
+      maxWidth -= Number(style.paddingLeft);
+    }
+
+    if (menu.isHeader) {
+      maxWidth -= 58;
+    }
+    return maxWidth;
+  };
+
   return (
     <Tooltip
       style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
@@ -82,10 +95,7 @@ export function SidebarItem({
                   overflow: 'hidden',
                   whiteSpace: 'nowrap',
                   textOverflow: 'ellipsis',
-                  maxWidth:
-                    style?.paddingLeft && !isNaN(Number(style?.paddingLeft))
-                      ? itemContainerSize.width - Number(style.paddingLeft)
-                      : itemContainerSize.width,
+                  maxWidth: getTextMaxWidth(),
                 }}
               >
                 {menu.name}
