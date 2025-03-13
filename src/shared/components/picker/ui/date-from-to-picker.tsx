@@ -24,7 +24,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { FlexRow, Input, Button, FlexColumn, Typography } from '@/shared/components';
 import { colors } from '@/shared/constants';
 import { useHandleClickOutsideRef, useWindowStyle } from '@/shared/hooks';
-import { DateInputField } from '@/shared/components/picker/ui/date-input-field.tsx';
+import { DateInputField } from './date-input-field.tsx';
 
 type FromToDateString = {
   from: string;
