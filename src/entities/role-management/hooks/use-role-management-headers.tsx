@@ -76,7 +76,7 @@ export function useRoleManagementHeaders() {
       headerAlign: 'center',
       dataAlign: 'center',
       label: '사용',
-      width: 60,
+      width: 80,
       cell: ({ cellData, setCellData }) => {
         return (
           <Checkbox
@@ -98,7 +98,7 @@ export function useRoleManagementHeaders() {
       headerAlign: 'center',
       dataAlign: 'center',
       label: '조회',
-      width: 60,
+      width: 80,
       cell: ({ cellData, setCellData }) => {
         return (
           <Checkbox
@@ -120,7 +120,7 @@ export function useRoleManagementHeaders() {
       headerAlign: 'center',
       dataAlign: 'center',
       label: '생성',
-      width: 60,
+      width: 80,
       cell: ({ cellData, setCellData }) => {
         return (
           <Checkbox
@@ -142,7 +142,7 @@ export function useRoleManagementHeaders() {
       headerAlign: 'center',
       dataAlign: 'center',
       label: '수정',
-      width: 60,
+      width: 80,
       cell: ({ cellData, setCellData }) => {
         return (
           <Checkbox
@@ -164,7 +164,7 @@ export function useRoleManagementHeaders() {
       headerAlign: 'center',
       dataAlign: 'center',
       label: '삭제',
-      width: 60,
+      width: 80,
       cell: ({ cellData, setCellData }) => {
         return (
           <Checkbox
