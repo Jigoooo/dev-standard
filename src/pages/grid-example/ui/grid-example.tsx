@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import { FiSearch } from 'react-icons/fi';
 
-import { FlexRow, Input, Table, useTableData } from '@/shared/components';
+import { FlexRow, Input, SearchButton, Table, useTableData } from '@/shared/components';
 import { generateUsers } from '@/entities/grid-example/config/test-data.ts';
 import { gridExampleHeaderGroups, gridExampleHeaders } from '@/entities/grid-example';
 
@@ -56,7 +56,6 @@ export function GridExample() {
           paddingBlock: 12,
           paddingRight: 14,
           alignItems: 'center',
-          justifyContent: 'space-between',
           gap: 6,
         }}
       >
@@ -65,6 +64,7 @@ export function GridExample() {
           style={{ width: 400 }}
           placeholder={'이름'}
         />
+        <SearchButton />
       </FlexRow>
       <Table
         tableHeaderGroups={gridExampleHeaderGroups}
