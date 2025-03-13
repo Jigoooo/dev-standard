@@ -85,15 +85,15 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
               alignItems: 'center',
               minWidth: 260,
               width: 260,
-              maxWidth: 260,
-              borderTop: '1px solid #cccccc',
-              borderLeft: '1px solid #cccccc',
-              borderRight: '1px solid #cccccc',
-              borderTopLeftRadius: 4,
-              borderTopRightRadius: 4,
               paddingInline: 8,
               paddingBlock: 4,
               backgroundColor: '#ffffff',
+              maxWidth: 260,
+              // borderTop: '1px solid #cccccc',
+              // borderLeft: '1px solid #cccccc',
+              // borderRight: '1px solid #cccccc',
+              // borderTopLeftRadius: 4,
+              // borderTopRightRadius: 4,
             }}
           >
             <Typography
@@ -142,7 +142,7 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
                       maxWidth: 200,
                       backgroundColor: '#ffffff',
                       cursor: 'pointer',
-                      border: '1px solid #bbbbbb',
+                      border: '1px solid #cccccc',
                       borderRadius: 4,
                       paddingLeft: 12,
                       paddingRight: 6,
@@ -218,7 +218,7 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
         </FlexRow>
       </LayoutGroup>
 
-      <Divider style={{ backgroundColor: '#cccccc' }} />
+      <Divider style={{ backgroundColor: '#dadada' }} />
     </FlexColumn>
   );
 }

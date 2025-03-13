@@ -6,6 +6,9 @@ import CheckSolid from '@/shared/assets/images/check-solid.svg?react';
 import { colors } from '@/shared/constants';
 import { FlexRow, Typography } from '@/shared/components';
 
+const checkboxSize = 18;
+const checkIconSize = 12;
+
 export function Checkbox({
   label = '',
   checked,
@@ -39,8 +42,8 @@ export function Checkbox({
           style={{
             justifyContent: 'center',
             alignItems: 'center',
-            width: 20,
-            height: 20,
+            width: checkboxSize,
+            height: checkboxSize,
             border: `1px solid ${!disabled && checked ? color : '#cccccc'}`,
             borderRadius: 4,
             backgroundColor: disabled ? '#f5f5f5' : checked ? color : '#ffffff',
@@ -76,8 +79,8 @@ export function Checkbox({
               >
                 <CheckSolid
                   style={{
-                    width: 14,
-                    height: 14,
+                    width: checkIconSize,
+                    height: checkIconSize,
                     fill: '#ffffff',
                     stroke: '#ffffff',
                     strokeWidth: 30,
@@ -111,8 +114,8 @@ export function Checkbox({
           style={{
             justifyContent: 'center',
             alignItems: 'center',
-            width: 20,
-            height: 20,
+            width: checkboxSize,
+            height: checkboxSize,
             border: `1px solid ${!disabled && checked ? color : '#cccccc'}`,
             borderRadius: 4,
             backgroundColor: disabled ? '#f5f5f5' : checked ? color : '#ffffff',
@@ -127,8 +130,8 @@ export function Checkbox({
             >
               <CheckSolid
                 style={{
-                  width: 14,
-                  height: 14,
+                  width: checkIconSize,
+                  height: checkIconSize,
                   fill: '#ffffff',
                   stroke: '#ffffff',
                   strokeWidth: 30,

@@ -405,7 +405,7 @@ function TableHeaderCell({
         />
       )}
       {header.label && (
-        <FlexRow style={{ fontSize: '0.88rem', alignItems: 'center', gap: 6 }}>
+        <FlexRow style={{ fontSize: '0.84rem', alignItems: 'center', gap: 6 }}>
           <Typography
             style={{
               fontSize: 'inherit',

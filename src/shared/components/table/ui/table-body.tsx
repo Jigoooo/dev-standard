@@ -406,7 +406,7 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
       ) : (
         <Typography
           style={{
-            fontSize: '0.88rem',
+            fontSize: '0.84rem',
             fontWeight: 500,
             color: tableStyle.tableBodyColor,
             whiteSpace: 'nowrap',
