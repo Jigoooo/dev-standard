@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 
 import {
   Button,
-  ButtonStyle,
   DateFromToPicker,
   FlexColumn,
   FlexRow,
   ModalLayout,
+  SearchButton,
   Table,
   useModal,
   useTableData,
@@ -85,9 +85,11 @@ export function FileUploadDownload() {
       >
         <FlexRow style={{ gap: 6 }}>
           <DateFromToPicker fromToDateString={fromToDateString} onChange={setFromToDateString} />
-          <Button buttonStyle={ButtonStyle.OUTLINED} style={{ width: 80 }} onClick={() => {}}>
-            검색
-          </Button>
+          <SearchButton
+            onClick={() => {
+              console.log('검색');
+            }}
+          />
         </FlexRow>
         <Button onClick={fileUploadModalOpen}>파일 업로드</Button>
       </FlexRow>

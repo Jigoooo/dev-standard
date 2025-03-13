@@ -1,5 +1,13 @@
 import { motion, MotionProps } from 'framer-motion';
-import { ButtonHTMLAttributes, CSSProperties, isValidElement, ReactNode } from 'react';
+import {
+  ButtonHTMLAttributes,
+  CSSProperties,
+  isValidElement,
+  ReactNode,
+  MouseEvent,
+  useRef,
+  useState,
+} from 'react';
 import { darken, lighten } from 'polished';
 
 import { isLightColor } from '@/shared/lib';
@@ -11,6 +19,12 @@ export enum ButtonStyle {
   SOLID = 'solid',
   OUTLINED = 'outlined',
 }
+
+export type ButtonProps = MotionProps &
+  ButtonHTMLAttributes<HTMLButtonElement> & {
+    buttonStyle?: ButtonStyle;
+    children: ReactNode;
+  };
 
 const defaultButtonStyle: CSSProperties = {
   display: 'flex',
@@ -83,19 +97,31 @@ const getAnimationBackgroundColor = (
   }
 };
 
-type ButtonProps = MotionProps &
-  ButtonHTMLAttributes<HTMLButtonElement> & {
-    buttonStyle?: ButtonStyle;
-    children: ReactNode;
-  };
-
 export function Button({
   buttonStyle = ButtonStyle.SOLID,
   children,
   style,
+  onClick,
   ...props
 }: ButtonProps) {
+  const [isPressed, setIsPressed] = useState(false);
   const windowStyle = useWindowStyle();
+
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const isInside = (e: MouseEvent<HTMLButtonElement>) => {
+    if (buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      const { clientX, clientY } = e;
+      return (
+        clientX >= rect.left &&
+        clientX <= rect.right &&
+        clientY >= rect.top &&
+        clientY <= rect.bottom
+      );
+    }
+    return false;
+  };
 
   const backgroundColor = style?.backgroundColor ?? colors.primary[400];
   const color = style?.color ?? colors.primary[400];
@@ -103,9 +129,36 @@ export function Button({
 
   const animationBackgroundColor = getAnimationBackgroundColor(buttonStyle, animationColor);
 
+  const handleMouseDown = (e: MouseEvent<HTMLButtonElement>) => {
+    setIsPressed(true);
+
+    if (props.onMouseDown) {
+      props.onMouseDown(e);
+    }
+  };
+
+  const handleMouseLeave = (e: MouseEvent<HTMLButtonElement>) => {
+    setIsPressed(false);
+
+    if (props.onMouseLeave) {
+      props.onMouseLeave(e);
+    }
+  };
+  const handleMouseUp = (e: MouseEvent<HTMLButtonElement>) => {
+    if (isPressed && isInside(e) && onClick) {
+      onClick(e);
+    }
+    setIsPressed(false);
+
+    if (props.onMouseUp) {
+      props.onMouseUp(e);
+    }
+  };
+
   return (
     <motion.button
-      className={'selection-none'}
+      ref={buttonRef}
+      className='selection-none'
       style={{
         ...defaultButtonStyle,
         ...buttonStyles[buttonStyle],
@@ -120,6 +173,9 @@ export function Button({
       }}
       whileHover={props.disabled ? 'none' : 'hover'}
       whileTap={props.disabled ? 'none' : 'tap'}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseLeave}
       {...props}
     >
       {isValidElement(children) ? children : <Typography>{children}</Typography>}
