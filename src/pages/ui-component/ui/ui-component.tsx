@@ -175,15 +175,11 @@ export function UiComponent() {
 
       <FlexRow style={{ alignItems: 'center' }}>
         <Typography style={{ width: 200, fontWeight: 500 }}>Input Outlined: </Typography>
-        <Input style={{ height: 36 }} placeholder={'Input Outlined'} />
+        <Input placeholder={'Input Outlined'} />
       </FlexRow>
       <FlexRow style={{ alignItems: 'center' }}>
         <Typography style={{ width: 200, fontWeight: 500 }}>Input Underline: </Typography>
-        <Input
-          inputStyle={InputStyle.UNDERLINE}
-          style={{ height: 36 }}
-          placeholder={'Input Underline'}
-        />
+        <Input inputStyle={InputStyle.UNDERLINE} placeholder={'Input Underline'} />
       </FlexRow>
       <FlexRow style={{ alignItems: 'center' }}>
         <Typography style={{ width: 200, fontWeight: 500 }}>Textarea: </Typography>

@@ -102,7 +102,6 @@ export function DateInputField({
         style={{
           boxShadow: 'none',
           width: 40,
-          height: 36,
           textAlign: 'center',
           padding: 0,
         }}
@@ -118,7 +117,6 @@ export function DateInputField({
         style={{
           boxShadow: 'none',
           width: 20,
-          height: 36,
           textAlign: 'center',
           padding: 0,
         }}
@@ -134,7 +132,6 @@ export function DateInputField({
         style={{
           boxShadow: 'none',
           width: 20,
-          height: 36,
           textAlign: 'center',
           padding: 0,
         }}

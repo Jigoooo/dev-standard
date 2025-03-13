@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
 
 import {
+  Button,
+  ButtonStyle,
+  DateFromToPicker,
   FlexColumn,
   FlexRow,
-  Button,
-  useModal,
   ModalLayout,
-  useTableData,
   Table,
-  DateFromToPicker,
+  useModal,
+  useTableData,
 } from '@/shared/components';
 import {
   fileDownloadHeaders,
@@ -74,14 +75,20 @@ export function FileUploadDownload() {
       <FlexRow
         style={{
           width: '100%',
-          paddingBlock: 12,
+          paddingTop: 24,
+          paddingBottom: 6,
           paddingRight: 14,
           alignItems: 'center',
           justifyContent: 'space-between',
           gap: 6,
         }}
       >
-        <DateFromToPicker fromToDateString={fromToDateString} onChange={setFromToDateString} />
+        <FlexRow style={{ gap: 6 }}>
+          <DateFromToPicker fromToDateString={fromToDateString} onChange={setFromToDateString} />
+          <Button buttonStyle={ButtonStyle.OUTLINED} style={{ width: 80 }} onClick={() => {}}>
+            검색
+          </Button>
+        </FlexRow>
         <Button onClick={fileUploadModalOpen}>파일 업로드</Button>
       </FlexRow>
       <Table

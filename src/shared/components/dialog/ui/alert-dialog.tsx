@@ -114,7 +114,6 @@ export function AlertDialog() {
                 <Button
                   buttonStyle={ButtonStyle.OUTLINED}
                   style={{
-                    height: 36,
                     minWidth: 80,
                     color: '#bbbbbb',
                     borderColor: '#bbbbbb',
@@ -131,7 +130,6 @@ export function AlertDialog() {
               )}
               <Button
                 style={{
-                  height: 36,
                   minWidth: 80,
                   fontSize: '0.9rem',
                   fontWeight: 500,

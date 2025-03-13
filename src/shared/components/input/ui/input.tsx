@@ -15,9 +15,9 @@ const defaultInputStyle: CSSProperties = {
   paddingInline: 8,
   paddingBlock: 10,
   borderRadius: 4,
-  fontSize: '0.94rem',
+  fontSize: '0.9rem',
   fontWeight: 500,
-  height: 36,
+  height: 32,
   outline: 'none',
 } as const;
 
@@ -28,7 +28,7 @@ const inputStyles: Record<InputStyle, CSSProperties> = {
   },
   [InputStyle.OUTLINED]: {
     backgroundColor: '#ffffff',
-    boxShadow: `inset 0 0 0 0.8px rgba(0,27,55,0.4)`,
+    boxShadow: `inset 0 0 0 0.8px rgba(0,27,55,0.34)`,
     border: 'none',
   },
   [InputStyle.UNDERLINE]: {

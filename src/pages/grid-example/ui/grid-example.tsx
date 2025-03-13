@@ -62,7 +62,7 @@ export function GridExample() {
       >
         <Input
           startDecorator={<FiSearch style={{ color: '#999999', fontSize: '1.1rem' }} />}
-          style={{ height: 34, width: 400 }}
+          style={{ width: 400 }}
           placeholder={'이름'}
         />
       </FlexRow>

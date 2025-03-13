@@ -11,7 +11,7 @@ export function SidebarItems({ menus }: { menus: TMenu[] }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { findFirstNonHeaderMenu, lastLocation } = useRouterMenuContext();
+  const { findFirstNonHeaderMenu, lastLocation, setLastLocation } = useRouterMenuContext();
 
   const [secondDepthOpen, setSecondDepthOpen] = useState<{ menuIndex: number; open: boolean }[]>(
     [],
@@ -79,6 +79,7 @@ export function SidebarItems({ menus }: { menus: TMenu[] }) {
       label: menu.name,
     });
     navigate(menu.router);
+    setLastLocation(menu.fullRouterPath);
   };
 
   const onClickSecondDepthMenu = (parentMenu: TMenu, childMenu: TMenu, isSelected: boolean) => {
@@ -94,6 +95,7 @@ export function SidebarItems({ menus }: { menus: TMenu[] }) {
       label: childMenu.name,
     });
     navigate(`${parentMenu.router}/${childMenu.router}`);
+    setLastLocation(childMenu.fullRouterPath);
   };
 
   return (

@@ -65,7 +65,7 @@ export function ModalLayout({
             event.stopPropagation();
             close();
           }}
-          style={{ backgroundColor: '#ffffff', height: 36, width: 36 }}
+          style={{ backgroundColor: '#ffffff', width: 36 }}
         >
           <CloseIcon style={{ fontSize: '1.4rem', color: '#212121' }} />
         </Button>

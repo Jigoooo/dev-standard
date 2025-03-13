@@ -21,7 +21,7 @@ export function MultiSelect<ValuesType extends (string | number)[]>({
   options,
   containerWidth,
   containerMinWidth = 160,
-  containerHeight = 38,
+  containerHeight = 32,
   isAutocomplete = false,
 }: {
   label?: string;

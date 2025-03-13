@@ -22,7 +22,7 @@ const defaultButtonStyle: CSSProperties = {
   cursor: 'pointer',
   fontSize: '0.88rem',
   fontWeight: 500,
-  height: 36,
+  height: 32,
   lineHeight: 0,
 } as const;
 
