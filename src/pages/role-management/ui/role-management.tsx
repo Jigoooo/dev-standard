@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { FlexRow, Table, TDataWithIndex, useTableData } from '@/shared/components';
 import {
@@ -18,9 +18,11 @@ export function RoleManagement() {
     handelDataList: handelMenuAuthList,
   } = useTableData<TDataWithIndex & RAuthMenu>([]);
 
+  const [memberId, setMemberId] = useState('');
+
   const getMemberListQuery = useGetMemberListApi();
   const getMenuMemberAuthListQuery = useGetMenuMemberAuthListQuery({
-    memberId: '',
+    memberId,
   });
 
   useEffect(() => {
@@ -54,15 +56,12 @@ export function RoleManagement() {
           tableStyle={{
             showVerticalLines: true,
           }}
-          tableRowClick={(index) => {
-            console.log(index);
+          tableRowClick={(data) => {
+            setMemberId(data.memberId);
           }}
           tableHeaders={roleUserHeaders}
           tableDataList={dataList}
           handelDataList={handelDataList}
-          handleSyncCheckList={(checkedList) => {
-            console.log(checkedList);
-          }}
         />
         <Table
           tableStyle={{
@@ -72,9 +71,6 @@ export function RoleManagement() {
           filterRowEnabled={false}
           tableDataList={menuAuthList}
           handelDataList={handelMenuAuthList}
-          handleSyncCheckList={(checkedList) => {
-            console.log(checkedList);
-          }}
         />
       </FlexRow>
     </div>

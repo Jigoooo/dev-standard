@@ -20,5 +20,6 @@ export function useGetMenuMemberAuthListQuery(params: PMemberList) {
     queryFn: () => getMenuMemberAuthListApi(params),
     refetchOnMount: true,
     refetchOnReconnect: false,
+    enabled: params.memberId !== '',
   });
 }
