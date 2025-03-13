@@ -6,6 +6,7 @@ import ReactGA from 'react-ga4';
 
 import { FlexColumn, FlexRow } from '@/shared/components';
 import {
+  MenuAuthProvider,
   PageTab,
   Router,
   Sidebar,
@@ -124,11 +125,13 @@ export function Main() {
             <PageTab aliveRef={aliveRef} />
           )}
 
-          <KeepAliveRouteOutlet
-            wrapperComponent={KeepAliveWrapper}
-            exclude={excludeCacheMenuRouters}
-            aliveRef={aliveRef}
-          />
+          <MenuAuthProvider>
+            <KeepAliveRouteOutlet
+              wrapperComponent={KeepAliveWrapper}
+              exclude={excludeCacheMenuRouters}
+              aliveRef={aliveRef}
+            />
+          </MenuAuthProvider>
         </FlexColumn>
       </FlexRow>
     </FlexRow>

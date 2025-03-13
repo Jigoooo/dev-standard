@@ -64,6 +64,10 @@ export type RMenuMemberAuth = {
   excelExport: string;
 };
 
+export type RMenuMemberAuthList = {
+  menuMemberAuth: RMenuMemberAuth;
+};
+
 export type RMenu = {
   mainCd: number;
   sub1Cd: number;

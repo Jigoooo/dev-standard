@@ -1,4 +1,11 @@
-export type { TMenu, TCacheNode, RMenu, RMenuList } from './router-type.ts';
+export type {
+  TMenu,
+  TCacheNode,
+  PMenuMemberAuth,
+  RMenuMemberAuthList,
+  RMenu,
+  RMenuList,
+} from './router-type.ts';
 export { Router } from './router-type.ts';
 export { routerActions, useRouterState } from './router-store.ts';
 export { RouterMenuContextWrapper } from '../context/router-menu-context-wrapper.tsx';

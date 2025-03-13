@@ -1,9 +1,8 @@
 import { apiRequest, customedAxios } from '@/shared/api';
-import { RMenuList } from '@/entities/router';
-import { PMenuMemberAuth } from '@/entities/router/model/router-type.ts';
+import { PMenuMemberAuth, RMenuMemberAuthList, RMenuList } from '@/entities/router';
 
 export async function getMenuMemberAuthApi(params: PMenuMemberAuth) {
-  return apiRequest<RMenuList>(
+  return apiRequest<RMenuMemberAuthList>(
     customedAxios.get('/member/getMenuMemberAuth', {
       params,
     }),
