@@ -7,7 +7,13 @@ import { Divider, FlexColumn } from '@/shared/components';
 import { TMenu, useRouterMenuContext } from '@/entities/router';
 import { gaEventTrigger } from '@/shared/lib';
 
-export function SidebarItems({ menus }: { menus: TMenu[] }) {
+export function SidebarItems({
+  menus,
+  sidebarBackgroundColor,
+}: {
+  menus: TMenu[];
+  sidebarBackgroundColor: string;
+}) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -112,6 +118,7 @@ export function SidebarItems({ menus }: { menus: TMenu[] }) {
           return (
             <FlexColumn style={{ width: '100%' }} key={menu.router}>
               <SidebarItem
+                style={{ backgroundColor: sidebarBackgroundColor }}
                 isSelected={isSelected}
                 menu={menu}
                 depthOpen={getSecondDepthOpen(menu.menuIndex)}
@@ -139,7 +146,7 @@ export function SidebarItems({ menus }: { menus: TMenu[] }) {
                       return (
                         <SidebarItem
                           key={secondDepthMenu.router}
-                          style={{ paddingLeft: 32 }}
+                          style={{ paddingLeft: 32, backgroundColor: sidebarBackgroundColor }}
                           isSelected={isSelected}
                           menu={secondDepthMenu}
                           onClickMenu={(childMenu) => {

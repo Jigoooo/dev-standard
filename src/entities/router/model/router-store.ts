@@ -6,8 +6,9 @@ import { TRouterState, TRouterStore } from './router-type.ts';
 const initialState: TRouterState = {
   sidebarCollapsed: false,
   delayedSidebarCollapsed: false,
-  sidebarWidth: 280,
+  sidebarWidth: 260,
   sidebarCollapsedWidth: 50,
+  sidebarBackgroundColor: '#1e232e',
 };
 
 const useRouterStore = create<TRouterStore>()((setState, getState) => {

@@ -24,14 +24,17 @@ export function Sidebar({ headerTitle }: { headerTitle: string }) {
         <FlexColumn
           style={{
             position: 'relative',
-            backgroundColor: '#1e232e',
+            backgroundColor: routerState.sidebarBackgroundColor,
             height: '100%',
             paddingTop: 16,
             gap: 30,
           }}
         >
           <SidebarHeader title={headerTitle} />
-          <SidebarItems menus={sidebarMainMenus} />
+          <SidebarItems
+            menus={sidebarMainMenus}
+            sidebarBackgroundColor={routerState.sidebarBackgroundColor}
+          />
           <SidebarFooter />
         </FlexColumn>
       </motion.div>

@@ -44,6 +44,7 @@ export function SidebarItem({
             minHeight: 42,
             height: 42,
             maxHeight: 42,
+            overflow: 'hidden',
           },
           ...style,
         }}

@@ -38,6 +38,7 @@ export type TRouterState = {
   delayedSidebarCollapsed: boolean;
   sidebarWidth: number;
   sidebarCollapsedWidth: number;
+  sidebarBackgroundColor: string;
 };
 
 export type TRouterStore = {
