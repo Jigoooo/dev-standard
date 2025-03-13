@@ -1,6 +1,5 @@
-export type { TMenu, CacheNode, RMenu, RMenuList } from './router-type.ts';
+export type { TMenu, TCacheNode, RMenu, RMenuList } from './router-type.ts';
 export { Router } from './router-type.ts';
 export { routerActions, useRouterState } from './router-store.ts';
-export { RouterMenuContextWrapper } from './router-menu-context-wrapper.tsx';
-export { RouterMenuContext, useRouterMenuContext } from './router-menu-context.ts';
-export { routerComponentMap, routerMappedIcon } from './router-map.tsx';
+export { RouterMenuContextWrapper } from '../context/router-menu-context-wrapper.tsx';
+export { getRouterComponent, getRouterMappedIcon } from './router-map.tsx';

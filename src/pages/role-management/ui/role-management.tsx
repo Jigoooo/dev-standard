@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Button, FlexRow, Table, TDataWithIndex, useTableData } from '@/shared/components';
 import {
   RRoleUser,
-  RAuthMenu,
+  RMenuMemberAuth,
   useGetMemberListApi,
   useGetMenuMemberAuthListQuery,
   useRoleManagementHeaders,
@@ -17,7 +17,7 @@ export function RoleManagement() {
     dataList: menuAuthList,
     setDataList: setMenuAuthList,
     handelDataList: handelMenuAuthList,
-  } = useTableData<TDataWithIndex & RAuthMenu>([]);
+  } = useTableData<TDataWithIndex & RMenuMemberAuth>([]);
 
   const [memberId, setMemberId] = useState('');
 

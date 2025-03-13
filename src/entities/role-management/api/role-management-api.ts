@@ -1,18 +1,23 @@
 import { apiRequest, customedAxios } from '@/shared/api';
-import { PMemberList, RAuthMenu, RMenuMemberAuth, RRoleUserList } from '@/entities/role-management';
+import {
+  PMenuMemberAuthList,
+  RMenuMemberAuth,
+  RMenuMemberAuthList,
+  RMemberList,
+} from '@/entities/role-management';
 
 export async function getMemberListApi() {
-  return apiRequest<RRoleUserList>(customedAxios.get('/member/getMemberList'));
+  return apiRequest<RMemberList>(customedAxios.get('/member/getMemberList'));
 }
 
-export async function getMenuMemberAuthListApi(params: PMemberList) {
-  return apiRequest<RMenuMemberAuth>(
+export async function getMenuMemberAuthListApi(params: PMenuMemberAuthList) {
+  return apiRequest<RMenuMemberAuthList>(
     customedAxios.get('/member/getMenuMemberAuthList', {
       params,
     }),
   );
 }
 
-export async function updateMenuMemberAuthApi(data: RAuthMenu[]) {
+export async function updateMenuMemberAuthApi(data: RMenuMemberAuth[]) {
   return apiRequest<null>(customedAxios.post('/member/updateMenuMemberAuth', data));
 }

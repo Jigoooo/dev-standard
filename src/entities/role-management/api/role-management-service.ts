@@ -4,7 +4,7 @@ import {
   getMenuMemberAuthListApi,
   updateMenuMemberAuthApi,
 } from './role-management-api.ts';
-import { PMemberList, RAuthMenu } from '@/entities/role-management';
+import { PMenuMemberAuthList, RMenuMemberAuth } from '@/entities/role-management';
 
 export const GET_MEMBER_LIST_QUERY_KEY = 'getMemberListQueryKey';
 export const GET_MENU_LIST_QUERY_KEY = 'getMemberAuthListQueryKey';
@@ -18,7 +18,7 @@ export function useGetMemberListApi() {
   });
 }
 
-export function useGetMenuMemberAuthListQuery(params: PMemberList) {
+export function useGetMenuMemberAuthListQuery(params: PMenuMemberAuthList) {
   return useQuery({
     queryKey: [GET_MENU_LIST_QUERY_KEY, params],
     queryFn: () => getMenuMemberAuthListApi(params),
@@ -30,7 +30,7 @@ export function useGetMenuMemberAuthListQuery(params: PMemberList) {
 
 export function useUpdateMenuMemberAuthService() {
   return useMutation({
-    mutationFn: (data: RAuthMenu[]) => updateMenuMemberAuthApi(data),
+    mutationFn: (data: RMenuMemberAuth[]) => updateMenuMemberAuthApi(data),
     onMutate: () => {},
     onSuccess: () => {},
     onError: () => {},

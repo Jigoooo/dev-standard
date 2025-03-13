@@ -1,4 +1,4 @@
-export type PMemberList = {
+export type PMenuMemberAuthList = {
   memberId: string;
 };
 
@@ -7,7 +7,7 @@ export type RRoleUser = {
   memberNm: string;
 };
 
-export type RAuthMenu = {
+export type RMenuMemberAuth = {
   menuId: string;
   menuTitle: string;
   mainCd: number;
@@ -23,10 +23,10 @@ export type RAuthMenu = {
   excelExport: 'Y' | 'N';
 };
 
-export type RRoleUserList = {
+export type RMemberList = {
   menuList: RRoleUser[];
 };
 
-export type RMenuMemberAuth = {
-  menuList: RAuthMenu[];
+export type RMenuMemberAuthList = {
+  menuList: RMenuMemberAuth[];
 };

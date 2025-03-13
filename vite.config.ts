@@ -21,6 +21,9 @@ export default defineConfig(({ mode }) => {
         },
       },
     },
+    define: {
+      'process.env': {},
+    },
     plugins: [
       svgr({
         svgrOptions: {},

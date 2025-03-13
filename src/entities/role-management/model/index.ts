@@ -1,7 +1,7 @@
 export type {
   RRoleUser,
-  RRoleUserList,
-  PMemberList,
-  RAuthMenu,
+  RMemberList,
+  PMenuMemberAuthList,
   RMenuMemberAuth,
+  RMenuMemberAuthList,
 } from './role-management-type.ts';

@@ -8,7 +8,7 @@ import { IoRefreshCircleOutline } from 'react-icons/io5';
 import { IoIosCloseCircleOutline } from 'react-icons/io';
 
 import { Button, Divider, FlexColumn, FlexRow, Typography } from '@/shared/components';
-import { CacheNode, TMenu, useRouterMenuContext } from '@/entities/router';
+import { TCacheNode, TMenu, useRouterMenuContext } from '@/entities/router';
 
 export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undefined> }) {
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
 
   const activeCacheKey = location.pathname + location.search;
 
-  const [sortedCacheNodes, setSortedCacheNodes] = useState<CacheNode[]>([]);
+  const [sortedCacheNodes, setSortedCacheNodes] = useState<TCacheNode[]>([]);
   const remainingCacheNodes = sortedCacheNodes.filter((node) => node.cacheKey !== activeCacheKey);
 
   useEffect(() => {

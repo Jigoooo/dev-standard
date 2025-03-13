@@ -44,8 +44,10 @@ const RoleManagement = lazy(() =>
 //   );
 // }
 
-export const routerComponentMap: Partial<Record<Router, LazyExoticComponent<ComponentType<any>>>> =
-  {
+export function getRouterComponent(
+  router: Router,
+): LazyExoticComponent<ComponentType<any>> | undefined {
+  const mapping: Partial<Record<Router, LazyExoticComponent<ComponentType<any>>>> = {
     [Router.UI]: UiComponent,
     [Router.GRID_EXAMPLE]: GridExample,
     [Router.FILE_UPLOAD_DOWNLOAD]: FileUploadDownload,
@@ -53,14 +55,21 @@ export const routerComponentMap: Partial<Record<Router, LazyExoticComponent<Comp
     [Router.ROLE_MANAGEMENT]: RoleManagement,
   };
 
-export const routerMappedIcon: Record<string, IconType> = {
-  [Router.COMPONENT]: FaUikit,
-  [Router.UI]: RxComponent1,
-  [Router.GRID_EXAMPLE]: GoTable,
-  [Router.FILE]: HiArrowsUpDown,
-  [Router.FILE_UPLOAD_DOWNLOAD]: FaRegFile,
-  [Router.EXCEL_UPLOAD_DOWNLOAD]: RiFileExcel2Line,
-  [Router.MANAGER]: IoSettingsSharp,
-  [Router.ROLE_MANAGEMENT]: MdOutlineManageAccounts,
-  [Router.MY_PROFILE]: IoPersonCircleOutline,
-};
+  return mapping[router];
+}
+
+export function getRouterMappedIcon(router: Router): IconType | undefined {
+  const mapping: Record<string, IconType> = {
+    [Router.COMPONENT]: FaUikit,
+    [Router.UI]: RxComponent1,
+    [Router.GRID_EXAMPLE]: GoTable,
+    [Router.FILE]: HiArrowsUpDown,
+    [Router.FILE_UPLOAD_DOWNLOAD]: FaRegFile,
+    [Router.EXCEL_UPLOAD_DOWNLOAD]: RiFileExcel2Line,
+    [Router.MANAGER]: IoSettingsSharp,
+    [Router.ROLE_MANAGEMENT]: MdOutlineManageAccounts,
+    [Router.MY_PROFILE]: IoPersonCircleOutline,
+  };
+
+  return mapping[router];
+}

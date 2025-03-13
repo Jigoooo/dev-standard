@@ -1,5 +1,5 @@
 import { Checkbox, THeader } from '@/shared/components';
-import { RRoleUser, RAuthMenu } from '@/entities/role-management';
+import { RRoleUser, RMenuMemberAuth } from '@/entities/role-management';
 export function useRoleManagementHeaders() {
   const roleUserHeaders: THeader<RRoleUser>[] = [
     {
@@ -44,7 +44,7 @@ export function useRoleManagementHeaders() {
     },
   ];
 
-  const roleManagementHeaders: THeader<RAuthMenu>[] = [
+  const roleManagementHeaders: THeader<RMenuMemberAuth>[] = [
     {
       id: 'index',
       pin: 'left',

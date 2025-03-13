@@ -1,10 +1,13 @@
 import { ReactNode, useState } from 'react';
 import { Outlet, RouteObject } from 'react-router-dom';
 
-import { Router, TMenu, TRouterMenuContext } from './router-type.ts';
-import { routerComponentMap, routerMappedIcon } from './router-map.tsx';
-import { RouterMenuContext } from '@/entities/router';
-import { RMenu } from './router-type.ts';
+import { Router, TMenu, TRouterMenuContext } from '../model/router-type.ts';
+import {
+  getRouterComponent,
+  getRouterMappedIcon,
+  RouterMenuContext,
+  RMenu,
+} from '@/entities/router';
 import { SignIn } from '@/pages/sign-in';
 import { Main } from '@/pages/main';
 import { MyProfile } from '@/pages/my-profile';
@@ -16,11 +19,37 @@ const defaultRoutes: RouteObject[] = [
     path: Router.SIGN_IN,
     element: <SignIn />,
     errorElement: <RouteErrorPage />,
+    hydrateFallbackElement: (
+      <div
+        style={{
+          display: 'flex',
+          width: '100%',
+          height: '100%',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        Hydration fallback...
+      </div>
+    ),
   },
   {
     path: Router.MAIN,
     element: <Main />,
     errorElement: <RouteErrorPage />,
+    hydrateFallbackElement: (
+      <div
+        style={{
+          display: 'flex',
+          width: '100%',
+          height: '100%',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        Hydration fallback...
+      </div>
+    ),
     children: [
       {
         path: Router.MY_PROFILE,
@@ -35,7 +64,7 @@ const defaultMenus: TMenu[] = [
     menuIndex: 9999,
     isHeader: false,
     name: '내정보',
-    icon: routerMappedIcon[Router.MY_PROFILE],
+    icon: getRouterMappedIcon(Router.MY_PROFILE),
     router: Router.MY_PROFILE,
     fullRouterPath: `${Router.MAIN}/${Router.MY_PROFILE}`,
     display: true,
@@ -70,13 +99,13 @@ function makeGroupMenus(responseMenus: RMenu[]): TMenu[] {
 
       if (menu.sub2Cd === 0) {
         const routerPath = menu.menuId as Router;
-        const hasRouterComponent = !!routerComponentMap[routerPath];
+        const hasRouterComponent = !!getRouterComponent(routerPath);
 
         mainMenu = {
           menuIndex: mainCd,
           isHeader: !hasRouterComponent,
           name: menu.menuTitle,
-          icon: routerMappedIcon[routerPath],
+          icon: getRouterMappedIcon(routerPath),
           display: menu.displayYn === 'Y',
           router: routerPath,
           fullRouterPath: menu.menuLink,
@@ -93,13 +122,13 @@ function makeGroupMenus(responseMenus: RMenu[]): TMenu[] {
 
       subMenus = subMenusArr.map((menu) => {
         const routerPath = menu.menuId as Router;
-        const hasRouterComponent = !!routerComponentMap[routerPath];
+        const hasRouterComponent = !!getRouterComponent(routerPath);
 
         return {
           menuIndex: Number(`${menu.mainCd}${menu.sub1Cd}${menu.sub2Cd}`),
           isHeader: !hasRouterComponent,
           name: menu.menuTitle,
-          icon: routerMappedIcon[routerPath],
+          icon: getRouterMappedIcon(routerPath),
           router: routerPath,
           fullRouterPath: menu.menuLink,
           display: menu.displayYn === 'Y',
@@ -119,7 +148,7 @@ function makeGroupMenus(responseMenus: RMenu[]): TMenu[] {
 
 function generateRoutesFromMenus(menus: TMenu[]): RouteObject[] {
   return menus.map((menu) => {
-    const Component = routerComponentMap[menu.router];
+    const Component = getRouterComponent(menu.router);
     return {
       path: menu.router,
       element: menu.display && Component ? <Component /> : <Outlet />,

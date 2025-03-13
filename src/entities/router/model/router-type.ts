@@ -27,7 +27,7 @@ export type TMenu = {
   children?: TMenu[];
 };
 
-export type CacheNode = {
+export type TCacheNode = {
   cacheKey: string;
   ele?: ReactNode | ReactElement | null | undefined | JSX.Element;
   lastActiveTime: number;
@@ -47,6 +47,21 @@ export type TRouterStore = {
   actions: {
     toggleSidebarCollapsed: () => void;
   };
+};
+
+export type PMenuMemberAuth = {
+  menuId: string;
+};
+
+export type RMenuMemberAuth = {
+  authIns: string;
+  authDel: string;
+  menuId: string;
+  useYn: string;
+  authSearch: string;
+  authMod: string;
+  memberId: string;
+  excelExport: string;
 };
 
 export type RMenu = {

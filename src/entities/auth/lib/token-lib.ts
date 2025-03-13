@@ -17,6 +17,7 @@ export const setToken = (token: RToken) => {
 };
 export const getToken = () => {
   const tokenString = secureLocalStorage.getItem(secureStorageKey.TOKEN);
+
   if (typeof tokenString === 'string') {
     try {
       const parsed = JSON.parse(tokenString);
