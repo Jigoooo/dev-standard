@@ -1,5 +1,10 @@
+export type PMemberList = {
+  memberId: string;
+};
+
 export type RRoleUser = {
-  name: string;
+  memberId: string;
+  memberNm: string;
 };
 
 export type RAuthMenu = {
@@ -15,6 +20,10 @@ export type RAuthMenu = {
   authSearch: 'Y' | 'N';
   authMod: 'Y' | 'N';
   excelExport: 'Y' | 'N';
+};
+
+export type RRoleUserList = {
+  menuList: RRoleUser[];
 };
 
 export type RMenuMemberAuth = {

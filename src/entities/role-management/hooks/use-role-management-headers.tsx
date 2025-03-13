@@ -1,6 +1,5 @@
 import { THeader } from '@/shared/components';
-import { RAuthMenu } from '@/entities/role-management';
-import { RRoleUser } from '@/entities/role-management/model/role-management-type.ts';
+import { RRoleUser, RAuthMenu } from '@/entities/role-management';
 export function useRoleManagementHeaders() {
   const roleUserHeaders: THeader<RRoleUser>[] = [
     {
@@ -14,7 +13,22 @@ export function useRoleManagementHeaders() {
       },
     },
     {
-      id: 'name',
+      id: 'memberId',
+      pin: 'view',
+      align: 'left',
+      label: '아이디',
+      width: 150,
+      sorter: {
+        sortable: true,
+        direction: null,
+      },
+      filter: {
+        filterType: 'text',
+        filterValue: '',
+      },
+    },
+    {
+      id: 'memberNm',
       pin: 'view',
       align: 'left',
       label: '이름',

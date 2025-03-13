@@ -145,6 +145,10 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
     sessionStorage.setItem(localStorageKey.LAST_LOCATION, lastLocation);
   };
 
+  const removeLastLocation = () => {
+    sessionStorage.removeItem(localStorageKey.LAST_LOCATION);
+  };
+
   const updateRouteChildren = (parentPath: string, newChildren: RouteObject[], merge?: boolean) => {
     setRoutes((prevState) => {
       return prevState.map((route) => {
@@ -266,6 +270,7 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
           excludeCacheMenuRouters,
           lastLocation,
           setLastLocation,
+          removeLastLocation,
           findCurrentMenu: (currentPath) => findCurrentMenu(menus, currentPath),
           findMenuWithFullRouterPath,
           findFirstNonHeaderMenu,

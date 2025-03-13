@@ -72,6 +72,7 @@ export type TRouterMenuContext = {
   excludeCacheMenuRouters: string[];
   lastLocation: string | null;
   setLastLocation: (lastLocation: string) => void;
+  removeLastLocation: () => void;
   findCurrentMenu: (currentPath: string) => TMenu | null;
   findMenuWithFullRouterPath: (menus: TMenu[], targetFullRouterPath: string) => TMenu | null;
   findFirstNonHeaderMenu: (menus: TMenu[]) => TMenu | null;
