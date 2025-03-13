@@ -92,6 +92,8 @@ export type TRouterMenuContext = {
   lastLocation: string | null;
   setLastLocation: (lastLocation: string) => void;
   removeLastLocation: () => void;
+  currentMenuMemberAuth: RMenuMemberAuth | null;
+  setCurrentMenuMemberAuth: (menuMemberAuth: RMenuMemberAuth | null) => void;
   findCurrentMenu: (currentPath: string) => TMenu | null;
   findMenuWithFullRouterPath: (menus: TMenu[], targetFullRouterPath: string) => TMenu | null;
   findFirstNonHeaderMenu: (menus: TMenu[]) => TMenu | null;

@@ -1,7 +1,7 @@
 import { ReactNode, useState } from 'react';
 import { Outlet, RouteObject } from 'react-router-dom';
 
-import { Router, TMenu, TRouterMenuContext } from '../model/router-type.ts';
+import { RMenuMemberAuth, Router, TMenu, TRouterMenuContext } from '../model/router-type.ts';
 import {
   getRouterComponent,
   getRouterMappedIcon,
@@ -160,6 +160,7 @@ function generateRoutesFromMenus(menus: TMenu[]): RouteObject[] {
 export function RouterMenuContextWrapper({ children }: { children: ReactNode }) {
   const [routes, setRoutes] = useState(defaultRoutes);
   const [menus, setMenus] = useState(defaultMenus);
+  const [currentMenuMemberAuth, setCurrentMenuMemberAuth] = useState<RMenuMemberAuth | null>(null);
 
   const sidebarMainMenus = menus.filter((menu) => menu.router !== Router.MY_PROFILE);
   const myProfileMenu = defaultMenus[0];
@@ -300,6 +301,8 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
           lastLocation,
           setLastLocation,
           removeLastLocation,
+          currentMenuMemberAuth,
+          setCurrentMenuMemberAuth,
           findCurrentMenu: (currentPath) => findCurrentMenu(menus, currentPath),
           findMenuWithFullRouterPath,
           findFirstNonHeaderMenu,

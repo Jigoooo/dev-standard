@@ -9,8 +9,12 @@ import {
   useRoleManagementHeaders,
 } from '@/entities/role-management';
 import { useUpdateMenuMemberAuthService } from '@/entities/role-management/api/role-management-service.ts';
+import { useRouterMenuContext } from '@/entities/router';
 
 export function RoleManagement() {
+  const { currentMenuMemberAuth } = useRouterMenuContext();
+  console.log(currentMenuMemberAuth);
+
   const { roleUserHeaders, roleManagementHeaders } = useRoleManagementHeaders();
   const { dataList, setDataList, handelDataList } = useTableData<TDataWithIndex & RRoleUser>([]);
   const {
