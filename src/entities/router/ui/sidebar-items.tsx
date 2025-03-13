@@ -5,6 +5,7 @@ import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
 import { SidebarItem } from './sidebar-item.tsx';
 import { Divider, FlexColumn } from '@/shared/components';
 import { TMenu, useRouterMenuContext } from '@/entities/router';
+import { gaEventTrigger } from '@/shared/lib';
 
 export function SidebarItems({ menus }: { menus: TMenu[] }) {
   const navigate = useNavigate();
@@ -72,6 +73,11 @@ export function SidebarItems({ menus }: { menus: TMenu[] }) {
 
     if (isSelected) return;
 
+    gaEventTrigger({
+      action: 'click',
+      category: 'sidebar',
+      label: menu.name,
+    });
     navigate(menu.router);
   };
 
@@ -82,6 +88,11 @@ export function SidebarItems({ menus }: { menus: TMenu[] }) {
 
     if (isSelected) return;
 
+    gaEventTrigger({
+      action: 'click',
+      category: 'sidebar',
+      label: childMenu.name,
+    });
     navigate(`${parentMenu.router}/${childMenu.router}`);
   };
 

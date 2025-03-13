@@ -4,3 +4,4 @@ export * from './file';
 export * from './formatter';
 export * from './validation';
 export * from './webView';
+export * from './ga';

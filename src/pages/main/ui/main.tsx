@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useKeepAliveRef } from 'keepalive-for-react';
 import KeepAliveRouteOutlet from 'keepalive-for-react-router';
 import { useLocation, useNavigate } from 'react-router-dom';
+import ReactGA from 'react-ga4';
 
 import { FlexColumn, FlexRow } from '@/shared/components';
 import {
@@ -13,7 +14,7 @@ import {
   useRouterState,
 } from '@/entities/router';
 import { KeepAliveWrapper, MainHeader } from '@/entities/main';
-import ReactGA from 'react-ga4';
+import { gaPageView } from '@/shared/lib';
 
 export function Main() {
   const navigate = useNavigate();
@@ -35,11 +36,14 @@ export function Main() {
   const isMatchedExcludeMenu = excludeCacheMenuRouters.includes(currentMenu?.fullRouterPath ?? '');
 
   useEffect(() => {
+    ReactGA.set({ userId: 'jeff test' });
+  }, []);
+
+  useEffect(() => {
     if (!window.location.href.includes('localhost')) {
-      ReactGA.send({
-        hitType: 'pageview',
-        page: location.pathname + location.search,
-        title: currentMenu?.name ?? 'title',
+      gaPageView({
+        page: location.pathname,
+        title: currentMenu?.name ?? 'unknown title',
       });
     }
   }, [currentMenu?.name, location.pathname, location.search]);
