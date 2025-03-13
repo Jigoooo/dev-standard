@@ -12,6 +12,7 @@ export enum Router {
   FILE = 'file',
   FILE_UPLOAD_DOWNLOAD = 'file-upload-download',
   EXCEL_UPLOAD_DOWNLOAD = 'excel-upload-download',
+  MANAGER = 'manager',
   ROLE_MANAGEMENT = 'role-management',
 }
 

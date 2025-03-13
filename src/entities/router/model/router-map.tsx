@@ -9,6 +9,7 @@ import { RiFileExcel2Line } from 'react-icons/ri';
 import { MdOutlineManageAccounts } from 'react-icons/md';
 import { IoPersonCircleOutline } from 'react-icons/io5';
 import { FaUikit } from 'react-icons/fa';
+import { IoSettingsSharp } from 'react-icons/io5';
 
 import { Router } from '@/entities/router';
 
@@ -59,6 +60,7 @@ export const routerMappedIcon: Record<string, IconType> = {
   [Router.FILE]: HiArrowsUpDown,
   [Router.FILE_UPLOAD_DOWNLOAD]: FaRegFile,
   [Router.EXCEL_UPLOAD_DOWNLOAD]: RiFileExcel2Line,
+  [Router.MANAGER]: IoSettingsSharp,
   [Router.ROLE_MANAGEMENT]: MdOutlineManageAccounts,
   [Router.MY_PROFILE]: IoPersonCircleOutline,
 };

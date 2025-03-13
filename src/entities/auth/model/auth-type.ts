@@ -8,6 +8,7 @@ export type PSignIn = {
 export type RToken = {
   accessToken: string;
   refreshToken: string;
+  expiresIn: string;
 };
 
 export type RSignIn = RToken & {

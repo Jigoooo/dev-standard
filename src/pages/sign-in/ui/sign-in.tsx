@@ -79,6 +79,7 @@ export function SignIn() {
             setToken({
               accessToken: data.data.accessToken,
               refreshToken: data.data.refreshToken,
+              expiresIn: data.data.expiresIn,
             });
 
             updateMainRouteChildren(data.data.menuList);
