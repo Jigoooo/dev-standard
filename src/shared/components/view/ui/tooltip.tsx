@@ -1,7 +1,7 @@
 import { ReactNode, CSSProperties, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import { TOOLTIP_Z_INDEX } from '@/shared/constants';
+import { zIndex } from '@/shared/constants';
 
 type TooltipPosition =
   | 'top'
@@ -60,7 +60,7 @@ export function Tooltip({ style, position, children, content, disabled = false }
                 color: 'white',
                 borderRadius: 4,
                 whiteSpace: 'nowrap',
-                zIndex: TOOLTIP_Z_INDEX,
+                zIndex: zIndex.tooltip,
                 margin: 4,
               },
               ...style,

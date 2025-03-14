@@ -2,7 +2,7 @@ import { ReactNode, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { FlexRow, ModalContext, TModalRenderProps } from '@/shared/components';
-import { MODAL_Z_INDEX } from '@/shared/constants';
+import { zIndex } from '@/shared/constants';
 
 export function ModalContextWrapper({ children }: { children: ReactNode }) {
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -49,7 +49,7 @@ export function ModalContextWrapper({ children }: { children: ReactNode }) {
               left: 0,
               width: '100%',
               height: '100%',
-              zIndex: MODAL_Z_INDEX,
+              zIndex: zIndex.modal,
               backgroundColor: 'rgba(0, 0, 0, 0.5)',
               overflow: 'auto',
             }}

@@ -5,7 +5,7 @@ import { HiChevronUpDown } from 'react-icons/hi2';
 import { IoMdCheckmark } from 'react-icons/io';
 import { FiSearch } from 'react-icons/fi';
 
-import { SELECT_BOX_ITEM_Z_INDEX } from '@/shared/constants';
+import { zIndex } from '@/shared/constants';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
 import { FlexRow, Input, InputStyle, Typography } from '@/shared/components';
 
@@ -242,7 +242,7 @@ function SelectItems<ValueType extends string | number>({
         boxShadow: '0 2px 10px rgba(0, 0, 0, 0.2)',
         maxHeight: 300,
         overflowY: 'auto',
-        zIndex: SELECT_BOX_ITEM_Z_INDEX,
+        zIndex: zIndex.selectBoxItem,
         transformOrigin: 'top center',
         padding: 6,
       }}

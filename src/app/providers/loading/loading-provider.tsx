@@ -1,5 +1,5 @@
 import { SyncLoading, useLoading } from '@/shared/components';
-import { LOADING_Z_INDEX } from '@/shared/constants';
+import { zIndex } from '@/shared/constants';
 
 export function LoadingProvider() {
   const loadingState = useLoading();
@@ -15,7 +15,7 @@ export function LoadingProvider() {
             width: '100%',
             height: '100%',
             background: 'rgba(0, 0, 0, 0.2)',
-            zIndex: LOADING_Z_INDEX,
+            zIndex: zIndex.loading,
             pointerEvents: 'auto',
           }}
         />

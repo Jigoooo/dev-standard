@@ -1,4 +1,4 @@
-import { LOADING_Z_INDEX } from '@/shared/constants';
+import { zIndex } from '@/shared/constants';
 
 export const loadingStyles = {
   loader: {
@@ -12,6 +12,6 @@ export const loadingStyles = {
     right: 0,
     bottom: 0,
     background: 'rgba(0, 0, 0, 0.5)',
-    zIndex: LOADING_Z_INDEX,
+    zIndex: zIndex.loading,
   } as const,
 };

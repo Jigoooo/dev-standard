@@ -7,7 +7,7 @@ import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRig
 import KeyboardDoubleArrowRightOutlinedIcon from '@mui/icons-material/KeyboardDoubleArrowRightOutlined';
 import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 
-import { colors, SELECT_BOX_ITEM_Z_INDEX } from '@/shared/constants';
+import { colors, zIndex } from '@/shared/constants';
 import { FlexColumn, FlexRow, TTablePagination, Typography } from '@/shared/components';
 import { useToggle } from '@/shared/hooks';
 
@@ -285,7 +285,7 @@ export function TablePageLegacy({
                   duration: 0.05,
                 }}
                 style={{
-                  zIndex: SELECT_BOX_ITEM_Z_INDEX,
+                  zIndex: zIndex.selectBoxItem,
                   transformOrigin,
                   position: 'absolute',
                   top: transformOrigin === 'top' ? 36 : 'auto',

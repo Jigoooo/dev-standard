@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import CloseIcon from '@mui/icons-material/Close';
 // import { Resizable } from 're-resizable';
 
-import { MODAL_Z_INDEX } from '@/shared/constants';
+import { zIndex } from '@/shared/constants';
 import { useDraggable } from '@/shared/hooks/common/use-draggable.ts';
 import { Button, FlexRow, Tooltip, Typography } from '@/shared/components';
 
@@ -51,7 +51,7 @@ export function MobileModal({
               width: '100%',
               height: '100%',
               backgroundColor: 'rgba(0, 0, 0, 0.5)',
-              zIndex: MODAL_Z_INDEX - 1,
+              zIndex: zIndex.modal - 1,
             }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -68,7 +68,7 @@ export function MobileModal({
               height: '100%',
               justifyContent: 'center',
               alignItems: 'center',
-              zIndex: MODAL_Z_INDEX,
+              zIndex: zIndex.modal,
             }}
             initial={{ opacity: 0.5, y: 30 }}
             animate={{ opacity: 1, y: 0 }}

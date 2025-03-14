@@ -11,7 +11,7 @@ import { IoPersonCircleOutline } from 'react-icons/io5';
 import { FaUikit } from 'react-icons/fa';
 import { IoSettingsSharp } from 'react-icons/io5';
 
-import { Router } from '@/entities/router';
+import { Router } from './router-type.ts';
 
 const UiComponent = lazy(() =>
   import('@/pages/ui-component').then((module) => ({ default: module.UiComponent })),

@@ -1,6 +1,6 @@
 import { CSSProperties, ReactNode } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ANCHOR_OVERLAY_Z_INDEX, ANCHOR_Z_INDEX } from '@/shared/constants';
+import { zIndex } from '@/shared/constants';
 
 type AnchorPosition =
   | 'top'
@@ -56,7 +56,7 @@ export function AnchorPicker({
                 width: '100%',
                 height: '100%',
                 backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                zIndex: ANCHOR_OVERLAY_Z_INDEX,
+                zIndex: zIndex.anchorOverlay,
               }}
               onClick={(event) => {
                 event.stopPropagation();
@@ -71,7 +71,7 @@ export function AnchorPicker({
               style={{
                 ...{
                   position: 'absolute',
-                  zIndex: ANCHOR_Z_INDEX,
+                  zIndex: zIndex.anchor,
                 },
                 ...anchorPositionStyles[position],
               }}

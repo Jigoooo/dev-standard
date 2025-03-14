@@ -10,7 +10,7 @@ import {
   Typography,
 } from '@/shared/components';
 import { useModalClose } from '@/shared/hooks';
-import { colors, DIALOG_OVERLAY_Z_INDEX, DIALOG_Z_INDEX } from '@/shared/constants';
+import { colors, zIndex } from '@/shared/constants';
 import { useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -70,7 +70,7 @@ export function AlertDialog() {
               position: 'fixed',
               top: '50%',
               left: '50%',
-              zIndex: DIALOG_Z_INDEX,
+              zIndex: zIndex.dialog,
               minWidth: 350,
               maxWidth: 600,
               maxHeight: 400,
@@ -156,7 +156,7 @@ export function AlertDialog() {
               width: '100%',
               height: '100%',
               backgroundColor: 'rgba(0, 0, 0, 0.5)',
-              zIndex: DIALOG_OVERLAY_Z_INDEX,
+              zIndex: zIndex.dialogOverlay,
             }}
             onClick={() => {
               if (!dialogInfos.overlayClose) {
