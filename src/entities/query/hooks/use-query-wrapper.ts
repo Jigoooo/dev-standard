@@ -30,8 +30,10 @@ export function useQueryWrapper<
   useEffect(() => {
     if (query.data && !query.data.success) {
       if (query.data.code === 401 || query.data.code === 403) {
+        // console.clear();
+
         const token = getToken();
-        console.log('token: ', token);
+
         if (token === null) {
           dialogActions.openDialog({
             dialogType: DialogType.ERROR,
@@ -44,8 +46,6 @@ export function useQueryWrapper<
           });
         } else {
           tokenRefreshApi(token.refreshToken).then((data) => {
-            console.log('refresh data: ', data);
-
             if (
               !data.success ||
               !data?.data?.accessToken ||
