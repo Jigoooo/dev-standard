@@ -1,24 +1,10 @@
 import { Navigate, useLocation, useRouteError } from 'react-router-dom';
-import { Router, useGetMemberMenuListQuery, useRouterMenuContext } from '@/entities/router';
+import { Router } from '@/entities/router';
 import { FlexColumn, Typography } from '@/shared/ui';
-import { useEffect } from 'react';
 
 export function RouteErrorPage() {
   const error: any = useRouteError();
-  const { updateMainRouteChildren } = useRouterMenuContext();
   const location = useLocation();
-
-  const getMemberMenuListQuery = useGetMemberMenuListQuery();
-
-  useEffect(() => {
-    if (getMemberMenuListQuery?.data?.data && location.pathname.includes(Router.MAIN)) {
-      updateMainRouteChildren(getMemberMenuListQuery?.data.data.menuList);
-    }
-  }, [getMemberMenuListQuery.data, location.pathname]);
-
-  if (getMemberMenuListQuery.isFetching) {
-    return null;
-  }
 
   if (error.status === 404 && location.pathname !== Router.SIGN_IN) {
     // todo 무한 루프 방지 필요 2번이상 진입 시 / 화면으로
