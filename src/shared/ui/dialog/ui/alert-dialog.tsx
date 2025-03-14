@@ -11,8 +11,10 @@ import {
 } from 'shared/ui';
 import { useModalClose } from '@/shared/hooks';
 import { colors, zIndex } from '@/shared/constants';
-import { useEffect, useRef } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+
+import { DialogInfoStates } from '../model/dialog-type.ts';
 
 /* todo 모바일버전 만들어야 함 */
 
@@ -29,7 +31,6 @@ export function AlertDialog() {
   const modalRef = useRef<HTMLDivElement | null>(null);
 
   useModalClose(dialogOpen, dialogActions.close);
-  const dialogColor = dialogColors[dialogInfos.dialogType as DialogType];
 
   useEffect(() => {
     if (dialogOpen) {
@@ -82,93 +83,122 @@ export function AlertDialog() {
               outline: 'none',
             }}
           >
-            <FlexRow
-              style={{
-                justifyContent: 'space-between',
-                width: '100%',
-                alignItems: 'center',
-              }}
-            >
-              <Typography style={{ fontSize: '1.1rem', fontWeight: 700, whiteSpace: 'pre-line' }}>
-                {dialogInfos.title}
-              </Typography>
-            </FlexRow>
-            {dialogInfos.contents ? (
-              <FlexColumn style={{ paddingTop: 8, paddingBottom: 24, whiteSpace: 'pre-line' }}>
-                <Typography style={{ fontSize: '0.9rem', fontWeight: 400, paddingRight: 12 }}>
-                  {dialogInfos.contents}
-                </Typography>
-              </FlexColumn>
-            ) : (
-              <div style={{ height: 10 }}></div>
-            )}
-            <FlexRow
-              style={{
-                gap: 8,
-                width: '100%',
-                alignItems: 'center',
-                justifyContent: 'flex-end',
-              }}
-            >
-              {dialogInfos.withCancel && (
-                <Button
-                  buttonStyle={ButtonStyle.OUTLINED}
-                  style={{
-                    minWidth: 80,
-                    color: '#bbbbbb',
-                    borderColor: '#bbbbbb',
-                  }}
-                  onClick={() => {
-                    window.history.back();
-                    dialogInfos?.onCancel?.();
-                  }}
-                >
-                  <Typography style={{ color: '#555555', fontSize: '0.9rem', fontWeight: 500 }}>
-                    {dialogInfos.cancelText}
-                  </Typography>
-                </Button>
-              )}
-              <Button
-                style={{
-                  minWidth: 80,
-                  fontSize: '0.9rem',
-                  fontWeight: 500,
-                  backgroundColor: dialogColor,
-                }}
-                onClick={() => {
-                  window.history.back();
-                  setTimeout(() => dialogInfos?.onConfirm?.(), 10);
-                }}
-              >
-                {dialogInfos.confirmText}
-              </Button>
-            </FlexRow>
+            <AlertDialogHeader title={dialogInfos.title} />
+            <AlertDialogContents contents={dialogInfos.contents} />
+            <AlertDialogActions dialogInfos={dialogInfos} />
           </FlexColumn>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.1 }}
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-              zIndex: zIndex.dialogOverlay,
-            }}
-            onClick={() => {
-              if (!dialogInfos.overlayClose) {
-                return;
-              }
 
-              dialogActions.close();
-              window.history.back();
-            }}
-          />
+          <AlertDialogOverlay overlayClose={dialogInfos.overlayClose} />
         </>
       )}
     </AnimatePresence>
+  );
+}
+
+function AlertDialogHeader({ title }: { title?: string }) {
+  return (
+    <FlexRow
+      style={{
+        justifyContent: 'space-between',
+        width: '100%',
+        alignItems: 'center',
+      }}
+    >
+      <Typography style={{ fontSize: '1.1rem', fontWeight: 700, whiteSpace: 'pre-line' }}>
+        {title}
+      </Typography>
+    </FlexRow>
+  );
+}
+
+function AlertDialogContents({ contents }: { contents?: ReactNode }) {
+  return (
+    <>
+      {contents ? (
+        <FlexColumn style={{ paddingTop: 8, paddingBottom: 24, whiteSpace: 'pre-line' }}>
+          <Typography style={{ fontSize: '0.9rem', fontWeight: 400, paddingRight: 12 }}>
+            {contents}
+          </Typography>
+        </FlexColumn>
+      ) : (
+        <div style={{ height: 10 }}></div>
+      )}
+    </>
+  );
+}
+
+function AlertDialogActions({ dialogInfos }: { dialogInfos: DialogInfoStates }) {
+  const dialogColor = dialogColors[dialogInfos.dialogType as DialogType];
+
+  return (
+    <FlexRow
+      style={{
+        gap: 8,
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+      }}
+    >
+      {dialogInfos.withCancel && (
+        <Button
+          buttonStyle={ButtonStyle.OUTLINED}
+          style={{
+            minWidth: 80,
+            color: '#bbbbbb',
+            borderColor: '#bbbbbb',
+          }}
+          onClick={() => {
+            window.history.back();
+            dialogInfos?.onCancel?.();
+          }}
+        >
+          <Typography style={{ color: '#555555', fontSize: '0.9rem', fontWeight: 500 }}>
+            {dialogInfos.cancelText}
+          </Typography>
+        </Button>
+      )}
+      <Button
+        style={{
+          minWidth: 80,
+          fontSize: '0.9rem',
+          fontWeight: 500,
+          backgroundColor: dialogColor,
+        }}
+        onClick={() => {
+          window.history.back();
+          setTimeout(() => dialogInfos?.onConfirm?.(), 10);
+        }}
+      >
+        {dialogInfos.confirmText}
+      </Button>
+    </FlexRow>
+  );
+}
+
+function AlertDialogOverlay({ overlayClose }: { overlayClose?: boolean }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.1 }}
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        zIndex: zIndex.dialogOverlay,
+      }}
+      onClick={() => {
+        if (!overlayClose) {
+          return;
+        }
+
+        dialogActions.close();
+        window.history.back();
+      }}
+    />
   );
 }

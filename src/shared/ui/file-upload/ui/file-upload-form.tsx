@@ -46,6 +46,7 @@ import {
 import { TbFavicon } from 'react-icons/tb';
 import { RiFileHwpFill } from 'react-icons/ri';
 import { MdDeleteOutline } from 'react-icons/md';
+import { BiLogoTypescript } from 'react-icons/bi';
 
 import { DropZone } from './drop-zone.tsx';
 import { fileSizeFormatter } from '@/shared/lib';
@@ -53,13 +54,12 @@ import {
   FlexColumn,
   FlexRow,
   Typography,
-  TFile,
   LinearProgress,
   dialogActions,
   DialogType,
   Button,
-} from 'shared/ui';
-import { BiLogoTypescript } from 'react-icons/bi';
+} from '@/shared/ui';
+import { TFile } from '../model';
 
 export function FileUploadForm({
   files,

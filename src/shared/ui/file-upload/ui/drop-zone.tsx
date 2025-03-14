@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react';
 import FileUploadRoundedIcon from '@mui/icons-material/FileUploadRounded';
 
 import { colors } from '@/shared/constants';
-import { FlexRow, Link } from 'shared/ui';
+import { FlexRow, Link } from '@/shared/ui';
 
 export function DropZone({
   multiple,
