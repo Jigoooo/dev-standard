@@ -22,7 +22,9 @@ export function useGetMemberMenuListQuery() {
   return useQueryWrapper({
     queryKey: [GET_MENU_LIST_QUERY_KEY],
     queryFn: () => getMemberMenuListApi(),
-    refetchOnMount: false,
+    refetchOnMount: true,
     refetchOnReconnect: false,
+    gcTime: 0,
+    staleTime: 0,
   });
 }

@@ -7,7 +7,7 @@ export function RouteErrorPage() {
 
   if (error.status === 404 && location.pathname !== Router.SIGN_IN) {
     // todo 무한 루프 방지 필요 2번이상 진입 시 / 화면으로
-    console.log('진입');
+    console.log('RouteErrorPage');
     return <Navigate to={Router.MAIN} replace />;
   }
 

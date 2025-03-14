@@ -1,4 +1,4 @@
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import TriphosLogo from '@/shared/assets/images/triphos_logo.png';
 
@@ -16,7 +16,7 @@ import { FlexColumn, FlexRow } from '@/shared/components';
 import { useToggle } from '@/shared/hooks';
 import { createValidator, getFormValues } from '@/shared/lib';
 import { localStorageKey } from '@/shared/constants';
-import { PSignIn, setToken, useSignInMutation, useTokenSignInQuery } from '@/entities/auth';
+import { PSignIn, setToken, useSignInMutation } from '@/entities/auth';
 
 const signInFields: Record<
   keyof {
@@ -97,16 +97,6 @@ export function SignIn() {
       },
     );
   };
-
-  const tokenSignInQuery = useTokenSignInQuery();
-
-  if (tokenSignInQuery.data?.success) {
-    return <Navigate to={Router.MAIN} replace />;
-  }
-
-  if (tokenSignInQuery.isFetching) {
-    return null;
-  }
 
   return (
     <FlexRow style={{ width: '100vw', height: '100vh', backgroundColor: '#f8f8f8' }}>

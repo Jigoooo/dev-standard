@@ -17,8 +17,8 @@ export function useLogout() {
       cancelText: '아니요',
       confirmText: '로그아웃',
       onConfirm: () => {
-        navigate(Router.SIGN_IN, { replace: true });
         removeToken();
+        navigate(`${Router.SIGN_IN}?isLogout=true`, { replace: true });
       },
     });
   };

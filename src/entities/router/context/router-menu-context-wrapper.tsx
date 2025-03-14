@@ -13,11 +13,16 @@ import { Main } from '@/pages/main';
 import { MyProfile } from '@/pages/my-profile';
 import { RouteErrorPage } from '@/shared/components';
 import { sessionStorageKey } from '@/shared/constants';
+import { AuthGuard } from '@/entities/auth';
 
 const defaultRoutes: RouteObject[] = [
   {
     path: Router.SIGN_IN,
-    element: <SignIn />,
+    element: (
+      <AuthGuard>
+        <SignIn />
+      </AuthGuard>
+    ),
     errorElement: <RouteErrorPage />,
     hydrateFallbackElement: (
       <div

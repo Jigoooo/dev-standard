@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
 import { useKeepAliveRef } from 'keepalive-for-react';
 import KeepAliveRouteOutlet from 'keepalive-for-react-router';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import ReactGA from 'react-ga4';
 
 import { FlexColumn, FlexRow } from '@/shared/components';
 import {
+  MenuAuthProvider,
   PageTab,
   Router,
   Sidebar,
@@ -75,19 +76,18 @@ export function Main() {
     };
   }, [location.pathname]);
 
-  const tokenCheckQuery = useTokenCheckQuery();
-  useEffect(() => {
-    if (!tokenCheckQuery.data?.success) {
-      navigate(Router.SIGN_IN, { replace: true });
-    }
-  }, [tokenCheckQuery.data]);
-
   const getMemberMenuListQuery = useGetMemberMenuListQuery();
+
   useEffect(() => {
     if (getMemberMenuListQuery?.data?.data) {
       updateMainRouteChildren(getMemberMenuListQuery?.data.data.menuList);
     }
   }, [getMemberMenuListQuery.data]);
+
+  const tokenCheckQuery = useTokenCheckQuery();
+  if (tokenCheckQuery.data && !tokenCheckQuery.data?.success) {
+    return <Navigate to={Router.SIGN_IN} replace />;
+  }
 
   if (getMemberMenuListQuery.isFetching) {
     return null;
@@ -131,13 +131,13 @@ export function Main() {
             <PageTab aliveRef={aliveRef} />
           )}
 
-          {/*<MenuAuthProvider>*/}
-          <KeepAliveRouteOutlet
-            wrapperComponent={KeepAliveWrapper}
-            exclude={excludeCacheMenuRouters}
-            aliveRef={aliveRef}
-          />
-          {/*</MenuAuthProvider>*/}
+          <MenuAuthProvider>
+            <KeepAliveRouteOutlet
+              wrapperComponent={KeepAliveWrapper}
+              exclude={excludeCacheMenuRouters}
+              aliveRef={aliveRef}
+            />
+          </MenuAuthProvider>
         </FlexColumn>
       </FlexRow>
     </FlexRow>
