@@ -9,9 +9,9 @@ import {
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { getToken, setToken } from '@/entities/auth';
+import { getToken, setToken, tokenRefreshApi } from '@/entities/auth';
 import { dialogActions, DialogType } from '@/shared/components';
-import { apiRequest, customedAxios, AdapterResponseType } from '@/shared/api';
+import { AdapterResponseType } from '@/shared/api';
 
 export function useQueryWrapper<
   TData,
@@ -45,15 +45,7 @@ export function useQueryWrapper<
             overlayClose: false,
           });
         } else {
-          apiRequest<{
-            accessToken: string;
-            refreshToken: string;
-            expiresIn: string;
-          }>(
-            customedAxios.post('/auth/refresh', {
-              refreshToken: token.refreshToken,
-            }),
-          ).then((data) => {
+          tokenRefreshApi(token.refreshToken).then((data) => {
             console.log('refresh data: ', data);
 
             if (

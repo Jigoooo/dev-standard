@@ -1,5 +1,17 @@
 import { apiRequest, customedAxios } from '@/shared/api';
-import { PSignIn, RSignIn } from '@/entities/auth/model';
+import { PSignIn, RSignIn, RToken } from '@/entities/auth/model';
+
+export async function tokenCheckApi() {
+  return apiRequest<null>(customedAxios.post('/member/tokenCheck'));
+}
+
+export async function tokenRefreshApi(refreshToken: string) {
+  return apiRequest<RToken>(
+    customedAxios.post('/auth/refresh', {
+      refreshToken,
+    }),
+  );
+}
 
 export async function signInApi(params: PSignIn) {
   return apiRequest<RSignIn>(customedAxios.post('/auth/login', {}, { params }));
