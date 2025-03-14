@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
-import { useTokenSignInQuery } from '@/entities/auth';
 import { Navigate, useSearchParams } from 'react-router-dom';
+
+import { useTokenSignInQuery } from '@/entities/auth';
 import { Router } from '@/entities/router';
 
 export function AuthGuard({ children }: { children: ReactNode }) {

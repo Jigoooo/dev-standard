@@ -13,7 +13,7 @@ import { Main } from '@/pages/main';
 import { MyProfile } from '@/pages/my-profile';
 import { RouteErrorPage } from '@/shared/components';
 import { sessionStorageKey } from '@/shared/constants';
-import { AuthGuard } from '@/entities/auth';
+import { AuthGuard, MainAuthGuard } from '@/entities/auth';
 
 const defaultRoutes: RouteObject[] = [
   {
@@ -40,7 +40,11 @@ const defaultRoutes: RouteObject[] = [
   },
   {
     path: Router.MAIN,
-    element: <Main />,
+    element: (
+      <MainAuthGuard>
+        <Main />
+      </MainAuthGuard>
+    ),
     errorElement: <RouteErrorPage />,
     hydrateFallbackElement: (
       <div

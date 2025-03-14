@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useKeepAliveRef } from 'keepalive-for-react';
 import KeepAliveRouteOutlet from 'keepalive-for-react-router';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import ReactGA from 'react-ga4';
 
 import { FlexColumn, FlexRow } from '@/shared/components';
@@ -16,7 +16,6 @@ import {
 } from '@/entities/router';
 import { KeepAliveWrapper, MainHeader } from '@/entities/main';
 import { gaPageView } from '@/shared/lib';
-import { useTokenCheckQuery } from '@/entities/auth';
 
 export function Main() {
   const navigate = useNavigate();
@@ -83,11 +82,6 @@ export function Main() {
       updateMainRouteChildren(getMemberMenuListQuery?.data.data.menuList);
     }
   }, [getMemberMenuListQuery.data]);
-
-  const tokenCheckQuery = useTokenCheckQuery();
-  if (tokenCheckQuery.data && !tokenCheckQuery.data?.success) {
-    return <Navigate to={Router.SIGN_IN} replace />;
-  }
 
   if (getMemberMenuListQuery.isFetching) {
     return null;
