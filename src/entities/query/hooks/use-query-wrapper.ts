@@ -31,6 +31,7 @@ export function useQueryWrapper<
     if (query.data && !query.data.success) {
       if (query.data.code === 401 || query.data.code === 403) {
         const token = getToken();
+        console.log('token: ', token);
         if (token === null) {
           dialogActions.openDialog({
             dialogType: DialogType.ERROR,
