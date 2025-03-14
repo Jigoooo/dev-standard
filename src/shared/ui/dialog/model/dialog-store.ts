@@ -27,6 +27,7 @@ const useDialog = create<DialogStoreInterface>()((setState, getState) => {
           ...state,
           dialogOpen: true,
           dialogInfos: {
+            ...state.dialogInfos,
             ...dialogInfos,
             onConfirm: () => {
               if (dialogInfos.onConfirm) dialogInfos.onConfirm();
