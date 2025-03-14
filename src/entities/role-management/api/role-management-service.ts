@@ -5,7 +5,7 @@ import {
   updateMenuMemberAuthApi,
 } from './role-management-api.ts';
 import { PMenuMemberAuthList, RMenuMemberAuth } from '@/entities/role-management';
-import { useQueryWrapper } from '@/shared/api';
+import { useQueryWrapper } from '@/entities/query';
 
 export const GET_MEMBER_LIST_QUERY_KEY = 'getMemberListQueryKey';
 export const GET_MENU_LIST_QUERY_KEY = 'getMemberAuthListQueryKey';

@@ -1,6 +1,6 @@
 import { getMemberMenuListApi, getMenuMemberAuthApi } from './router-api.ts';
 import { PMenuMemberAuth, Router } from '@/entities/router';
-import { useQueryWrapper } from '@/shared/api';
+import { useQueryWrapper } from '@/entities/query';
 
 export const GET_MENU_MEMBER_AUTH_QUERY_KEY = 'getMenuMemberAuthQueryKey';
 export const GET_MENU_LIST_QUERY_KEY = 'getMenuListQueryKey';
@@ -11,7 +11,7 @@ export function useGetMenuMemberAuthApiQuery(params: PMenuMemberAuth) {
     queryFn: () => getMenuMemberAuthApi(params),
     refetchOnMount: true,
     refetchOnReconnect: false,
-    enabled: params.menuId !== '' && params.menuId !== Router.MAIN,
+    enabled: params.menuId !== '' || params.menuId !== Router.MAIN.toString(),
   });
 }
 

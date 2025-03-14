@@ -21,7 +21,7 @@ const onRequest = (config: AxiosRequestConfig): Promise<InternalAxiosRequestConf
   const token = getToken();
   const accessToken = token?.accessToken;
 
-  if (!!accessToken && url && !url.includes('auth')) {
+  if (accessToken) {
     headers.Authorization = `Bearer ${accessToken}`;
   }
 

@@ -31,6 +31,9 @@ export async function apiRequest<T>(
   } catch (error: unknown) {
     let errorMessage = 'Unknown error';
     let status = -1;
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
     if (error instanceof AxiosError) {
       errorMessage = error.message;
       status = error?.status ?? -1;
@@ -44,19 +47,3 @@ export async function apiRequest<T>(
     };
   }
 }
-
-// function handleErrorResponse(status: number, errorMessage: string) {
-//   if (status === 401 || status === 403) {
-//     dialogActions.openDialog({
-//       dialogType: DialogType.ERROR,
-//       title: '세션이 만료되었습니다.',
-//       contents: '로그인을 다시 진행해 주세요.',
-//     });
-//
-//     throw new Error('Unauthorized access');
-//   }
-//
-//   // if (status === 500) {
-//   //
-//   // }
-// }

@@ -7,7 +7,7 @@ export {
   ANCHOR_Z_INDEX,
   MODAL_Z_INDEX,
   TOOLTIP_Z_INDEX,
-} from './common.ts';
+} from './z-index.ts';
 export { colors } from './colors.ts';
 export { PROXY_CONVERT_URL_PREFIX } from './api.ts';
 export { localStorageKey, secureStorageKey } from './storage-key.ts';
