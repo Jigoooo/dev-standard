@@ -100,7 +100,7 @@ export function AlertDialog() {
                 </Typography>
               </FlexColumn>
             ) : (
-              <div style={{ height: 20 }}></div>
+              <div style={{ height: 10 }}></div>
             )}
             <FlexRow
               style={{
