@@ -122,14 +122,14 @@ export function toCamelCase(key: string): string {
   return key.replace(/_([a-z])/g, (_, char) => char.toUpperCase());
 }
 
-export function convertToCamelCase(input: any): any {
+export function toCamelCaseObject(input: any): any {
   if (Array.isArray(input)) {
-    return input.map((item) => convertToCamelCase(item));
+    return input.map((item) => toCamelCaseObject(item));
   } else if (input && typeof input === 'object' && input.constructor === Object) {
     return Object.keys(input).reduce(
       (acc, key) => {
         const camelCaseKey = toCamelCase(key);
-        acc[camelCaseKey] = convertToCamelCase(input[key]);
+        acc[camelCaseKey] = toCamelCaseObject(input[key]);
         return acc;
       },
       {} as Record<string, any>,

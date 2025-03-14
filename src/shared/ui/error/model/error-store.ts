@@ -1,6 +1,5 @@
 import { create } from 'zustand';
 
-import { timeoutAction } from '@/shared/lib';
 import { ErrorStoreInterface } from './error-interfaces.ts';
 
 const errorInitialState = {
@@ -15,7 +14,7 @@ const useError = create<ErrorStoreInterface>()((setState) => {
       setGlobalError: (error) => {
         setState((state) => ({ ...state, isError: true, error }));
 
-        timeoutAction(() => {
+        setTimeout(() => {
           setState((state) => ({ ...state, isError: false, error: null }));
         }, 10000);
       },

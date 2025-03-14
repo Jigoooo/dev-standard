@@ -8,5 +8,5 @@ export {
   thousandSeparator,
   formatAgriculturalBusinessCheckNumber,
   toCamelCase,
-  convertToCamelCase,
+  toCamelCaseObject,
 } from './formatter-lib.ts';

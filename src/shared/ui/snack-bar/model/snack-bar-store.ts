@@ -8,7 +8,6 @@ import {
   SnackBarStoreInterface,
   SnackBarType,
 } from './snack-bar-type.ts';
-import { timeoutAction } from '@/shared/lib';
 
 const snackBarInitialState: SnackBarStates = {
   targetSizeMode: 'desktop',
@@ -76,7 +75,7 @@ const useSnackBarStore = create<SnackBarStoreInterface>()((setState, getState) =
         });
 
         if (duration !== 0) {
-          timeoutAction(() => getState().actions.hideDesktopSnackBar(idx), duration);
+          setTimeout(() => getState().actions.hideDesktopSnackBar(idx), duration);
         }
       },
       showNotification: (info) => {

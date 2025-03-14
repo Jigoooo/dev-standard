@@ -2,43 +2,8 @@ import { endOfYear, format, subYears } from 'date-fns';
 
 import { dialogActions, DialogType } from 'shared/ui';
 
-export const currentYear = new Date().getFullYear();
-
-export function deepCopy<T>(obj: T): T {
-  if (typeof obj !== 'object' || obj === null) {
-    return obj;
-  }
-
-  let copy;
-
-  if (Array.isArray(obj)) {
-    copy = [];
-
-    for (let i = 0; i < obj.length; i++) {
-      copy[i] = deepCopy(obj[i]);
-    }
-  } else {
-    copy = {};
-
-    for (const key in obj) {
-      if (obj.hasOwnProperty(key)) {
-        // @ts-expect-error
-        copy[key] = deepCopy(obj[key]);
-      }
-    }
-  }
-
-  return copy as T;
-}
-
 export function sleep(time: number) {
   return new Promise((resolve) => setTimeout(resolve, time));
-}
-
-export function timeoutAction(timeoutCallback: any, time: number = 800) {
-  setTimeout(() => {
-    timeoutCallback?.();
-  }, time);
 }
 
 export function isNullOrUndefined(value: any) {
@@ -53,6 +18,7 @@ export function convertToRGBA(hexColor: string, alpha: number) {
 }
 
 export function getYears(prevYearCount: number = 100) {
+  const currentYear = new Date().getFullYear();
   const years = [];
 
   for (let i = currentYear; i >= currentYear - prevYearCount; i--) {
@@ -67,11 +33,6 @@ export function logOnDev(message: string) {
   if (import.meta.env.DEV) {
     console.log(message);
   }
-}
-
-export function setScreenSize() {
-  const vh = window.innerHeight * 0.01;
-  document.documentElement.style.setProperty('--vh', `${vh}px`);
 }
 
 export function transformArrayToDictByKey<T, K extends keyof T>(
@@ -107,18 +68,18 @@ export function detectDeviceTypeAndOS() {
   return { isDesktop, isAndroid: isAndroid(), isIOS: isIOS(), isMobile, isTablet };
 }
 
-export const scrollToTop = () => {
+export function scrollToTop() {
   window.scrollTo({
     top: 0,
     behavior: 'smooth',
   });
-};
+}
 
-export const scrollToTopNoneSmooth = () => {
+export function scrollToTopNoneSmooth() {
   window.scrollTo({
     top: 0,
   });
-};
+}
 
 export function openPhoneApp(phoneNumber: string) {
   window.location.href = `tel:${phoneNumber}`;

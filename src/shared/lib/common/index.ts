@@ -1,9 +1,6 @@
 export {
-  currentYear,
-  deepCopy,
   isNullOrUndefined,
   getYears,
-  timeoutAction,
   sleep,
   logOnDev,
   convertToRGBA,
@@ -11,7 +8,6 @@ export {
   scrollToTop,
   scrollToTopNoneSmooth,
   generateRandomNumber,
-  setScreenSize,
   transformArrayToDictByKey,
   openPhoneApp,
   openSmsApp,
