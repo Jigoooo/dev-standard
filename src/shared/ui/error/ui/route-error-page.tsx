@@ -1,49 +1,45 @@
 import { Navigate, useLocation, useRouteError } from 'react-router-dom';
 import { Router } from '@/entities/router';
+import { FlexColumn, Typography } from '@/shared/ui';
 
 export function RouteErrorPage() {
   const error: any = useRouteError();
   const location = useLocation();
 
-  if (error.status === 404 && location.pathname !== Router.SIGN_IN) {
-    // todo 무한 루프 방지 필요 2번이상 진입 시 / 화면으로
-    console.log('RouteErrorPage');
-    return <Navigate to={Router.MAIN} replace />;
-  }
+  // if (error.status === 404 && location.pathname !== Router.SIGN_IN) {
+  //   // todo 무한 루프 방지 필요 2번이상 진입 시 / 화면으로
+  //   console.log('RouteErrorPage');
+  //   return <Navigate to={Router.MAIN} replace />;
+  // }
 
   console.error('error: --- ', error);
 
-  const styles = {
-    errorContainer: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      width: '100%',
-      height: '100svh',
-      textAlign: 'center',
-      backgroundColor: '#f2f2f2',
-      color: '#333',
-    },
-    errorMessage: {
-      fontSize: '18px',
-      color: '#666',
-    },
-    errorDetails: {
-      marginTop: '20px',
-      fontStyle: 'italic',
-      color: '#999',
-    },
-  } as const;
-
   return (
-    <div style={styles.errorContainer}>
-      <h1>Error!!</h1>
-      <p style={styles.errorMessage}>Sorry, an unexpected error has occurred.</p>
-      <div style={styles.errorDetails}>
-        <p>Status Text: {error.statusText ? error.statusText : 'N/A'}</p>
-        <p>Error Message: {error.message}</p>
-      </div>
-    </div>
+    <FlexColumn
+      style={{
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+        height: '100vh',
+        backgroundColor: '#fcfcfc',
+        gap: 36,
+      }}
+    >
+      <Typography style={{ fontSize: '3rem', fontWeight: 600 }}>Route Error</Typography>
+      <FlexColumn style={{ alignItems: 'center', justifyContent: 'center' }}>
+        <Typography style={{ fontSize: '2rem', fontWeight: 600 }}>
+          {error.status} {error.statusText ? error.statusText : 'N/A'}
+        </Typography>
+        <Typography
+          style={{
+            fontSize: '1.4rem',
+            fontWeight: 500,
+            color: '#888888',
+          }}
+        >
+          {error.error.message}
+        </Typography>
+      </FlexColumn>
+    </FlexColumn>
   );
 }

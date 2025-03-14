@@ -1,6 +1,7 @@
 import { getMemberMenuListApi, getMenuMemberAuthApi } from './router-api.ts';
 import { PMenuMemberAuth, Router } from '@/entities/router';
 import { useQueryWrapper } from '@/entities/query';
+import { keepPreviousData } from '@tanstack/react-query';
 
 export const GET_MENU_MEMBER_AUTH_QUERY_KEY = 'getMenuMemberAuthQueryKey';
 export const GET_MENU_LIST_QUERY_KEY = 'getMenuListQueryKey';
@@ -26,5 +27,10 @@ export function useGetMemberMenuListQuery() {
     refetchOnReconnect: false,
     gcTime: 0,
     staleTime: 0,
+    placeholderData: keepPreviousData,
+    // persister: experimental_createPersister({
+    //   storage: AsyncStorage,
+    //   maxAge: 1000 * 60 * 60 * 12, // 12 hours
+    // }),
   });
 }
