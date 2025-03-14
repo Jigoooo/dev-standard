@@ -28,9 +28,5 @@ export function useGetMemberMenuListQuery() {
     gcTime: 0,
     staleTime: 0,
     placeholderData: keepPreviousData,
-    // persister: experimental_createPersister({
-    //   storage: AsyncStorage,
-    //   maxAge: 1000 * 60 * 60 * 12, // 12 hours
-    // }),
   });
 }
