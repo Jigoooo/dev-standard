@@ -1,2 +1,2 @@
 export { tokenRefreshApi } from './auth-api.ts';
-export { useSignInMutation } from './auth-service.ts';
+export { useTokenSignInQuery, useTokenCheckQuery, useSignInMutation } from './auth-service.ts';

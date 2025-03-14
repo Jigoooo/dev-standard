@@ -16,8 +16,7 @@ import { FlexColumn, FlexRow } from '@/shared/components';
 import { useToggle } from '@/shared/hooks';
 import { createValidator, getFormValues } from '@/shared/lib';
 import { localStorageKey } from '@/shared/constants';
-import { PSignIn, setToken, useSignInMutation } from '@/entities/auth';
-import { useTokenCheckQuery } from '@/entities/auth/api/auth-service.ts';
+import { PSignIn, setToken, useSignInMutation, useTokenSignInQuery } from '@/entities/auth';
 
 const signInFields: Record<
   keyof {
@@ -37,7 +36,6 @@ export function SignIn() {
 
   const [saveIdChecked, toggleSaveIdChecked] = useToggle(!!saveId);
 
-  const tokenCheckQuery = useTokenCheckQuery();
   const signInMutation = useSignInMutation();
   const { updateMainRouteChildren } = useRouterMenuContext();
 
@@ -100,11 +98,13 @@ export function SignIn() {
     );
   };
 
-  if (tokenCheckQuery.data?.success) {
+  const tokenSignInQuery = useTokenSignInQuery();
+
+  if (tokenSignInQuery.data?.success) {
     return <Navigate to={Router.MAIN} replace />;
   }
 
-  if (tokenCheckQuery.isFetching) {
+  if (tokenSignInQuery.isFetching) {
     return null;
   }
 

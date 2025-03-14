@@ -6,7 +6,6 @@ import ReactGA from 'react-ga4';
 
 import { FlexColumn, FlexRow } from '@/shared/components';
 import {
-  MenuAuthProvider,
   PageTab,
   Router,
   Sidebar,
@@ -16,7 +15,7 @@ import {
 } from '@/entities/router';
 import { KeepAliveWrapper, MainHeader } from '@/entities/main';
 import { gaPageView } from '@/shared/lib';
-import { useTokenCheckQuery } from '@/entities/auth/api/auth-service.ts';
+import { useTokenCheckQuery } from '@/entities/auth';
 
 export function Main() {
   const navigate = useNavigate();
@@ -132,13 +131,13 @@ export function Main() {
             <PageTab aliveRef={aliveRef} />
           )}
 
-          <MenuAuthProvider>
-            <KeepAliveRouteOutlet
-              wrapperComponent={KeepAliveWrapper}
-              exclude={excludeCacheMenuRouters}
-              aliveRef={aliveRef}
-            />
-          </MenuAuthProvider>
+          {/*<MenuAuthProvider>*/}
+          <KeepAliveRouteOutlet
+            wrapperComponent={KeepAliveWrapper}
+            exclude={excludeCacheMenuRouters}
+            aliveRef={aliveRef}
+          />
+          {/*</MenuAuthProvider>*/}
         </FlexColumn>
       </FlexRow>
     </FlexRow>

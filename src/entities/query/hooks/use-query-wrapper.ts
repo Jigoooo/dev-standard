@@ -34,6 +34,7 @@ export function useQueryWrapper<
 
   useEffect(() => {
     if (query.data && !query.data.success) {
+      console.log(options.queryKey);
       if (query.data.code === 401 || query.data.code === 403) {
         const token = getToken();
         if (token === null) {

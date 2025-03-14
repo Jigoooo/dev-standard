@@ -11,7 +11,10 @@ export function useGetMenuMemberAuthApiQuery(params: PMenuMemberAuth) {
     queryFn: () => getMenuMemberAuthApi(params),
     refetchOnMount: true,
     refetchOnReconnect: false,
-    enabled: params.menuId !== '' && params.menuId !== Router.MAIN.slice(1),
+    enabled:
+      params.menuId !== '' &&
+      params.menuId !== Router.MAIN.slice(1) &&
+      params.menuId !== Router.MY_PROFILE,
   });
 }
 
