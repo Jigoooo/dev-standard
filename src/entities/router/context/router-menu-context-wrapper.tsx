@@ -203,6 +203,10 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
     });
   };
   const updateMainRouteChildren = (responseMenus: RMenu[]) => {
+    if (!responseMenus || !Array.isArray(responseMenus)) {
+      return;
+    }
+
     const groupMenus = makeGroupMenus(responseMenus);
 
     const newChildren: RouteObject[] = generateRoutesFromMenus(groupMenus);

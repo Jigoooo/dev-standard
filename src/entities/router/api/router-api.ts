@@ -9,6 +9,6 @@ export async function getMenuMemberAuthApi(params: PMenuMemberAuth) {
   );
 }
 
-export async function getMenuListApi() {
+export async function getMemberMenuListApi() {
   return apiRequest<RMenuList>(customedAxios.get('/member/getMemberMenuList'));
 }

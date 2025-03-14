@@ -159,6 +159,10 @@ export function AlertDialog() {
               zIndex: DIALOG_OVERLAY_Z_INDEX,
             }}
             onClick={() => {
+              if (!dialogInfos.overlayClose) {
+                return;
+              }
+
               dialogActions.closeDialog();
               window.history.back();
             }}

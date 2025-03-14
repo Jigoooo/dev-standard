@@ -8,6 +8,7 @@ export interface DialogInfoStates {
   onConfirm?: () => void;
   onCancel?: () => void;
   withCancel?: boolean;
+  overlayClose?: boolean;
   dialogType?: DialogType;
 }
 export interface DialogStates {

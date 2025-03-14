@@ -1,9 +1,18 @@
 import { useEffect, useState } from 'react';
 
-import { Button, FlexRow, Table, TDataWithIndex, useTableData } from '@/shared/components';
 import {
-  RRoleUser,
+  Button,
+  dialogActions,
+  DialogType,
+  FlexColumn,
+  FlexRow,
+  Table,
+  TDataWithIndex,
+  useTableData,
+} from '@/shared/components';
+import {
   RMenuMemberAuth,
+  RRoleUser,
   useGetMemberListApi,
   useGetMenuMemberAuthListQuery,
   useRoleManagementHeaders,
@@ -32,36 +41,48 @@ export function RoleManagement() {
   const updateMenuMemberAuthService = useUpdateMenuMemberAuthService();
 
   useEffect(() => {
-    if (getMemberListQuery.data?.data) {
+    if (getMemberListQuery.data?.data?.menuList) {
       const dataWithIndex = getMemberListQuery.data.data.menuList.map((item, index) => ({
         ...item,
         index: (index + 1).toString(),
       }));
       setDataList(dataWithIndex);
     }
-  }, [getMemberListQuery.data?.data]);
+  }, [getMemberListQuery.data?.data?.menuList]);
   useEffect(() => {
-    if (getMenuMemberAuthListQuery.data?.data) {
+    if (getMenuMemberAuthListQuery.data?.data?.menuList) {
       const dataWithIndex = getMenuMemberAuthListQuery.data.data.menuList.map((item, index) => ({
         ...item,
         index: (index + 1).toString(),
       }));
       setMenuAuthList(dataWithIndex);
     }
-  }, [getMenuMemberAuthListQuery.data?.data]);
+  }, [getMenuMemberAuthListQuery.data?.data?.menuList]);
 
   const updateMenuMemberAuth = () => {
-    updateMenuMemberAuthService.mutate(menuAuthList);
+    updateMenuMemberAuthService.mutate(menuAuthList, {
+      onSuccess: (data) => {
+        if (!data.success) {
+          dialogActions.openDialog({
+            dialogType: DialogType.ERROR,
+            title: '권한 저장에 실패하였습니다.',
+            contents: data.msg ?? '관리자에게 문의해 주세요.',
+          });
+        }
+      },
+    });
   };
 
   return (
-    <div
+    <FlexColumn
       style={{
         height: '100%',
         maxHeight: 'calc(100vh - 200px)',
       }}
     >
-      <Button onClick={updateMenuMemberAuth}>저장</Button>
+      <FlexRow style={{ justifyContent: 'flex-end' }}>
+        <Button onClick={updateMenuMemberAuth}>저장</Button>
+      </FlexRow>
       <FlexRow style={{ height: '100%', gap: 12 }}>
         <Table
           tableStyle={{
@@ -84,6 +105,6 @@ export function RoleManagement() {
           handelDataList={handelMenuAuthList}
         />
       </FlexRow>
-    </div>
+    </FlexColumn>
   );
 }

@@ -10,7 +10,7 @@ import {
   PageTab,
   Router,
   Sidebar,
-  useGetMenuListQuery,
+  useGetMemberMenuListQuery,
   useRouterMenuContext,
   useRouterState,
 } from '@/entities/router';
@@ -75,15 +75,15 @@ export function Main() {
     };
   }, [location.pathname]);
 
-  const getMenuListQuery = useGetMenuListQuery();
+  const getMemberMenuListQuery = useGetMemberMenuListQuery();
 
   useEffect(() => {
-    if (getMenuListQuery?.data?.data) {
-      updateMainRouteChildren(getMenuListQuery?.data.data.menuList);
+    if (getMemberMenuListQuery?.data?.data) {
+      updateMainRouteChildren(getMemberMenuListQuery?.data.data.menuList);
     }
-  }, [getMenuListQuery.data]);
+  }, [getMemberMenuListQuery.data]);
 
-  if (getMenuListQuery.isFetching) {
+  if (getMemberMenuListQuery.isFetching) {
     return null;
   }
 

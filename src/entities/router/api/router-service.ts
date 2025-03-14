@@ -1,24 +1,24 @@
-import { useQuery } from '@tanstack/react-query';
-import { getMenuListApi, getMenuMemberAuthApi } from './router-api.ts';
-import { PMenuMemberAuth } from '@/entities/router/model/router-type.ts';
+import { getMemberMenuListApi, getMenuMemberAuthApi } from './router-api.ts';
+import { PMenuMemberAuth, Router } from '@/entities/router';
+import { useQueryWrapper } from '@/shared/api';
 
 export const GET_MENU_MEMBER_AUTH_QUERY_KEY = 'getMenuMemberAuthQueryKey';
 export const GET_MENU_LIST_QUERY_KEY = 'getMenuListQueryKey';
 
 export function useGetMenuMemberAuthApiQuery(params: PMenuMemberAuth) {
-  return useQuery({
+  return useQueryWrapper({
     queryKey: [GET_MENU_MEMBER_AUTH_QUERY_KEY, params],
     queryFn: () => getMenuMemberAuthApi(params),
     refetchOnMount: true,
     refetchOnReconnect: false,
-    enabled: params.menuId !== '',
+    enabled: params.menuId !== '' && params.menuId !== Router.MAIN,
   });
 }
 
-export function useGetMenuListQuery() {
-  return useQuery({
+export function useGetMemberMenuListQuery() {
+  return useQueryWrapper({
     queryKey: [GET_MENU_LIST_QUERY_KEY],
-    queryFn: () => getMenuListApi(),
+    queryFn: () => getMemberMenuListApi(),
     refetchOnMount: false,
     refetchOnReconnect: false,
   });

@@ -1,1 +1,1 @@
-export { useGetMenuMemberAuthApiQuery, useGetMenuListQuery } from './router-service.ts';
+export { useGetMenuMemberAuthApiQuery, useGetMemberMenuListQuery } from './router-service.ts';
