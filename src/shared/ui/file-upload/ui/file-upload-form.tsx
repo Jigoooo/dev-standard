@@ -104,7 +104,7 @@ export function FileUploadForm({
 
       setInnerFiles((state) => [...state, ...newFiles]);
     } else {
-      dialogActions.openDialog({
+      dialogActions.open({
         dialogType: DialogType.WARNING,
         title: '업로드 용량이 초과되었습니다.',
         contents: `업로드 가능한 최대 용량은 ${limitMB}MB 입니다.`,

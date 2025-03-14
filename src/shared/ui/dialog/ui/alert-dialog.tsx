@@ -28,7 +28,7 @@ export function AlertDialog() {
   const dialogInfos = useDialogInfos();
   const modalRef = useRef<HTMLDivElement | null>(null);
 
-  useModalClose(dialogOpen, dialogActions.closeDialog);
+  useModalClose(dialogOpen, dialogActions.close);
   const dialogColor = dialogColors[dialogInfos.dialogType as DialogType];
 
   useEffect(() => {
@@ -163,7 +163,7 @@ export function AlertDialog() {
                 return;
               }
 
-              dialogActions.closeDialog();
+              dialogActions.close();
               window.history.back();
             }}
           />

@@ -122,7 +122,7 @@ export function openTMap({
   if (isMobile) {
     window.location.href = `tmap://search?name=${encodeURIComponent(placeName)}&lon=${longitude}&lat=${latitude}`;
   } else {
-    dialogActions.openDialog({
+    dialogActions.open({
       contents: '모바일에서만 지원됩니다.',
       dialogType: DialogType.WARNING,
     });

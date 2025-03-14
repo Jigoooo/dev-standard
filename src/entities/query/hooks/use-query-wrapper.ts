@@ -35,7 +35,7 @@ export function useQueryWrapper<
         const token = getToken();
 
         if (token === null) {
-          dialogActions.openDialog({
+          dialogActions.open({
             dialogType: DialogType.ERROR,
             title: query.data.msg || '세션이 만료되었습니다.',
             contents: '로그인을 다시 진행해 주세요.',
@@ -52,7 +52,7 @@ export function useQueryWrapper<
               !data?.data?.refreshToken ||
               !data?.data?.expiresIn
             ) {
-              dialogActions.openDialog({
+              dialogActions.open({
                 dialogType: DialogType.ERROR,
                 title: query.data.msg || '세션이 만료되었습니다.',
                 contents: '로그인을 다시 진행해 주세요.',
@@ -75,7 +75,7 @@ export function useQueryWrapper<
           });
         }
       } else {
-        dialogActions.openDialog({
+        dialogActions.open({
           dialogType: DialogType.ERROR,
           title: query.data.msg || '오류가 발생하였습니다.',
           contents: '관리자에게 문의해 주세요.',

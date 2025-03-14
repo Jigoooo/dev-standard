@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-export interface DialogInfoStates {
+export type DialogInfoStates = {
   title?: string;
   contents: ReactNode;
   confirmText?: string;
@@ -10,21 +10,21 @@ export interface DialogInfoStates {
   withCancel?: boolean;
   overlayClose?: boolean;
   dialogType?: DialogType;
-}
-export interface DialogStates {
+};
+export type DialogStates = {
   dialogOpen: boolean;
   dialogInfos: DialogInfoStates;
-}
+};
 
-interface DialogActions {
-  openDialog: (openDialog: DialogInfoStates) => void;
-  openDialogAsync: (openDialog: DialogInfoStates) => Promise<boolean>;
-  closeDialog: () => void;
-}
+type DialogActions = {
+  open: (openDialog: DialogInfoStates) => void;
+  openAsync: (openDialog: DialogInfoStates) => Promise<boolean>;
+  close: () => void;
+};
 
-export interface DialogStoreInterface extends DialogStates {
+export type DialogStoreInterface = DialogStates & {
   actions: DialogActions;
-}
+};
 
 export enum DialogType {
   INFO = 'info',

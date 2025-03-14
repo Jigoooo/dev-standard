@@ -9,7 +9,7 @@ export function useLogout() {
   const navigate = useNavigate();
 
   return () => {
-    dialogActions.openDialog({
+    dialogActions.open({
       dialogType: DialogType.WARNING,
       title: '로그아웃을 진행하시겠습니까?',
       contents: '',

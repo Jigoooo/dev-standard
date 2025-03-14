@@ -103,7 +103,7 @@ export function UiComponent() {
         <Typography style={{ width: 200, fontWeight: 500 }}>Open dialog: </Typography>
         <Button
           onClick={() => {
-            dialogActions.openDialog({
+            dialogActions.open({
               title: 'Dialog Title',
               contents: 'Dialog Contents',
               withCancel: true,

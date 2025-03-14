@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import { ErrorStoreInterface } from './error-interfaces.ts';
+import { ErrorStoreInterface } from './error-type.ts';
 
 const errorInitialState = {
   isError: false,

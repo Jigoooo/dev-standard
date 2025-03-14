@@ -1,30 +1,12 @@
-import { motion, MotionProps } from 'framer-motion';
-import {
-  ButtonHTMLAttributes,
-  CSSProperties,
-  isValidElement,
-  ReactNode,
-  MouseEvent,
-  useRef,
-  useState,
-} from 'react';
+import { motion } from 'framer-motion';
+import { CSSProperties, isValidElement, MouseEvent, useRef, useState } from 'react';
 import { darken, lighten } from 'polished';
 
 import { isLightColor } from '@/shared/lib';
 import { colors } from '@/shared/constants';
 import { Typography } from 'shared/ui';
 import { useWindowsStyle } from '@/shared/hooks';
-
-export enum ButtonStyle {
-  SOLID = 'solid',
-  OUTLINED = 'outlined',
-}
-
-export type ButtonProps = MotionProps &
-  ButtonHTMLAttributes<HTMLButtonElement> & {
-    buttonStyle?: ButtonStyle;
-    children: ReactNode;
-  };
+import { ButtonStyle, ButtonProps } from '../model/button-type.ts';
 
 const defaultButtonStyle: CSSProperties = {
   display: 'flex',

@@ -22,77 +22,45 @@ const useDialog = create<DialogStoreInterface>()((setState, getState) => {
   return {
     ...dialogInitialState,
     actions: {
-      openDialog: ({
-        title = '알림',
-        contents,
-        confirmText = '확인',
-        cancelText = '취소',
-        onConfirm = () => {},
-        onCancel = () => {},
-        withCancel = false,
-        overlayClose = false,
-        dialogType = DialogType.INFO,
-      }) => {
+      open: (dialogInfos) => {
         setState((state) => ({
           ...state,
           dialogOpen: true,
           dialogInfos: {
-            title: title,
-            contents,
-            confirmText,
-            cancelText,
+            ...dialogInfos,
             onConfirm: () => {
-              if (onConfirm) onConfirm();
-              getState().actions.closeDialog();
+              if (dialogInfos.onConfirm) dialogInfos.onConfirm();
+              getState().actions.close();
             },
             onCancel: () => {
-              if (onCancel) onCancel();
-              getState().actions.closeDialog();
+              if (dialogInfos.onCancel) dialogInfos.onCancel();
+              getState().actions.close();
             },
-            withCancel,
-            overlayClose,
-            dialogType,
           },
         }));
       },
-      openDialogAsync: ({
-        title = '알림',
-        contents,
-        confirmText = '확인',
-        cancelText = '취소',
-        onConfirm = () => {},
-        onCancel = () => {},
-        withCancel = false,
-        overlayClose = false,
-        dialogType = DialogType.INFO,
-      }) =>
+      openAsync: (dialogInfos) =>
         new Promise((resolve) => {
           setState((state) => ({
             ...state,
             dialogOpen: true,
             dialogInfos: {
               ...state.dialogInfos,
-              title: title,
-              contents,
-              confirmText,
-              cancelText,
+              ...dialogInfos,
               onConfirm: () => {
-                if (onConfirm) onConfirm();
-                getState().actions.closeDialog();
+                if (dialogInfos.onConfirm) dialogInfos.onConfirm();
+                getState().actions.close();
                 resolve(true);
               },
               onCancel: () => {
-                if (onCancel) onCancel();
-                getState().actions.closeDialog();
+                if (dialogInfos.onCancel) dialogInfos.onCancel();
+                getState().actions.close();
                 resolve(false);
               },
-              withCancel,
-              overlayClose,
-              dialogType,
             },
           }));
         }),
-      closeDialog: () => {
+      close: () => {
         setState((state) => ({ ...state, dialogOpen: false }));
       },
     },

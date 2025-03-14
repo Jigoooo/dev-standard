@@ -1,1 +1,2 @@
-export { AccordionGroup, Accordion } from './accordion-group.tsx';
+export { AccordionGroup } from './accordion-group.tsx';
+export { Accordion } from './accordion.tsx';

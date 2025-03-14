@@ -41,14 +41,14 @@ export function SignIn() {
       .validate();
 
     if (idWithValidated.error) {
-      return dialogActions.openDialog({
+      return dialogActions.open({
         dialogType: DialogType.WARNING,
         contents: idWithValidated.errorMessage,
       });
     }
 
     if (passwordWithValidated.error) {
-      return dialogActions.openDialog({
+      return dialogActions.open({
         dialogType: DialogType.WARNING,
         contents: passwordWithValidated.errorMessage,
       });
@@ -59,7 +59,7 @@ export function SignIn() {
       {
         onSuccess: (data) => {
           if (!data.success) {
-            dialogActions.openDialog({
+            dialogActions.open({
               dialogType: DialogType.WARNING,
               title: '로그인 실패',
               contents: data?.msg ?? '아이디 비밀번호를 다시 확인해 주세요.',
