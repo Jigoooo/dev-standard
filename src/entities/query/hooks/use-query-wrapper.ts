@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { getToken, setToken, tokenRefreshApi } from '@/entities/auth';
-import { dialogActions, DialogType } from '@/shared/components';
+import { dialogActions, DialogType } from 'shared/ui';
 import { AdapterResponseType } from '@/shared/api';
 
 export function useQueryWrapper<

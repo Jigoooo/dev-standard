@@ -1,6 +1,6 @@
 import { endOfYear, format, subYears } from 'date-fns';
 
-import { dialogActions, DialogType } from '@/shared/components';
+import { dialogActions, DialogType } from 'shared/ui';
 
 export const currentYear = new Date().getFullYear();
 

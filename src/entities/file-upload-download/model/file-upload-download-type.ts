@@ -1,4 +1,4 @@
-import { TDataWithIndex } from '@/shared/components';
+import { TDataWithIndex } from 'shared/ui';
 
 export type RFileDownload = {
   fileUploadTitle: string;

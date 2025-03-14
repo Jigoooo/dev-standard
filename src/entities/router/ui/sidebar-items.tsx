@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
 
 import { SidebarItem } from './sidebar-item.tsx';
-import { Divider, FlexColumn } from '@/shared/components';
+import { Divider, FlexColumn } from 'shared/ui';
 import { TMenu, useRouterMenuContext } from '@/entities/router';
 import { gaEventTrigger } from '@/shared/lib';
 

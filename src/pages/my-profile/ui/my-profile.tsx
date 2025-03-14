@@ -1,4 +1,4 @@
-import { FlexColumn, Typography } from '@/shared/components';
+import { FlexColumn, Typography } from 'shared/ui';
 
 export function MyProfile() {
   return (

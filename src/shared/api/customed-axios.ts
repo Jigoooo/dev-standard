@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-import { setupInterceptors } from './setup-interceptors.ts';
+import { interceptors } from './interceptors.ts';
 
-export const customedAxios = setupInterceptors(
+export const customedAxios = interceptors(
   axios.create({
     baseURL: import.meta.env.DEV ? import.meta.env.VITE_DEV_API_URL : import.meta.env.VITE_API_URL,
     headers: {

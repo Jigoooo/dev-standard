@@ -9,7 +9,7 @@ import {
   Table,
   TDataWithIndex,
   useTableData,
-} from '@/shared/components';
+} from 'shared/ui';
 import {
   RMenuMemberAuth,
   RRoleUser,

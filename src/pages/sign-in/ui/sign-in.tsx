@@ -3,16 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import TriphosLogo from '@/shared/assets/images/triphos_logo.png';
 
 import { Router, useRouterMenuContext } from '@/entities/router';
-import {
-  Form,
-  Input,
-  Checkbox,
-  Button,
-  dialogActions,
-  DialogType,
-  Typography,
-} from '@/shared/components';
-import { FlexColumn, FlexRow } from '@/shared/components';
+import { Form, Input, Checkbox, Button, dialogActions, DialogType, Typography } from 'shared/ui';
+import { FlexColumn, FlexRow } from 'shared/ui';
 import { useToggle } from '@/shared/hooks';
 import { createValidator, getFormValues } from '@/shared/lib';
 import { localStorageKey } from '@/shared/constants';

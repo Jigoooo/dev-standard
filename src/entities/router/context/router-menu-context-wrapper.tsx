@@ -11,7 +11,7 @@ import {
 import { SignIn } from '@/pages/sign-in';
 import { Main } from '@/pages/main';
 import { MyProfile } from '@/pages/my-profile';
-import { RouteErrorPage } from '@/shared/components';
+import { RouteErrorPage } from 'shared/ui';
 import { sessionStorageKey } from '@/shared/constants';
 import { AuthGuard, MainAuthGuard } from '@/entities/auth';
 

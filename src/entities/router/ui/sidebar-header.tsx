@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { TbLayoutSidebarLeftCollapseFilled } from 'react-icons/tb';
 import { TbLayoutSidebarRightCollapseFilled } from 'react-icons/tb';
 
-import { FlexRow } from '@/shared/components';
+import { FlexRow } from 'shared/ui';
 import { routerActions, useRouterState } from '@/entities/router';
 
 export function SidebarHeader({ title }: { title: string }) {

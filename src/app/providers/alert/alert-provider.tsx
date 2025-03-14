@@ -1,4 +1,4 @@
-import { AlertDialog } from '@/shared/components';
+import { AlertDialog } from 'shared/ui';
 
 export function AlertProvider() {
   return (

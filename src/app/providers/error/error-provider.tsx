@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 
-import { ComponentErrorPage } from '@/shared/components';
+import { ComponentErrorPage } from 'shared/ui';
 
 export function ErrorProvider({ children }: { children: ReactNode }) {
   // const isError = useErrorState();

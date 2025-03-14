@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { useKeepAliveRef } from 'keepalive-for-react';
 import KeepAliveRouteOutlet from 'keepalive-for-react-router';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useBeforeUnload, useLocation, useNavigate } from 'react-router-dom';
 import ReactGA from 'react-ga4';
 
-import { FlexColumn, FlexRow } from '@/shared/components';
+import { FlexColumn, FlexRow } from 'shared/ui';
 import {
   MenuAuthProvider,
   PageTab,
@@ -62,18 +62,12 @@ export function Main() {
     }
   }, [lastLocation, sidebarMainMenus]);
 
-  useEffect(() => {
-    const handleBeforeUnload = () => {
-      if (location.pathname !== Router.MAIN) {
-        setLastLocation(location.pathname);
-      }
-    };
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, [location.pathname]);
+  useBeforeUnload(() => {
+    if (location.pathname !== Router.MAIN) {
+      console.log(location.pathname);
+      setLastLocation(location.pathname);
+    }
+  });
 
   const getMemberMenuListQuery = useGetMemberMenuListQuery();
 

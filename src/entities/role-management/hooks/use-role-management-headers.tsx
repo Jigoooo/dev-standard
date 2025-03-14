@@ -1,4 +1,4 @@
-import { Checkbox, THeader } from '@/shared/components';
+import { Checkbox, THeader } from 'shared/ui';
 import { RRoleUser, RMenuMemberAuth } from '@/entities/role-management';
 export function useRoleManagementHeaders() {
   const roleUserHeaders: THeader<RRoleUser>[] = [

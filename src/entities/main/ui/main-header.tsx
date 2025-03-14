@@ -1,4 +1,4 @@
-import { Typography } from '@/shared/components';
+import { Typography } from 'shared/ui';
 
 export function MainHeader({ title }: { title: string }) {
   return (

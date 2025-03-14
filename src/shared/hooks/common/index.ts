@@ -1,12 +1,11 @@
-export { useDebounce } from './use-debounce.ts';
+export { useDebouncedValue } from './use-debounced-value.ts';
 export { useDidMountEffect } from './use-did-mount-effect.ts';
 export { useMediaQueryWidth } from './use-media-query-width.ts';
 export { useTimer } from './use-timer.ts';
 export { useHandleClickOutsideRef } from './use-handle-click-outside-ref.ts';
-export { useBeforeUnload } from './use-before-unload.ts';
 export { useDimensions } from './use-dimension.ts';
 export { useAudio } from './use-audio.ts';
 export { useToggle } from './use-toggle.ts';
 export { useKeepAliveScrollHistoryRef } from './use-keep-alive-scroll-history-ref.ts';
-export { useWindowStyle } from './use-window-style.ts';
+export { useWindowsStyle } from './use-windows-style.ts';
 export { useElementSize } from './use-element-size.ts';

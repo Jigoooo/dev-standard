@@ -22,10 +22,10 @@ import {
   Tooltip,
   Typography,
   useModal,
-} from '@/shared/components';
+} from 'shared/ui';
 import { useKeepAliveScrollHistoryRef, useToggle } from '@/shared/hooks';
 import { sleep } from '@/shared/lib';
-import { Accordion, AccordionGroup } from '@/shared/components/accordion';
+import { Accordion, AccordionGroup } from '@/shared/ui/accordion';
 
 export function UiComponent() {
   const [check, toggleCheck] = useToggle();

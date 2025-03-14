@@ -1,7 +1,7 @@
 import { CSSProperties, ReactNode } from 'react';
 
 import { MainHeader } from './main-header.tsx';
-import { FlexColumn } from '@/shared/components';
+import { FlexColumn } from 'shared/ui';
 import { useRouterMenuContext, useRouterState } from '@/entities/router';
 import { useLocation } from 'react-router-dom';
 

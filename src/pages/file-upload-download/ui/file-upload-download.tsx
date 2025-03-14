@@ -10,7 +10,7 @@ import {
   Table,
   useModal,
   useTableData,
-} from '@/shared/components';
+} from 'shared/ui';
 import {
   FileUploadModal,
   generateFileUploads,
