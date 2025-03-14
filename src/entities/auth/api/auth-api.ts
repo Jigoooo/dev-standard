@@ -2,7 +2,7 @@ import { apiRequest, customedAxios } from '@/shared/api';
 import { PSignIn, RSignIn, RToken } from '@/entities/auth/model';
 
 export async function tokenCheckApi() {
-  return apiRequest<null>(customedAxios.post('/member/tokenCheck'));
+  return apiRequest<null>(customedAxios.get('/member/tokenCheck'));
 }
 
 export async function tokenRefreshApi(refreshToken: string) {

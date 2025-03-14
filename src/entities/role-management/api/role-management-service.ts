@@ -10,7 +10,7 @@ import { useQueryWrapper } from '@/entities/query';
 export const GET_MEMBER_LIST_QUERY_KEY = 'getMemberListQueryKey';
 export const GET_MENU_LIST_QUERY_KEY = 'getMemberAuthListQueryKey';
 
-export function useGetMemberListApi() {
+export function useGetMemberListQuery() {
   return useQueryWrapper({
     queryKey: [GET_MEMBER_LIST_QUERY_KEY],
     queryFn: () => getMemberListApi(),
@@ -29,7 +29,7 @@ export function useGetMenuMemberAuthListQuery(params: PMenuMemberAuthList) {
   });
 }
 
-export function useUpdateMenuMemberAuthService() {
+export function useUpdateMenuMemberAuthMutation() {
   return useMutation({
     mutationFn: (data: RMenuMemberAuth[]) => updateMenuMemberAuthApi(data),
     onMutate: () => {},

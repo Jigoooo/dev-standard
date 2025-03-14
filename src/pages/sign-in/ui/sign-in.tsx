@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 import TriphosLogo from '@/shared/assets/images/triphos_logo.png';
 
@@ -16,7 +16,8 @@ import { FlexColumn, FlexRow } from '@/shared/components';
 import { useToggle } from '@/shared/hooks';
 import { createValidator, getFormValues } from '@/shared/lib';
 import { localStorageKey } from '@/shared/constants';
-import { PSignIn, setToken, useSignInService } from '@/entities/auth';
+import { PSignIn, setToken, useSignInMutation } from '@/entities/auth';
+import { useTokenCheckQuery } from '@/entities/auth/api/auth-service.ts';
 
 const signInFields: Record<
   keyof {
@@ -36,7 +37,8 @@ export function SignIn() {
 
   const [saveIdChecked, toggleSaveIdChecked] = useToggle(!!saveId);
 
-  const signInService = useSignInService();
+  const tokenCheckQuery = useTokenCheckQuery();
+  const signInMutation = useSignInMutation();
   const { updateMainRouteChildren } = useRouterMenuContext();
 
   const signIn = (formData: FormData) => {
@@ -62,7 +64,7 @@ export function SignIn() {
       });
     }
 
-    signInService.mutate(
+    signInMutation.mutate(
       { id: idWithValidated.value, password: passwordWithValidated.value },
       {
         onSuccess: (data) => {
@@ -97,6 +99,14 @@ export function SignIn() {
       },
     );
   };
+
+  if (tokenCheckQuery.data?.success) {
+    return <Navigate to={Router.MAIN} replace />;
+  }
+
+  if (tokenCheckQuery.isFetching) {
+    return null;
+  }
 
   return (
     <FlexRow style={{ width: '100vw', height: '100vh', backgroundColor: '#f8f8f8' }}>

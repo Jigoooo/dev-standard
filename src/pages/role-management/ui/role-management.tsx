@@ -13,11 +13,11 @@ import {
 import {
   RMenuMemberAuth,
   RRoleUser,
-  useGetMemberListApi,
+  useGetMemberListQuery,
   useGetMenuMemberAuthListQuery,
   useRoleManagementHeaders,
 } from '@/entities/role-management';
-import { useUpdateMenuMemberAuthService } from '@/entities/role-management/api/role-management-service.ts';
+import { useUpdateMenuMemberAuthMutation } from '@/entities/role-management/api/role-management-service.ts';
 import { useRouterMenuContext } from '@/entities/router';
 
 export function RoleManagement() {
@@ -34,11 +34,11 @@ export function RoleManagement() {
 
   const [memberId, setMemberId] = useState('');
 
-  const getMemberListQuery = useGetMemberListApi();
+  const getMemberListQuery = useGetMemberListQuery();
   const getMenuMemberAuthListQuery = useGetMenuMemberAuthListQuery({
     memberId,
   });
-  const updateMenuMemberAuthService = useUpdateMenuMemberAuthService();
+  const updateMenuMemberAuthMutation = useUpdateMenuMemberAuthMutation();
 
   useEffect(() => {
     if (getMemberListQuery.data?.data?.menuList) {
@@ -60,7 +60,7 @@ export function RoleManagement() {
   }, [getMenuMemberAuthListQuery.data?.data?.menuList]);
 
   const updateMenuMemberAuth = () => {
-    updateMenuMemberAuthService.mutate(menuAuthList, {
+    updateMenuMemberAuthMutation.mutate(menuAuthList, {
       onSuccess: (data) => {
         if (!data.success) {
           dialogActions.openDialog({

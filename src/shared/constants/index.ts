@@ -10,4 +10,4 @@ export {
 } from './z-index.ts';
 export { colors } from './colors.ts';
 export { PROXY_CONVERT_URL_PREFIX } from './api.ts';
-export { localStorageKey, secureStorageKey } from './storage-key.ts';
+export { localStorageKey, sessionStorageKey, secureStorageKey } from './storage-key.ts';

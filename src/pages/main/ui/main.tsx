@@ -16,6 +16,7 @@ import {
 } from '@/entities/router';
 import { KeepAliveWrapper, MainHeader } from '@/entities/main';
 import { gaPageView } from '@/shared/lib';
+import { useTokenCheckQuery } from '@/entities/auth/api/auth-service.ts';
 
 export function Main() {
   const navigate = useNavigate();
@@ -75,8 +76,14 @@ export function Main() {
     };
   }, [location.pathname]);
 
-  const getMemberMenuListQuery = useGetMemberMenuListQuery();
+  const tokenCheckQuery = useTokenCheckQuery();
+  useEffect(() => {
+    if (!tokenCheckQuery.data?.success) {
+      navigate(Router.SIGN_IN, { replace: true });
+    }
+  }, [tokenCheckQuery.data]);
 
+  const getMemberMenuListQuery = useGetMemberMenuListQuery();
   useEffect(() => {
     if (getMemberMenuListQuery?.data?.data) {
       updateMainRouteChildren(getMemberMenuListQuery?.data.data.menuList);

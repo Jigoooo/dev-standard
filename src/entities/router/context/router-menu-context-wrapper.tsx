@@ -12,7 +12,7 @@ import { SignIn } from '@/pages/sign-in';
 import { Main } from '@/pages/main';
 import { MyProfile } from '@/pages/my-profile';
 import { RouteErrorPage } from '@/shared/components';
-import { localStorageKey } from '@/shared/constants';
+import { sessionStorageKey } from '@/shared/constants';
 
 const defaultRoutes: RouteObject[] = [
   {
@@ -167,14 +167,14 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
     `${Router.MAIN}/${Router.FILE}`,
     `${Router.MAIN}/${Router.MY_PROFILE}`,
   ];
-  const lastLocation = sessionStorage.getItem(localStorageKey.LAST_LOCATION);
+  const lastLocation = sessionStorage.getItem(sessionStorageKey.LAST_LOCATION);
 
   const setLastLocation = (lastLocation: string) => {
-    sessionStorage.setItem(localStorageKey.LAST_LOCATION, lastLocation);
+    sessionStorage.setItem(sessionStorageKey.LAST_LOCATION, lastLocation);
   };
 
   const removeLastLocation = () => {
-    sessionStorage.removeItem(localStorageKey.LAST_LOCATION);
+    sessionStorage.removeItem(sessionStorageKey.LAST_LOCATION);
   };
 
   const updateRouteChildren = (parentPath: string, newChildren: RouteObject[], merge?: boolean) => {

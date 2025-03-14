@@ -7,11 +7,12 @@ import {
   UseQueryResult,
 } from '@tanstack/react-query';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { getToken, setToken, tokenRefreshApi } from '@/entities/auth';
 import { dialogActions, DialogType } from '@/shared/components';
 import { AdapterResponseType } from '@/shared/api';
+import { Router } from '@/entities/router';
 
 export function useQueryWrapper<
   TData,
@@ -27,6 +28,7 @@ export function useQueryWrapper<
   queryClient?: QueryClient,
 ): UseQueryResult<AdapterResponseType<TData>, TError> {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const query = useQuery(options, queryClient);
 
@@ -35,6 +37,10 @@ export function useQueryWrapper<
       if (query.data.code === 401 || query.data.code === 403) {
         const token = getToken();
         if (token === null) {
+          if (location.pathname === Router.SIGN_IN) {
+            return;
+          }
+
           dialogActions.openDialog({
             dialogType: DialogType.ERROR,
             title: query.data.msg || '세션이 만료되었습니다.',
@@ -85,7 +91,7 @@ export function useQueryWrapper<
         });
       }
     }
-  }, [query.data]);
+  }, [query.data, location.pathname]);
 
   return query;
 }

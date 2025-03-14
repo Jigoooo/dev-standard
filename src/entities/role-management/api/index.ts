@@ -1,1 +1,1 @@
-export { useGetMemberListApi, useGetMenuMemberAuthListQuery } from './role-management-service.ts';
+export { useGetMemberListQuery, useGetMenuMemberAuthListQuery } from './role-management-service.ts';
