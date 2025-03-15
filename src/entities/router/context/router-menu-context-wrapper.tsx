@@ -3,11 +3,11 @@ import { Outlet, RouteObject } from 'react-router-dom';
 
 import { RMenuMemberAuth, Router, TMenu, TRouterMenuContext } from '../model/router-type.ts';
 import {
+  getMemberMenuListApi,
   getRouterComponent,
   getRouterMappedIcon,
-  RouterMenuContext,
   RMenu,
-  getMemberMenuListApi,
+  RouterMenuContext,
 } from '@/entities/router';
 import { SignIn } from '@/pages/sign-in';
 import { Main } from '@/pages/main';
@@ -228,6 +228,7 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
       const newEntries = groupMenus.filter(
         (m) => !prevState.some((menu) => menu.router === m.router),
       );
+
       return [...updatedMenus, ...newEntries];
     });
 
