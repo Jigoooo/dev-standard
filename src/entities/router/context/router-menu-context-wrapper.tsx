@@ -245,7 +245,6 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
 
   function findCurrentMenu(menus: TMenu[], currentPath: string): TMenu | null {
     for (const menu of menus) {
-      console.log(menu.fullRouterPath);
       if (currentPath.startsWith(menu.fullRouterPath)) {
         if (menu.children) {
           const foundChild = findCurrentMenu(menu.children, currentPath);
