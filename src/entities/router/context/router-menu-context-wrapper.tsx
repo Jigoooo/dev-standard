@@ -154,7 +154,7 @@ function generateRoutesFromMenus(menus: TMenu[]): RouteObject[] {
 
 export function RouterMenuContextWrapper({ children }: { children: ReactNode }) {
   const [routes, setRoutes] = useState(defaultRoutes);
-  const [menus, setMenus] = useState<TMenu[]>([]);
+  const [menus, setMenus] = useState<TMenu[]>(defaultMenus);
   const [currentMenuMemberAuth, setCurrentMenuMemberAuth] = useState<RMenuMemberAuth | null>(null);
 
   const sidebarMainMenus = menus.filter((menu) => menu.router !== Router.MY_PROFILE);
@@ -245,6 +245,7 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
 
   function findCurrentMenu(menus: TMenu[], currentPath: string): TMenu | null {
     for (const menu of menus) {
+      console.log(menu.fullRouterPath);
       if (currentPath.startsWith(menu.fullRouterPath)) {
         if (menu.children) {
           const foundChild = findCurrentMenu(menu.children, currentPath);
@@ -307,7 +308,7 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
     });
   }, []);
 
-  if (menus.length === 0 && location.pathname !== Router.SIGN_IN) {
+  if (sidebarMainMenus.length === 0 && location.pathname !== Router.SIGN_IN) {
     return null;
   }
 

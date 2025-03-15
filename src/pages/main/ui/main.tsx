@@ -67,18 +67,6 @@ export function Main() {
     }
   });
 
-  // const getMemberMenuListQuery = useGetMemberMenuListQuery();
-
-  // useEffect(() => {
-  //   if (getMemberMenuListQuery?.data?.data) {
-  //     updateMainRouteChildren(getMemberMenuListQuery?.data.data.menuList);
-  //   }
-  // }, [getMemberMenuListQuery.data]);
-  //
-  // if (getMemberMenuListQuery.isFetching) {
-  //   return null;
-  // }
-
   return (
     <FlexRow
       style={{
