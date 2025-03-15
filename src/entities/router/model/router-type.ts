@@ -83,6 +83,12 @@ export type RMenuList = {
   menuList: RMenu[];
 };
 
+export type SerializableRoute = {
+  path: string;
+  componentKey?: string;
+  children?: SerializableRoute[];
+};
+
 export type TRouterMenuContext = {
   routes: RouteObject[];
   menus: TMenu[];

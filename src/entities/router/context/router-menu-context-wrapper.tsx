@@ -303,24 +303,22 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
   }
 
   useEffect(() => {
-    if (menus.length === 0 && location.pathname !== Router.SIGN_IN) {
-      getMemberMenuListApi().then((data) => {
-        if (!data.success) {
-          handleAuthError({
-            data,
-            onUnauthenticated: () => location.replace('/'),
-            onRefreshSuccess: () => location.reload(),
-          });
+    getMemberMenuListApi().then((data) => {
+      if (!data.success) {
+        handleAuthError({
+          data,
+          onUnauthenticated: () => location.replace('/'),
+          onRefreshSuccess: () => location.reload(),
+        });
 
-          return;
-        }
+        return;
+      }
 
-        if (data.success && Array.isArray(data.data?.menuList)) {
-          updateMainRouteChildren(data.data?.menuList);
-        }
-      });
-    }
-  }, [menus]);
+      if (data.success && Array.isArray(data.data?.menuList)) {
+        updateMainRouteChildren(data.data?.menuList);
+      }
+    });
+  }, []);
 
   if (menus.length === 0 && location.pathname !== Router.SIGN_IN) {
     return null;
