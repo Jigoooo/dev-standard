@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { Outlet, RouteObject } from 'react-router-dom';
 
 import { RMenuMemberAuth, Router, TMenu, TRouterMenuContext } from '../model/router-type.ts';
@@ -7,13 +7,14 @@ import {
   getRouterMappedIcon,
   RouterMenuContext,
   RMenu,
+  getMemberMenuListApi,
 } from '@/entities/router';
 import { SignIn } from '@/pages/sign-in';
 import { Main } from '@/pages/main';
 import { MyProfile } from '@/pages/my-profile';
 import { RouteErrorPage } from 'shared/ui';
 import { sessionStorageKey } from '@/shared/constants';
-import { AuthGuard, MainAuthGuard } from '@/entities/auth';
+import { AuthGuard, handleAuthError, MainAuthGuard } from '@/entities/auth';
 
 const defaultRoutes: RouteObject[] = [
   {
@@ -166,7 +167,7 @@ function generateRoutesFromMenus(menus: TMenu[]): RouteObject[] {
 
 export function RouterMenuContextWrapper({ children }: { children: ReactNode }) {
   const [routes, setRoutes] = useState(defaultRoutes);
-  const [menus, setMenus] = useState(defaultMenus);
+  const [menus, setMenus] = useState<TMenu[]>([]);
   const [currentMenuMemberAuth, setCurrentMenuMemberAuth] = useState<RMenuMemberAuth | null>(null);
 
   const sidebarMainMenus = menus.filter((menu) => menu.router !== Router.MY_PROFILE);
@@ -297,6 +298,30 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
         }
       }
     }
+    return null;
+  }
+
+  useEffect(() => {
+    if (menus.length === 0 && location.pathname !== Router.SIGN_IN) {
+      getMemberMenuListApi().then((data) => {
+        if (!data.success) {
+          handleAuthError({
+            data,
+            onUnauthenticated: () => location.replace('/'),
+            onRefreshSuccess: () => location.reload(),
+          });
+
+          return;
+        }
+
+        if (data.success && Array.isArray(data.data?.menuList)) {
+          updateMainRouteChildren(data.data?.menuList);
+        }
+      });
+    }
+  }, [menus]);
+
+  if (menus.length === 0 && location.pathname !== Router.SIGN_IN) {
     return null;
   }
 

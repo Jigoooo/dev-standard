@@ -1,5 +1,11 @@
 import { RMenu } from '@/entities/router';
 
+export type TAuthErrorHandlerOptions = {
+  data: { success: boolean; code: number; msg?: string; [key: string]: any };
+  onUnauthenticated: () => void;
+  onRefreshSuccess: () => void;
+};
+
 export type PSignIn = {
   id: string;
   password: string;

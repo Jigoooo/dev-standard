@@ -10,7 +10,6 @@ import {
   PageTab,
   Router,
   Sidebar,
-  useGetMemberMenuListQuery,
   useRouterMenuContext,
   useRouterState,
 } from '@/entities/router';
@@ -26,7 +25,6 @@ export function Main() {
 
   const {
     sidebarMainMenus,
-    updateMainRouteChildren,
     findCurrentMenu,
     findFirstNonHeaderMenu,
     excludeCacheMenuRouters,
@@ -69,17 +67,17 @@ export function Main() {
     }
   });
 
-  const getMemberMenuListQuery = useGetMemberMenuListQuery();
+  // const getMemberMenuListQuery = useGetMemberMenuListQuery();
 
-  useEffect(() => {
-    if (getMemberMenuListQuery?.data?.data) {
-      updateMainRouteChildren(getMemberMenuListQuery?.data.data.menuList);
-    }
-  }, [getMemberMenuListQuery.data]);
-
-  if (getMemberMenuListQuery.isFetching) {
-    return null;
-  }
+  // useEffect(() => {
+  //   if (getMemberMenuListQuery?.data?.data) {
+  //     updateMainRouteChildren(getMemberMenuListQuery?.data.data.menuList);
+  //   }
+  // }, [getMemberMenuListQuery.data]);
+  //
+  // if (getMemberMenuListQuery.isFetching) {
+  //   return null;
+  // }
 
   return (
     <FlexRow
