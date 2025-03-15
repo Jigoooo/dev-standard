@@ -101,7 +101,7 @@ function TableHeaderView({
               borderBottom: tableStyle.tableBorder,
             }}
           >
-            <TableGroupHeaders mappingHeaderGroups={mappingHeaderGroups} position={'right'} />
+            <TableGroupHeaders mappingHeaderGroups={mappingHeaderGroups} position={'left'} />
           </FlexRow>
         )}
         <FlexRow
@@ -119,8 +119,8 @@ function TableHeaderView({
               <TableHeaderCell
                 key={header.id + index}
                 header={header}
-                isVisibleHandler={index !== 0}
-                position={'right'}
+                isVisibleHandler={index !== headers.length - 1}
+                position={'left'}
               />
             );
           })}
@@ -142,8 +142,8 @@ function TableHeaderView({
                 <TableHeaderFilterCell
                   key={header.id + index}
                   header={header}
-                  isVisibleHandler={index !== 0}
-                  position={'right'}
+                  isVisibleHandler={index !== headers.length - 1}
+                  position={'left'}
                 />
               );
             })}
@@ -275,26 +275,7 @@ function TableGroupHeaders({
         const nextGroupLabel = array[index + 1]?.groupLabel;
         const isSameNextGroup = nextGroupLabel === groupLabel;
 
-        const isVisibleHandler =
-          position === 'left' ? index !== 0 && index !== array.length - 1 : index !== 0;
-
-        if (isSamePrevGroup) {
-          return (
-            <FlexRow
-              key={header.id + index}
-              className={'table-header-cell'}
-              style={{
-                boxSizing: 'border-box',
-                alignItems: 'center',
-                height: tableStyle.tableHeaderHeight,
-                // width: 1.4,
-                contain: 'paint',
-                borderRight:
-                  !isSameNextGroup && isVisibleHandler ? tableStyle.tableBorder : undefined,
-              }}
-            />
-          );
-        }
+        const noSameGroup = !isSamePrevGroup && !isSameNextGroup;
 
         let totalWidth = 0;
         for (let i = index; i < array.length; i++) {
@@ -305,23 +286,52 @@ function TableGroupHeaders({
           }
         }
 
+        if (isSamePrevGroup) {
+          return null;
+        }
+
         return (
           <FlexRow
             key={header.id + index}
             className={'table-header-cell'}
             style={{
-              position: 'relative',
-              boxSizing: 'border-box',
-              alignItems: 'center',
-              paddingInline: 12,
-              width: totalWidth,
-              height: tableStyle.tableHeaderHeight,
-              contain: 'paint',
-              // borderRight: !isSameNextGroup ? tableStyle.tableBorder : undefined,
+              ...{
+                position: 'relative',
+                boxSizing: 'border-box',
+                alignItems: 'center',
+                paddingInline: 12,
+                width: totalWidth,
+                height: tableStyle.tableHeaderHeight,
+                contain: 'paint',
+              },
+              // ...(position === 'left' &&
+              //   index === 0 && {
+              //     borderLeft: tableStyle.tableBorder,
+              //   }),
+              ...(position === 'left' && {
+                borderRight:
+                  (isSameNextGroup || noSameGroup) && index !== array.length - 1
+                    ? tableStyle.tableBorder
+                    : undefined,
+              }),
+              ...(position === 'right' && {
+                borderLeft:
+                  (isSameNextGroup || noSameGroup) && index !== 0
+                    ? tableStyle.tableBorder
+                    : undefined,
+              }),
             }}
           >
             {!isSamePrevGroup && groupLabel && (
-              <FlexRow style={{ position: 'sticky', left: 10, alignItems: 'center', gap: 6 }}>
+              <FlexRow
+                style={{
+                  position: 'sticky',
+                  left: 10,
+                  alignItems: 'center',
+                  overflow: 'hidden',
+                  gap: 6,
+                }}
+              >
                 <Typography
                   style={{
                     fontSize: '0.88rem',

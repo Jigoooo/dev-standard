@@ -66,7 +66,7 @@ export function useGridExampleHeaders() {
     },
     {
       id: 'age',
-      pin: 'view',
+      pin: 'right',
       dataAlign: 'left',
       label: '나이',
       width: 100,
@@ -151,7 +151,7 @@ export function useGridExampleHeaders() {
     },
     {
       id: 'salary',
-      pin: 'right',
+      pin: 'view',
       dataAlign: 'left',
       label: '급여',
       width: 100,
