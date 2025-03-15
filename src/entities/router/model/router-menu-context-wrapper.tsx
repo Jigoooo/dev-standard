@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { Outlet, RouteObject } from 'react-router-dom';
 
-import { RMenuMemberAuth, Router, TMenu, TRouterMenuContext } from '../model/router-type.ts';
+import { RMenuMemberAuth, Router, TMenu, TRouterMenuContext } from './router-type.ts';
 import {
   getMemberMenuListApi,
   getRouterComponent,
@@ -12,7 +12,7 @@ import {
 import { SignIn } from '@/pages/sign-in';
 import { Main } from '@/pages/main';
 import { MyProfile } from '@/pages/my-profile';
-import { RouteErrorPage } from 'shared/ui';
+import { RouteErrorPage } from '@/shared/ui';
 import { sessionStorageKey } from '@/shared/constants';
 import { AuthGuard, handleAuthError, MainAuthGuard } from '@/entities/auth';
 

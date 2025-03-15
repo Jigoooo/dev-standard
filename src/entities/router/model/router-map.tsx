@@ -31,19 +31,6 @@ const RoleManagement = lazy(() =>
   import('@/pages/role-management').then((module) => ({ default: module.RoleManagement })),
 );
 
-// function toPascalCase(str: string): string {
-//   return str
-//     .split('-')
-//     .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-//     .join('');
-// }
-// export function lazyLoadComponent(key: string) {
-//   const componentName = toPascalCase(key);
-//   return lazy(() =>
-//     import(`@/pages/${key}`).then((module) => ({ default: module[componentName] })),
-//   );
-// }
-
 export function getRouterComponent(
   router: Router,
 ): LazyExoticComponent<ComponentType<any>> | undefined {

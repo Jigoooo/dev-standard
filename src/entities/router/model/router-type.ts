@@ -34,7 +34,7 @@ export type TCacheNode = {
   renderCount: number;
 };
 
-export type TRouterState = {
+export type TSidebarState = {
   sidebarCollapsed: boolean;
   delayedSidebarCollapsed: boolean;
   sidebarWidth: number;
@@ -42,8 +42,8 @@ export type TRouterState = {
   sidebarBackgroundColor: string;
 };
 
-export type TRouterStore = {
-  state: TRouterState;
+export type TSidebarStore = {
+  state: TSidebarState;
   actions: {
     toggleSidebarCollapsed: () => void;
   };

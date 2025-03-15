@@ -11,7 +11,7 @@ import {
   Router,
   Sidebar,
   useRouterMenuContext,
-  useRouterState,
+  useSidebarState,
 } from '@/entities/router';
 import { KeepAliveWrapper, MainHeader } from '@/entities/main';
 import { gaPageView } from '@/shared/lib';
@@ -21,7 +21,7 @@ export function Main() {
   const aliveRef = useKeepAliveRef();
 
   const location = useLocation();
-  const routerState = useRouterState();
+  const sidebarState = useSidebarState();
 
   const {
     sidebarMainMenus,
@@ -87,7 +87,7 @@ export function Main() {
             backgroundColor: '#ffffff',
             width: '100%',
             minWidth: 800,
-            maxWidth: `calc(100vw - ${routerState.sidebarWidth}px)`,
+            maxWidth: `calc(100vw - ${sidebarState.sidebarWidth}px)`,
             maxHeight: '98vh',
             height: '100%',
             overflow: 'hidden',

@@ -5,11 +5,11 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useLogout } from '@/entities/auth';
 import { AnchorPicker, Button, Divider, FlexColumn, FlexRow, Typography } from 'shared/ui';
 import { Router, useRouterMenuContext } from '@/entities/router';
-import { useRouterState } from '@/entities/router';
+import { useSidebarState } from '@/entities/router';
 import { useToggle } from '@/shared/hooks';
 
 export function SidebarFooter() {
-  const routerState = useRouterState();
+  const sidebarState = useSidebarState();
   const { myProfileMenu } = useRouterMenuContext();
 
   const navigate = useNavigate();
@@ -55,7 +55,7 @@ export function SidebarFooter() {
           justifyContent: 'space-between',
           cursor: 'pointer',
         }}
-        onClick={routerState.sidebarCollapsed ? toggleFooterMenu : undefined}
+        onClick={sidebarState.sidebarCollapsed ? toggleFooterMenu : undefined}
       >
         <FlexRow
           style={{
@@ -67,7 +67,7 @@ export function SidebarFooter() {
             paddingInline: 4,
             paddingBlock: 4,
           }}
-          onClick={!routerState.sidebarCollapsed ? goMyProfile : undefined}
+          onClick={!sidebarState.sidebarCollapsed ? goMyProfile : undefined}
         >
           <AnchorPicker
             open={openFooterMenu}
@@ -118,14 +118,14 @@ export function SidebarFooter() {
             <FlexRow
               as={motion.div}
               initial={{ fontSize: '2.4rem' }}
-              animate={{ fontSize: routerState.sidebarCollapsed ? '2rem' : '2.4rem' }}
+              animate={{ fontSize: sidebarState.sidebarCollapsed ? '2rem' : '2.4rem' }}
               exit={{ fontSize: '2.4rem' }}
             >
               {myProfileMenu.icon && <myProfileMenu.icon style={{ color: '#ffffff' }} />}
             </FlexRow>
           </AnchorPicker>
           <AnimatePresence initial={false}>
-            {!routerState.sidebarCollapsed && (
+            {!sidebarState.sidebarCollapsed && (
               <FlexColumn
                 as={motion.div}
                 initial={{ opacity: 0 }}
@@ -154,7 +154,7 @@ export function SidebarFooter() {
           </AnimatePresence>
         </FlexRow>
         <AnimatePresence initial={false}>
-          {!routerState.sidebarCollapsed && (
+          {!sidebarState.sidebarCollapsed && (
             <Button
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

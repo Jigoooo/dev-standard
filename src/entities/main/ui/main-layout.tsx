@@ -2,7 +2,7 @@ import { CSSProperties, ReactNode } from 'react';
 
 import { MainHeader } from './main-header.tsx';
 import { FlexColumn } from 'shared/ui';
-import { useRouterMenuContext, useRouterState } from '@/entities/router';
+import { useRouterMenuContext, useSidebarState } from '@/entities/router';
 import { useLocation } from 'react-router-dom';
 
 export function MainLayout({
@@ -15,7 +15,7 @@ export function MainLayout({
   children: ReactNode;
 }) {
   const location = useLocation();
-  const routerState = useRouterState();
+  const sidebarState = useSidebarState();
   const { findCurrentMenu } = useRouterMenuContext();
   const currentMenu = findCurrentMenu(location.pathname);
 
@@ -26,7 +26,7 @@ export function MainLayout({
           position: 'relative',
           backgroundColor: '#ffffff',
           width: '100%',
-          maxWidth: `calc(100vw - ${routerState.sidebarWidth}px)`,
+          maxWidth: `calc(100vw - ${sidebarState.sidebarWidth}px)`,
           maxHeight: '100vh',
           height: '100%',
           overflow: 'hidden',

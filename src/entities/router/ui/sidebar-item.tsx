@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { IoChevronDownOutline } from 'react-icons/io5';
 
 import { FlexRow, Tooltip } from 'shared/ui';
-import { TMenu, useRouterState } from '@/entities/router';
+import { TMenu, useSidebarState } from '@/entities/router';
 import { useElementSize } from '@/shared/hooks';
 
 export function SidebarItem({
@@ -20,7 +20,7 @@ export function SidebarItem({
   depthOpen?: boolean;
   onClickMenu: (menu: TMenu) => void;
 }) {
-  const routerState = useRouterState();
+  const sidebarState = useSidebarState();
   const containerRef = useRef<HTMLDivElement>(null);
   const itemContainerSize = useElementSize(containerRef);
 
@@ -42,7 +42,7 @@ export function SidebarItem({
       style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
       position={'right'}
       content={menu.name}
-      disabled={!routerState.sidebarCollapsed}
+      disabled={!sidebarState.sidebarCollapsed}
     >
       <FlexRow
         ref={containerRef}
@@ -82,7 +82,7 @@ export function SidebarItem({
           )}
 
           <AnimatePresence>
-            {!routerState.delayedSidebarCollapsed && (
+            {!sidebarState.delayedSidebarCollapsed && (
               <motion.span
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}

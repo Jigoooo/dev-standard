@@ -4,10 +4,10 @@ import { TbLayoutSidebarLeftCollapseFilled } from 'react-icons/tb';
 import { TbLayoutSidebarRightCollapseFilled } from 'react-icons/tb';
 
 import { FlexRow } from 'shared/ui';
-import { routerActions, useRouterState } from '@/entities/router';
+import { sidebarActions, useSidebarState } from '@/entities/router';
 
 export function SidebarHeader({ title }: { title: string }) {
-  const routerState = useRouterState();
+  const sidebarState = useSidebarState();
 
   return (
     <FlexRow
@@ -20,10 +20,10 @@ export function SidebarHeader({ title }: { title: string }) {
       }}
     >
       <div
-        style={{ width: routerState.sidebarCollapsed ? 0 : 150, flexGrow: 1, overflow: 'hidden' }}
+        style={{ width: sidebarState.sidebarCollapsed ? 0 : 150, flexGrow: 1, overflow: 'hidden' }}
       >
         <AnimatePresence>
-          {!routerState.sidebarCollapsed && (
+          {!sidebarState.sidebarCollapsed && (
             <motion.span
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -44,15 +44,15 @@ export function SidebarHeader({ title }: { title: string }) {
 
       <FlexRow
         style={{
-          flexGrow: routerState.sidebarCollapsed ? 1 : 0,
+          flexGrow: sidebarState.sidebarCollapsed ? 1 : 0,
           alignItems: 'center',
           justifyContent: 'center',
           cursor: 'pointer',
         }}
-        onClick={routerActions.toggleSidebarCollapsed}
+        onClick={sidebarActions.toggleSidebarCollapsed}
       >
         <AnimatePresence mode={'wait'}>
-          {routerState.sidebarCollapsed ? (
+          {sidebarState.sidebarCollapsed ? (
             <motion.div
               key={'collapsed'}
               initial={{ opacity: 0.8 }}

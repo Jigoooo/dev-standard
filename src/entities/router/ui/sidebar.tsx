@@ -4,16 +4,16 @@ import { FlexColumn } from 'shared/ui';
 import { SidebarHeader } from './sidebar-header';
 import { SidebarItems } from './sidebar-items';
 import { SidebarFooter } from './sidebar-footer';
-import { useRouterMenuContext, useRouterState } from '@/entities/router';
+import { useRouterMenuContext, useSidebarState } from '@/entities/router';
 
 export function Sidebar({ headerTitle }: { headerTitle: string }) {
-  const routerState = useRouterState();
+  const sidebarState = useSidebarState();
   const { sidebarMainMenus } = useRouterMenuContext();
 
   return (
-    <div style={{ minWidth: routerState.sidebarWidth }}>
+    <div style={{ minWidth: sidebarState.sidebarWidth }}>
       <motion.div
-        animate={{ width: routerState.sidebarWidth }}
+        animate={{ width: sidebarState.sidebarWidth }}
         transition={{ duration: 0.2 }}
         style={{
           position: 'relative',
@@ -24,7 +24,7 @@ export function Sidebar({ headerTitle }: { headerTitle: string }) {
         <FlexColumn
           style={{
             position: 'relative',
-            backgroundColor: routerState.sidebarBackgroundColor,
+            backgroundColor: sidebarState.sidebarBackgroundColor,
             height: '100%',
             paddingTop: 16,
             gap: 30,
@@ -33,7 +33,7 @@ export function Sidebar({ headerTitle }: { headerTitle: string }) {
           <SidebarHeader title={headerTitle} />
           <SidebarItems
             menus={sidebarMainMenus}
-            sidebarBackgroundColor={routerState.sidebarBackgroundColor}
+            sidebarBackgroundColor={sidebarState.sidebarBackgroundColor}
           />
           <SidebarFooter />
         </FlexColumn>

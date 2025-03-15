@@ -1,9 +1,9 @@
 import { create } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 
-import { TRouterState, TRouterStore } from './router-type.ts';
+import { TSidebarState, TSidebarStore } from './router-type.ts';
 
-const initialState: TRouterState = {
+const initialState: TSidebarState = {
   sidebarCollapsed: false,
   delayedSidebarCollapsed: false,
   sidebarWidth: 260,
@@ -11,7 +11,7 @@ const initialState: TRouterState = {
   sidebarBackgroundColor: '#1e232e',
 };
 
-const useRouterStore = create<TRouterStore>()((setState, getState) => {
+const useSidebarStore = create<TSidebarStore>()((setState, getState) => {
   return {
     state: {
       ...initialState,
@@ -67,5 +67,5 @@ const useRouterStore = create<TRouterStore>()((setState, getState) => {
   };
 });
 
-export const routerActions = useRouterStore.getState().actions;
-export const useRouterState = () => useRouterStore(useShallow((state) => state.state));
+export const sidebarActions = useSidebarStore.getState().actions;
+export const useSidebarState = () => useSidebarStore(useShallow((state) => state.state));

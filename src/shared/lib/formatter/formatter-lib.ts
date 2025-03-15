@@ -118,6 +118,13 @@ export function formatAgriculturalBusinessCheckNumber(input: string) {
   });
 }
 
+export function toPascalCase(str: string): string {
+  return str
+    .split('-')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join('');
+}
+
 export function toCamelCase(key: string): string {
   return key.replace(/_([a-z])/g, (_, char) => char.toUpperCase());
 }
