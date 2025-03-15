@@ -121,7 +121,7 @@ export function useGridExampleHeaders() {
     },
     {
       id: 'jobTitle',
-      pin: 'view',
+      pin: 'left',
       dataAlign: 'left',
       label: '직업',
       width: 150,
@@ -151,10 +151,10 @@ export function useGridExampleHeaders() {
     },
     {
       id: 'salary',
-      pin: 'view',
+      pin: 'right',
       dataAlign: 'left',
       label: '급여',
-      width: 300,
+      width: 100,
       sorter: {
         sortable: true,
         direction: null,

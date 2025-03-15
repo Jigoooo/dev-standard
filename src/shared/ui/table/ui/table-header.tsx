@@ -3,15 +3,7 @@ import { RefObject } from 'react';
 import NorthIcon from '@mui/icons-material/North';
 import SouthIcon from '@mui/icons-material/South';
 
-import {
-  Checkbox,
-  FlexRow,
-  Input,
-  THeader,
-  TTableStyle,
-  Typography,
-  useTableContext,
-} from 'shared/ui';
+import { Checkbox, FlexRow, Input, THeader, Typography, useTableContext } from 'shared/ui';
 
 // function sortHeadersByGroup<TData>(
 //   headers: THeader<TData>[],
@@ -126,9 +118,9 @@ function TableHeaderView({
             return (
               <TableHeaderCell
                 key={header.id + index}
-                position={'right'}
                 header={header}
                 isVisibleHandler={index !== 0}
+                position={'right'}
               />
             );
           })}
@@ -149,9 +141,9 @@ function TableHeaderView({
               return (
                 <TableHeaderFilterCell
                   key={header.id + index}
-                  position={'right'}
                   header={header}
                   isVisibleHandler={index !== 0}
+                  position={'right'}
                 />
               );
             })}
@@ -227,9 +219,9 @@ function TableHeaderPin({ position, headers }: { position: 'left' | 'right'; hea
           return (
             <TableHeaderCell
               key={header.id + index}
-              position={position}
               header={header}
               isVisibleHandler={isVisibleHandler}
+              position={position}
             />
           );
         })}
@@ -253,9 +245,9 @@ function TableHeaderPin({ position, headers }: { position: 'left' | 'right'; hea
             return (
               <TableHeaderFilterCell
                 key={header.id + index}
-                position={position}
                 header={header}
                 isVisibleHandler={isVisibleHandler}
+                position={position}
               />
             );
           })}
@@ -295,18 +287,12 @@ function TableGroupHeaders({
                 boxSizing: 'border-box',
                 alignItems: 'center',
                 height: tableStyle.tableHeaderHeight,
-                width: 1.4,
+                // width: 1.4,
                 contain: 'paint',
+                borderRight:
+                  !isSameNextGroup && isVisibleHandler ? tableStyle.tableBorder : undefined,
               }}
-            >
-              {!isSameNextGroup && (
-                <ResizeHandle
-                  tableStyle={tableStyle}
-                  position={position === 'left' ? 'right' : 'left'}
-                  isVisible={isVisibleHandler}
-                />
-              )}
-            </FlexRow>
+            />
           );
         }
 
@@ -331,6 +317,7 @@ function TableGroupHeaders({
               width: totalWidth,
               height: tableStyle.tableHeaderHeight,
               contain: 'paint',
+              // borderRight: !isSameNextGroup ? tableStyle.tableBorder : undefined,
             }}
           >
             {!isSamePrevGroup && groupLabel && (
@@ -349,13 +336,6 @@ function TableGroupHeaders({
                 </Typography>
               </FlexRow>
             )}
-            {!isSameNextGroup && (
-              <ResizeHandle
-                tableStyle={tableStyle}
-                position={position === 'left' ? 'right' : 'left'}
-                isVisible={isVisibleHandler}
-              />
-            )}
           </FlexRow>
         );
       })}
@@ -364,13 +344,13 @@ function TableGroupHeaders({
 }
 
 function TableHeaderCell({
+  isVisibleHandler,
   header,
   position,
-  isVisibleHandler,
 }: {
   header: THeader;
-  position: 'left' | 'right';
   isVisibleHandler: boolean;
+  position: 'left' | 'right';
 }) {
   const { tableStyle, checkedState, handleCheckAll, handleSort } = useTableContext();
 
@@ -389,14 +369,24 @@ function TableHeaderCell({
     <FlexRow
       className={'table-header-cell'}
       style={{
-        boxSizing: 'border-box',
-        justifyContent: header.id === 'check' ? 'center' : justifyContent,
-        alignItems: 'center',
-        paddingInline: 12,
-        width: header.width,
-        height: tableStyle.tableHeaderHeight,
-        contain: 'paint',
-        cursor: header.sorter.sortable ? 'pointer' : 'default',
+        ...{
+          boxSizing: 'border-box',
+          justifyContent: header.id === 'check' ? 'center' : justifyContent,
+          alignItems: 'center',
+          paddingInline: 12,
+          width: header.width,
+          height: tableStyle.tableHeaderHeight,
+          contain: 'paint',
+          cursor: header.sorter.sortable ? 'pointer' : 'default',
+        },
+        ...(position === 'left' && {
+          borderRight:
+            header.id !== 'index' && isVisibleHandler ? tableStyle.tableBorder : undefined,
+        }),
+        ...(position === 'right' && {
+          borderLeft:
+            header.id !== 'index' && isVisibleHandler ? tableStyle.tableBorder : undefined,
+        }),
       }}
       onClick={() => {
         if (header.id !== 'index' && header.id !== 'check' && header.sorter.sortable) {
@@ -429,21 +419,18 @@ function TableHeaderCell({
           {header.sorter.direction === 'desc' && <SouthIcon style={{ fontSize: 'inherit' }} />}
         </FlexRow>
       )}
-      {header.id !== 'index' && header.id !== 'check' && isVisibleHandler && (
-        <ResizeHandle tableStyle={tableStyle} position={position === 'left' ? 'right' : 'left'} />
-      )}
     </FlexRow>
   );
 }
 
 function TableHeaderFilterCell({
-  position,
   header,
   isVisibleHandler,
+  position,
 }: {
-  position: 'left' | 'right';
   header: THeader;
   isVisibleHandler: boolean;
+  position: 'left' | 'right';
 }) {
   const { tableStyle, onChangeFilterValue } = useTableContext();
 
@@ -451,11 +438,21 @@ function TableHeaderFilterCell({
     <FlexRow
       className={'table-header-cell'}
       style={{
-        alignItems: 'center',
-        paddingInline: 12,
-        width: header.width,
-        height: '100%',
-        contain: 'paint',
+        ...{
+          alignItems: 'center',
+          paddingInline: 12,
+          width: header.width,
+          height: '100%',
+          contain: 'paint',
+        },
+        ...(position === 'left' && {
+          borderRight:
+            header.id !== 'index' && isVisibleHandler ? tableStyle.tableBorder : undefined,
+        }),
+        ...(position === 'right' && {
+          borderLeft:
+            header.id !== 'index' && isVisibleHandler ? tableStyle.tableBorder : undefined,
+        }),
       }}
     >
       {header.filter && (
@@ -471,49 +468,46 @@ function TableHeaderFilterCell({
           isFocusEffect={false}
         />
       )}
-      {header.id !== 'index' && header.id !== 'check' && isVisibleHandler && (
-        <ResizeHandle tableStyle={tableStyle} position={position === 'left' ? 'right' : 'left'} />
-      )}
     </FlexRow>
   );
 }
 
-function ResizeHandle({
-  isVisible = true,
-  tableStyle,
-  position,
-  disabled = true,
-}: {
-  isVisible?: boolean;
-  tableStyle: TTableStyle;
-  position: 'left' | 'right';
-  disabled?: boolean;
-}) {
-  return (
-    <div
-      style={{
-        ...{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          position: 'absolute',
-          zIndex: 2,
-          height: '100%',
-          width: 8,
-          top: 0,
-          cursor: disabled ? 'default' : 'ew-resize',
-        },
-        ...(position === 'left' && { left: -4 }),
-        ...(position === 'right' && { right: -4 }),
-      }}
-    >
-      <div
-        style={{
-          width: 1.6,
-          height: '60%',
-          backgroundColor: isVisible ? tableStyle.tableResizeColor : 'transparent',
-        }}
-      />
-    </div>
-  );
-}
+// function ResizeHandle({
+//   isVisible = true,
+//   tableStyle,
+//   position,
+//   disabled = true,
+// }: {
+//   isVisible?: boolean;
+//   tableStyle: TTableStyle;
+//   position: 'left' | 'right';
+//   disabled?: boolean;
+// }) {
+//   return (
+//     <div
+//       style={{
+//         ...{
+//           display: 'flex',
+//           alignItems: 'center',
+//           justifyContent: 'center',
+//           position: 'absolute',
+//           zIndex: 2,
+//           height: '100%',
+//           width: 1.6,
+//           top: 0,
+//           cursor: disabled ? 'default' : 'ew-resize',
+//         },
+//         ...(position === 'left' && { left: -4 }),
+//         ...(position === 'right' && { right: -4 }),
+//       }}
+//     >
+//       <div
+//         style={{
+//           width: '100%',
+//           height: '60%',
+//           backgroundColor: isVisible ? tableStyle.tableResizeColor : 'transparent',
+//         }}
+//       />
+//     </div>
+//   );
+// }
