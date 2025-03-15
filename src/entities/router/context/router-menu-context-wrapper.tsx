@@ -25,19 +25,6 @@ const defaultRoutes: RouteObject[] = [
       </AuthGuard>
     ),
     errorElement: <RouteErrorPage />,
-    hydrateFallbackElement: (
-      <div
-        style={{
-          display: 'flex',
-          width: '100%',
-          height: '100%',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        Hydration fallback...
-      </div>
-    ),
   },
   {
     path: Router.MAIN,
