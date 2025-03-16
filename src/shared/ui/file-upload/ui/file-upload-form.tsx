@@ -99,7 +99,7 @@ export function FileUploadForm({
     });
 
     const totalSize = [...innerFiles, ...newFiles].reduce((sum, { file }) => sum + file.size, 0);
-    if (totalSize / (1024 * 1024) <= limitMB && limitMB > 0) {
+    if (limitMB === 0 || (totalSize / (1024 * 1024) <= limitMB && limitMB > 0)) {
       handleFiles(newFiles);
 
       setInnerFiles((state) => [...state, ...newFiles]);

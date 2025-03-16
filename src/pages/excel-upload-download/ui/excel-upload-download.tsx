@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { addMonths, format } from 'date-fns';
 
 import {
@@ -14,39 +14,17 @@ import {
 } from '@/shared/ui';
 import {
   ExcelUploadModal,
-  generateFileUploads,
   TFileDownload,
   useExcelUploadDownloadHeaders,
 } from '@/entities/excel-upload-download';
 
 export function ExcelUploadDownload() {
   const fileDownloadHeaders = useExcelUploadDownloadHeaders();
-  const { dataList, setDataList, handelDataList } = useTableData<TFileDownload>([]);
+  const { dataList, handelDataList } = useTableData<TFileDownload>([]);
   const [fromToDateString, setFromToDateString] = useState({
     from: format(new Date(), 'yyyy-MM-dd'),
     to: format(addMonths(new Date(), 1), 'yyyy-MM-dd'),
   });
-
-  useEffect(() => {
-    let isMounted = true;
-    const fetchUsers = async () => {
-      const allUsers = [];
-
-      for await (const batch of generateFileUploads({
-        total: 10,
-      })) {
-        allUsers.push(...batch);
-
-        if (isMounted) {
-          setDataList((prev) => [...prev, ...batch]);
-        }
-      }
-    };
-    fetchUsers();
-    return () => {
-      isMounted = false;
-    };
-  }, []);
 
   const fileUploadModal = useModal();
   const fileUploadModalOpen = () => {
@@ -54,7 +32,7 @@ export function ExcelUploadDownload() {
       return (
         <ModalLayout
           overlayRef={overlayRef}
-          containerStyle={{ width: 800, height: 900 }}
+          containerStyle={{ width: 800, height: 400 }}
           title={'파일 업로드'}
           close={close}
         >
@@ -90,7 +68,7 @@ export function ExcelUploadDownload() {
             }}
           />
         </FlexRow>
-        <Button onClick={fileUploadModalOpen}>파일 업로드</Button>
+        <Button onClick={fileUploadModalOpen}>엑셀 업로드</Button>
       </FlexRow>
       <Table
         tableStyle={{

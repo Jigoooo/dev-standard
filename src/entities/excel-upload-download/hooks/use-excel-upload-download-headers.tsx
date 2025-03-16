@@ -1,5 +1,5 @@
 import { Button, ButtonStyle, THeader } from 'shared/ui';
-import { TFileDownload } from '@/entities/file-upload-download';
+import { TFileDownload } from '../model/';
 
 export function useExcelUploadDownloadHeaders(): THeader<TFileDownload>[] {
   return [
