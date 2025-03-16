@@ -1,5 +1,5 @@
 import { apiRequest, customedAxios } from '@/shared/api';
-import { PSignIn, RSignIn, RToken } from '@/entities/auth/model';
+import { PSignIn, RSignIn, RToken } from '../model';
 
 export async function tokenCheckApi() {
   return await apiRequest<null>(customedAxios.get('/member/tokenCheck'));

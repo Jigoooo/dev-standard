@@ -1,10 +1,11 @@
 import { useMutation } from '@tanstack/react-query';
-import { signInApi, tokenCheckApi } from './auth-api.ts';
-import { PSignIn } from '@/entities/auth/model';
-import { useQueryWrapper } from '@/entities/query';
-import { getToken } from '@/entities/auth';
 import { useLocation, useSearchParams } from 'react-router-dom';
+
+import { useQueryWrapper } from '@/entities/query';
 import { Router } from '@/entities/router';
+import { signInApi, tokenCheckApi } from './auth-api.ts';
+import { PSignIn } from '../model';
+import { getToken } from '../lib';
 
 const TOKEN_SIGN_IN_QUERY_KEY = 'tokenSignInQueryKey';
 const TOKEN_CHECK_QUERY_KEY = 'tokenCheckQueryKey';
