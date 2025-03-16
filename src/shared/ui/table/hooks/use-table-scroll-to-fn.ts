@@ -1,7 +1,9 @@
 import { elementScroll, VirtualizerOptions } from '@tanstack/react-virtual';
 import { RefObject, useCallback, useRef } from 'react';
 
-import { easeInOutQuint } from 'shared/ui';
+function easeInOutQuint(t: number) {
+  return t < 0.5 ? 16 * t * t * t * t * t : 1 + 16 * --t * t * t * t * t;
+}
 
 export function useTableScrollToFn(bodyRef: RefObject<HTMLDivElement | null>) {
   const scrollingRef = useRef<number>(null);

@@ -1,6 +1,6 @@
 import { CSSProperties, HTMLAttributes, useState } from 'react';
 
-import { Typography } from 'shared/ui';
+import { Typography } from '@/shared/ui';
 
 export function Link({
   style,

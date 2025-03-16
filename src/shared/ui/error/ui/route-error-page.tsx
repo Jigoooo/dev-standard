@@ -1,4 +1,5 @@
 import { useRouteError } from 'react-router-dom';
+
 import { FlexColumn, Typography } from '@/shared/ui';
 
 export function RouteErrorPage() {

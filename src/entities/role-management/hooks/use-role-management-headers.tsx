@@ -80,8 +80,6 @@ export function useRoleManagementHeaders() {
           rowData.excelExport !== 'Y';
         const isPartiallyChecked = !isAllChecked && !isNoneChecked;
 
-        console.log(rowData);
-
         return (
           <Checkbox
             checked={isAllChecked}

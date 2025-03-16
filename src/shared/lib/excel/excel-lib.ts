@@ -3,7 +3,7 @@ import { saveAs } from 'file-saver';
 
 import { detectDeviceTypeAndOS } from '@/shared/lib/common';
 import { convertBlobToBase64 } from '@/shared/lib/file';
-import { sendPostMessage } from '@/shared/lib/webView';
+import { sendPostMessage } from 'shared/lib/web-view';
 
 export function createWorkSheet({
   header,

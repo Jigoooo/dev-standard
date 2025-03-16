@@ -1,3 +1,6 @@
+import { ReactNode, useEffect, useRef } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+
 import {
   Button,
   ButtonStyle,
@@ -8,11 +11,9 @@ import {
   FlexColumn,
   FlexRow,
   Typography,
-} from 'shared/ui';
+} from '@/shared/ui';
 import { useModalClose } from '@/shared/hooks';
 import { colors, zIndex } from '@/shared/constants';
-import { ReactNode, useEffect, useRef } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
 
 import { DialogInfoStates } from '../model/dialog-type.ts';
 

@@ -1,4 +1,5 @@
 import { createContext } from 'react';
+
 import { TAccordionGroupContext } from './accordion-type.ts';
 
 export const AccordionGroupContext = createContext<TAccordionGroupContext>({});

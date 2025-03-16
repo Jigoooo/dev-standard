@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { addMonths, format } from 'date-fns';
 
 import {
   Button,
@@ -10,17 +11,14 @@ import {
   Table,
   useModal,
   useTableData,
-} from 'shared/ui';
+} from '@/shared/ui';
 import {
   FileUploadModal,
   generateFileUploads,
   TFileDownload,
   useFileUploadDownloadHeaders,
 } from '@/entities/file-upload-download';
-import { addMonths, format } from 'date-fns';
 
-// 메뉴 뎁스 구현
-// 테이블 상단 버튼
 export function FileUploadDownload() {
   const fileDownloadHeaders = useFileUploadDownloadHeaders();
   const { dataList, setDataList, handelDataList } = useTableData<TFileDownload>([]);

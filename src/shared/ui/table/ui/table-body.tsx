@@ -6,15 +6,13 @@ import {
   CustomHorizontalScrollbar,
   CustomVerticalScrollbar,
   FlexRow,
-  TableBodyRowProps,
-  THeader,
   Typography,
-  useTableContext,
-  useTableScrollToFn,
-  useVirtualRow,
-  validateTableDataList,
-} from 'shared/ui';
+} from '@/shared/ui';
 import { colors } from '@/shared/constants';
+import { THeader, TableBodyRowProps } from '../model/table-type.ts';
+import { useTableContext } from '../model/table-context.ts';
+import { validateTableDataList } from '../lib/validate-table-data-list.ts';
+import { useTableScrollToFn, useVirtualRow } from '../hooks';
 
 export const TableBody = memo(function TableBody<TData extends { index: string }>({
   bodyXRef,

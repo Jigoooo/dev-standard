@@ -1,19 +1,12 @@
 import { JSX, RefObject, useEffect, useRef, useState } from 'react';
 
-import {
-  FlexRow,
-  TTableContext,
-  THeader,
-  TTableStyle,
-  useTableChecked,
-  useTableSorting,
-  Typography,
-  THeaderGroup,
-  TableContext,
-} from 'shared/ui';
+import { FlexRow, Typography } from '@/shared/ui';
 import { TableHeader } from './table-header.tsx';
 import { TableBody } from './table-body.tsx';
 import { useElementSize } from '@/shared/hooks';
+import { THeaderGroup, THeader, TTableContext, TTableStyle } from '../model/table-type.ts';
+import { TableContext } from '../model/table-context.ts';
+import { useTableChecked, useTableSorting } from '../hooks';
 
 /*
  * todo

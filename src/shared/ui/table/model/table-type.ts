@@ -95,12 +95,3 @@ export type TableBodyRowProps = {
   rowClickIndex: string | null;
   setRowClickIndex: (index: string | null) => void;
 };
-
-export type TableBodyCellProps<TData> = {
-  rowIndex: number;
-  data: TData;
-  index: string;
-  isOdd: boolean;
-  header: THeader;
-  hoverIndex: string | null;
-};

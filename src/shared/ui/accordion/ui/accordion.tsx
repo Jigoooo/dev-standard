@@ -1,7 +1,8 @@
 import { CSSProperties, ReactNode, useEffect, useRef, useState } from 'react';
-import { Divider, FlexColumn, FlexRow, Typography } from '@/shared/ui';
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
 import { AnimatePresence, motion } from 'framer-motion';
+
+import { Divider, FlexColumn, FlexRow, Typography } from '@/shared/ui';
 
 export function Accordion({
   title,
