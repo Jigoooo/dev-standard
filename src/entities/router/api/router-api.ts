@@ -1,8 +1,15 @@
 import { apiRequest, customedAxios } from '@/shared/api';
-import { PMenuMemberAuth, RMenuList, RMenuMemberAuthList } from '@/entities/router';
+import {
+  PMenuMemberAuth,
+  RMenuList,
+  RMenuMemberAuthList,
+  PMenuMemberAuthList,
+  RMemberList,
+  RMenuMemberAuth,
+} from '../model/router-type.ts';
 
 export async function getMenuMemberAuthApi(params: PMenuMemberAuth) {
-  return await apiRequest<RMenuMemberAuthList>(
+  return await apiRequest<{ menuMemberAuth: RMenuMemberAuth }>(
     customedAxios.get('/member/getMenuMemberAuth', {
       params,
     }),
@@ -11,4 +18,20 @@ export async function getMenuMemberAuthApi(params: PMenuMemberAuth) {
 
 export async function getMemberMenuListApi() {
   return await apiRequest<RMenuList>(customedAxios.get('/member/getMemberMenuList'));
+}
+
+export async function getMemberListApi() {
+  return await apiRequest<RMemberList>(customedAxios.get('/member/getMemberList'));
+}
+
+export async function getMenuMemberAuthListApi(params: PMenuMemberAuthList) {
+  return await apiRequest<RMenuMemberAuthList>(
+    customedAxios.get('/member/getMenuMemberAuthList', {
+      params,
+    }),
+  );
+}
+
+export async function updateMenuMemberAuthApi(data: RMenuMemberAuth[]) {
+  return await apiRequest<null>(customedAxios.post('/member/updateMenuMemberAuth', data));
 }

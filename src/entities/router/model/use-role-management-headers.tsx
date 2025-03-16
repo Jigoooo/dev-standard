@@ -1,5 +1,5 @@
-import { Checkbox, THeader } from 'shared/ui';
-import { RRoleUser, RMenuMemberAuth } from '@/entities/role-management';
+import { Checkbox, THeader } from '@/shared/ui';
+import { RRoleUser, RMenuMemberAuth } from './router-type.ts';
 export function useRoleManagementHeaders() {
   const roleUserHeaders: THeader<RRoleUser>[] = [
     {

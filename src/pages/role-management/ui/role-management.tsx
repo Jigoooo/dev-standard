@@ -11,13 +11,13 @@ import {
   useTableData,
 } from 'shared/ui';
 import {
-  RMenuMemberAuth,
-  RRoleUser,
   useGetMemberListQuery,
   useGetMenuMemberAuthListQuery,
+  useUpdateMenuMemberAuthMutation,
   useRoleManagementHeaders,
-} from '@/entities/role-management';
-import { useUpdateMenuMemberAuthMutation } from '@/entities/role-management/api/role-management-service.ts';
+  RMenuMemberAuth,
+  RRoleUser,
+} from '@/entities/router';
 
 export function RoleManagement() {
   // const { currentMenuMemberAuth } = useRouterMenuContext();

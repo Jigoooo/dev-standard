@@ -1,6 +1,7 @@
 import { ReactNode, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useGetMenuMemberAuthApiQuery, useRouterMenuContext } from '@/entities/router';
+import { useGetMenuMemberAuthApiQuery } from '../api';
+import { useRouterMenuContext } from './';
 
 export function MenuAuthProvider({ children }: { children: ReactNode }) {
   const location = useLocation();

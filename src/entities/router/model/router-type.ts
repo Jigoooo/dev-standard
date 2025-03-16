@@ -53,19 +53,32 @@ export type PMenuMemberAuth = {
   menuId: string;
 };
 
-export type RMenuMemberAuth = {
-  authIns: string;
-  authDel: string;
-  menuId: string;
-  useYn: string;
-  authSearch: string;
-  authMod: string;
-  memberId: string;
-  excelExport: string;
-};
+// export type RMenuMemberAuth = {
+//   authIns: string;
+//   authDel: string;
+//   menuId: string;
+//   useYn: string;
+//   authSearch: string;
+//   authMod: string;
+//   memberId: string;
+//   excelExport: string;
+// };
 
-export type RMenuMemberAuthList = {
-  menuMemberAuth: RMenuMemberAuth;
+export type RMenuMemberAuth = {
+  menuId: string;
+  menuTitle: string;
+  mainCd: number;
+  sub2Cd: number;
+  sub1Cd: number;
+  orderBy: number;
+  memberId: string;
+  allChecked: boolean;
+  useYn: 'Y' | 'N';
+  authIns: 'Y' | 'N';
+  authDel: 'Y' | 'N';
+  authSearch: 'Y' | 'N';
+  authMod: 'Y' | 'N';
+  excelExport: 'Y' | 'N';
 };
 
 export type RMenu = {
@@ -107,4 +120,21 @@ export type TRouterMenuContext = {
   updateMainRouteChildren: (responseMenus: RMenu[]) => void;
   updateRoutes: (updater: (prevRoutes: RouteObject[]) => RouteObject[]) => void;
   updateRouteName: (router: Router, newName: string) => void;
+};
+
+export type PMenuMemberAuthList = {
+  memberId: string;
+};
+
+export type RRoleUser = {
+  memberId: string;
+  memberNm: string;
+};
+
+export type RMemberList = {
+  menuList: RRoleUser[];
+};
+
+export type RMenuMemberAuthList = {
+  menuList: RMenuMemberAuth[];
 };

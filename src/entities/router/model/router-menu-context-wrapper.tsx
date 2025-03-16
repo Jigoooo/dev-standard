@@ -1,14 +1,9 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { Outlet, RouteObject } from 'react-router-dom';
 
-import { RMenuMemberAuth, Router, TMenu, TRouterMenuContext } from './router-type.ts';
-import {
-  getMemberMenuListApi,
-  getRouterComponent,
-  getRouterMappedIcon,
-  RMenu,
-  RouterMenuContext,
-} from '@/entities/router';
+import { RMenu, RMenuMemberAuth, Router, TMenu, TRouterMenuContext } from './router-type.ts';
+import { getRouterComponent, getRouterMappedIcon, RouterMenuContext } from './';
+import { getMemberMenuListApi } from '../api/router-api.ts';
 import { SignIn } from '@/pages/sign-in';
 import { Main } from '@/pages/main';
 import { MyProfile } from '@/pages/my-profile';
