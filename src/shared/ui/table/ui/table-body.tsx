@@ -440,6 +440,9 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
         header.cell({
           cellData,
           rowData: data,
+          handleRowData: (key, value) => {
+            handelDataList(index, key, value);
+          },
           setCellData: (value) => {
             handelDataList(index, header.id, value);
           },

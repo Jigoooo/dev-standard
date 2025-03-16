@@ -60,6 +60,7 @@ export type THeader<TData = Record<string, any>> = {
   }: {
     cellData: any;
     rowData: Record<string, any>;
+    handleRowData: (key: string, value: any) => void;
     setCellData: (value: any) => void;
   }) => ReactNode;
   pin: 'view' | 'left' | 'right';

@@ -41,19 +41,32 @@ export function RoleManagement() {
 
   useEffect(() => {
     if (getMemberListQuery.data?.data?.menuList) {
-      const dataWithIndex = getMemberListQuery.data.data.menuList.map((item, index) => ({
-        ...item,
-        index: (index + 1).toString(),
-      }));
+      const dataWithIndex = getMemberListQuery.data.data.menuList.map((item, index) => {
+        return {
+          ...item,
+          index: (index + 1).toString(),
+        };
+      });
       setDataList(dataWithIndex);
     }
   }, [getMemberListQuery.data?.data?.menuList]);
   useEffect(() => {
     if (getMenuMemberAuthListQuery.data?.data?.menuList) {
-      const dataWithIndex = getMenuMemberAuthListQuery.data.data.menuList.map((item, index) => ({
-        ...item,
-        index: (index + 1).toString(),
-      }));
+      const dataWithIndex = getMenuMemberAuthListQuery.data.data.menuList.map((item, index) => {
+        const isAllChecked =
+          item.useYn === 'Y' &&
+          item.authIns === 'Y' &&
+          item.authDel === 'Y' &&
+          item.authSearch === 'Y' &&
+          item.authMod === 'Y' &&
+          item.excelExport === 'Y';
+
+        return {
+          ...item,
+          index: (index + 1).toString(),
+          allChecked: isAllChecked,
+        };
+      });
       setMenuAuthList(dataWithIndex);
     }
   }, [getMenuMemberAuthListQuery.data?.data?.menuList]);
@@ -97,6 +110,7 @@ export function RoleManagement() {
         <Table
           tableStyle={{
             showVerticalLines: true,
+            tableContainerAutoWidth: true,
           }}
           tableHeaders={roleManagementHeaders}
           filterRowEnabled={false}

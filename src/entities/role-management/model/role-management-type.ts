@@ -15,6 +15,7 @@ export type RMenuMemberAuth = {
   sub1Cd: number;
   orderBy: number;
   memberId: string;
+  allChecked: boolean;
   useYn: 'Y' | 'N';
   authIns: 'Y' | 'N';
   authDel: 'Y' | 'N';

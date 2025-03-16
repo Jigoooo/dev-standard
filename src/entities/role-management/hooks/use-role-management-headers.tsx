@@ -56,6 +56,56 @@ export function useRoleManagementHeaders() {
       },
     },
     {
+      id: 'allChecked',
+      pin: 'view',
+      headerAlign: 'center',
+      dataAlign: 'center',
+      label: '',
+      width: 60,
+      cell: ({ cellData, rowData, handleRowData, setCellData }) => {
+        const isAllChecked =
+          rowData.useYn === 'Y' &&
+          rowData.authIns === 'Y' &&
+          rowData.authDel === 'Y' &&
+          rowData.authSearch === 'Y' &&
+          rowData.authMod === 'Y' &&
+          rowData.excelExport === 'Y';
+
+        const isNoneChecked =
+          rowData.useYn !== 'Y' &&
+          rowData.authIns !== 'Y' &&
+          rowData.authDel !== 'Y' &&
+          rowData.authSearch !== 'Y' &&
+          rowData.authMod !== 'Y' &&
+          rowData.excelExport !== 'Y';
+        const isPartiallyChecked = !isAllChecked && !isNoneChecked;
+
+        console.log(rowData);
+
+        return (
+          <Checkbox
+            checked={isAllChecked}
+            isPartial={isPartiallyChecked}
+            onClick={() => {
+              const newAllChecked = !cellData;
+              const newAllCheckedValue = newAllChecked ? 'Y' : 'N';
+              setCellData(newAllChecked);
+
+              handleRowData('useYn', newAllCheckedValue);
+              handleRowData('authIns', newAllCheckedValue);
+              handleRowData('authDel', newAllCheckedValue);
+              handleRowData('authSearch', newAllCheckedValue);
+              handleRowData('authMod', newAllCheckedValue);
+              handleRowData('excelExport', newAllCheckedValue);
+            }}
+          />
+        );
+      },
+      sorter: {
+        sortable: false,
+      },
+    },
+    {
       id: 'menuTitle',
       pin: 'view',
       dataAlign: 'left',
@@ -164,6 +214,28 @@ export function useRoleManagementHeaders() {
       headerAlign: 'center',
       dataAlign: 'center',
       label: '삭제',
+      width: 80,
+      cell: ({ cellData, setCellData }) => {
+        return (
+          <Checkbox
+            checked={cellData === 'Y'}
+            onClick={() => {
+              setCellData(cellData === 'Y' ? 'N' : 'Y');
+            }}
+          />
+        );
+      },
+      sorter: {
+        sortable: true,
+        direction: null,
+      },
+    },
+    {
+      id: 'excelExport',
+      pin: 'view',
+      headerAlign: 'center',
+      dataAlign: 'center',
+      label: '엑셀',
       width: 80,
       cell: ({ cellData, setCellData }) => {
         return (
