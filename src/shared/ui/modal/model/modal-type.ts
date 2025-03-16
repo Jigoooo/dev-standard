@@ -11,3 +11,22 @@ export type TModalContext = {
   close: () => void;
   setIsPossibleOverlayClose: (isPossibleOverlayClose: boolean) => void;
 };
+
+export type TMobileModal = {
+  isOpen: boolean;
+  onClose: () => void;
+  title: string;
+  defaultSize?: {
+    width?: number | string;
+    height?: number | string;
+  };
+  minSize?: {
+    width?: number | string;
+    height?: number | string;
+  };
+  maxSize?: {
+    width?: number | string;
+    height?: number | string;
+  };
+  children: ReactNode;
+};

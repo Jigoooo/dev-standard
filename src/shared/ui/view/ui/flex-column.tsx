@@ -1,11 +1,6 @@
-import { ElementType, HTMLAttributes, ReactNode, Ref } from 'react';
-import { ForwardRefComponent, MotionProps } from 'framer-motion';
+import { ElementType } from 'react';
 
-type FlexColumnProps<E extends ElementType> =
-  E extends ForwardRefComponent<any, any>
-    ? HTMLAttributes<HTMLElement> &
-        MotionProps & { as: E; ref?: Ref<any> | null; children: ReactNode }
-    : HTMLAttributes<HTMLElement> & { as?: E; ref?: Ref<any> | null; children: ReactNode };
+import { FlexColumnProps } from '../model/view-type.ts';
 
 export function FlexColumn<E extends ElementType = 'div'>({
   as,

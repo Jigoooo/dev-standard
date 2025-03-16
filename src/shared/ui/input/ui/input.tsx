@@ -1,14 +1,9 @@
-import { CSSProperties, InputHTMLAttributes, ReactNode, Ref } from 'react';
-import { motion, MotionProps } from 'framer-motion';
+import { CSSProperties } from 'react';
+import { motion } from 'framer-motion';
 
 import { colors } from '@/shared/constants';
 import { useWindowsStyle } from '@/shared/hooks';
-
-export enum InputStyle {
-  SOFT = 'soft',
-  OUTLINED = 'outlined',
-  UNDERLINE = 'underline',
-}
+import { InputStyle, ExtendedInputProps } from '../model/input-type.ts';
 
 const defaultInputStyle: CSSProperties = {
   width: 'auto',
@@ -56,15 +51,6 @@ const inputDisabledStyles: Record<InputStyle, CSSProperties> = {
     boxShadow: 'inset 0 -2px 0 0 #e1e1e1',
   },
 } as const;
-
-type ExtendedInputProps = MotionProps &
-  InputHTMLAttributes<HTMLInputElement> & {
-    ref?: Ref<HTMLInputElement> | null;
-    inputStyle?: InputStyle;
-    startDecorator?: ReactNode;
-    endDecorator?: ReactNode;
-    isFocusEffect?: boolean;
-  };
 
 export function Input({
   style,

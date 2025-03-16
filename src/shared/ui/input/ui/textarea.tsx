@@ -1,17 +1,9 @@
-import { motion, MotionProps } from 'framer-motion';
-import { CSSProperties, ReactNode, Ref, TextareaHTMLAttributes } from 'react';
+import { motion } from 'framer-motion';
+import { CSSProperties } from 'react';
 
-import { InputStyle } from 'shared/ui';
+import { ExtendedTextareaProps } from '../model/input-type.ts';
 import { colors } from '@/shared/constants';
 import { useWindowsStyle } from '@/shared/hooks';
-
-type ExtendedTextareaProps = MotionProps &
-  TextareaHTMLAttributes<HTMLTextAreaElement> & {
-    ref?: Ref<HTMLTextAreaElement> | null;
-    inputStyle?: InputStyle;
-    startDecorator?: ReactNode;
-    endDecorator?: ReactNode;
-  };
 
 const defaultTextareaStyle: CSSProperties = {
   resize: 'vertical',

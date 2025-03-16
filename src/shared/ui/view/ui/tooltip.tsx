@@ -1,25 +1,8 @@
-import { ReactNode, CSSProperties, useState } from 'react';
+import { CSSProperties, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { zIndex } from '@/shared/constants';
-
-type TooltipPosition =
-  | 'top'
-  | 'topLeft'
-  | 'topRight'
-  | 'bottom'
-  | 'bottomLeft'
-  | 'bottomRight'
-  | 'left'
-  | 'right';
-
-type TooltipProps = {
-  style?: CSSProperties;
-  position: TooltipPosition;
-  children: ReactNode;
-  content: ReactNode;
-  disabled?: boolean;
-};
+import { TooltipPosition, TooltipProps } from '../model/view-type.ts';
 
 const tooltipPositionStyles: Record<TooltipPosition, CSSProperties> = {
   top: { bottom: '100%', left: '50%', transform: 'translateX(-50%)' },

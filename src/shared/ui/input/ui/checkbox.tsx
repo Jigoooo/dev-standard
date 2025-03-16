@@ -4,7 +4,7 @@ import { MouseEventHandler } from 'react';
 import CheckSolid from '@/shared/assets/images/check-solid.svg?react';
 
 import { colors } from '@/shared/constants';
-import { FlexRow, Typography } from 'shared/ui';
+import { FlexRow, Typography } from '@/shared/ui';
 
 const checkboxSize = 18;
 const checkIconSize = 12;

@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { FlexRow, Typography } from 'shared/ui';
-import { LinearProgressProps } from 'shared/ui';
+import { LinearProgressProps } from '../model/progress-type.ts';
 
 export function LinearProgress({
   progress,

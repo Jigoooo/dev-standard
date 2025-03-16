@@ -1,18 +1,8 @@
 import { LayoutGroup, motion } from 'framer-motion';
-import { CSSProperties } from 'react';
+
 import { colors } from '@/shared/constants';
 import { Typography } from 'shared/ui';
-
-interface FramerMotionSwitchProps {
-  containerStyle?: CSSProperties;
-  label?: string;
-  labelStyle?: CSSProperties;
-  isOn: boolean;
-  onClick: () => void;
-  width?: number;
-  height?: number;
-  disabled?: boolean;
-}
+import { SwitchProps } from '../model/toggle-type.ts';
 
 export function Switch({
   containerStyle,
@@ -23,7 +13,7 @@ export function Switch({
   width = 34,
   height = 18,
   disabled = false,
-}: FramerMotionSwitchProps) {
+}: SwitchProps) {
   const padding = height * 0.15;
   const circleSize = height * 0.7;
   const borderRadius = height / 2;

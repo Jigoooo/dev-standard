@@ -1,4 +1,4 @@
-import { MouseEvent, ReactNode } from 'react';
+import { MouseEvent } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import CloseIcon from '@mui/icons-material/Close';
 // import { Resizable } from 're-resizable';
@@ -6,25 +6,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { zIndex } from '@/shared/constants';
 import { useDraggable } from '@/shared/hooks/common/use-draggable.ts';
 import { Button, FlexRow, Tooltip, Typography } from 'shared/ui';
-
-type ModalType = {
-  isOpen: boolean;
-  onClose: () => void;
-  title: string;
-  defaultSize?: {
-    width?: number | string;
-    height?: number | string;
-  };
-  minSize?: {
-    width?: number | string;
-    height?: number | string;
-  };
-  maxSize?: {
-    width?: number | string;
-    height?: number | string;
-  };
-  children: ReactNode;
-};
+import { TMobileModal } from '../model/modal-type.ts';
 
 const modalHeaderHeight = 80;
 
@@ -36,7 +18,7 @@ export function MobileModal({
   // defaultSize = { width: 500, height: 300 },
   // minSize = { width: 300, height: 200 },
   // maxSize = { width: undefined, height: undefined },
-}: ModalType) {
+}: TMobileModal) {
   const { position, elementRef, handleMouseDown } = useDraggable();
 
   return (
