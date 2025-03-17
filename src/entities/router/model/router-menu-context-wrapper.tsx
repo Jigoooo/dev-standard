@@ -7,7 +7,7 @@ import { getMemberMenuListApi } from '../api/router-api.ts';
 import { SignIn } from '@/pages/sign-in';
 import { Main } from '@/pages/main';
 import { MyProfile } from '@/pages/my-profile';
-import { RouteErrorPage } from '@/shared/ui';
+import { ModalContextWrapper, RouteErrorPage } from '@/shared/ui';
 import { sessionStorageKey } from '@/shared/constants';
 import { AuthGuard, handleAuthError, MainAuthGuard } from '@/entities/auth';
 
@@ -16,7 +16,9 @@ const defaultRoutes: RouteObject[] = [
     path: Router.SIGN_IN,
     element: (
       <AuthGuard>
-        <SignIn />
+        <ModalContextWrapper>
+          <SignIn />
+        </ModalContextWrapper>
       </AuthGuard>
     ),
     errorElement: <RouteErrorPage />,
@@ -25,7 +27,9 @@ const defaultRoutes: RouteObject[] = [
     path: Router.MAIN,
     element: (
       <MainAuthGuard>
-        <Main />
+        <ModalContextWrapper>
+          <Main />
+        </ModalContextWrapper>
       </MainAuthGuard>
     ),
     errorElement: <RouteErrorPage />,
@@ -272,11 +276,15 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
   }
 
   useEffect(() => {
-    if (location.pathname === Router.SIGN_IN) {
+    if (sidebarMainMenus.length > 0) {
       return;
     }
 
     getMemberMenuListApi().then((data) => {
+      if (location.pathname === Router.SIGN_IN) {
+        return;
+      }
+
       if (!data.success) {
         handleAuthError({
           data,
@@ -291,7 +299,7 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
         updateMainRouteChildren(data.data?.menuList);
       }
     });
-  }, []);
+  }, [sidebarMainMenus]);
 
   if (sidebarMainMenus.length === 0 && location.pathname !== Router.SIGN_IN) {
     return null;

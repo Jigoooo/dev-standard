@@ -7,9 +7,13 @@ import {
   FileUploadForm,
   FlexColumn,
   FlexRow,
+  ModalLayout,
   TFile,
+  THeader,
+  useModal,
 } from 'shared/ui';
 import { isExtensionAllowed, readExcelFile } from '@/shared/lib';
+import { ExcelEditModal } from '@/entities/excel-upload-download';
 
 export function ExcelUploadModal() {
   const [files, setFiles] = useState<TFile[]>([]);
@@ -37,6 +41,22 @@ export function ExcelUploadModal() {
     });
   };
 
+  const excelEditModal = useModal();
+  const excelEditModalOpen = ({ headers, dataList }: { headers: THeader[]; dataList: any[] }) => {
+    excelEditModal.open(({ overlayRef, close }) => {
+      return (
+        <ModalLayout
+          overlayRef={overlayRef}
+          containerStyle={{ width: 1200, height: 800 }}
+          title={'파일 업로드'}
+          close={close}
+        >
+          <ExcelEditModal maxWidth={1200} headers={headers} rows={dataList} />
+        </ModalLayout>
+      );
+    });
+  };
+
   const editExcelFile = async () => {
     if (files.length === 0) {
       dialogActions.open({
@@ -48,30 +68,95 @@ export function ExcelUploadModal() {
       return;
     }
 
-    const rowData = await readExcelFile({
+    const readData = await readExcelFile({
       file: files[0].file,
       options: {
         header: 1,
       },
     });
 
-    console.log(rowData);
+    if (readData.rows.length === 0) {
+      dialogActions.open({
+        dialogType: DialogType.ERROR,
+        title: '파일을 읽을 수 없습니다.',
+        overlayClose: true,
+      });
+      return;
+    }
+
+    const rowHeaders: THeader[] = readData.rows[0].map((row, index): THeader => {
+      const label = row.toString();
+
+      return {
+        id: index.toString(),
+        label,
+        width: 120,
+        pin: 'view',
+        headerAlign: 'left',
+        dataAlign: 'left',
+        sorter: {
+          sortable: false,
+        },
+      };
+    });
+
+    const rowHeadersWithIndex: THeader[] = [
+      {
+        id: 'index',
+        label: '',
+        width: 60,
+        pin: 'left',
+        headerAlign: 'left',
+        dataAlign: 'right',
+        sorter: {
+          sortable: false,
+        },
+      },
+      ...rowHeaders,
+    ];
+
+    const dataList = readData.rows.slice(1).map((rows, rowIndex) => {
+      return {
+        index: (rowIndex + 1).toString(),
+        ...Object.fromEntries(
+          rows.map((row, index) => {
+            return [index.toString(), row];
+          }),
+        ),
+      };
+    });
+
+    excelEditModalOpen({
+      headers: rowHeadersWithIndex,
+      dataList,
+    });
   };
 
   return (
     <FlexRow style={{ height: '100%', padding: 12, overflow: 'hidden' }}>
       <FlexColumn style={{ width: '100%', justifyContent: 'space-between' }}>
         <div style={{ width: '100%', height: '80%' }}>
-          <FileUploadForm files={files} handleFiles={handleFiles} fileDelete={deleteFile} />
+          <FileUploadForm
+            accept={'.xls, .xlsx'}
+            files={files}
+            handleFiles={handleFiles}
+            fileDelete={deleteFile}
+            disabled={files.length > 0}
+          />
         </div>
-        <FlexRow style={{ alignItems: 'center', justifyContent: 'flex-end', gap: 6 }}>
-          <Button style={{ paddingInline: 18, backgroundColor: '#333333' }} onClick={editExcelFile}>
-            편집
-          </Button>
-          <Button style={{ paddingInline: 18 }} onClick={() => {}}>
-            업로드
-          </Button>
-        </FlexRow>
+        {files.length > 0 && (
+          <FlexRow style={{ alignItems: 'center', justifyContent: 'flex-end', gap: 6 }}>
+            <Button
+              style={{ paddingInline: 18, backgroundColor: '#333333' }}
+              onClick={editExcelFile}
+            >
+              편집
+            </Button>
+            <Button style={{ paddingInline: 18 }} onClick={() => {}}>
+              업로드
+            </Button>
+          </FlexRow>
+        )}
       </FlexColumn>
     </FlexRow>
   );

@@ -62,17 +62,21 @@ import {
 import { TFile } from '../model';
 
 export function FileUploadForm({
+  accept,
   files,
   handleFiles,
   fileDelete,
   multiple = false,
   limitMB = 0,
+  disabled = false,
 }: {
+  accept?: string;
   files: TFile[];
   handleFiles: (file: TFile[]) => void;
   fileDelete: (fileUUID: string) => void;
   multiple?: boolean;
   limitMB?: number;
+  disabled?: boolean;
 }) {
   const totalFileSize = useMemo(() => {
     return files.reduce((acc, cur) => {
@@ -121,7 +125,12 @@ export function FileUploadForm({
           <LinearProgress progress={fileProgressFraction} height={10} progressColor='#007bff' />
         </FlexColumn>
       )}
-      <DropZone multiple={multiple} handleFiles={handleInnerFiles} />
+      <DropZone
+        accept={accept}
+        multiple={multiple}
+        handleFiles={handleInnerFiles}
+        disabled={disabled}
+      />
       <FlexColumn
         style={{
           height: '100%',

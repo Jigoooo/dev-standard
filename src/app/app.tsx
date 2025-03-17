@@ -7,7 +7,6 @@ import {
   LoadingProvider,
   AlertProvider,
   QueryProvider,
-  ModalProvider,
   ThemeProvider,
   withRouterMenuHoc,
   ErrorProvider,
@@ -33,9 +32,7 @@ function App() {
     <QueryProvider>
       <ThemeProvider>
         <ErrorProvider>
-          <ModalProvider>
-            <RouterProvider router={router} />
-          </ModalProvider>
+          <RouterProvider router={router} />
           <LoadingProvider />
           <AlertProvider />
         </ErrorProvider>

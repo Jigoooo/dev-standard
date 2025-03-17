@@ -93,5 +93,14 @@ export async function readExcelFile({
 
   const findSheetNameByIndex = workbook.SheetNames[sheetIndex];
   const sheet = workbook.Sheets[sheetName ?? findSheetNameByIndex];
-  return { workbook, sheet, rowData: XLSX.utils.sheet_to_json(sheet, options) };
+  const rows = XLSX.utils.sheet_to_json<(string | number)[]>(sheet, {
+    header: 1,
+    ...options,
+  });
+
+  return {
+    workbook,
+    sheet,
+    rows,
+  };
 }
