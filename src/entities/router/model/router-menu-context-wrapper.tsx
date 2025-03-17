@@ -275,6 +275,8 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
     return null;
   }
 
+  const [isError, setIsError] = useState(false);
+
   useEffect(() => {
     if (sidebarMainMenus.length > 0) {
       return;
@@ -286,6 +288,8 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
       }
 
       if (!data.success) {
+        setIsError(true);
+
         handleAuthError({
           data,
           onUnauthenticated: () => location.replace('/'),
@@ -301,7 +305,7 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
     });
   }, [sidebarMainMenus]);
 
-  if (sidebarMainMenus.length === 0 && location.pathname !== Router.SIGN_IN) {
+  if (sidebarMainMenus.length === 0 && location.pathname !== Router.SIGN_IN && !isError) {
     return null;
   }
 
