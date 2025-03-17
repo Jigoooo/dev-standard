@@ -6,6 +6,7 @@ import {
   CustomHorizontalScrollbar,
   CustomVerticalScrollbar,
   FlexRow,
+  Input,
   Typography,
 } from '@/shared/ui';
 import { colors } from '@/shared/constants';
@@ -13,6 +14,7 @@ import { THeader, TableBodyRowProps } from '../model/table-type.ts';
 import { useTableContext } from '../model/table-context.ts';
 import { validateTableDataList } from '../lib/validate-table-data-list.ts';
 import { useTableScrollToFn, useVirtualRow } from '../hooks';
+import { useHandleClickOutsideRef } from '@/shared/hooks';
 
 export const TableBody = memo(function TableBody<TData extends { index: string }>({
   bodyXRef,
@@ -358,11 +360,21 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
   hoverIndex: string | null;
   rowClickIndex: string | null;
 }) {
-  const { tableStyle, headers, handelDataList, isChecked, handleCheck } = useTableContext();
+  const { tableStyle, headers, handelDataList, isChecked, handleCheck, editMode } =
+    useTableContext();
 
   if (header.id === 'check' && (isChecked === undefined || handleCheck === undefined)) {
     throw new Error('checkedState is required for check header');
   }
+
+  const [isEditMode, setEditMode] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const cellRef = useHandleClickOutsideRef({
+    condition: isEditMode,
+    outsideClickAction: () => {
+      setEditMode(false);
+    },
+  });
 
   const justifyContent =
     header.dataAlign === 'left'
@@ -404,12 +416,13 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
 
   return (
     <FlexRow
+      ref={cellRef}
       className={'table-body-cell'}
       style={{
         boxSizing: 'border-box',
         justifyContent,
         alignItems: 'center',
-        paddingInline: 12,
+        paddingInline: isEditMode ? 0 : 12,
         width: header.id === 'check' ? header.width + 1 : header.width,
         height: '100%',
         backgroundColor: getBackgroundColor(),
@@ -419,22 +432,43 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
         overflow: 'hidden',
       }}
       onClick={() => {
+        if (editMode) {
+          return;
+        }
+
         if (isCheckedAvailableHeader) {
           handleCheck(data);
         }
       }}
+      onDoubleClick={() => {
+        if (!editMode) {
+          return;
+        }
+
+        setEditMode(true);
+        setTimeout(() => {
+          if (inputRef.current) {
+            inputRef?.current.focus();
+          }
+        }, 0);
+      }}
     >
-      {header.id === 'check' && (
-        <Checkbox
-          isActiveAnimation={false}
-          checked={isChecked!(data)}
-          onClick={(e) => {
-            e.stopPropagation();
-            handleCheck(data);
+      {isEditMode ? (
+        <Input
+          ref={inputRef}
+          style={{
+            height: tableStyle.tableHeaderHeight,
+            fontSize: '0.8rem',
+            width: '100%',
+            borderRadius: 0,
+            boxShadow: 'none',
+          }}
+          value={cellData}
+          onChange={(event) => {
+            handelDataList(index, header.id, event.target.value);
           }}
         />
-      )}
-      {typeof header.cell === 'function' ? (
+      ) : typeof header.cell === 'function' ? (
         header.cell({
           cellData,
           rowData: data,
@@ -445,6 +479,15 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
             handelDataList(index, header.id, value);
           },
         })
+      ) : header.id === 'check' ? (
+        <Checkbox
+          isActiveAnimation={false}
+          checked={isChecked!(data)}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleCheck(data);
+          }}
+        />
       ) : (
         <Typography
           style={{

@@ -12,6 +12,7 @@ export type TTableContext<TData> = {
   sortedHeaders: THeader<TData>[];
   dataList: (TData & { index: string })[];
   handelDataList: (index: string, key: string, value: any) => void;
+  editMode: boolean;
   filterRowEnabled: boolean;
   onChangeFilterValue: (headerId: string, value: string) => void;
   isChecked: (data: TData) => boolean;

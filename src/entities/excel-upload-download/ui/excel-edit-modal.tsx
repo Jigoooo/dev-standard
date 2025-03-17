@@ -12,15 +12,16 @@ export function ExcelEditModal<TData>({
   const { dataList, handelDataList } = useTableData<any>(rows);
 
   return (
-    <FlexRow style={{ maxWidth, height: '100%' }}>
+    <FlexRow style={{ width: '100%', maxWidth, height: '100%' }}>
       <Table
         tableStyle={{
           showVerticalLines: true,
-          tableContainerAutoWidth: true,
+          tableContainerAutoWidth: false,
         }}
         tableHeaders={headers}
         tableDataList={dataList}
         handelDataList={handelDataList}
+        editMode={true}
       />
     </FlexRow>
   );

@@ -49,6 +49,7 @@ export function Table<TData extends { index: string } & Record<string, any>>({
   handleSyncCheckList,
   tableStyle = {},
   dataKey = 'index',
+  editMode = false,
   filterRowEnabled = true,
   tableRowClick,
 }: {
@@ -59,6 +60,7 @@ export function Table<TData extends { index: string } & Record<string, any>>({
   handleSyncCheckList?: (checkedList: string[]) => void;
   tableStyle?: Partial<TTableStyle>;
   dataKey?: keyof TData;
+  editMode?: boolean;
   filterRowEnabled?: boolean;
   tableRowClick?: (data: TData) => void;
 }) {
@@ -186,6 +188,7 @@ export function Table<TData extends { index: string } & Record<string, any>>({
     sortedHeaders,
     dataList: sortedDataList,
     handelDataList,
+    editMode,
     filterRowEnabled,
     onChangeFilterValue,
     isChecked,

@@ -48,7 +48,7 @@ export function ExcelUploadModal() {
         <ModalLayout
           overlayRef={overlayRef}
           containerStyle={{ width: 1200, height: 800 }}
-          title={'파일 업로드'}
+          title={'엑셀 편집'}
           close={close}
         >
           <ExcelEditModal maxWidth={1200} headers={headers} rows={dataList} />
@@ -84,18 +84,24 @@ export function ExcelUploadModal() {
       return;
     }
 
+    const headerWidths = [150, 150, 150, 80, 100, 100, 120, 100, 100];
+
     const rowHeaders: THeader[] = readData.rows[0].map((row, index): THeader => {
       const label = row.toString();
 
       return {
         id: index.toString(),
         label,
-        width: 120,
+        width: headerWidths[index],
         pin: 'view',
         headerAlign: 'left',
         dataAlign: 'left',
         sorter: {
           sortable: false,
+        },
+        filter: {
+          filterType: 'text',
+          filterValue: '',
         },
       };
     });
