@@ -45,6 +45,10 @@ export type PExcelDataList = {
   idx: number;
 };
 
+export type RExcelDataList = {
+  excelDataList: RExcelData[];
+};
+
 export type PSaveExcelData = {
   idx?: number;
   excelNm: string;
