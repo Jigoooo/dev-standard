@@ -104,7 +104,7 @@ export function SidebarItem({
           </AnimatePresence>
         </FlexRow>
 
-        {menu.isHeader && (
+        {menu.isHeader && !sidebarState.delayedSidebarCollapsed && (
           <IoChevronDownOutline
             style={{
               color: '#ffffff',

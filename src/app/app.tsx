@@ -10,6 +10,7 @@ import {
   ModalProvider,
   ThemeProvider,
   withRouterMenuHoc,
+  ErrorProvider,
 } from '@/app/providers';
 import { useRouterMenuContext } from '@/entities/router';
 import { useEffect } from 'react';
@@ -31,11 +32,13 @@ function App() {
   return (
     <QueryProvider>
       <ThemeProvider>
-        <ModalProvider>
-          <RouterProvider router={router} />
-        </ModalProvider>
-        <LoadingProvider />
-        <AlertProvider />
+        <ErrorProvider>
+          <ModalProvider>
+            <RouterProvider router={router} />
+          </ModalProvider>
+          <LoadingProvider />
+          <AlertProvider />
+        </ErrorProvider>
       </ThemeProvider>
     </QueryProvider>
   );
