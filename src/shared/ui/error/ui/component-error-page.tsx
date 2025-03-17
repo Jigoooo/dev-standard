@@ -23,7 +23,7 @@ export function ComponentErrorPage({ error, resetErrorBoundary }: Readonly<Fallb
             color: '#888888',
           }}
         >
-          {error.message}
+          {error?.message}
         </Typography>
       </FlexColumn>
       <Button onClick={resetErrorBoundary}>새로고침</Button>

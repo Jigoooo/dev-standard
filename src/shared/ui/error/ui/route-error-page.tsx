@@ -28,9 +28,10 @@ export function RouteErrorPage() {
             fontSize: '1.4rem',
             fontWeight: 500,
             color: '#888888',
+            textAlign: 'center',
           }}
         >
-          {error.error.message}
+          {error?.message}
         </Typography>
       </FlexColumn>
     </FlexColumn>

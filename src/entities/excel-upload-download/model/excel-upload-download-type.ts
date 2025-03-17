@@ -22,7 +22,15 @@ export type RExcelData = {
   status: string;
 };
 
-export type PRegisterExcelData = {
+export type PExcelInfoList = {
+  excelNm?: string;
+};
+
+export type PExcelDataList = {
+  idx: number;
+};
+
+export type PSaveExcelData = {
   idx?: number;
   excelNm: string;
   excelDataList: RExcelData[];

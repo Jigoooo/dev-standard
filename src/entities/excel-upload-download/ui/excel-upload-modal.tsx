@@ -13,11 +13,46 @@ import {
   useModal,
 } from 'shared/ui';
 import { isExtensionAllowed, readExcelFile } from '@/shared/lib';
-import {
-  ExcelEditModal,
-  RExcelData,
-  useRegisterExcelMutation,
-} from '@/entities/excel-upload-download';
+import { ExcelEditModal, RExcelData, useSaveExcelMutation } from '@/entities/excel-upload-download';
+
+const headerMapping = [
+  {
+    id: 'orderNo',
+    width: 150,
+  },
+  {
+    id: 'productCode',
+    width: 150,
+  },
+  {
+    id: 'productName',
+    width: 150,
+  },
+  {
+    id: 'quantity',
+    width: 80,
+  },
+  {
+    id: 'price',
+    width: 100,
+  },
+  {
+    id: 'totalAmount',
+    width: 100,
+  },
+  {
+    id: 'orderDate',
+    width: 120,
+  },
+  {
+    id: 'customerName',
+    width: 100,
+  },
+  {
+    id: 'status',
+    width: 100,
+  },
+];
 
 export function ExcelUploadModal() {
   const [files, setFiles] = useState<TFile[]>([]);
@@ -97,15 +132,15 @@ export function ExcelUploadModal() {
       return;
     }
 
-    const headerWidths = [150, 150, 150, 80, 100, 100, 120, 100, 100];
+    const [excelHeaders, ...excelRows] = readData.rows;
 
-    const rowHeaders: THeader[] = readData.rows[0].map((row, index): THeader => {
+    const rowHeaders: THeader[] = excelHeaders.map((row, index): THeader => {
       const label = row.toString();
 
       return {
-        id: index.toString(),
+        id: headerMapping[index].id,
         label,
-        width: headerWidths[index],
+        width: headerMapping[index].width,
         pin: 'view',
         headerAlign: 'left',
         dataAlign: 'left',
@@ -134,16 +169,29 @@ export function ExcelUploadModal() {
       ...rowHeaders,
     ];
 
-    const rows = readData.rows.slice(1).map((rows, rowIndex) => {
+    const rows = excelRows.map((rows, rowIndex) => {
       return {
         index: (rowIndex + 1).toString(),
         ...Object.fromEntries(
           rows.map((row, index) => {
-            return [index.toString(), row];
+            return [headerMapping[index].id, row];
           }),
         ),
       };
     });
+
+    if (rows.length === 0) {
+      dialogActions.open({
+        dialogType: DialogType.ERROR,
+        title: '엑셀 데이터가 없습니다.',
+        overlayClose: true,
+      });
+      return;
+    }
+    console.log(rows);
+    if (excelDataList.length === 0) {
+      setExcelDataList(rows);
+    }
 
     excelEditModalOpen({
       headers: rowHeadersWithIndex,
@@ -151,7 +199,7 @@ export function ExcelUploadModal() {
     });
   };
 
-  const registerExcelMutation = useRegisterExcelMutation();
+  const registerExcelMutation = useSaveExcelMutation();
   const registerExcel = () => {
     console.log(excelDataList);
 
@@ -181,9 +229,11 @@ export function ExcelUploadModal() {
             >
               분석
             </Button>
-            <Button style={{ paddingInline: 18 }} onClick={registerExcel}>
-              업로드
-            </Button>
+            {excelDataList.length > 0 && (
+              <Button style={{ paddingInline: 18 }} onClick={registerExcel}>
+                업로드
+              </Button>
+            )}
           </FlexRow>
         )}
       </FlexColumn>
