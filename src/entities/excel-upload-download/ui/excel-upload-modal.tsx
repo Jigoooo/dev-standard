@@ -17,6 +17,7 @@ import { ExcelEditModal } from '@/entities/excel-upload-download';
 
 export function ExcelUploadModal() {
   const [files, setFiles] = useState<TFile[]>([]);
+  const [, setExcelDataList] = useState<any[]>([]);
   const handleFiles = async (files: TFile[]) => {
     if (
       !isExtensionAllowed({
@@ -42,7 +43,7 @@ export function ExcelUploadModal() {
   };
 
   const excelEditModal = useModal();
-  const excelEditModalOpen = ({ headers, dataList }: { headers: THeader[]; dataList: any[] }) => {
+  const excelEditModalOpen = ({ headers, rows }: { headers: THeader[]; rows: any[] }) => {
     excelEditModal.open(({ overlayRef, close }) => {
       return (
         <ModalLayout
@@ -51,7 +52,15 @@ export function ExcelUploadModal() {
           title={'엑셀 편집'}
           close={close}
         >
-          <ExcelEditModal maxWidth={1200} headers={headers} rows={dataList} />
+          <ExcelEditModal
+            maxWidth={1200}
+            headers={headers}
+            rows={rows}
+            close={(dataList) => {
+              setExcelDataList(dataList);
+              close();
+            }}
+          />
         </ModalLayout>
       );
     });
@@ -121,7 +130,7 @@ export function ExcelUploadModal() {
       ...rowHeaders,
     ];
 
-    const dataList = readData.rows.slice(1).map((rows, rowIndex) => {
+    const rows = readData.rows.slice(1).map((rows, rowIndex) => {
       return {
         index: (rowIndex + 1).toString(),
         ...Object.fromEntries(
@@ -134,7 +143,7 @@ export function ExcelUploadModal() {
 
     excelEditModalOpen({
       headers: rowHeadersWithIndex,
-      dataList,
+      rows,
     });
   };
 
