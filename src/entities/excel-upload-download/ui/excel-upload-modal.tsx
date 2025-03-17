@@ -13,50 +13,23 @@ import {
   useModal,
 } from 'shared/ui';
 import { isExtensionAllowed, readExcelFile } from '@/shared/lib';
-import { ExcelEditModal, RExcelData, useSaveExcelMutation } from '@/entities/excel-upload-download';
+import { ExcelEditModal, RExcelData } from '@/entities/excel-upload-download';
 
-const headerMapping = [
-  {
-    id: 'orderNo',
-    width: 150,
-  },
-  {
-    id: 'productCode',
-    width: 150,
-  },
-  {
-    id: 'productName',
-    width: 150,
-  },
-  {
-    id: 'quantity',
-    width: 80,
-  },
-  {
-    id: 'price',
-    width: 100,
-  },
-  {
-    id: 'totalAmount',
-    width: 100,
-  },
-  {
-    id: 'orderDate',
-    width: 120,
-  },
-  {
-    id: 'customerName',
-    width: 100,
-  },
-  {
-    id: 'status',
-    width: 100,
-  },
-];
+const headerMappingObj = {
+  orderNo: { index: 0, width: 150 },
+  productCode: { index: 1, width: 150 },
+  productName: { index: 2, width: 150 },
+  quantity: { index: 3, width: 80 },
+  price: { index: 4, width: 100 },
+  totalAmount: { index: 5, width: 100 },
+  orderDate: { index: 6, width: 120 },
+  customerName: { index: 7, width: 100 },
+  status: { index: 8, width: 100 },
+} as const;
 
 export function ExcelUploadModal() {
   const [files, setFiles] = useState<TFile[]>([]);
-  const [excelDataList, setExcelDataList] = useState<RExcelData[]>([]);
+  const [excelDataList, setExcelDataList] = useState<({ index: string } & RExcelData)[]>([]);
   const handleFiles = async (files: TFile[]) => {
     if (
       !isExtensionAllowed({
@@ -137,10 +110,17 @@ export function ExcelUploadModal() {
     const rowHeaders: THeader[] = excelHeaders.map((row, index): THeader => {
       const label = row.toString();
 
+      const findHeader = Object.entries(headerMappingObj).find(
+        ([, value]) => value.index === index,
+      );
+
+      const id = findHeader?.[0] as keyof typeof headerMappingObj;
+      const width = findHeader?.[1].width as number;
+
       return {
-        id: headerMapping[index].id,
+        id,
         label,
-        width: headerMapping[index].width,
+        width,
         pin: 'view',
         headerAlign: 'left',
         dataAlign: 'left',
@@ -170,13 +150,21 @@ export function ExcelUploadModal() {
     ];
 
     const rows = excelRows.map((rows, rowIndex) => {
+      const entries = Object.fromEntries(
+        rows.map((row, index) => {
+          const findHeader = Object.entries(headerMappingObj).find(
+            ([, value]) => value.index === index,
+          );
+
+          const id = findHeader?.[0] as keyof typeof headerMappingObj;
+
+          return [id, row];
+        }),
+      ) as RExcelData;
+
       return {
         index: (rowIndex + 1).toString(),
-        ...Object.fromEntries(
-          rows.map((row, index) => {
-            return [headerMapping[index].id, row];
-          }),
-        ),
+        ...entries,
       };
     });
 
@@ -195,11 +183,11 @@ export function ExcelUploadModal() {
 
     excelEditModalOpen({
       headers: rowHeadersWithIndex,
-      rows,
+      rows: excelDataList.length > 0 ? excelDataList : rows,
     });
   };
 
-  const registerExcelMutation = useSaveExcelMutation();
+  // const registerExcelMutation = useSaveExcelMutation();
   const registerExcel = () => {
     console.log(excelDataList);
 
