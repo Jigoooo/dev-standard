@@ -3,10 +3,11 @@ import {
   PExcelDataList,
   PExcelInfoList,
   PSaveExcelData,
+  RExcelInfoList,
 } from '../model/excel-upload-download-type.ts';
 
 export async function getExcelInfoListApi(params: PExcelInfoList) {
-  return await apiRequest<any>(
+  return await apiRequest<RExcelInfoList>(
     customedAxios.get('/excel/getExcelInfoList', {
       params,
     }),

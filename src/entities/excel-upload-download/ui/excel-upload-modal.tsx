@@ -13,7 +13,7 @@ import {
   useModal,
 } from '@/shared/ui';
 import { isExtensionAllowed, readExcelFile } from '@/shared/lib';
-import { ExcelEditModal, RExcelData } from '@/entities/excel-upload-download';
+import { ExcelEditModal, RExcelData, useSaveExcelMutation } from '@/entities/excel-upload-download';
 
 const headerMappingObj = {
   orderNo: { index: 0, width: 150 },
@@ -29,6 +29,7 @@ const headerMappingObj = {
 
 export function ExcelUploadModal() {
   const [files, setFiles] = useState<TFile[]>([]);
+  const [excelNm, setExcelNm] = useState('');
   const [excelDataList, setExcelDataList] = useState<({ index: string } & RExcelData)[]>([]);
   const handleFiles = async (files: TFile[]) => {
     if (
@@ -105,6 +106,8 @@ export function ExcelUploadModal() {
       return;
     }
 
+    console.log(readData);
+
     const [excelHeaders, ...excelRows] = readData.rows;
 
     const rowHeaders: THeader[] = excelHeaders.map((row, index): THeader => {
@@ -176,7 +179,7 @@ export function ExcelUploadModal() {
       });
       return;
     }
-    console.log(rows);
+
     if (excelDataList.length === 0) {
       setExcelDataList(rows);
     }
@@ -187,14 +190,17 @@ export function ExcelUploadModal() {
     });
   };
 
-  // const registerExcelMutation = useSaveExcelMutation();
+  const registerExcelMutation = useSaveExcelMutation();
   const registerExcel = () => {
-    console.log(excelDataList);
+    const excelDataListWithoutIndex = excelDataList.map((row) => {
+      const { index: _index, ...rest } = row;
+      return rest;
+    });
 
-    // registerExcelMutation.mutate({
-    //   excelNm: '',
-    //   excelDataList,
-    // });
+    registerExcelMutation.mutate({
+      excelNm,
+      excelDataList: excelDataListWithoutIndex,
+    });
   };
 
   return (

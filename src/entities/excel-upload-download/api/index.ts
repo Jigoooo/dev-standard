@@ -1,1 +1,6 @@
-export { useSaveExcelMutation } from './excel-service.ts';
+export {
+  useExcelInfoListQuery,
+  useExcelDataListQuery,
+  useSaveExcelMutation,
+  useUpdateExcelMutation,
+} from './excel-service.ts';

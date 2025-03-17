@@ -26,6 +26,21 @@ export type PExcelInfoList = {
   excelNm?: string;
 };
 
+export type RExcelInfo = {
+  idx: number;
+  excelNm: string;
+  insDt: string;
+  insMember: string;
+  updDt: string | null;
+  updMember: string | null;
+};
+
+export type TExcelInfo = TDataWithIndex & RExcelInfo;
+
+export type RExcelInfoList = {
+  excelInfoList: RExcelInfo[];
+};
+
 export type PExcelDataList = {
   idx: number;
 };

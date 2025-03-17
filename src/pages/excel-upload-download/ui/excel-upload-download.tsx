@@ -14,13 +14,21 @@ import {
 } from '@/shared/ui';
 import {
   ExcelUploadModal,
-  TFileDownload,
+  TExcelInfo,
+  useExcelInfoListQuery,
   useExcelUploadDownloadHeaders,
 } from '@/entities/excel-upload-download';
 
 export function ExcelUploadDownload() {
+  const excelInfoListQuery = useExcelInfoListQuery();
+  const excelInfoList = excelInfoListQuery.data?.data?.excelInfoList ?? [];
+  const excelInfoListWithIndex = excelInfoList.map((item, index) => ({
+    ...item,
+    index: (index + 1).toString(),
+  }));
+
   const fileDownloadHeaders = useExcelUploadDownloadHeaders();
-  const { dataList, handelDataList } = useTableData<TFileDownload>([]);
+  const { dataList, handelDataList } = useTableData<TExcelInfo>(excelInfoListWithIndex);
   const [fromToDateString, setFromToDateString] = useState({
     from: format(new Date(), 'yyyy-MM-dd'),
     to: format(addMonths(new Date(), 1), 'yyyy-MM-dd'),

@@ -1,7 +1,7 @@
 import { Button, ButtonStyle, THeader } from 'shared/ui';
-import { TFileDownload } from '../model/';
+import { TExcelInfo } from '../model/';
 
-export function useExcelUploadDownloadHeaders(): THeader<TFileDownload>[] {
+export function useExcelUploadDownloadHeaders(): THeader<TExcelInfo>[] {
   return [
     {
       id: 'index',
@@ -14,7 +14,7 @@ export function useExcelUploadDownloadHeaders(): THeader<TFileDownload>[] {
       },
     },
     {
-      id: 'fileUploadTitle',
+      id: 'excelNm',
       pin: 'view',
       dataAlign: 'left',
       label: '업로드 제목',
@@ -29,22 +29,7 @@ export function useExcelUploadDownloadHeaders(): THeader<TFileDownload>[] {
       },
     },
     {
-      id: 'note',
-      pin: 'view',
-      dataAlign: 'left',
-      label: '비고',
-      width: 400,
-      sorter: {
-        sortable: true,
-        direction: null,
-      },
-      filter: {
-        filterType: 'text',
-        filterValue: '',
-      },
-    },
-    {
-      id: 'uploadDateTime',
+      id: 'insDt',
       pin: 'view',
       dataAlign: 'left',
       label: '업로드 일자',
@@ -59,10 +44,40 @@ export function useExcelUploadDownloadHeaders(): THeader<TFileDownload>[] {
       },
     },
     {
-      id: 'uploadUser',
+      id: 'insMember',
       pin: 'view',
       dataAlign: 'left',
       label: '등록자',
+      width: 150,
+      sorter: {
+        sortable: true,
+        direction: null,
+      },
+      filter: {
+        filterType: 'text',
+        filterValue: '',
+      },
+    },
+    {
+      id: 'updDt',
+      pin: 'view',
+      dataAlign: 'left',
+      label: '수정 일자',
+      width: 150,
+      sorter: {
+        sortable: true,
+        direction: null,
+      },
+      filter: {
+        filterType: 'text',
+        filterValue: '',
+      },
+    },
+    {
+      id: 'updMember',
+      pin: 'view',
+      dataAlign: 'left',
+      label: '수정자',
       width: 150,
       sorter: {
         sortable: true,
