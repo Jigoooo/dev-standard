@@ -1,6 +1,14 @@
 import { useState } from 'react';
 
-import { Button, FileUploadForm, FlexColumn, FlexRow, TFile } from 'shared/ui';
+import {
+  Button,
+  FileUploadForm,
+  FlexColumn,
+  FlexRow,
+  ModalLayout,
+  TFile,
+  useModal,
+} from 'shared/ui';
 import XLSX from 'xlsx-js-style';
 
 export function ExcelUploadModal() {
@@ -18,7 +26,7 @@ export function ExcelUploadModal() {
     // }
     // const compressedFile = (await resizeImage({ file })) as File;
 
-    setFiles((prevState) => [...prevState, ...files]);
+    setFiles(files);
   };
   const deleteFile = (fileUUID: string) => {
     setFiles((prevState) => {
@@ -41,20 +49,36 @@ export function ExcelUploadModal() {
     console.log(rowData);
   };
 
+  const excelUploadModal = useModal();
+  const excelUploadModalOpen = () => {
+    excelUploadModal.open(({ overlayRef, close }) => {
+      return (
+        <ModalLayout
+          overlayRef={overlayRef}
+          containerStyle={{ width: 800, height: 450 }}
+          title={'파일 업로드'}
+          close={close}
+        >
+          <ExcelUploadModal />
+        </ModalLayout>
+      );
+    });
+  };
+
   return (
     <FlexRow style={{ height: '100%', padding: 12, overflow: 'hidden' }}>
       <FlexColumn style={{ width: '100%', justifyContent: 'space-between' }}>
         <div style={{ width: '100%', height: '80%' }}>
-          <FileUploadForm
-            multiple={true}
-            files={files}
-            handleFiles={handleFiles}
-            fileDelete={deleteFile}
-          />
+          <FileUploadForm files={files} handleFiles={handleFiles} fileDelete={deleteFile} />
         </div>
-        <Button style={{ height: 42 }} onClick={readExcelFile}>
-          분석
-        </Button>
+        <FlexRow style={{ alignItems: 'center', justifyContent: 'flex-end', gap: 6 }}>
+          <Button style={{ paddingInline: 18, backgroundColor: '#333333' }} onClick={readExcelFile}>
+            편집
+          </Button>
+          <Button style={{ paddingInline: 18 }} onClick={excelUploadModalOpen}>
+            업로드
+          </Button>
+        </FlexRow>
       </FlexColumn>
     </FlexRow>
   );

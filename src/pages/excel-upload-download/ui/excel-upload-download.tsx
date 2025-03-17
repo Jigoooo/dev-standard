@@ -26,13 +26,13 @@ export function ExcelUploadDownload() {
     to: format(addMonths(new Date(), 1), 'yyyy-MM-dd'),
   });
 
-  const fileUploadModal = useModal();
-  const fileUploadModalOpen = () => {
-    fileUploadModal.open(({ overlayRef, close }) => {
+  const excelUploadModal = useModal();
+  const excelUploadModalOpen = () => {
+    excelUploadModal.open(({ overlayRef, close }) => {
       return (
         <ModalLayout
           overlayRef={overlayRef}
-          containerStyle={{ width: 800, height: 400 }}
+          containerStyle={{ width: 800, height: 450 }}
           title={'파일 업로드'}
           close={close}
         >
@@ -68,7 +68,7 @@ export function ExcelUploadDownload() {
             }}
           />
         </FlexRow>
-        <Button onClick={fileUploadModalOpen}>엑셀 업로드</Button>
+        <Button onClick={excelUploadModalOpen}>엑셀 업로드</Button>
       </FlexRow>
       <Table
         tableStyle={{

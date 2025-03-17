@@ -272,6 +272,10 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
   }
 
   useEffect(() => {
+    if (location.pathname === Router.SIGN_IN) {
+      return;
+    }
+
     getMemberMenuListApi().then((data) => {
       if (!data.success) {
         handleAuthError({

@@ -102,7 +102,11 @@ export function FileUploadForm({
     if (limitMB === 0 || (totalSize / (1024 * 1024) <= limitMB && limitMB > 0)) {
       handleFiles(newFiles);
 
-      setInnerFiles((state) => [...state, ...newFiles]);
+      if (multiple) {
+        setInnerFiles((state) => [...state, ...newFiles]);
+      } else {
+        setInnerFiles(newFiles);
+      }
     } else {
       dialogActions.open({
         dialogType: DialogType.WARNING,
@@ -128,7 +132,14 @@ export function FileUploadForm({
         </FlexColumn>
       )}
       <DropZone multiple={multiple} handleFiles={handleInnerFiles} />
-      <FlexColumn style={{ height: '100%', width: '100%', overflowY: 'auto' }}>
+      <FlexColumn
+        style={{
+          height: '100%',
+          width: '100%',
+          overflowY: 'auto',
+          overflow: multiple ? 'initial' : 'hidden',
+        }}
+      >
         <FlexColumn style={{ gap: 8 }}>
           <LayoutGroup>
             <AnimatePresence initial={false}>
@@ -155,9 +166,9 @@ export function FileUploadForm({
                       gap: 10,
                       alignItems: 'center',
                     }}
-                    initial={{ opacity: 0 }}
+                    initial={{ opacity: 0, x: 0 }}
                     animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
+                    exit={{ opacity: 0, x: 50 }}
                     transition={{ duration: 0.14 }}
                   >
                     <FlexRow>{getFileIcon(fileExtension)}</FlexRow>
