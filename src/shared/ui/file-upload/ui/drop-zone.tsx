@@ -130,7 +130,7 @@ export function DropZone({
           style={{ fontWeight: 500, fontSize: '0.9rem', color: disabled ? '#999999' : '#212121' }}
           disabled={disabled}
         >
-          {disabled ? '파일 업로드 불가' : '클릭 또는 드래그하여 파일 업로드'}
+          {disabled ? '파일 업로드 제한' : '클릭 또는 드래그하여 파일 업로드'}
         </Link>
       </>
       <input
