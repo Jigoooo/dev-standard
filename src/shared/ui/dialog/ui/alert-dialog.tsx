@@ -30,7 +30,7 @@ export function AlertDialog() {
   const dialogOpen = useDialogOpen();
   const dialogInfos = useDialogInfos();
   const modalRef = useRef<HTMLDivElement | null>(null);
-  console.log(dialogOpen);
+
   useModalClose(dialogOpen, dialogActions.close);
 
   useEffect(() => {
