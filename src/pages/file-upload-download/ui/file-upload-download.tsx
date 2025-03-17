@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { addMonths, format } from 'date-fns';
 
 import {
@@ -14,39 +14,17 @@ import {
 } from '@/shared/ui';
 import {
   FileUploadModal,
-  generateFileUploads,
   TFileDownload,
   useFileUploadDownloadHeaders,
 } from '@/entities/file-upload-download';
 
 export function FileUploadDownload() {
   const fileDownloadHeaders = useFileUploadDownloadHeaders();
-  const { dataList, setDataList, handelDataList } = useTableData<TFileDownload>([]);
+  const { dataList, handelDataList } = useTableData<TFileDownload>([]);
   const [fromToDateString, setFromToDateString] = useState({
     from: format(new Date(), 'yyyy-MM-dd'),
     to: format(addMonths(new Date(), 1), 'yyyy-MM-dd'),
   });
-
-  useEffect(() => {
-    let isMounted = true;
-    const fetchUsers = async () => {
-      const allUsers = [];
-
-      for await (const batch of generateFileUploads({
-        total: 10,
-      })) {
-        allUsers.push(...batch);
-
-        if (isMounted) {
-          setDataList((prev) => [...prev, ...batch]);
-        }
-      }
-    };
-    fetchUsers();
-    return () => {
-      isMounted = false;
-    };
-  }, []);
 
   const fileUploadModal = useModal();
   const fileUploadModalOpen = () => {
