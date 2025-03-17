@@ -1,30 +1,34 @@
 import { useState } from 'react';
+import XLSX from 'xlsx-js-style';
 
 import {
   Button,
+  dialogActions,
+  DialogType,
   FileUploadForm,
   FlexColumn,
   FlexRow,
-  ModalLayout,
   TFile,
-  useModal,
 } from 'shared/ui';
-import XLSX from 'xlsx-js-style';
+import { isExtensionAllowed } from '@/shared/lib';
 
 export function ExcelUploadModal() {
   const [files, setFiles] = useState<TFile[]>([]);
   const handleFiles = async (files: TFile[]) => {
-    console.log('file: ', files);
-    // if (isExtensionNotAllowed(file.file.name)) {
-    //   dialogActions.openDialog({
-    //     dialogType: DialogType.ERROR,
-    //     title: '업로드 실패',
-    //     contents: '허용되지 않는 파일이에요',
-    //   });
-    //
-    //   return;
-    // }
-    // const compressedFile = (await resizeImage({ file })) as File;
+    if (
+      !isExtensionAllowed({
+        extensions: ['.xls', '.xlsx'],
+        fileName: files[0].file.name,
+      })
+    ) {
+      dialogActions.open({
+        dialogType: DialogType.ERROR,
+        title: '업로드 실패',
+        contents: '허용되지 않는 파일이에요',
+      });
+
+      return;
+    }
 
     setFiles(files);
   };
@@ -36,6 +40,12 @@ export function ExcelUploadModal() {
 
   const readExcelFile = async () => {
     if (files.length === 0) {
+      dialogActions.open({
+        dialogType: DialogType.ERROR,
+        title: '편집 대상 파일이 없습니다.',
+        overlayClose: true,
+      });
+
       return;
     }
 
@@ -49,22 +59,6 @@ export function ExcelUploadModal() {
     console.log(rowData);
   };
 
-  const excelUploadModal = useModal();
-  const excelUploadModalOpen = () => {
-    excelUploadModal.open(({ overlayRef, close }) => {
-      return (
-        <ModalLayout
-          overlayRef={overlayRef}
-          containerStyle={{ width: 800, height: 450 }}
-          title={'파일 업로드'}
-          close={close}
-        >
-          <ExcelUploadModal />
-        </ModalLayout>
-      );
-    });
-  };
-
   return (
     <FlexRow style={{ height: '100%', padding: 12, overflow: 'hidden' }}>
       <FlexColumn style={{ width: '100%', justifyContent: 'space-between' }}>
@@ -75,7 +69,7 @@ export function ExcelUploadModal() {
           <Button style={{ paddingInline: 18, backgroundColor: '#333333' }} onClick={readExcelFile}>
             편집
           </Button>
-          <Button style={{ paddingInline: 18 }} onClick={excelUploadModalOpen}>
+          <Button style={{ paddingInline: 18 }} onClick={() => {}}>
             업로드
           </Button>
         </FlexRow>

@@ -89,8 +89,32 @@ export const fileSizeInMB = (sizeInBytes: number): number => {
   return sizeInBytes / (1024 * 1024);
 };
 
-export function isExtensionNotAllowed(fileName: string) {
-  const extensions = [
+export function isExtensionAllowed({
+  extensions,
+  fileName,
+}: {
+  extensions: string[];
+  fileName: string;
+}) {
+  if (fileName === '') {
+    return false;
+  }
+
+  const fileExtension = '.' + fileName.split('.').pop()?.toLowerCase?.();
+
+  return extensions.includes(fileExtension);
+}
+
+export function isExtensionNotAllowed({
+  extensions,
+  fileName,
+  mergedCompare = false,
+}: {
+  extensions?: string[];
+  fileName: string;
+  mergedCompare: boolean;
+}) {
+  const defaultExtensions = [
     '.ace',
     '.ade',
     '.adp',
@@ -150,7 +174,15 @@ export function isExtensionNotAllowed(fileName: string) {
 
   const fileExtension = '.' + fileName.split('.').pop()?.toLowerCase?.();
 
-  return extensions.includes(fileExtension);
+  if (extensions && extensions.length > 0) {
+    if (mergedCompare) {
+      return [...defaultExtensions, ...extensions].includes(fileExtension);
+    }
+
+    return extensions.includes(fileExtension);
+  }
+
+  return defaultExtensions.includes(fileExtension);
 }
 
 export function extractBase64ImageSrc(str: string): string[] {

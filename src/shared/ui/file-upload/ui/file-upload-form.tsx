@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, JSX } from 'react';
+import { useMemo, JSX } from 'react';
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
 import { v4 as uuidV4 } from 'uuid';
 import { IconType } from 'react-icons';
@@ -74,39 +74,29 @@ export function FileUploadForm({
   multiple?: boolean;
   limitMB?: number;
 }) {
-  const [innerFiles, setInnerFiles] = useState<TFile[]>([]);
-  useEffect(() => {
-    setInnerFiles(files);
-  }, [files]);
-
   const totalFileSize = useMemo(() => {
-    return innerFiles.reduce((acc, cur) => {
+    return files.reduce((acc, cur) => {
       const { sizeInMB } = fileSizeFormatter(cur.file.size);
       return acc + Number(sizeInMB);
     }, 0);
-  }, [innerFiles]);
+  }, [files]);
 
   const fileProgressFraction = useMemo(() => {
     return Math.min(totalFileSize / limitMB, 1);
   }, [limitMB, totalFileSize]);
 
-  const handleInnerFiles = async (files: FileList) => {
-    const newFiles = Array.from(files).map((file) => {
+  const handleInnerFiles = async (innerFiles: FileList) => {
+    const newFiles = Array.from(innerFiles).map((file) => {
       return {
         fileUUID: uuidV4(),
         file,
       };
     });
 
-    const totalSize = [...innerFiles, ...newFiles].reduce((sum, { file }) => sum + file.size, 0);
+    const totalSize = [...files, ...newFiles].reduce((sum, { file }) => sum + file.size, 0);
+
     if (limitMB === 0 || (totalSize / (1024 * 1024) <= limitMB && limitMB > 0)) {
       handleFiles(newFiles);
-
-      if (multiple) {
-        setInnerFiles((state) => [...state, ...newFiles]);
-      } else {
-        setInnerFiles(newFiles);
-      }
     } else {
       dialogActions.open({
         dialogType: DialogType.WARNING,
@@ -117,7 +107,7 @@ export function FileUploadForm({
   };
 
   const deleteFile = (file: TFile) => {
-    setInnerFiles((state) => state.filter((item) => item.fileUUID !== file.fileUUID));
+    // setInnerFiles((state) => state.filter((item) => item.fileUUID !== file.fileUUID));
     fileDelete(file.fileUUID);
   };
 
@@ -143,7 +133,7 @@ export function FileUploadForm({
         <FlexColumn style={{ gap: 8 }}>
           <LayoutGroup>
             <AnimatePresence initial={false}>
-              {innerFiles.map((file) => {
+              {files.map((file) => {
                 const { sizeInKB, sizeInMB, isUnder1MB } = fileSizeFormatter(file.file.size);
 
                 const fileSize = !isUnder1MB ? sizeInMB.toFixed(2) : sizeInKB.toFixed(2);

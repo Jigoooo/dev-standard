@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 
 export type DialogInfoStates = {
   title?: string;
-  contents: ReactNode;
+  contents?: ReactNode;
   confirmText?: string;
   cancelText?: string;
   onConfirm?: () => void;

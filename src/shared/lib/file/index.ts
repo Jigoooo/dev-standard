@@ -9,5 +9,6 @@ export {
   isImageFile,
   resizeImage,
   getExtensionFromMimeType,
+  isExtensionAllowed,
   isExtensionNotAllowed,
 } from './file-lib.ts';
