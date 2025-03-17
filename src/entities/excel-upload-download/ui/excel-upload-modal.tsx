@@ -13,11 +13,15 @@ import {
   useModal,
 } from 'shared/ui';
 import { isExtensionAllowed, readExcelFile } from '@/shared/lib';
-import { ExcelEditModal } from '@/entities/excel-upload-download';
+import {
+  ExcelEditModal,
+  RExcelData,
+  useRegisterExcelMutation,
+} from '@/entities/excel-upload-download';
 
 export function ExcelUploadModal() {
   const [files, setFiles] = useState<TFile[]>([]);
-  const [, setExcelDataList] = useState<any[]>([]);
+  const [excelDataList, setExcelDataList] = useState<RExcelData[]>([]);
   const handleFiles = async (files: TFile[]) => {
     if (
       !isExtensionAllowed({
@@ -147,6 +151,16 @@ export function ExcelUploadModal() {
     });
   };
 
+  const registerExcelMutation = useRegisterExcelMutation();
+  const registerExcel = () => {
+    console.log(excelDataList);
+
+    // registerExcelMutation.mutate({
+    //   excelNm: '',
+    //   excelDataList,
+    // });
+  };
+
   return (
     <FlexRow style={{ height: '100%', padding: 12, overflow: 'hidden' }}>
       <FlexColumn style={{ width: '100%', justifyContent: 'space-between' }}>
@@ -165,9 +179,9 @@ export function ExcelUploadModal() {
               style={{ paddingInline: 18, backgroundColor: '#333333' }}
               onClick={editExcelFile}
             >
-              편집
+              분석
             </Button>
-            <Button style={{ paddingInline: 18 }} onClick={() => {}}>
+            <Button style={{ paddingInline: 18 }} onClick={registerExcel}>
               업로드
             </Button>
           </FlexRow>

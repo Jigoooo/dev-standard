@@ -8,3 +8,23 @@ export type RFileDownload = {
 };
 
 export type TFileDownload = TDataWithIndex & RFileDownload;
+
+export type RExcelData = {
+  rowIdx?: number;
+  orderNo: string;
+  productCode: string;
+  productName: string;
+  quantity: number;
+  price: number;
+  totalAmount: number;
+  orderDate: string;
+  customerName: string;
+  status: string;
+};
+
+export type PRegisterExcelData = {
+  idx?: number;
+  excelNm: string;
+  excelDataList: RExcelData[];
+  deleteDataList?: number[];
+};
