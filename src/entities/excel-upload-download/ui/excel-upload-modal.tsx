@@ -11,7 +11,7 @@ import {
   TFile,
   THeader,
   useModal,
-} from 'shared/ui';
+} from '@/shared/ui';
 import { isExtensionAllowed, readExcelFile } from '@/shared/lib';
 import { ExcelEditModal, RExcelData } from '@/entities/excel-upload-download';
 
