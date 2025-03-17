@@ -62,7 +62,6 @@ export function Main() {
 
   useBeforeUnload(() => {
     if (location.pathname !== Router.MAIN) {
-      console.log(location.pathname);
       setLastLocation(location.pathname);
     }
   });
