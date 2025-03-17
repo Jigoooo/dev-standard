@@ -1,10 +1,9 @@
-import XLSX, { BookType } from 'xlsx-js-style';
+import XLSX, { BookType, Sheet2JSONOpts } from 'xlsx-js-style';
 import { saveAs } from 'file-saver';
 
 import { detectDeviceTypeAndOS } from '@/shared/lib/common';
 import { convertBlobToBase64 } from '@/shared/lib/file';
 import { sendPostMessage } from 'shared/lib/web-view';
-
 export function createWorkSheet({
   header,
   body,
@@ -76,4 +75,23 @@ export function fitToColumn(targetRow: any[]) {
 
     return { width };
   });
+}
+
+export async function readExcelFile({
+  file,
+  sheetIndex = 0,
+  sheetName,
+  options,
+}: {
+  file: File;
+  sheetIndex?: number;
+  sheetName?: string;
+  options?: Sheet2JSONOpts;
+}) {
+  const arrayBuffer = await file.arrayBuffer();
+  const workbook = XLSX.read(arrayBuffer, { type: 'array' });
+
+  const findSheetNameByIndex = workbook.SheetNames[sheetIndex];
+  const sheet = workbook.Sheets[sheetName ?? findSheetNameByIndex];
+  return { workbook, sheet, rowData: XLSX.utils.sheet_to_json(sheet, options) };
 }

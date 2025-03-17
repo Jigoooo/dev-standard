@@ -1,1 +1,7 @@
-export { fitToColumn, createWorkBook, createWorkSheet, downloadExcel } from './excel-lib.ts';
+export {
+  fitToColumn,
+  createWorkBook,
+  createWorkSheet,
+  downloadExcel,
+  readExcelFile,
+} from './excel-lib.ts';

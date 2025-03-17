@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import XLSX from 'xlsx-js-style';
 
 import {
   Button,
@@ -10,7 +9,7 @@ import {
   FlexRow,
   TFile,
 } from 'shared/ui';
-import { isExtensionAllowed } from '@/shared/lib';
+import { isExtensionAllowed, readExcelFile } from '@/shared/lib';
 
 export function ExcelUploadModal() {
   const [files, setFiles] = useState<TFile[]>([]);
@@ -38,7 +37,7 @@ export function ExcelUploadModal() {
     });
   };
 
-  const readExcelFile = async () => {
+  const editExcelFile = async () => {
     if (files.length === 0) {
       dialogActions.open({
         dialogType: DialogType.ERROR,
@@ -49,12 +48,12 @@ export function ExcelUploadModal() {
       return;
     }
 
-    const arrayBuffer = await files[0].file.arrayBuffer();
-    const workbook = XLSX.read(arrayBuffer, { type: 'array' });
-
-    const firstSheetName = workbook.SheetNames[0];
-    const sheet = workbook.Sheets[firstSheetName];
-    const rowData = XLSX.utils.sheet_to_json(sheet);
+    const rowData = await readExcelFile({
+      file: files[0].file,
+      options: {
+        header: 1,
+      },
+    });
 
     console.log(rowData);
   };
@@ -66,7 +65,7 @@ export function ExcelUploadModal() {
           <FileUploadForm files={files} handleFiles={handleFiles} fileDelete={deleteFile} />
         </div>
         <FlexRow style={{ alignItems: 'center', justifyContent: 'flex-end', gap: 6 }}>
-          <Button style={{ paddingInline: 18, backgroundColor: '#333333' }} onClick={readExcelFile}>
+          <Button style={{ paddingInline: 18, backgroundColor: '#333333' }} onClick={editExcelFile}>
             편집
           </Button>
           <Button style={{ paddingInline: 18 }} onClick={() => {}}>
