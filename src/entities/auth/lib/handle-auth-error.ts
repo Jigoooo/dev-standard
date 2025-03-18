@@ -7,7 +7,6 @@ export async function handleAuthError(options: TAuthErrorHandlerOptions): Promis
   const { data, onUnauthenticated, onRefreshSuccess } = options;
 
   if (data.success) return false;
-
   if (data.code === 401 || data.code === 403) {
     const token = getToken();
     if (token === null) {

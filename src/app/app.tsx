@@ -5,14 +5,7 @@ import ReactGA from 'react-ga4';
 import { useEffect } from 'react';
 import { preconnect } from 'react-dom';
 
-import {
-  LoadingProvider,
-  AlertProvider,
-  QueryProvider,
-  ThemeProvider,
-  withRouterMenuHoc,
-  ErrorProvider,
-} from '@/app/providers';
+import { QueryProvider, withRouterMenuHoc, ErrorProvider } from '@/app/providers';
 import { useRouterMenuContext } from '@/entities/router';
 
 function App() {
@@ -33,13 +26,9 @@ function App() {
 
   return (
     <QueryProvider>
-      <ThemeProvider>
-        <ErrorProvider>
-          <RouterProvider router={router} />
-          <LoadingProvider />
-          <AlertProvider />
-        </ErrorProvider>
-      </ThemeProvider>
+      <ErrorProvider>
+        <RouterProvider router={router} />
+      </ErrorProvider>
     </QueryProvider>
   );
 }
