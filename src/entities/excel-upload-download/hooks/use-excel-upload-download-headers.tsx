@@ -1,7 +1,41 @@
-import { Button, ButtonStyle, THeader } from 'shared/ui';
+import { Button, ButtonStyle, THeader } from '@/shared/ui';
 import { TExcelInfo } from '../model/';
+import { getExcelDataListApi } from '@/entities/excel-upload-download/api/excel-api.ts';
 
 export function useExcelUploadDownloadHeaders(): THeader<TExcelInfo>[] {
+  // const excelEditModal = useModal();
+  const excelEditModalOpen = async (rowData: TExcelInfo) => {
+    const response = await getExcelDataListApi({
+      idx: rowData.idx,
+    });
+    const excelDataList = response.data?.excelDataList ?? [];
+    console.log(excelDataList);
+
+    // const headers = [];
+    // const rows = [];
+    //
+    // excelEditModal.open(({ overlayRef, close }) => {
+    //   return (
+    //     <ModalLayout
+    //       overlayRef={overlayRef}
+    //       containerStyle={{ width: 1200, height: 800 }}
+    //       title={'엑셀 편집'}
+    //       close={close}
+    //     >
+    //       <ExcelEditModal
+    //         maxWidth={1200}
+    //         headers={headers}
+    //         rows={rows}
+    //         close={(dataList) => {
+    //           console.log(dataList);
+    //           close();
+    //         }}
+    //       />
+    //     </ModalLayout>
+    //   );
+    // });
+  };
+
   return [
     {
       id: 'index',
@@ -94,11 +128,12 @@ export function useExcelUploadDownloadHeaders(): THeader<TExcelInfo>[] {
       dataAlign: 'center',
       label: '',
       width: 80,
-      cell: () => {
+      cell: ({ rowData }) => {
         return (
           <Button
             buttonStyle={ButtonStyle.OUTLINED}
             style={{ width: '100%', height: 30, fontSize: '0.76rem' }}
+            onClick={() => excelEditModalOpen(rowData)}
           >
             상세
           </Button>

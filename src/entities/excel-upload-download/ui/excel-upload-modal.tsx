@@ -8,6 +8,7 @@ import {
   FlexColumn,
   FlexRow,
   ModalLayout,
+  TDataWithIndex,
   TFile,
   THeader,
   useModal,
@@ -30,7 +31,7 @@ const headerMappingObj = {
 export function ExcelUploadModal() {
   const [files, setFiles] = useState<TFile[]>([]);
   const [excelNm, setExcelNm] = useState('');
-  const [excelDataList, setExcelDataList] = useState<({ index: string } & RExcelData)[]>([]);
+  const [excelDataList, setExcelDataList] = useState<(TDataWithIndex & RExcelData)[]>([]);
   const handleFiles = async (files: TFile[]) => {
     if (
       !isExtensionAllowed({

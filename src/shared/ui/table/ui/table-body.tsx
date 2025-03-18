@@ -10,13 +10,13 @@ import {
   Typography,
 } from '@/shared/ui';
 import { colors } from '@/shared/constants';
-import { THeader, TableBodyRowProps } from '../model/table-type.ts';
+import { TDataWithIndex, THeader, TableBodyRowProps } from '../model/table-type.ts';
 import { useTableContext } from '../model/table-context.ts';
 import { validateTableDataList } from '../lib/validate-table-data-list.ts';
 import { useTableScrollToFn, useVirtualRow } from '../hooks';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
 
-export const TableBody = memo(function TableBody<TData extends { index: string }>({
+export const TableBody = memo(function TableBody<TData extends TDataWithIndex>({
   bodyXRef,
 }: {
   bodyXRef: RefObject<HTMLDivElement | null>;
