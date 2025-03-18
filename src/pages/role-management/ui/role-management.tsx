@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 
 import {
   Button,
+  DateFromToPicker,
   dialogActions,
   DialogType,
   FlexColumn,
   FlexRow,
+  SearchButton,
   Table,
   TDataWithIndex,
   useTableData,
@@ -18,6 +20,7 @@ import {
   RMenuMemberAuth,
   RRoleUser,
 } from '@/entities/router';
+import { toast } from 'sonner';
 
 export function RoleManagement() {
   // const { currentMenuMemberAuth } = useRouterMenuContext();
@@ -75,15 +78,29 @@ export function RoleManagement() {
   }, [getMenuMemberAuthListQuery.data?.data?.menuList]);
 
   const updateMenuMemberAuth = () => {
-    updateMenuMemberAuthMutation.mutate(menuAuthList, {
-      onSuccess: (data) => {
-        if (!data.success) {
-          dialogActions.open({
-            dialogType: DialogType.ERROR,
-            title: '권한 저장에 실패하였습니다.',
-            contents: data.msg ?? '관리자에게 문의해 주세요.',
-          });
-        }
+    dialogActions.open({
+      title: '권한을 수정하시겠습니까?',
+      withCancel: true,
+      overlayClose: true,
+      onConfirm: () => {
+        updateMenuMemberAuthMutation.mutate(menuAuthList, {
+          onSuccess: (data) => {
+            if (!data.success) {
+              console.log(data);
+              dialogActions.open({
+                dialogType: DialogType.ERROR,
+                title: '권한 저장에 실패하였습니다.',
+                contents: data.msg ?? '관리자에게 문의해 주세요.',
+              });
+
+              return;
+            }
+
+            toast.success('권한이 수정되었습니다.', {
+              duration: 2000,
+            });
+          },
+        });
       },
     });
   };
@@ -93,11 +110,28 @@ export function RoleManagement() {
       style={{
         height: '100%',
         maxHeight: 'calc(100vh - 200px)',
+        gap: 6,
       }}
     >
-      <FlexRow style={{ justifyContent: 'flex-end' }}>
-        <Button onClick={updateMenuMemberAuth}>저장</Button>
+      <FlexRow
+        style={{
+          width: '100%',
+          paddingTop: 24,
+          paddingBottom: 6,
+          paddingRight: 14,
+          alignItems: 'center',
+          justifyContent: 'flex-end',
+          gap: 6,
+          height: 65,
+        }}
+      >
+        {memberId !== '' && (
+          <Button style={{ width: 80 }} onClick={updateMenuMemberAuth}>
+            저장
+          </Button>
+        )}
       </FlexRow>
+
       <FlexRow style={{ height: '100%', gap: 12 }}>
         <Table
           tableStyle={{

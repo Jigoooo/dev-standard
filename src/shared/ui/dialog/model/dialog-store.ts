@@ -27,7 +27,7 @@ const useDialog = create<DialogStoreInterface>()((setState, getState) => {
           ...state,
           dialogOpen: true,
           dialogInfos: {
-            ...state.dialogInfos,
+            ...dialogInitialState.dialogInfos,
             ...dialogInfos,
             onConfirm: () => {
               if (dialogInfos.onConfirm) dialogInfos.onConfirm();
@@ -46,7 +46,7 @@ const useDialog = create<DialogStoreInterface>()((setState, getState) => {
             ...state,
             dialogOpen: true,
             dialogInfos: {
-              ...state.dialogInfos,
+              ...dialogInitialState.dialogInfos,
               ...dialogInfos,
               onConfirm: () => {
                 if (dialogInfos.onConfirm) dialogInfos.onConfirm();
@@ -62,7 +62,7 @@ const useDialog = create<DialogStoreInterface>()((setState, getState) => {
           }));
         }),
       close: () => {
-        setState((state) => ({ ...state, dialogOpen: false }));
+        setState(() => ({ ...dialogInitialState.dialogInfos, dialogOpen: false }));
       },
     },
   };
