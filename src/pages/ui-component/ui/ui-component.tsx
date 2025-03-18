@@ -99,11 +99,6 @@ export function UiComponent() {
         <Button
           onClick={() => {
             toast.success('Event has been created', {
-              style: {
-                background: '#333333',
-                color: '#ffffff',
-                borderColor: '#333333',
-              },
               duration: 3000,
             });
           }}

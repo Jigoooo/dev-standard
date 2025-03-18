@@ -12,6 +12,14 @@ export function AlertProvider() {
     <>
       <AlertDialog />
       <Toaster
+        toastOptions={{
+          style: {
+            background: '#333333',
+            color: '#ffffff',
+            borderColor: '#333333',
+            fontSize: '0.9rem',
+          },
+        }}
         icons={{
           success: <FaCircleCheck style={{ color: colors.success[400], fontSize: '1.2rem' }} />,
           warning: <IoIosWarning style={{ color: colors.warning[400], fontSize: '1.2rem' }} />,
