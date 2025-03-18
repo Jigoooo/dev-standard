@@ -2,8 +2,11 @@ import { Button, ButtonStyle, ModalLayout, THeader, useModal } from '@/shared/ui
 import { getExcelDataListApi } from '../api/excel-api.ts';
 import { TExcelInfo, TExcelData } from '../model/excel-upload-download-type.ts';
 import { ExcelEditModal } from '../ui/excel-edit-modal.tsx';
+import { useUpdateExcelMutation } from '@/entities/excel-upload-download';
 
 export function useExcelUploadDownloadHeaders() {
+  const updateExcelMutation = useUpdateExcelMutation();
+
   const excelUploadDataHeaders: THeader<TExcelData>[] = [
     {
       id: 'index',
@@ -199,9 +202,34 @@ export function useExcelUploadDownloadHeaders() {
             rows={excelDataWithIndex}
             maxWidth={1200}
             close={({ excelNm, dataList }) => {
-              console.log(excelNm);
-              console.log(dataList);
-              close();
+              const dataListWithoutIndex = dataList.map((item) => {
+                const { index: _index, ...rest } = item;
+                return rest;
+              });
+
+              const deletedDataList = excelDataList
+                .filter(
+                  (originalRow) =>
+                    originalRow.rowIdx !== undefined &&
+                    !dataList.some((updatedRow) => updatedRow.rowIdx === originalRow.rowIdx),
+                )
+                .map((deletedData) => deletedData.rowIdx ?? -1);
+
+              updateExcelMutation.mutate(
+                {
+                  idx: rowData.idx,
+                  excelNm,
+                  excelDataList: dataListWithoutIndex,
+                  deleteDataList: deletedDataList,
+                },
+                {
+                  onSuccess: (data) => {
+                    if (data.success) {
+                      close();
+                    }
+                  },
+                },
+              );
             }}
           />
         </ModalLayout>
