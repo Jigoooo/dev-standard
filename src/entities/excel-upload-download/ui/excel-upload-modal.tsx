@@ -159,24 +159,31 @@ export function ExcelUploadModal({ close }: { close: () => void }) {
 
   const registerExcelMutation = useSaveExcelMutation();
   const registerExcel = () => {
-    const excelDataListWithoutIndex = excelDataList.map((row) => {
-      const { index: _index, ...rest } = row;
-      return rest;
-    });
+    dialogActions.open({
+      title: '등록하시겠습니까?',
+      withCancel: true,
+      overlayClose: true,
+      onConfirm: () => {
+        const excelDataListWithoutIndex = excelDataList.map((row) => {
+          const { index: _index, ...rest } = row;
+          return rest;
+        });
 
-    registerExcelMutation.mutate(
-      {
-        excelNm,
-        excelDataList: excelDataListWithoutIndex,
+        registerExcelMutation.mutate(
+          {
+            excelNm,
+            excelDataList: excelDataListWithoutIndex,
+          },
+          {
+            onSuccess: (data) => {
+              if (data.success) {
+                close();
+              }
+            },
+          },
+        );
       },
-      {
-        onSuccess: (data) => {
-          if (data.success) {
-            close();
-          }
-        },
-      },
-    );
+    });
   };
 
   return (
