@@ -30,14 +30,14 @@ const useSnackBarStore = create<SnackBarStoreInterface>()((setState) => {
           };
         });
 
-        setTimeout(() => {
-          setState((state) => {
-            return {
-              ...state,
-              snackbarInfos: state.snackbarInfos.filter((snackbar) => snackbar.id !== id),
-            };
-          });
-        }, duration);
+        // setTimeout(() => {
+        //   setState((state) => {
+        //     return {
+        //       ...state,
+        //       snackbarInfos: state.snackbarInfos.filter((snackbar) => snackbar.id !== id),
+        //     };
+        //   });
+        // }, duration);
       },
       hide: (id) => {
         setState((state) => {
