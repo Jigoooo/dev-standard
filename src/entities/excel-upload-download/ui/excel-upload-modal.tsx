@@ -33,7 +33,7 @@ const headerMappingObj = {
   status: { index: 8, width: 100 },
 } as const;
 
-export function ExcelUploadModal() {
+export function ExcelUploadModal({ close }: { close: () => void }) {
   const [files, setFiles] = useState<TFile[]>([]);
   const [excelNm, setExcelNm] = useState('');
   const { excelUploadDataHeaders } = useExcelUploadDownloadHeaders();
@@ -149,8 +149,10 @@ export function ExcelUploadModal() {
       setExcelDataList(rows);
     }
 
+    const fileNameWithoutExtension = files[0].file.name.split('.').slice(0, -1).join('.');
+
     excelEditModalOpen({
-      excelNm: excelNm || files[0].file.name,
+      excelNm: excelNm || fileNameWithoutExtension,
       rows: excelDataList.length > 0 ? excelDataList : rows,
     });
   };
@@ -162,10 +164,19 @@ export function ExcelUploadModal() {
       return rest;
     });
 
-    registerExcelMutation.mutate({
-      excelNm,
-      excelDataList: excelDataListWithoutIndex,
-    });
+    registerExcelMutation.mutate(
+      {
+        excelNm,
+        excelDataList: excelDataListWithoutIndex,
+      },
+      {
+        onSuccess: (data) => {
+          if (data.success) {
+            close();
+          }
+        },
+      },
+    );
   };
 
   return (

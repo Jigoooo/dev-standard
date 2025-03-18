@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { getExcelInfoListApi, saveExcelApi, updateExcelApi } from './excel-api.ts';
 import { PExcelInfoList, PSaveExcelData } from '../model/excel-upload-download-type.ts';
@@ -14,20 +14,32 @@ export function useExcelInfoListQuery(params: PExcelInfoList = {}) {
 }
 
 export function useSaveExcelMutation() {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: (data: PSaveExcelData) => saveExcelApi(data),
     onMutate: () => {},
-    onSuccess: () => {},
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [EXCEL_INFO_LIST_QUERY_KEY],
+      });
+    },
     onError: () => {},
     onSettled: () => {},
   });
 }
 
 export function useUpdateExcelMutation() {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: (data: PSaveExcelData) => updateExcelApi(data),
     onMutate: () => {},
-    onSuccess: () => {},
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [EXCEL_INFO_LIST_QUERY_KEY],
+      });
+    },
     onError: () => {},
     onSettled: () => {},
   });

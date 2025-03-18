@@ -45,7 +45,7 @@ export function ExcelUploadDownload() {
           title={'파일 업로드'}
           close={close}
         >
-          <ExcelUploadModal />
+          <ExcelUploadModal close={close} />
         </ModalLayout>
       );
     });
