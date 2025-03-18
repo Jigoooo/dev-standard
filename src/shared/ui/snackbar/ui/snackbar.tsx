@@ -14,6 +14,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 export function Snackbar() {
   const snackbarInfos = useSnackbarInfos();
+  const visibleSnackbars = snackbarInfos.slice(-3);
 
   return createPortal(
     <FlexColumn
@@ -27,8 +28,15 @@ export function Snackbar() {
       }}
     >
       <AnimatePresence>
-        {snackbarInfos.map((snackbarInfo, index) => {
-          return <SnackbarItem key={snackbarInfo.id} snackbarInfo={snackbarInfo} index={index} />;
+        {visibleSnackbars.map((snackbarInfo, index, array) => {
+          return (
+            <SnackbarItem
+              key={snackbarInfo.id}
+              snackbarInfo={snackbarInfo}
+              index={index}
+              array={array}
+            />
+          );
         })}
       </AnimatePresence>
     </FlexColumn>,
@@ -36,10 +44,16 @@ export function Snackbar() {
   );
 }
 
-function SnackbarItem({ snackbarInfo, index }: { snackbarInfo: SnackBarInfo; index: number }) {
-  const snackbarInfos = useSnackbarInfos();
-
-  const relativeIndex = snackbarInfos.length - index - 1;
+function SnackbarItem({
+  snackbarInfo,
+  index,
+  array,
+}: {
+  snackbarInfo: SnackBarInfo;
+  index: number;
+  array: SnackBarInfo[];
+}) {
+  const relativeIndex = array.length - index - 1;
   const height = 80;
 
   return (
