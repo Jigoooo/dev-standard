@@ -11,10 +11,17 @@ import {
 import { zIndex } from '@/shared/constants';
 import { SnackBarInfo } from '../model/snackbar-type.ts';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+
+const MAX_VISIBLE_SNACKBAR_COUNT = 3;
+const SNACKBAR_HEIGHT = 80;
+const SNACKBAR_WIDTH = 350;
 
 export function Snackbar() {
   const snackbarInfos = useSnackbarInfos();
-  const visibleSnackbars = snackbarInfos.slice(-3);
+  const visibleSnackbars = snackbarInfos.slice(-MAX_VISIBLE_SNACKBAR_COUNT);
+
+  const [isHovered, setIsHovered] = useState(false);
 
   return createPortal(
     <FlexColumn
@@ -23,10 +30,25 @@ export function Snackbar() {
         padding: 0,
         margin: 0,
         position: 'fixed',
-        bottom: 20,
-        right: 20,
+        bottom: 50,
+        right: 30,
+        height: isHovered ? SNACKBAR_HEIGHT * MAX_VISIBLE_SNACKBAR_COUNT + 20 : SNACKBAR_HEIGHT,
+        width: SNACKBAR_WIDTH,
       }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
+      <FlexRow
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: zIndex.snackbar - 1,
+          backgroundColor: 'transparent',
+        }}
+      />
       <AnimatePresence>
         {visibleSnackbars.map((snackbarInfo, index, array) => {
           return (
@@ -35,6 +57,7 @@ export function Snackbar() {
               snackbarInfo={snackbarInfo}
               index={index}
               array={array}
+              isHovered={isHovered}
             />
           );
         })}
@@ -48,13 +71,27 @@ function SnackbarItem({
   snackbarInfo,
   index,
   array,
+  isHovered,
 }: {
   snackbarInfo: SnackBarInfo;
   index: number;
   array: SnackBarInfo[];
+  isHovered: boolean;
 }) {
   const relativeIndex = array.length - index - 1;
-  const height = 80;
+
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    if (!isHovered) {
+      timeoutRef.current = setTimeout(() => {
+        snackbarActions.hide(snackbarInfo.id);
+      }, snackbarInfo.duration || 3000);
+    }
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, [isHovered, snackbarInfo.id, snackbarInfo.duration]);
 
   return (
     <FlexRow
@@ -62,27 +99,27 @@ function SnackbarItem({
       layout
       style={{
         position: 'absolute',
-        minWidth: 350,
-        maxWidth: 500,
-        minHeight: height,
-        maxHeight: height,
+        minWidth: SNACKBAR_WIDTH,
+        maxWidth: SNACKBAR_WIDTH,
+        minHeight: SNACKBAR_HEIGHT,
+        maxHeight: SNACKBAR_HEIGHT,
         backgroundColor: '#ffffff',
         borderRadius: 8,
         boxShadow: '0 2px 10px rgba(0, 0, 0, 0.15)',
         border: `1px solid #dddddd`,
-        zIndex: zIndex.snackbar + index,
+        zIndex: zIndex.snackbar + index + 1,
         right: 0,
         bottom: 0,
       }}
       initial={{ opacity: 0.8, scale: 0.9, y: 50, rotateX: -10 }}
       animate={{
         opacity: 1,
-        scale: 1 - relativeIndex * 0.05,
-        y: relativeIndex * -15,
-        rotateX: -relativeIndex * 5,
+        scale: isHovered ? 1 : 1 - relativeIndex * 0.05,
+        y: isHovered ? relativeIndex * (-SNACKBAR_HEIGHT - 10) - 25 : relativeIndex * -20,
+        rotateX: isHovered ? 0 : -relativeIndex * 5,
       }}
       exit={{ opacity: 0, y: 50, scale: 0.9, rotateX: -10 }}
-      transition={{ type: 'spring', stiffness: 320, damping: 40 }}
+      transition={{ type: 'spring', stiffness: 320, damping: 45 }}
     >
       <Typography>{snackbarInfo.title}</Typography>
       <Typography>{snackbarInfo.message + index}</Typography>
