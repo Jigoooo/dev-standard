@@ -8,8 +8,8 @@ export enum SnackbarType {
 
 export interface SnackBarInfo {
   id: string;
-  title?: string;
-  message: string;
+  title: string;
+  message?: string;
   duration?: number;
   type?: SnackbarType;
 }

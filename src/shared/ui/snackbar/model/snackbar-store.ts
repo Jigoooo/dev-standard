@@ -12,7 +12,7 @@ const useSnackBarStore = create<SnackBarStoreInterface>()((setState) => {
   return {
     ...snackBarInitialState,
     actions: {
-      show: ({ message = '', duration = 3000, type = SnackbarType.SUCCESS }) => {
+      show: ({ title, message, duration = 3000, type = SnackbarType.SUCCESS }) => {
         const id = uuidV4();
 
         setState((state) => {
@@ -22,6 +22,7 @@ const useSnackBarStore = create<SnackBarStoreInterface>()((setState) => {
               ...state.snackbarInfos,
               {
                 id,
+                title,
                 message,
                 duration,
                 type,

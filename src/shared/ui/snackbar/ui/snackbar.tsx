@@ -121,9 +121,15 @@ function SnackbarItem({
       exit={{ opacity: 0, y: 50, scale: 0.9, rotateX: -10 }}
       transition={{ type: 'spring', stiffness: 320, damping: 45 }}
     >
-      <Typography>{snackbarInfo.title}</Typography>
-      <Typography>{snackbarInfo.message + index}</Typography>
-      <Button onClick={() => snackbarActions.hide(snackbarInfo.id)}>닫기</Button>
+      <FlexColumn style={{ width: 'calc(100% - 70px)', overflow: 'hidden' }}>
+        <Typography>{snackbarInfo.title}</Typography>
+        {snackbarInfo.message && <Typography>{snackbarInfo.message}</Typography>}
+      </FlexColumn>
+      <FlexRow
+        style={{ position: 'absolute', right: 10, bottom: '50%', transform: 'translateY(50%)' }}
+      >
+        <Button onClick={() => snackbarActions.hide(snackbarInfo.id)}>닫기</Button>
+      </FlexRow>
     </FlexRow>
   );
 }

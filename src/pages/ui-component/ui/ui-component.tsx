@@ -99,8 +99,8 @@ export function UiComponent() {
         <Button
           onClick={() => {
             snackbarActions.show({
-              title: 'Snackbar Title',
-              message: 'Snackbar Message',
+              title: 'Snackbar Title Snackbar Title Snackbar Title Snackbar Title',
+              message: 'Snackbar Message Snackbar Message Snackbar Message Snackbar Message',
               duration: 3000,
             });
           }}
