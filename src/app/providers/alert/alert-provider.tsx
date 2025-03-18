@@ -1,6 +1,8 @@
 import { Toaster } from 'sonner';
 
 import { FaCircleCheck } from 'react-icons/fa6';
+import { IoIosWarning } from 'react-icons/io';
+import { MdError } from 'react-icons/md';
 
 import { AlertDialog } from 'shared/ui';
 import { colors } from '@/shared/constants';
@@ -11,7 +13,9 @@ export function AlertProvider() {
       <AlertDialog />
       <Toaster
         icons={{
-          success: <FaCircleCheck style={{ color: colors.success[400], fontSize: '1.1rem' }} />,
+          success: <FaCircleCheck style={{ color: colors.success[400], fontSize: '1.2rem' }} />,
+          warning: <IoIosWarning style={{ color: colors.warning[400], fontSize: '1.2rem' }} />,
+          error: <MdError style={{ color: colors.error[400], fontSize: '1.2rem' }} />,
         }}
       />
       {/*<Snackbar />*/}
