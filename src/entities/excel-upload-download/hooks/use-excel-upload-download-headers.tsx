@@ -13,6 +13,8 @@ import { ExcelEditModal } from '../ui/excel-edit-modal.tsx';
 import { useUpdateExcelMutation } from '@/entities/excel-upload-download';
 import { colors } from '@/shared/constants';
 import { toast } from 'sonner';
+import { handleAuthError } from '@/entities/auth';
+import { useNavigate } from 'react-router-dom';
 
 export function useExcelUploadDownloadHeaders() {
   const excelUploadDataHeaders: THeader<TExcelData>[] = [
@@ -246,11 +248,23 @@ export function useExcelUploadDownloadHeaders() {
     );
   };
 
+  const navigate = useNavigate();
   const excelEditModal = useModal();
   const excelEditModalOpen = async (rowData: TExcelInfo) => {
-    const response = await getExcelDataListApi({
+    let response = await getExcelDataListApi({
       idx: rowData.idx,
     });
+
+    await handleAuthError({
+      data: response,
+      onUnauthenticated: () => navigate('/', { replace: true }),
+      onRefreshSuccess: async () => {
+        response = await getExcelDataListApi({
+          idx: rowData.idx,
+        });
+      },
+    });
+
     const excelDataList = response.data?.excelDataList ?? [];
     const excelDataWithIndex: TExcelData[] = excelDataList.map((item, index) => ({
       ...item,
