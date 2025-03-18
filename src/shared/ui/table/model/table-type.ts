@@ -86,6 +86,8 @@ export type TDataWithCheck = {
   check: boolean;
 };
 
+export type TDataWithIndexCheck = TDataWithIndex & TDataWithCheck;
+
 export type TableBodyRowProps = {
   headers: THeader[];
   virtualItem: { index: number; start: number };

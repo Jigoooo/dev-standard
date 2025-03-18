@@ -6,4 +6,10 @@ export type {
   TTableContextLegacy,
   TTablePagination,
 } from './table-type-legacy.ts';
-export type { THeaderGroup, THeader, TDataWithIndex, TDataWithCheck } from './table-type.ts';
+export type {
+  THeaderGroup,
+  THeader,
+  TDataWithIndex,
+  TDataWithCheck,
+  TDataWithIndexCheck,
+} from './table-type.ts';
