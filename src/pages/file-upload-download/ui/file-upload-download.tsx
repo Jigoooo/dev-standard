@@ -20,7 +20,7 @@ import {
 
 export function FileUploadDownload() {
   const fileDownloadHeaders = useFileUploadDownloadHeaders();
-  const { dataList, handelDataList } = useTableData<TFileDownload>([]);
+  const { dataList, handelDataList, deleteDataList } = useTableData<TFileDownload>([]);
   const [fromToDateString, setFromToDateString] = useState({
     from: format(new Date(), 'yyyy-MM-dd'),
     to: format(addMonths(new Date(), 1), 'yyyy-MM-dd'),
@@ -78,6 +78,7 @@ export function FileUploadDownload() {
         tableHeaders={fileDownloadHeaders}
         tableDataList={dataList}
         handelDataList={handelDataList}
+        deleteDataList={deleteDataList}
         handleSyncCheckList={(checkedList) => {
           console.log(checkedList);
         }}

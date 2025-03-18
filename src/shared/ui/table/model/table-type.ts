@@ -12,6 +12,7 @@ export type TTableContext<TData> = {
   sortedHeaders: THeader<TData>[];
   dataList: (TData & TDataWithIndex)[];
   handelDataList: (index: string, key: string, value: any) => void;
+  deleteDataList: (index: string) => void;
   editMode: boolean;
   filterRowEnabled: boolean;
   onChangeFilterValue: (headerId: string, value: string) => void;
@@ -62,6 +63,7 @@ export type THeader<TData = Record<string, any>> = {
     cellData: any;
     rowData: TData;
     handleRowData: (key: keyof TData, value: any) => void;
+    deleteRow: () => void;
     setCellData: (value: any) => void;
   }) => ReactNode;
   pin: 'view' | 'left' | 'right';

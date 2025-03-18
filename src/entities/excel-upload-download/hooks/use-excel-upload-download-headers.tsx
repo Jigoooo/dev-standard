@@ -150,6 +150,28 @@ export function useExcelUploadDownloadHeaders() {
         filterValue: '',
       },
     },
+    {
+      id: 'button',
+      pin: 'right',
+      dataAlign: 'center',
+      label: '',
+      width: 80,
+      cell: ({ deleteRow }) => {
+        return (
+          <Button
+            buttonStyle={ButtonStyle.OUTLINED}
+            style={{ width: '100%', height: 30, fontSize: '0.76rem' }}
+            onClick={deleteRow}
+          >
+            삭제
+          </Button>
+        );
+      },
+      sorter: {
+        sortable: false,
+        direction: null,
+      },
+    },
   ];
 
   const excelEditModal = useModal();

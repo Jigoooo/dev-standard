@@ -46,6 +46,7 @@ export function Table<TData extends TDataWithIndex & Record<string, any>>({
   tableHeaders,
   tableDataList,
   handelDataList,
+  deleteDataList,
   handleSyncCheckList,
   tableStyle = {},
   dataKey = 'index',
@@ -57,6 +58,7 @@ export function Table<TData extends TDataWithIndex & Record<string, any>>({
   tableHeaders: THeader<TData>[];
   tableDataList: TData[];
   handelDataList: (index: string, key: string, value: any) => void;
+  deleteDataList: (index: string) => void;
   handleSyncCheckList?: (checkedList: string[]) => void;
   tableStyle?: Partial<TTableStyle>;
   dataKey?: keyof TData;
@@ -188,6 +190,7 @@ export function Table<TData extends TDataWithIndex & Record<string, any>>({
     sortedHeaders,
     dataList: sortedDataList,
     handelDataList,
+    deleteDataList,
     editMode,
     filterRowEnabled,
     onChangeFilterValue,

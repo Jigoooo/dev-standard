@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { FiSearch } from 'react-icons/fi';
 
-import { FlexRow, Input, SearchButton, Table, useTableData } from 'shared/ui';
+import { FlexRow, Input, SearchButton, Table, TDataWithIndexCheck, useTableData } from 'shared/ui';
 import { generateUsers } from '@/entities/grid-example/config/test-data.ts';
 import { RGridExample, useGridExampleHeaders } from '@/entities/grid-example';
 
@@ -15,11 +15,8 @@ export function GridExample() {
 
   const [users, setUsers] = useState<any[]>([]);
   const { gridExampleHeaderGroups, gridExampleHeaders } = useGridExampleHeaders();
-  const { dataList, handelDataList } = useTableData<
-    {
-      index: string;
-      check: boolean;
-    } & RGridExample
+  const { dataList, handelDataList, deleteDataList } = useTableData<
+    TDataWithIndexCheck & RGridExample
   >(users);
 
   // const handelSearchParams = (key: string, value: string) => {
@@ -86,6 +83,7 @@ export function GridExample() {
         tableHeaders={gridExampleHeaders}
         tableDataList={dataList}
         handelDataList={handelDataList}
+        deleteDataList={deleteDataList}
         handleSyncCheckList={(checkedList) => {
           console.log(checkedList);
         }}

@@ -25,7 +25,7 @@ export function ExcelEditModal<TData extends TDataWithIndex>({
   close: ({ excelNm, dataList }: { excelNm: string; dataList: TData[] }) => void;
 }) {
   const [name, setName] = useState(excelNm);
-  const { dataList, handelDataList } = useTableData<TData>(rows);
+  const { dataList, handelDataList, deleteDataList } = useTableData<TData>(rows);
 
   return (
     <FlexColumn style={{ width: '100%', maxWidth, height: '100%', gap: 12 }}>
@@ -37,6 +37,7 @@ export function ExcelEditModal<TData extends TDataWithIndex>({
         tableHeaders={headers}
         tableDataList={dataList}
         handelDataList={handelDataList}
+        deleteDataList={deleteDataList}
         editMode={true}
       />
       <FlexRow style={{ alignItems: 'center', justifyContent: 'flex-end', gap: 12 }}>

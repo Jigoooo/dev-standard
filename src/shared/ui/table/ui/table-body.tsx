@@ -360,7 +360,7 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
   hoverIndex: string | null;
   rowClickIndex: string | null;
 }) {
-  const { tableStyle, headers, handelDataList, isChecked, handleCheck, editMode } =
+  const { tableStyle, headers, handelDataList, deleteDataList, isChecked, handleCheck, editMode } =
     useTableContext();
 
   if (header.id === 'check' && (isChecked === undefined || handleCheck === undefined)) {
@@ -474,6 +474,9 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
           rowData: data,
           handleRowData: (key, value) => {
             handelDataList(index, key, value);
+          },
+          deleteRow: () => {
+            deleteDataList(index);
           },
           setCellData: (value) => {
             handelDataList(index, header.id, value);

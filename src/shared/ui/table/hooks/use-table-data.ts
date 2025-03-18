@@ -23,5 +23,11 @@ export function useTableData<TData extends TDataWithIndex>(tableDataList: TData[
     });
   };
 
-  return { dataList, setDataList, handelDataList };
+  const deleteDataList = (index: string) => {
+    setDataList((prevState) => {
+      return prevState.filter((item) => item.index !== index);
+    });
+  };
+
+  return { dataList, setDataList, handelDataList, deleteDataList };
 }

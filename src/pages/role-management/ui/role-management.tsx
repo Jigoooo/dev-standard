@@ -24,11 +24,14 @@ export function RoleManagement() {
   // console.log(currentMenuMemberAuth);
 
   const { roleUserHeaders, roleManagementHeaders } = useRoleManagementHeaders();
-  const { dataList, setDataList, handelDataList } = useTableData<TDataWithIndex & RRoleUser>([]);
+  const { dataList, setDataList, handelDataList, deleteDataList } = useTableData<
+    TDataWithIndex & RRoleUser
+  >([]);
   const {
     dataList: menuAuthList,
     setDataList: setMenuAuthList,
     handelDataList: handelMenuAuthList,
+    deleteDataList: deleteMenuAuthList,
   } = useTableData<TDataWithIndex & RMenuMemberAuth>([]);
 
   const [memberId, setMemberId] = useState('');
@@ -106,6 +109,7 @@ export function RoleManagement() {
           tableHeaders={roleUserHeaders}
           tableDataList={dataList}
           handelDataList={handelDataList}
+          deleteDataList={deleteDataList}
         />
         <Table
           tableStyle={{
@@ -116,6 +120,7 @@ export function RoleManagement() {
           filterRowEnabled={false}
           tableDataList={menuAuthList}
           handelDataList={handelMenuAuthList}
+          deleteDataList={deleteMenuAuthList}
         />
       </FlexRow>
     </FlexColumn>
