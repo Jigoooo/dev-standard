@@ -3,6 +3,7 @@ import { getExcelDataListApi } from '../api/excel-api.ts';
 import { TExcelInfo, TExcelData } from '../model/excel-upload-download-type.ts';
 import { ExcelEditModal } from '../ui/excel-edit-modal.tsx';
 import { useUpdateExcelMutation } from '@/entities/excel-upload-download';
+import { colors } from '@/shared/constants';
 
 export function useExcelUploadDownloadHeaders() {
   const updateExcelMutation = useUpdateExcelMutation();
@@ -163,7 +164,13 @@ export function useExcelUploadDownloadHeaders() {
         return (
           <Button
             buttonStyle={ButtonStyle.OUTLINED}
-            style={{ width: '100%', height: 30, fontSize: '0.76rem' }}
+            style={{
+              width: '100%',
+              height: 30,
+              fontSize: '0.76rem',
+              borderColor: colors.error[500],
+              color: colors.error[500],
+            }}
             onClick={deleteRow}
           >
             삭제
