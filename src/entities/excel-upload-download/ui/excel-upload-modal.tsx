@@ -10,11 +10,16 @@ import {
   ModalLayout,
   TDataWithIndex,
   TFile,
-  THeader,
   useModal,
 } from '@/shared/ui';
 import { isExtensionAllowed, readExcelFile } from '@/shared/lib';
-import { ExcelEditModal, RExcelData, useSaveExcelMutation } from '@/entities/excel-upload-download';
+import {
+  ExcelEditModal,
+  RExcelData,
+  useExcelUploadDownloadHeaders,
+  useSaveExcelMutation,
+} from '@/entities/excel-upload-download';
+import { TExcelData } from '@/entities/excel-upload-download/model/excel-upload-download-type.ts';
 
 const headerMappingObj = {
   orderNo: { index: 0, width: 150 },
@@ -31,6 +36,7 @@ const headerMappingObj = {
 export function ExcelUploadModal() {
   const [files, setFiles] = useState<TFile[]>([]);
   const [excelNm, setExcelNm] = useState('');
+  const { excelUploadDataHeaders } = useExcelUploadDownloadHeaders();
   const [excelDataList, setExcelDataList] = useState<(TDataWithIndex & RExcelData)[]>([]);
   const handleFiles = async (files: TFile[]) => {
     if (
@@ -57,15 +63,7 @@ export function ExcelUploadModal() {
   };
 
   const excelEditModal = useModal();
-  const excelEditModalOpen = ({
-    excelNm,
-    headers,
-    rows,
-  }: {
-    excelNm: string;
-    headers: THeader[];
-    rows: (TDataWithIndex & RExcelData)[];
-  }) => {
+  const excelEditModalOpen = ({ excelNm, rows }: { excelNm: string; rows: TExcelData[] }) => {
     excelEditModal.open(({ overlayRef, close }) => {
       return (
         <ModalLayout
@@ -76,7 +74,7 @@ export function ExcelUploadModal() {
         >
           <ExcelEditModal
             excelNm={excelNm}
-            headers={headers}
+            headers={excelUploadDataHeaders}
             rows={rows}
             maxWidth={1200}
             close={(excelNm, dataList) => {
@@ -117,49 +115,7 @@ export function ExcelUploadModal() {
       return;
     }
 
-    const [excelHeaders, ...excelRows] = readData.rows;
-
-    const rowHeaders: THeader[] = excelHeaders.map((row, index): THeader => {
-      const label = row.toString();
-
-      const findHeader = Object.entries(headerMappingObj).find(
-        ([, value]) => value.index === index,
-      );
-
-      const id = findHeader?.[0] as keyof typeof headerMappingObj;
-      const width = findHeader?.[1].width as number;
-
-      return {
-        id,
-        label,
-        width,
-        pin: 'view',
-        headerAlign: 'left',
-        dataAlign: 'left',
-        sorter: {
-          sortable: false,
-        },
-        filter: {
-          filterType: 'text',
-          filterValue: '',
-        },
-      };
-    });
-
-    const rowHeadersWithIndex: THeader[] = [
-      {
-        id: 'index',
-        label: '',
-        width: 60,
-        pin: 'left',
-        headerAlign: 'left',
-        dataAlign: 'right',
-        sorter: {
-          sortable: false,
-        },
-      },
-      ...rowHeaders,
-    ];
+    const excelRows = readData.rows.slice(1);
 
     const rows = excelRows.map((rows, rowIndex) => {
       const entries = Object.fromEntries(
@@ -195,7 +151,6 @@ export function ExcelUploadModal() {
 
     excelEditModalOpen({
       excelNm: excelNm || files[0].file.name,
-      headers: rowHeadersWithIndex,
       rows: excelDataList.length > 0 ? excelDataList : rows,
     });
   };

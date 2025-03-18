@@ -27,7 +27,7 @@ export function ExcelUploadDownload() {
     index: (index + 1).toString(),
   }));
 
-  const fileDownloadHeaders = useExcelUploadDownloadHeaders();
+  const { excelUploadListHeaders } = useExcelUploadDownloadHeaders();
   const { dataList, handelDataList } = useTableData<TExcelInfo>(excelInfoListWithIndex);
   const [fromToDateString, setFromToDateString] = useState({
     from: format(new Date(), 'yyyy-MM-dd'),
@@ -83,7 +83,7 @@ export function ExcelUploadDownload() {
           showVerticalLines: true,
           tableContainerAutoWidth: true,
         }}
-        tableHeaders={fileDownloadHeaders}
+        tableHeaders={excelUploadListHeaders}
         tableDataList={dataList}
         handelDataList={handelDataList}
         handleSyncCheckList={(checkedList) => {

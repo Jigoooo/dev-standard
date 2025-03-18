@@ -18,7 +18,7 @@ export function ExcelEditModal<TData extends TDataWithIndex>({
   close,
 }: {
   excelNm: string;
-  headers: THeader[];
+  headers: THeader<TData>[];
   rows: TData[];
   maxWidth: number;
   close: (excelNm: string, dataList: TData[]) => void;

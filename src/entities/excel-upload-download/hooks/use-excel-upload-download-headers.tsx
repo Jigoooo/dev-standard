@@ -1,8 +1,8 @@
 import { Button, ButtonStyle, THeader } from '@/shared/ui';
-import { TExcelInfo } from '../model/';
-import { getExcelDataListApi } from '@/entities/excel-upload-download/api/excel-api.ts';
+import { getExcelDataListApi } from '../api/excel-api.ts';
+import { TExcelInfo, TExcelData } from '../model/excel-upload-download-type.ts';
 
-export function useExcelUploadDownloadHeaders(): THeader<TExcelInfo>[] {
+export function useExcelUploadDownloadHeaders() {
   // const excelEditModal = useModal();
   const excelEditModalOpen = async (rowData: TExcelInfo) => {
     const response = await getExcelDataListApi({
@@ -36,7 +36,7 @@ export function useExcelUploadDownloadHeaders(): THeader<TExcelInfo>[] {
     // });
   };
 
-  return [
+  const excelUploadListHeaders: THeader<TExcelInfo>[] = [
     {
       id: 'index',
       pin: 'left',
@@ -145,4 +145,154 @@ export function useExcelUploadDownloadHeaders(): THeader<TExcelInfo>[] {
       },
     },
   ];
+
+  const excelUploadDataHeaders: THeader<TExcelData>[] = [
+    {
+      id: 'index',
+      pin: 'left',
+      dataAlign: 'right',
+      label: '',
+      width: 60,
+      sorter: {
+        sortable: false,
+      },
+    },
+    {
+      id: 'orderNo',
+      pin: 'view',
+      dataAlign: 'left',
+      label: '주문번호',
+      width: 150,
+      sorter: {
+        sortable: true,
+        direction: null,
+      },
+      filter: {
+        filterType: 'text',
+        filterValue: '',
+      },
+    },
+    {
+      id: 'productCode',
+      pin: 'view',
+      dataAlign: 'left',
+      label: '상품코드',
+      width: 150,
+      sorter: {
+        sortable: true,
+        direction: null,
+      },
+      filter: {
+        filterType: 'text',
+        filterValue: '',
+      },
+    },
+    {
+      id: 'productName',
+      pin: 'view',
+      dataAlign: 'left',
+      label: '상품명',
+      width: 150,
+      sorter: {
+        sortable: true,
+        direction: null,
+      },
+      filter: {
+        filterType: 'text',
+        filterValue: '',
+      },
+    },
+    {
+      id: 'quantity',
+      pin: 'view',
+      dataAlign: 'left',
+      label: '수량',
+      width: 80,
+      sorter: {
+        sortable: true,
+        direction: null,
+      },
+      filter: {
+        filterType: 'text',
+        filterValue: '',
+      },
+    },
+    {
+      id: 'price',
+      pin: 'view',
+      dataAlign: 'left',
+      label: '단가',
+      width: 100,
+      sorter: {
+        sortable: true,
+        direction: null,
+      },
+      filter: {
+        filterType: 'text',
+        filterValue: '',
+      },
+    },
+    {
+      id: 'totalAmount',
+      pin: 'view',
+      dataAlign: 'left',
+      label: '가격',
+      width: 100,
+      sorter: {
+        sortable: true,
+        direction: null,
+      },
+      filter: {
+        filterType: 'text',
+        filterValue: '',
+      },
+    },
+    {
+      id: 'orderDate',
+      pin: 'view',
+      dataAlign: 'left',
+      label: '주문일자',
+      width: 120,
+      sorter: {
+        sortable: true,
+        direction: null,
+      },
+      filter: {
+        filterType: 'text',
+        filterValue: '',
+      },
+    },
+    {
+      id: 'customerName',
+      pin: 'view',
+      dataAlign: 'left',
+      label: '주문자',
+      width: 100,
+      sorter: {
+        sortable: true,
+        direction: null,
+      },
+      filter: {
+        filterType: 'text',
+        filterValue: '',
+      },
+    },
+    {
+      id: 'status',
+      pin: 'view',
+      dataAlign: 'left',
+      label: '상태',
+      width: 100,
+      sorter: {
+        sortable: true,
+        direction: null,
+      },
+      filter: {
+        filterType: 'text',
+        filterValue: '',
+      },
+    },
+  ];
+
+  return { excelUploadListHeaders, excelUploadDataHeaders };
 }
