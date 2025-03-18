@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { toast } from 'sonner';
 
 import {
   Button,
@@ -17,7 +18,6 @@ import {
   ModalLayout,
   MultiSelect,
   Select,
-  snackbarActions,
   Switch,
   Textarea,
   Tooltip,
@@ -98,10 +98,11 @@ export function UiComponent() {
         <Typography style={{ width: 200, fontWeight: 500 }}>Open modal: </Typography>
         <Button
           onClick={() => {
-            snackbarActions.show({
-              title: 'Snackbar Title',
-              message: 'Snackbar Message Snackbar Message Snackbar Message Snackbar Message',
-              duration: 3000,
+            toast.success('Event has been created', {
+              style: {
+                background: '#fff',
+                color: '#000',
+              },
             });
           }}
           style={{ backgroundColor: '#5ba2ed' }}

@@ -6,23 +6,23 @@ export enum SnackbarType {
   LOADING = 'loading',
 }
 
-export interface SnackBarInfo {
+export type SnackBarInfo = {
   id: string;
   title: string;
   message?: string;
   duration?: number;
   type?: SnackbarType;
-}
+};
 
-export interface SnackbarActions {
+export type SnackbarActions = {
   show: (snackBarInfo: Omit<SnackBarInfo, 'id'>) => void;
   hide: (id: string) => void;
-}
+};
 
-export interface SnackBarStates {
+export type SnackBarStates = {
   snackbarInfos: SnackBarInfo[];
-}
+};
 
-export interface SnackBarStoreInterface extends SnackBarStates {
+export type TSnackBarStore = SnackBarStates & {
   actions: SnackbarActions;
-}
+};

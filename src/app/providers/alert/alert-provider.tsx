@@ -1,10 +1,13 @@
-import { AlertDialog, Snackbar } from 'shared/ui';
+import { Toaster } from 'sonner';
+
+import { AlertDialog } from 'shared/ui';
 
 export function AlertProvider() {
   return (
     <>
       <AlertDialog />
-      <Snackbar />
+      <Toaster />
+      {/*<Snackbar />*/}
     </>
   );
 }
