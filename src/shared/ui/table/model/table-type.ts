@@ -59,6 +59,8 @@ export type THeader<TData = Record<string, any>> = {
     cellData,
     rowData,
     setCellData,
+    handleRowData,
+    deleteRow,
   }: {
     cellData: any;
     rowData: TData;
@@ -66,6 +68,7 @@ export type THeader<TData = Record<string, any>> = {
     deleteRow: () => void;
     setCellData: (value: any) => void;
   }) => ReactNode;
+  formatter?: ({ cellData, rowData }: { cellData: any; rowData: TData }) => string | number;
   pin: 'view' | 'left' | 'right';
   headerAlign?: 'left' | 'center' | 'right';
   dataAlign: 'left' | 'center' | 'right';

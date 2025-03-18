@@ -516,7 +516,14 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
             textOverflow: 'ellipsis',
           }}
         >
-          {header.id === 'index' ? rowIndex + 1 : cellData}
+          {header.id === 'index'
+            ? rowIndex + 1
+            : header.formatter
+              ? header.formatter({
+                  cellData,
+                  rowData: data,
+                })
+              : cellData}
         </Typography>
       )}
     </FlexRow>

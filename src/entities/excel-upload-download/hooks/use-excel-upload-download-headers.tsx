@@ -15,6 +15,7 @@ import { colors } from '@/shared/constants';
 import { toast } from 'sonner';
 import { handleAuthError } from '@/entities/auth';
 import { useNavigate } from 'react-router-dom';
+import { format } from 'date-fns';
 
 export function useExcelUploadDownloadHeaders() {
   const excelUploadDataHeaders: THeader<TExcelData>[] = [
@@ -331,7 +332,11 @@ export function useExcelUploadDownloadHeaders() {
       pin: 'view',
       dataAlign: 'left',
       label: '업로드 일자',
-      width: 150,
+      width: 180,
+      formatter: ({ cellData }) => {
+        const date = new Date(cellData);
+        return format(date, 'yyyy-MM-dd HH:mm:ss');
+      },
       sorter: {
         sortable: true,
         direction: null,
@@ -361,7 +366,11 @@ export function useExcelUploadDownloadHeaders() {
       pin: 'view',
       dataAlign: 'left',
       label: '수정 일자',
-      width: 150,
+      width: 180,
+      formatter: ({ cellData }) => {
+        const date = new Date(cellData);
+        return format(date, 'yyyy-MM-dd HH:mm:ss');
+      },
       sorter: {
         sortable: true,
         direction: null,
