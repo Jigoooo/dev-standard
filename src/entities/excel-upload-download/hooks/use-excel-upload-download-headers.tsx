@@ -263,6 +263,8 @@ export function useExcelUploadDownloadHeaders() {
         response = await getExcelDataListApi({
           idx: rowData.idx,
         });
+
+        console.log('response: ', response);
       },
     });
 
