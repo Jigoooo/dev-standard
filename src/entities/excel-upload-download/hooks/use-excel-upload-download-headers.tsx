@@ -1,13 +1,11 @@
-import { Button, ButtonStyle, ModalLayout, THeader, useModal } from '@/shared/ui';
+import { Button, ButtonStyle, dialogActions, ModalLayout, THeader, useModal } from '@/shared/ui';
 import { getExcelDataListApi } from '../api/excel-api.ts';
-import { TExcelInfo, TExcelData } from '../model/excel-upload-download-type.ts';
+import { TExcelInfo, TExcelData, RExcelData } from '../model/excel-upload-download-type.ts';
 import { ExcelEditModal } from '../ui/excel-edit-modal.tsx';
 import { useUpdateExcelMutation } from '@/entities/excel-upload-download';
 import { colors } from '@/shared/constants';
 
 export function useExcelUploadDownloadHeaders() {
-  const updateExcelMutation = useUpdateExcelMutation();
-
   const excelUploadDataHeaders: THeader<TExcelData>[] = [
     {
       id: 'index',
@@ -184,13 +182,57 @@ export function useExcelUploadDownloadHeaders() {
     },
   ];
 
+  const updateExcelMutation = useUpdateExcelMutation();
+  const updateExcel = ({
+    excelNm,
+    rowData,
+    excelDataList,
+    dataList,
+    close,
+  }: {
+    excelNm: string;
+    rowData: TExcelInfo;
+    excelDataList: RExcelData[];
+    dataList: TExcelData[];
+    close: () => void;
+  }) => {
+    const dataListWithoutIndex = dataList.map((item) => {
+      const { index: _index, ...rest } = item;
+      return rest;
+    });
+
+    const deletedDataList = excelDataList
+      .filter(
+        (originalRow) =>
+          originalRow.rowIdx !== undefined &&
+          !dataList.some((updatedRow) => updatedRow.rowIdx === originalRow.rowIdx),
+      )
+      .map((deletedData) => deletedData.rowIdx ?? -1);
+
+    updateExcelMutation.mutate(
+      {
+        idx: rowData.idx,
+        excelNm,
+        excelDataList: dataListWithoutIndex,
+        deleteDataList: deletedDataList,
+      },
+      {
+        onSuccess: (data) => {
+          if (data.success) {
+            close();
+          }
+        },
+      },
+    );
+  };
+
   const excelEditModal = useModal();
   const excelEditModalOpen = async (rowData: TExcelInfo) => {
     const response = await getExcelDataListApi({
       idx: rowData.idx,
     });
     const excelDataList = response.data?.excelDataList ?? [];
-    const excelDataWithIndex = excelDataList.map((item, index) => ({
+    const excelDataWithIndex: TExcelData[] = excelDataList.map((item, index) => ({
       ...item,
       index: (index + 1).toString(),
     }));
@@ -209,34 +251,14 @@ export function useExcelUploadDownloadHeaders() {
             rows={excelDataWithIndex}
             maxWidth={1200}
             close={({ excelNm, dataList }) => {
-              const dataListWithoutIndex = dataList.map((item) => {
-                const { index: _index, ...rest } = item;
-                return rest;
+              dialogActions.open({
+                title: '수정하시겠습니까?',
+                withCancel: true,
+                overlayClose: true,
+                onConfirm: () => {
+                  updateExcel({ excelNm, rowData, excelDataList, dataList, close });
+                },
               });
-
-              const deletedDataList = excelDataList
-                .filter(
-                  (originalRow) =>
-                    originalRow.rowIdx !== undefined &&
-                    !dataList.some((updatedRow) => updatedRow.rowIdx === originalRow.rowIdx),
-                )
-                .map((deletedData) => deletedData.rowIdx ?? -1);
-
-              updateExcelMutation.mutate(
-                {
-                  idx: rowData.idx,
-                  excelNm,
-                  excelDataList: dataListWithoutIndex,
-                  deleteDataList: deletedDataList,
-                },
-                {
-                  onSuccess: (data) => {
-                    if (data.success) {
-                      close();
-                    }
-                  },
-                },
-              );
             }}
           />
         </ModalLayout>
