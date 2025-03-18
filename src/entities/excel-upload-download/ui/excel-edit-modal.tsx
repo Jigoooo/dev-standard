@@ -6,6 +6,7 @@ import {
   Table,
   TDataWithIndex,
   THeader,
+  Typography,
   useTableData,
 } from '@/shared/ui';
 import { useState } from 'react';
@@ -21,7 +22,7 @@ export function ExcelEditModal<TData extends TDataWithIndex>({
   headers: THeader<TData>[];
   rows: TData[];
   maxWidth: number;
-  close: (excelNm: string, dataList: TData[]) => void;
+  close: ({ excelNm, dataList }: { excelNm: string; dataList: TData[] }) => void;
 }) {
   const [name, setName] = useState(excelNm);
   const { dataList, handelDataList } = useTableData<TData>(rows);
@@ -38,9 +39,20 @@ export function ExcelEditModal<TData extends TDataWithIndex>({
         handelDataList={handelDataList}
         editMode={true}
       />
-      <FlexRow style={{ justifyContent: 'flex-end' }}>
-        <Input value={name} onChange={(event) => setName(event.target.value)} />
-        <Button style={{ width: 80 }} onClick={() => close(name, dataList)}>
+      <FlexRow style={{ alignItems: 'center', justifyContent: 'flex-end', gap: 12 }}>
+        <FlexRow style={{ alignItems: 'center', gap: 4 }}>
+          <Typography style={{ fontSize: '0.9rem' }}>엑셀명: </Typography>
+          <Input value={name} onChange={(event) => setName(event.target.value)} />
+        </FlexRow>
+        <Button
+          style={{ width: 80 }}
+          onClick={() =>
+            close({
+              excelNm: name,
+              dataList,
+            })
+          }
+        >
           저장
         </Button>
       </FlexRow>

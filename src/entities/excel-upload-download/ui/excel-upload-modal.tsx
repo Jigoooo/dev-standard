@@ -77,7 +77,7 @@ export function ExcelUploadModal() {
             headers={excelUploadDataHeaders}
             rows={rows}
             maxWidth={1200}
-            close={(excelNm, dataList) => {
+            close={({ excelNm, dataList }) => {
               setExcelNm(excelNm);
               setExcelDataList(dataList);
               close();

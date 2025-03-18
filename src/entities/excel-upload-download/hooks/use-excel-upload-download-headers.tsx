@@ -176,7 +176,8 @@ export function useExcelUploadDownloadHeaders() {
             headers={excelUploadDataHeaders}
             rows={excelDataWithIndex}
             maxWidth={1200}
-            close={(dataList) => {
+            close={({ excelNm, dataList }) => {
+              console.log(excelNm);
               console.log(dataList);
               close();
             }}
