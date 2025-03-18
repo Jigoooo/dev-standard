@@ -19,6 +19,7 @@ export function AlertProvider() {
             borderColor: '#333333',
             fontSize: '0.9rem',
           },
+          duration: 5000,
         }}
         icons={{
           success: <FaCircleCheck style={{ color: colors.success[400], fontSize: '1.2rem' }} />,

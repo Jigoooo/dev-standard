@@ -94,9 +94,7 @@ export function RoleManagement() {
               return;
             }
 
-            toast.success('권한이 수정되었습니다.', {
-              duration: 2000,
-            });
+            toast.success('권한이 수정되었습니다.');
           },
         });
       },

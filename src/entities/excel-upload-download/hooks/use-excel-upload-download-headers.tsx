@@ -1,9 +1,18 @@
-import { Button, ButtonStyle, dialogActions, ModalLayout, THeader, useModal } from '@/shared/ui';
+import {
+  Button,
+  ButtonStyle,
+  dialogActions,
+  DialogType,
+  ModalLayout,
+  THeader,
+  useModal,
+} from '@/shared/ui';
 import { getExcelDataListApi } from '../api/excel-api.ts';
 import { TExcelInfo, TExcelData, RExcelData } from '../model/excel-upload-download-type.ts';
 import { ExcelEditModal } from '../ui/excel-edit-modal.tsx';
 import { useUpdateExcelMutation } from '@/entities/excel-upload-download';
 import { colors } from '@/shared/constants';
+import { toast } from 'sonner';
 
 export function useExcelUploadDownloadHeaders() {
   const excelUploadDataHeaders: THeader<TExcelData>[] = [
@@ -218,9 +227,20 @@ export function useExcelUploadDownloadHeaders() {
       },
       {
         onSuccess: (data) => {
-          if (data.success) {
-            close();
+          if (!data.success) {
+            dialogActions.open({
+              title: '엑셀 수정 실패',
+              contents: data?.msg ?? '관리자에게 문의해 주세요.',
+              dialogType: DialogType.ERROR,
+            });
+            return;
           }
+
+          toast.success('엑셀 수정 성공', {
+            duration: 3000,
+          });
+
+          close();
         },
       },
     );

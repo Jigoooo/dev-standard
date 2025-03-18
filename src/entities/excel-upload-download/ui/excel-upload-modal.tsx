@@ -20,6 +20,7 @@ import {
   useSaveExcelMutation,
 } from '@/entities/excel-upload-download';
 import { TExcelData } from '@/entities/excel-upload-download/model/excel-upload-download-type.ts';
+import { toast } from 'sonner';
 
 const headerMappingObj = {
   orderNo: { index: 0, width: 150 },
@@ -176,9 +177,19 @@ export function ExcelUploadModal({ close }: { close: () => void }) {
           },
           {
             onSuccess: (data) => {
-              if (data.success) {
-                close();
+              if (!data.success) {
+                dialogActions.open({
+                  title: '엑셀 등록 실패',
+                  contents: data?.msg ?? '관리자에게 문의해 주세요.',
+                  dialogType: DialogType.ERROR,
+                });
+                return;
               }
+
+              toast.success('엑셀 등록 성공', {
+                duration: 3000,
+              });
+              close();
             },
           },
         );
