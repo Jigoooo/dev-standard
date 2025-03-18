@@ -1,4 +1,4 @@
-export * from './snack-bar';
+export * from './snackbar';
 export * from './modal';
 export * from './dialog';
 export * from './error';

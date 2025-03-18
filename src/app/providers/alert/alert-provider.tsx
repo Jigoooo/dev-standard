@@ -4,7 +4,7 @@ export function AlertProvider() {
   return (
     <>
       <AlertDialog />
-      {/*{mobileSizeMatches ? <SnackBar /> : <FramerMotionNotification />}*/}
+      {/*{mobileSizeMatches ? <Snackbar /> : <FramerMotionNotification />}*/}
     </>
   );
 }
