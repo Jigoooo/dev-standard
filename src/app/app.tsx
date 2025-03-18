@@ -5,7 +5,7 @@ import ReactGA from 'react-ga4';
 import { useEffect } from 'react';
 import { preconnect } from 'react-dom';
 
-import { QueryProvider, withRouterMenuHoc, ErrorProvider } from '@/app/providers';
+import { withRouterMenuHoc } from '@/app/providers';
 import { useRouterMenuContext } from '@/entities/router';
 
 function App() {
@@ -24,13 +24,7 @@ function App() {
   const { routes } = useRouterMenuContext();
   const router = createBrowserRouter(routes);
 
-  return (
-    <QueryProvider>
-      <ErrorProvider>
-        <RouterProvider router={router} />
-      </ErrorProvider>
-    </QueryProvider>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default withRouterMenuHoc(App);

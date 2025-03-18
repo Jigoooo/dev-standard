@@ -1,6 +1,12 @@
 import { ComponentType } from 'react';
 import { RouterMenuContextWrapper } from '@/entities/router';
-import { AlertProvider, LoadingProvider, ThemeProvider } from '@/app/providers';
+import {
+  AlertProvider,
+  ErrorProvider,
+  LoadingProvider,
+  QueryProvider,
+  ThemeProvider,
+} from '@/app/providers';
 
 export function withRouterMenuHoc<P extends object>(
   WrappedComponent: ComponentType<P>,
@@ -10,9 +16,13 @@ export function withRouterMenuHoc<P extends object>(
       <ThemeProvider>
         <LoadingProvider />
         <AlertProvider />
-        <RouterMenuContextWrapper>
-          <WrappedComponent {...props} />
-        </RouterMenuContextWrapper>
+        <QueryProvider>
+          <ErrorProvider>
+            <RouterMenuContextWrapper>
+              <WrappedComponent {...props} />
+            </RouterMenuContextWrapper>
+          </ErrorProvider>
+        </QueryProvider>
       </ThemeProvider>
     );
   };
