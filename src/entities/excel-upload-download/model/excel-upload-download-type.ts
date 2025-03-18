@@ -9,8 +9,7 @@ export type RFileDownload = {
 
 export type TFileDownload = TDataWithIndex & RFileDownload;
 
-export type RExcelData = {
-  rowIdx?: number;
+export type RExcelDataHeader = {
   orderNo: string;
   productCode: string;
   productName: string;
@@ -21,6 +20,10 @@ export type RExcelData = {
   customerName: string;
   status: string;
 };
+
+export type RExcelData = {
+  rowIdx?: number;
+} & RExcelDataHeader;
 
 export type PExcelInfoList = {
   excelNm?: string;
