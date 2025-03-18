@@ -57,7 +57,15 @@ export function ExcelUploadModal() {
   };
 
   const excelEditModal = useModal();
-  const excelEditModalOpen = ({ headers, rows }: { headers: THeader[]; rows: any[] }) => {
+  const excelEditModalOpen = ({
+    excelNm,
+    headers,
+    rows,
+  }: {
+    excelNm: string;
+    headers: THeader[];
+    rows: (TDataWithIndex & RExcelData)[];
+  }) => {
     excelEditModal.open(({ overlayRef, close }) => {
       return (
         <ModalLayout
@@ -67,10 +75,12 @@ export function ExcelUploadModal() {
           close={close}
         >
           <ExcelEditModal
-            maxWidth={1200}
+            excelNm={excelNm}
             headers={headers}
             rows={rows}
-            close={(dataList) => {
+            maxWidth={1200}
+            close={(excelNm, dataList) => {
+              setExcelNm(excelNm);
               setExcelDataList(dataList);
               close();
             }}
@@ -106,8 +116,6 @@ export function ExcelUploadModal() {
       });
       return;
     }
-
-    console.log(readData);
 
     const [excelHeaders, ...excelRows] = readData.rows;
 
@@ -186,6 +194,7 @@ export function ExcelUploadModal() {
     }
 
     excelEditModalOpen({
+      excelNm: excelNm || files[0].file.name,
       headers: rowHeadersWithIndex,
       rows: excelDataList.length > 0 ? excelDataList : rows,
     });
