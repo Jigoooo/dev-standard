@@ -1,3 +1,7 @@
+import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
+import { format } from 'date-fns';
+
 import {
   Button,
   ButtonStyle,
@@ -12,10 +16,7 @@ import { TExcelInfo, TExcelData, RExcelData } from '../model/excel-upload-downlo
 import { ExcelEditModal } from '../ui/excel-edit-modal.tsx';
 import { useUpdateExcelMutation } from '@/entities/excel-upload-download';
 import { colors } from '@/shared/constants';
-import { toast } from 'sonner';
 import { handleAuthError } from '@/entities/auth';
-import { useNavigate } from 'react-router-dom';
-import { format } from 'date-fns';
 
 export function useExcelUploadDownloadHeaders() {
   const excelUploadDataHeaders: THeader<TExcelData>[] = [
@@ -256,17 +257,17 @@ export function useExcelUploadDownloadHeaders() {
       idx: rowData.idx,
     });
 
-    await handleAuthError({
+    const isError = await handleAuthError({
       data: response,
       onUnauthenticated: () => navigate('/', { replace: true }),
-      onRefreshSuccess: async () => {
-        response = await getExcelDataListApi({
-          idx: rowData.idx,
-        });
-
-        console.log('response: ', response);
-      },
+      onRefreshSuccess: () => {},
     });
+
+    if (isError) {
+      response = await getExcelDataListApi({
+        idx: rowData.idx,
+      });
+    }
 
     const excelDataList = response.data?.excelDataList ?? [];
     const excelDataWithIndex: TExcelData[] = excelDataList.map((item, index) => ({
