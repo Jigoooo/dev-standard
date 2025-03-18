@@ -115,20 +115,57 @@ function SnackbarItem({
       animate={{
         opacity: 1,
         scale: isHovered ? 1 : 1 - relativeIndex * 0.05,
-        y: isHovered ? relativeIndex * (-SNACKBAR_HEIGHT - 10) - 25 : relativeIndex * -20,
+        y: isHovered ? relativeIndex * (-SNACKBAR_HEIGHT - 10) - 10 : relativeIndex * -20,
         rotateX: isHovered ? 0 : -relativeIndex * 5,
       }}
       exit={{ opacity: 0, y: 50, scale: 0.9, rotateX: -10 }}
       transition={{ type: 'spring', stiffness: 320, damping: 45 }}
     >
-      <FlexColumn style={{ width: 'calc(100% - 70px)', overflow: 'hidden' }}>
-        <Typography>{snackbarInfo.title}</Typography>
-        {snackbarInfo.message && <Typography>{snackbarInfo.message}</Typography>}
+      <FlexColumn
+        style={{
+          justifyContent: 'center',
+          width: 'calc(100% - 75px)',
+          maxWidth: 'calc(100% - 75px)',
+          overflow: 'hidden',
+          paddingLeft: 18,
+          paddingBlock: 12,
+        }}
+      >
+        <Typography
+          style={{
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis',
+            fontSize: '0.9rem',
+            fontWeight: 500,
+          }}
+        >
+          {snackbarInfo.title}
+        </Typography>
+        {snackbarInfo.message && (
+          <Typography
+            style={{
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+              textOverflow: 'ellipsis',
+              fontSize: '0.84rem',
+              fontWeight: 400,
+              color: '#999999',
+            }}
+          >
+            {snackbarInfo.message}
+          </Typography>
+        )}
       </FlexColumn>
       <FlexRow
-        style={{ position: 'absolute', right: 10, bottom: '50%', transform: 'translateY(50%)' }}
+        style={{ position: 'absolute', right: 15, bottom: '50%', transform: 'translateY(50%)' }}
       >
-        <Button onClick={() => snackbarActions.hide(snackbarInfo.id)}>닫기</Button>
+        <Button
+          onClick={() => snackbarActions.hide(snackbarInfo.id)}
+          style={{ fontSize: '0.8rem', height: 24, borderRadius: 4 }}
+        >
+          닫기
+        </Button>
       </FlexRow>
     </FlexRow>
   );
