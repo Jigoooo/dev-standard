@@ -31,7 +31,7 @@ export function useTokenCheckQuery() {
   const location = useLocation();
   const isSignInPage = location.pathname === Router.SIGN_IN;
 
-  const interval = 1000 * 60 * 3; // 3분마다 체크
+  const interval = 1000 * 30; // 3분마다 체크
 
   // const [enabled, setEnabled] = useState(false);
   //
