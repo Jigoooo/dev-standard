@@ -18,8 +18,8 @@ export function Snackbar() {
           margin: 0,
           position: 'fixed',
           display: 'flex',
-          bottom: 0,
-          right: 0,
+          bottom: 20,
+          right: 20,
           top: 0,
           flexDirection: 'column',
           listStyle: 'none',
@@ -51,12 +51,17 @@ function SnackbarItem({ snackbarInfo, index }: { snackbarInfo: SnackBarInfo; ind
         backgroundColor: '#ffffff',
         borderRadius: 8,
         boxShadow: '0 2px 10px rgba(0, 0, 0, 0.15)',
-        marginBottom: -30,
-        zIndex: 100 + index,
+        zIndex: zIndex.snackbar + index,
       }}
-      initial={{ opacity: 0, y: 50, scale: 0.3 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 50 }}
+      transition={{
+        type: 'spring',
+        stiffness: 300,
+        damping: 25,
+        duration: 0.3,
+      }}
     >
       <Typography>{snackbarInfo.title}</Typography>
       <Typography>{snackbarInfo.message}</Typography>
