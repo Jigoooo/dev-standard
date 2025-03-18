@@ -17,6 +17,7 @@ import { ExcelEditModal } from '../ui/excel-edit-modal.tsx';
 import { useUpdateExcelMutation } from '@/entities/excel-upload-download';
 import { colors } from '@/shared/constants';
 import { handleAuthError } from '@/entities/auth';
+import { formatDateString, thousandSeparator } from '@/shared/lib';
 
 export function useExcelUploadDownloadHeaders() {
   const excelUploadDataHeaders: THeader<TExcelData>[] = [
@@ -78,9 +79,12 @@ export function useExcelUploadDownloadHeaders() {
     {
       id: 'quantity',
       pin: 'view',
-      dataAlign: 'left',
+      dataAlign: 'right',
       label: '수량',
       width: 80,
+      formatter: ({ cellData }) => {
+        return thousandSeparator(cellData);
+      },
       sorter: {
         sortable: true,
         direction: null,
@@ -93,9 +97,12 @@ export function useExcelUploadDownloadHeaders() {
     {
       id: 'price',
       pin: 'view',
-      dataAlign: 'left',
+      dataAlign: 'right',
       label: '단가',
       width: 100,
+      formatter: ({ cellData }) => {
+        return thousandSeparator(cellData);
+      },
       sorter: {
         sortable: true,
         direction: null,
@@ -108,9 +115,12 @@ export function useExcelUploadDownloadHeaders() {
     {
       id: 'totalAmount',
       pin: 'view',
-      dataAlign: 'left',
+      dataAlign: 'right',
       label: '가격',
       width: 100,
+      formatter: ({ cellData }) => {
+        return thousandSeparator(cellData);
+      },
       sorter: {
         sortable: true,
         direction: null,
@@ -126,6 +136,9 @@ export function useExcelUploadDownloadHeaders() {
       dataAlign: 'left',
       label: '주문일자',
       width: 120,
+      formatter: ({ cellData }) => {
+        return formatDateString(cellData, '-');
+      },
       sorter: {
         sortable: true,
         direction: null,

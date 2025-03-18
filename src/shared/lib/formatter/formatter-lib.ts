@@ -1,6 +1,6 @@
 import { format, parse, setHours, setMinutes } from 'date-fns';
 
-export function formatPhoneNumber(phoneNumber: string) {
+export function formatPhoneNumber(phoneNumber: string | number) {
   if (!phoneNumber) return '';
 
   const cleaned = ('' + phoneNumber).replace(/\D/g, '');
@@ -32,32 +32,32 @@ export function thousandSeparator(number: string | number) {
   return Number(removeComma).toLocaleString('ko-KR');
 }
 
-export function formatDateString(dateStr: string, formatter: string = '.') {
-  if (!dateStr || !formatter) {
+export function formatDateString(date: string | number, formatter: string = '.') {
+  if (!date || !formatter) {
     return '';
   }
 
-  const cleaned = dateStr.replace(/\D/g, '');
+  const cleaned = ('' + date).replace(/\D/g, '');
 
   if (cleaned.length === 8) {
     return cleaned.replace(/(\d{4})(\d{2})(\d{2})/, `$1${formatter}$2${formatter}$3`);
   } else if (cleaned.length === 6) {
     return cleaned.replace(/(\d{2})(\d{2})(\d{2})/, `$1${formatter}$2${formatter}$3`);
   } else {
-    return dateStr;
+    return '' + date;
   }
 }
 
-export function formatBusinessNumberWithRegex(input: string) {
-  const cleanInput = input.replace(/\D/g, '').substring(0, 10);
+export function formatBusinessNumberWithRegex(input: string | number) {
+  const cleanInput = ('' + input).replace(/\D/g, '').substring(0, 10);
 
   return cleanInput.replace(/^(\d{0,3})(\d{0,2})(\d{0,5})/, function (_match, p1, p2, p3) {
     return `${p1}${p2 ? '-' + p2 : ''}${p3 ? '-' + p3 : ''}`;
   });
 }
 
-export function formatKrDate(dateStr: string): string {
-  const match = dateStr.match(/^(\d{4})(\d{2})(\d{2})$/);
+export function formatKrDate(date: string | number) {
+  const match = ('' + date).match(/^(\d{4})(\d{2})(\d{2})$/);
 
   if (!match) {
     return '';
@@ -73,24 +73,21 @@ export function formatKrDate(dateStr: string): string {
 /**
  * 문자열로 받은 날짜에 대해 지정된 시간으로 변경하는 함수.
  *
- * @param dateStr 날짜와 시간의 문자열 ('yyyyMMddHHmm' 형식).
+ * @param date
  * @param targetHour 목표 시간 (0 ~ 23 사이의 값).
  * @param targetMinute 목표 분 (0 ~ 59 사이의 값).
  * @returns 변경된 날짜와 시간의 문자열 ('yyyyMMddHHmm' 형식).
  */
 export function convertToSpecificTime(
-  dateStr: string,
+  date: string | number,
   targetHour: number,
   targetMinute: number,
 ): string {
-  // 'yyyyMMddHHmm' 형식에 맞춰 문자열에서 Date 객체로 변환합니다.
-  const date = parse(dateStr, 'yyyyMMddHHmm', new Date());
+  const dateString = parse('' + date, 'yyyyMMddHHmm', new Date());
 
-  // 시간과 분을 지정된 값으로 설정합니다.
-  const dateWithHourSet = setHours(date, targetHour);
+  const dateWithHourSet = setHours(dateString, targetHour);
   const finalDate = setMinutes(dateWithHourSet, targetMinute);
 
-  // 결과를 'yyyyMMddHHmm' 형식의 문자열로 변환하여 반환합니다.
   return format(finalDate, 'yyyyMMddHHmm');
 }
 

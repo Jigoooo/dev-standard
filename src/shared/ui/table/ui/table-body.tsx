@@ -367,12 +367,12 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
     throw new Error('checkedState is required for check header');
   }
 
-  const [isEditMode, setEditMode] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const cellRef = useHandleClickOutsideRef({
     condition: isEditMode,
     outsideClickAction: () => {
-      setEditMode(false);
+      setIsEditMode(false);
     },
   });
 
@@ -445,7 +445,7 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
           return;
         }
 
-        setEditMode(true);
+        setIsEditMode(true);
         setTimeout(() => {
           if (inputRef.current) {
             inputRef?.current.focus();
@@ -465,21 +465,12 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
           }}
           value={cellData}
           onChange={(event) => {
-            // if (header.validateEdit) {
-            //   if (header.validateEdit(event.target.value)) {
-            //     handelDataList(index, header.id, event.target.value);
-            //   } else {
-            //     dialogActions.open({
-            //       dialogType: DialogType.ERROR,
-            //       title: '유효한 값을 입력해 주세요.',
-            //       overlayClose: true,
-            //     });
-            //   }
-            // } else {
-            //   handelDataList(index, header.id, event.target.value);
-            // }
-
             handelDataList(index, header.id, event.target.value);
+          }}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter') {
+              setIsEditMode(false);
+            }
           }}
         />
       ) : typeof header.cell === 'function' ? (
