@@ -23,7 +23,7 @@ import {
   Tooltip,
   Typography,
   useModal,
-} from 'shared/ui';
+} from '@/shared/ui';
 import { useKeepAliveScrollHistoryRef, useToggle } from '@/shared/hooks';
 import { sleep } from '@/shared/lib';
 import { Accordion, AccordionGroup } from '@/shared/ui/accordion';

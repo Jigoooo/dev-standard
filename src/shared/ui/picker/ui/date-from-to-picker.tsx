@@ -21,7 +21,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
-import { FlexRow, Input, Button, FlexColumn, Typography } from 'shared/ui';
+import { FlexRow, Input, Button, FlexColumn, Typography } from '@/shared/ui';
 import { colors } from '@/shared/constants';
 import { useHandleClickOutsideRef, useWindowsStyle } from '@/shared/hooks';
 import { DateInputField } from './date-input-field.tsx';
