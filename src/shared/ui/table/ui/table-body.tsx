@@ -10,7 +10,7 @@ import {
   Typography,
 } from '@/shared/ui';
 import { colors } from '@/shared/constants';
-import { TDataWithIndex, THeader, TableBodyRowProps } from '../model/table-type.ts';
+import { TableBodyRowProps, TDataWithIndex, THeader } from '../model/table-type.ts';
 import { useTableContext } from '../model/table-context.ts';
 import { validateTableDataList } from '../lib/validate-table-data-list.ts';
 import { useTableScrollToFn, useVirtualRow } from '../hooks';
@@ -465,6 +465,20 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
           }}
           value={cellData}
           onChange={(event) => {
+            // if (header.validateEdit) {
+            //   if (header.validateEdit(event.target.value)) {
+            //     handelDataList(index, header.id, event.target.value);
+            //   } else {
+            //     dialogActions.open({
+            //       dialogType: DialogType.ERROR,
+            //       title: '유효한 값을 입력해 주세요.',
+            //       overlayClose: true,
+            //     });
+            //   }
+            // } else {
+            //   handelDataList(index, header.id, event.target.value);
+            // }
+
             handelDataList(index, header.id, event.target.value);
           }}
         />
