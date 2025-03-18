@@ -28,8 +28,8 @@ export function Snackbar() {
         }}
       >
         <AnimatePresence>
-          {snackbarInfos.map((snackbarInfo) => {
-            return <SnackbarItem key={snackbarInfo.id} snackbarInfo={snackbarInfo} />;
+          {snackbarInfos.map((snackbarInfo, index) => {
+            return <SnackbarItem key={snackbarInfo.id} snackbarInfo={snackbarInfo} index={index} />;
           })}
         </AnimatePresence>
       </FlexColumn>
@@ -38,10 +38,11 @@ export function Snackbar() {
   );
 }
 
-function SnackbarItem({ snackbarInfo }: { snackbarInfo: SnackBarInfo }) {
+function SnackbarItem({ snackbarInfo, index }: { snackbarInfo: SnackBarInfo; index: number }) {
   return (
     <FlexRow
       as={motion.div}
+      layout
       style={{
         minWidth: 200,
         maxWidth: 500,
@@ -50,6 +51,8 @@ function SnackbarItem({ snackbarInfo }: { snackbarInfo: SnackBarInfo }) {
         backgroundColor: '#ffffff',
         borderRadius: 8,
         boxShadow: '0 2px 10px rgba(0, 0, 0, 0.15)',
+        marginBottom: -30,
+        zIndex: 100 + index,
       }}
       initial={{ opacity: 0, y: 50, scale: 0.3 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
