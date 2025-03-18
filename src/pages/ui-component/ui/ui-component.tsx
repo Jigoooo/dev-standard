@@ -100,9 +100,11 @@ export function UiComponent() {
           onClick={() => {
             toast.success('Event has been created', {
               style: {
-                background: '#fff',
-                color: '#000',
+                background: '#333333',
+                color: '#ffffff',
+                borderColor: '#333333',
               },
+              duration: 3000,
             });
           }}
           style={{ backgroundColor: '#5ba2ed' }}
