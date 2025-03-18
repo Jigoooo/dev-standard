@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { FiSearch } from 'react-icons/fi';
 
@@ -13,11 +13,10 @@ export function GridExample() {
   //   name: '',
   // });
 
-  const [users, setUsers] = useState<any[]>([]);
   const { gridExampleHeaderGroups, gridExampleHeaders } = useGridExampleHeaders();
-  const { dataList, handelDataList, deleteDataList } = useTableData<
+  const { dataList, setDataList, handelDataList, deleteDataList } = useTableData<
     TDataWithIndexCheck & RGridExample
-  >(users);
+  >([]);
 
   // const handelSearchParams = (key: string, value: string) => {
   //   setSearchParams((prev) => ({
@@ -44,7 +43,7 @@ export function GridExample() {
         allUsers.push(...batch);
 
         if (isMounted) {
-          setUsers((prev) => [...prev, ...batch]);
+          setDataList((prev) => [...prev, ...batch]);
         }
       }
     };

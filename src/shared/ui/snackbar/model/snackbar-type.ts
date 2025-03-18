@@ -7,6 +7,7 @@ export enum SnackbarType {
 }
 
 export interface SnackBarInfo {
+  id: string;
   title?: string;
   message: string;
   duration?: number;
@@ -14,13 +15,12 @@ export interface SnackBarInfo {
 }
 
 export interface SnackbarActions {
-  show: (snackBarInfo: SnackBarInfo) => void;
-  hide: () => void;
+  show: (snackBarInfo: Omit<SnackBarInfo, 'id'>) => void;
+  hide: (id: string) => void;
 }
 
 export interface SnackBarStates {
-  open: boolean;
-  snackbarInfo: SnackBarInfo;
+  snackbarInfos: SnackBarInfo[];
 }
 
 export interface SnackBarStoreInterface extends SnackBarStates {

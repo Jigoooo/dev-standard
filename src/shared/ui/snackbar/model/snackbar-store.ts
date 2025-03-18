@@ -1,15 +1,11 @@
 import { create } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
+import { v4 as uuidV4 } from 'uuid';
 
 import { SnackBarStates, SnackBarStoreInterface, SnackbarType } from './snackbar-type.ts';
 
 const snackBarInitialState: SnackBarStates = {
-  open: false,
-  snackbarInfo: {
-    message: '',
-    duration: 3000,
-    type: SnackbarType.SUCCESS,
-  },
+  snackbarInfos: [],
 };
 
 const useSnackBarStore = create<SnackBarStoreInterface>()((setState) => {
@@ -17,27 +13,43 @@ const useSnackBarStore = create<SnackBarStoreInterface>()((setState) => {
     ...snackBarInitialState,
     actions: {
       show: ({ message = '', duration = 3000, type = SnackbarType.SUCCESS }) => {
+        const id = uuidV4();
+
         setState((state) => {
           return {
             ...state,
-            open: true,
-            snackbarInfo: {
-              message,
-              duration,
-              type,
-            },
+            snackbarInfos: [
+              ...state.snackbarInfos,
+              {
+                id,
+                message,
+                duration,
+                type,
+              },
+            ],
           };
         });
+
+        setTimeout(() => {
+          setState((state) => {
+            return {
+              ...state,
+              snackbarInfos: state.snackbarInfos.filter((snackbar) => snackbar.id !== id),
+            };
+          });
+        }, duration);
       },
-      hide: () => {
+      hide: (id) => {
         setState((state) => {
-          return { ...state, open: false };
+          return {
+            ...state,
+            snackbarInfos: state.snackbarInfos.filter((snackbar) => snackbar.id !== id),
+          };
         });
       },
     },
   };
 });
 
-export const useSnackbarOpen = () => useSnackBarStore(useShallow((state) => state.open));
-export const useSnackbarInfo = () => useSnackBarStore(useShallow((state) => state.snackbarInfo));
+export const useSnackbarInfos = () => useSnackBarStore(useShallow((state) => state.snackbarInfos));
 export const snackbarActions = useSnackBarStore.getState().actions;

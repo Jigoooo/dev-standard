@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { addMonths, format } from 'date-fns';
 
 import {
@@ -28,8 +28,12 @@ export function ExcelUploadDownload() {
   }));
 
   const { excelUploadListHeaders } = useExcelUploadDownloadHeaders();
-  const { dataList, handelDataList, deleteDataList } =
+  const { dataList, setDataList, handelDataList, deleteDataList } =
     useTableData<TExcelInfo>(excelInfoListWithIndex);
+  useEffect(() => {
+    setDataList(excelInfoListWithIndex);
+  }, [excelInfoListWithIndex]);
+
   const [fromToDateString, setFromToDateString] = useState({
     from: format(new Date(), 'yyyy-MM-dd'),
     to: format(addMonths(new Date(), 1), 'yyyy-MM-dd'),

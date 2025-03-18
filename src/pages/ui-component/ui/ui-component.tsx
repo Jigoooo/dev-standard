@@ -17,6 +17,7 @@ import {
   ModalLayout,
   MultiSelect,
   Select,
+  snackbarActions,
   Switch,
   Textarea,
   Tooltip,
@@ -93,6 +94,21 @@ export function UiComponent() {
 
       <DashedDivider strokeColor={'#666666'} style={{ marginBlock: 16 }} />
 
+      <FlexRow style={{ alignItems: 'center' }}>
+        <Typography style={{ width: 200, fontWeight: 500 }}>Open modal: </Typography>
+        <Button
+          onClick={() => {
+            snackbarActions.show({
+              title: 'Snackbar Title',
+              message: 'Snackbar Message',
+              duration: 3000,
+            });
+          }}
+          style={{ backgroundColor: '#5ba2ed' }}
+        >
+          Open Snackbar
+        </Button>
+      </FlexRow>
       <FlexRow style={{ alignItems: 'center' }}>
         <Typography style={{ width: 200, fontWeight: 500 }}>Open modal: </Typography>
         <Button onClick={openModal} style={{ backgroundColor: '#5ba2ed' }}>

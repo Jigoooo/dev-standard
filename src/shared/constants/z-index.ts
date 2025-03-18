@@ -5,6 +5,7 @@ export const zIndex = {
   modal: 400,
   dialogOverlay: 500,
   dialog: 600,
-  tooltip: 650,
-  loading: 800,
+  snackbar: 700,
+  tooltip: 900,
+  loading: 1000,
 } as const;

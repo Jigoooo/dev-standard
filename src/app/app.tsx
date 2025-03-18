@@ -2,6 +2,8 @@ import '@/app/providers/css';
 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import ReactGA from 'react-ga4';
+import { useEffect } from 'react';
+import { preconnect } from 'react-dom';
 
 import {
   LoadingProvider,
@@ -12,9 +14,10 @@ import {
   ErrorProvider,
 } from '@/app/providers';
 import { useRouterMenuContext } from '@/entities/router';
-import { useEffect } from 'react';
 
 function App() {
+  preconnect(import.meta.env.VITE_DEV_API_TARGET_URL);
+
   useEffect(() => {
     if (!window.location.href.includes('localhost')) {
       ReactGA.initialize([

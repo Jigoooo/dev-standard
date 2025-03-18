@@ -16,6 +16,7 @@ import { useModalClose } from '@/shared/hooks';
 import { colors, zIndex } from '@/shared/constants';
 
 import { DialogInfoStates } from '../model/dialog-type.ts';
+import { createPortal } from 'react-dom';
 
 /* todo 모바일버전 만들어야 함 */
 
@@ -56,7 +57,7 @@ export function AlertDialog() {
     }
   }, [dialogOpen]);
 
-  return (
+  return createPortal(
     <AnimatePresence>
       {dialogOpen && (
         <>
@@ -92,7 +93,8 @@ export function AlertDialog() {
           <AlertDialogOverlay overlayClose={dialogInfos.overlayClose} />
         </>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 }
 

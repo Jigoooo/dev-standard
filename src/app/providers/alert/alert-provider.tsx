@@ -1,10 +1,10 @@
-import { AlertDialog } from 'shared/ui';
+import { AlertDialog, Snackbar } from 'shared/ui';
 
 export function AlertProvider() {
   return (
     <>
       <AlertDialog />
-      {/*{mobileSizeMatches ? <Snackbar /> : <FramerMotionNotification />}*/}
+      <Snackbar />
     </>
   );
 }

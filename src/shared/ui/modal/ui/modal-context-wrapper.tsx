@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { FlexRow, ModalContext } from 'shared/ui';
 import { zIndex } from '@/shared/constants';
 import { TModalRenderProps, TModalItem, TIsPossibleOverlayClose } from '../model/modal-type.ts';
+import { createPortal } from 'react-dom';
 
 export function ModalContextWrapper({ children }: { children: ReactNode }) {
   const overlayRefs = useRef<Record<string, RefObject<HTMLDivElement | null>>>({});
@@ -39,7 +40,7 @@ export function ModalContextWrapper({ children }: { children: ReactNode }) {
 
   const modalIds = modalList.map((modal) => ({ id: modal.id }));
 
-  return (
+  return createPortal(
     <ModalContext value={{ modalIds, open, close, handleIsPossibleOverlayClose }}>
       {children}
       <AnimatePresence initial={false}>
@@ -109,6 +110,7 @@ export function ModalContextWrapper({ children }: { children: ReactNode }) {
           );
         })}
       </AnimatePresence>
-    </ModalContext>
+    </ModalContext>,
+    document.body,
   );
 }
