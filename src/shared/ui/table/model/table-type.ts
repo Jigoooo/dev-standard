@@ -119,6 +119,7 @@ export type TableBodyRowProps = {
   headers: THeader[];
   virtualItem: { index: number; start: number };
   rowWidth: string | number;
+  dataIndex: number;
   hoverIndex: number | null;
   setHoverIndex: (index: number | null) => void;
   rowClickIndex: number | null;

@@ -17,12 +17,12 @@ import {
 } from '@/shared/ui';
 import {
   TExcelInfo,
+  TExcelData,
   useExcelInfoListQuery,
   useExcelUploadDownloadHeaders,
   useSaveExcelMutation,
 } from '@/entities/excel-upload-download';
 import { toast } from 'sonner';
-import { TExcelData } from '@/entities/excel-upload-download/model/excel-upload-download-type.ts';
 
 export function ExcelUploadDownload() {
   const excelInfoListQuery = useExcelInfoListQuery();

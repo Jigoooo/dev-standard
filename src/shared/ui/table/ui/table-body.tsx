@@ -202,6 +202,7 @@ const TableBodyView = memo(function TableBodyView({
               headers={headers}
               virtualItem={virtualItem}
               rowWidth={viewWidth}
+              dataIndex={index}
               hoverIndex={hoverIndex}
               setHoverIndex={setHoverIndex}
               rowClickIndex={rowClickIndex}
@@ -269,6 +270,7 @@ const TableBodyPin = memo(function TableBodyPin({
             headers={headers}
             virtualItem={virtualItem}
             rowWidth={'100%'}
+            dataIndex={index}
             hoverIndex={hoverIndex}
             setHoverIndex={setHoverIndex}
             rowClickIndex={rowClickIndex}
@@ -280,15 +282,23 @@ const TableBodyPin = memo(function TableBodyPin({
   );
 });
 
-// function areEqualTableRow(prevProps: TableBodyRowProps, nextProps: TableBodyRowProps) {
-//   const prevHovered = prevProps.hoverIndex === prevProps.index;
-//   const nextHovered = nextProps.hoverIndex === nextProps.index;
-//   return (
-//     prevHovered === nextHovered &&
-//     prevProps.virtualItem.start === nextProps.virtualItem.start &&
-//     prevProps.rowWidth === nextProps.rowWidth
-//   );
-// }
+function areEqualTableRow(prevProps: TableBodyRowProps, nextProps: TableBodyRowProps) {
+  const prevHovered = prevProps.hoverIndex === prevProps.dataIndex;
+  const nextHovered = nextProps.hoverIndex === nextProps.dataIndex;
+  const prevRowClicked = prevProps.rowClickIndex === prevProps.dataIndex;
+  const nextRowClicked = nextProps.rowClickIndex === nextProps.dataIndex;
+
+  return (
+    prevHovered === nextHovered &&
+    prevRowClicked === nextRowClicked &&
+    prevProps.virtualItem.start === nextProps.virtualItem.start &&
+    prevProps.rowWidth === nextProps.rowWidth &&
+    prevProps.dataIndex === nextProps.dataIndex &&
+    prevProps.headers === nextProps.headers &&
+    prevProps.setHoverIndex === nextProps.setHoverIndex &&
+    prevProps.setRowClickIndex === nextProps.setRowClickIndex
+  );
+}
 
 const TableBodyRow = memo(function TableBodyRow({
   headers,
@@ -343,7 +353,7 @@ const TableBodyRow = memo(function TableBodyRow({
       })}
     </FlexRow>
   );
-});
+}, areEqualTableRow);
 
 const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, any>>({
   virtualRowIndex,
