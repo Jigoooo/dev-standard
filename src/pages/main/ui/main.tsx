@@ -55,6 +55,8 @@ export function Main() {
         const firstNonHeaderMenu = findFirstNonHeaderMenu(sidebarMainMenus);
         if (firstNonHeaderMenu !== null) {
           navigate(firstNonHeaderMenu.fullRouterPath);
+        } else {
+          window.location.reload();
         }
       }
     }
