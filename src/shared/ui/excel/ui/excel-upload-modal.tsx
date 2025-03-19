@@ -11,18 +11,21 @@ import {
   TDataWithIndex,
   TFile,
   THeader,
+  TValidationRuleWithHeaderId,
   useModal,
 } from '@/shared/ui';
 import { isExtensionAllowed, readExcelFile } from '@/shared/lib';
 import { ExcelEditModal } from './excel-edit-modal.tsx';
+import { RData } from '../model/excel-type.ts';
 
-type RData<TData extends TDataWithIndex> = Omit<TData, 'index'>;
 export function ExcelUploadModal<TData extends TDataWithIndex>({
   headers,
+  validationRules,
   close,
   registerExcel,
 }: {
   headers: THeader<TData>[];
+  validationRules?: TValidationRuleWithHeaderId<TData>[];
   close: () => void;
   registerExcel: (excelNm: string, excelDataList: TData[], close: () => void) => void;
 }) {
@@ -66,6 +69,7 @@ export function ExcelUploadModal<TData extends TDataWithIndex>({
           <ExcelEditModal
             excelNm={excelNm}
             headers={headers}
+            validationRules={validationRules}
             rows={rows}
             maxWidth={1200}
             close={({ excelNm, dataList }) => {
@@ -114,7 +118,7 @@ export function ExcelUploadModal<TData extends TDataWithIndex>({
       );
       const entries = Object.fromEntries(
         filteredHeaders.map((header) => {
-          const headerIndex = headers.findIndex((h) => h.id === header.id);
+          const headerIndex = filteredHeaders.findIndex((h) => h.id === header.id);
           return [header.id, row[headerIndex]];
         }),
       ) as RData<TData>;

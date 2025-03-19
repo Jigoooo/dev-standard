@@ -9,7 +9,6 @@ export type {
 export type {
   THeaderGroup,
   THeader,
-  TValidationRule,
   TDataWithIndex,
   TDataWithCheck,
   TDataWithIndexCheck,

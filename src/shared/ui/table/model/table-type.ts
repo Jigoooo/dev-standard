@@ -105,11 +105,6 @@ export type THeader<TData = Record<string, any>> = {
   // validateEdit?: (value: any) => boolean;
 };
 
-export type TValidationRule<TData = Record<string, any>> = {
-  id: Extract<keyof TData, string>;
-  validateFn: (value?: string | number | null) => boolean;
-};
-
 export type TDataWithIndex = {
   index: number;
 };

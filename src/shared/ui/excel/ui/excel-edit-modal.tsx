@@ -6,6 +6,7 @@ import {
   Table,
   TDataWithIndex,
   THeader,
+  TValidationRuleWithHeaderId,
   Typography,
   useTableData,
 } from '@/shared/ui';
@@ -14,12 +15,14 @@ import { useState } from 'react';
 export function ExcelEditModal<TData extends TDataWithIndex>({
   excelNm,
   headers,
+  validationRules,
   rows,
   maxWidth,
   close,
 }: {
   excelNm: string;
   headers: THeader<TData>[];
+  validationRules?: TValidationRuleWithHeaderId<TData>[];
   rows: TData[];
   maxWidth: number;
   close: ({ excelNm, dataList }: { excelNm: string; dataList: TData[] }) => void;
@@ -49,6 +52,8 @@ export function ExcelEditModal<TData extends TDataWithIndex>({
           style={{ width: 80 }}
           onClick={() => {
             //todo 검증 로직 구현
+            console.log(validationRules);
+
             close({
               excelNm: name,
               dataList,

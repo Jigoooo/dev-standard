@@ -13,9 +13,9 @@ import {
   Table,
   useModal,
   useTableData,
+  ExcelUploadModal,
 } from '@/shared/ui';
 import {
-  ExcelUploadModal,
   TExcelInfo,
   useExcelInfoListQuery,
   useExcelUploadDownloadHeaders,
@@ -32,7 +32,8 @@ export function ExcelUploadDownload() {
     index: index + 1,
   }));
 
-  const { excelUploadDataHeaders, excelUploadListHeaders } = useExcelUploadDownloadHeaders();
+  const { excelUploadValidationRules, excelUploadDataHeaders, excelUploadListHeaders } =
+    useExcelUploadDownloadHeaders();
   const { dataList, setDataList, handelDataList, deleteDataList } =
     useTableData<TExcelInfo>(excelInfoListWithIndex);
   useEffect(() => {
@@ -93,6 +94,7 @@ export function ExcelUploadDownload() {
         >
           <ExcelUploadModal
             headers={excelUploadDataHeaders}
+            validationRules={excelUploadValidationRules}
             close={close}
             registerExcel={registerExcel}
           />

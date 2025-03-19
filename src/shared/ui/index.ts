@@ -13,3 +13,4 @@ export * from './view';
 export * from './file-upload';
 export * from './scroll';
 export * from './progress';
+export * from './excel';

@@ -13,18 +13,18 @@ import {
   ModalLayout,
   THeader,
   useModal,
-  TValidationRule,
+  ExcelEditModal,
+  TValidationRuleWithHeaderId,
 } from '@/shared/ui';
 import { getExcelDataListApi } from '../api/excel-api.ts';
 import { TExcelInfo, TExcelData, RExcelData } from '../model/excel-upload-download-type.ts';
-import { ExcelEditModal } from '../ui/excel-edit-modal.tsx';
 import { useUpdateExcelMutation } from '@/entities/excel-upload-download';
 import { colors } from '@/shared/constants';
 import { handleAuthError } from '@/entities/auth';
 import { formatDateString, thousandSeparator } from '@/shared/lib';
 
 export function useExcelUploadDownloadHeaders() {
-  const excelUploadValidationRules: TValidationRule<TExcelData>[] = [
+  const excelUploadValidationRules: TValidationRuleWithHeaderId<TExcelData>[] = [
     {
       id: 'quantity',
       validateFn: () => true,
@@ -202,6 +202,7 @@ export function useExcelUploadDownloadHeaders() {
           <ExcelEditModal
             excelNm={rowData.excelNm}
             headers={excelUploadDataHeaders}
+            validationRules={excelUploadValidationRules}
             rows={excelDataWithIndex}
             maxWidth={1200}
             close={({ excelNm, dataList }) => {
