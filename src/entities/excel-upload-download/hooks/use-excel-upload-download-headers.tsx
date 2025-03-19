@@ -7,6 +7,7 @@ import {
   ButtonStyle,
   dialogActions,
   DialogType,
+  Input,
   ModalLayout,
   THeader,
   useModal,
@@ -17,7 +18,7 @@ import { ExcelEditModal } from '../ui/excel-edit-modal.tsx';
 import { useUpdateExcelMutation } from '@/entities/excel-upload-download';
 import { colors } from '@/shared/constants';
 import { handleAuthError } from '@/entities/auth';
-import { formatDateString, thousandSeparator } from '@/shared/lib';
+import { createValidator, formatDateString, thousandSeparator } from '@/shared/lib';
 
 export function useExcelUploadDownloadHeaders() {
   const excelUploadDataHeaders: THeader<TExcelData>[] = [
@@ -82,6 +83,38 @@ export function useExcelUploadDownloadHeaders() {
       dataAlign: 'right',
       label: '수량',
       width: 80,
+      editCell: ({ inputRef, cellData, setCellData, tableStyle, exitEditMode }) => {
+        return (
+          <Input
+            ref={inputRef}
+            style={{
+              height: tableStyle.tableHeaderHeight,
+              fontSize: '0.8rem',
+              width: '100%',
+              borderRadius: 0,
+              boxShadow: 'none',
+            }}
+            value={cellData}
+            onChange={(event) => {
+              const valueWithValidated = createValidator(event.target.value)
+                .isNumber({ message: '숫자만 입력할 수 있습니다.' })
+                .validate();
+
+              if (valueWithValidated.error) {
+                toast.error(valueWithValidated.errorMessage);
+                return;
+              }
+
+              setCellData(Number(valueWithValidated.value));
+            }}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') {
+                exitEditMode();
+              }
+            }}
+          />
+        );
+      },
       formatter: ({ cellData }) => {
         return thousandSeparator(cellData);
       },

@@ -47,12 +47,14 @@ export function ExcelEditModal<TData extends TDataWithIndex>({
         </FlexRow>
         <Button
           style={{ width: 80 }}
-          onClick={() =>
+          onClick={() => {
+            console.log(dataList);
+
             close({
               excelNm: name,
               dataList,
-            })
-          }
+            });
+          }}
         >
           저장
         </Button>

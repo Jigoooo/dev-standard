@@ -61,12 +61,31 @@ export type THeader<TData = Record<string, any>> = {
     setCellData,
     handleRowData,
     deleteRow,
+    tableStyle,
   }: {
     cellData: any;
     rowData: TData;
     handleRowData: (key: keyof TData, value: any) => void;
     deleteRow: () => void;
     setCellData: (value: any) => void;
+    tableStyle: TTableStyle;
+  }) => ReactNode;
+  editCell?: ({
+    inputRef,
+    cellData,
+    rowData,
+    setCellData,
+    handleRowData,
+    tableStyle,
+    exitEditMode,
+  }: {
+    inputRef: RefObject<HTMLInputElement | null>;
+    cellData: any;
+    rowData: TData;
+    handleRowData: (key: keyof TData, value: any) => void;
+    setCellData: (value: any) => void;
+    tableStyle: TTableStyle;
+    exitEditMode: () => void;
   }) => ReactNode;
   formatter?: ({ cellData, rowData }: { cellData: any; rowData: TData }) => string | number;
   pin: 'view' | 'left' | 'right';

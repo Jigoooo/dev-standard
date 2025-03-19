@@ -454,25 +454,45 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
       }}
     >
       {isEditMode ? (
-        <Input
-          ref={inputRef}
-          style={{
-            height: tableStyle.tableHeaderHeight,
-            fontSize: '0.8rem',
-            width: '100%',
-            borderRadius: 0,
-            boxShadow: 'none',
-          }}
-          value={cellData}
-          onChange={(event) => {
-            handelDataList(index, header.id, event.target.value);
-          }}
-          onKeyDown={(event) => {
-            if (event.key === 'Enter') {
-              setIsEditMode(false);
-            }
-          }}
-        />
+        <>
+          {typeof header.editCell === 'function' ? (
+            header.editCell({
+              inputRef,
+              cellData,
+              rowData: data,
+              handleRowData: (key, value) => {
+                handelDataList(index, key, value);
+              },
+              setCellData: (value) => {
+                handelDataList(index, header.id, value);
+              },
+              tableStyle,
+              exitEditMode: () => {
+                setIsEditMode(false);
+              },
+            })
+          ) : (
+            <Input
+              ref={inputRef}
+              style={{
+                height: tableStyle.tableHeaderHeight,
+                fontSize: '0.8rem',
+                width: '100%',
+                borderRadius: 0,
+                boxShadow: 'none',
+              }}
+              value={cellData}
+              onChange={(event) => {
+                handelDataList(index, header.id, event.target.value);
+              }}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter') {
+                  setIsEditMode(false);
+                }
+              }}
+            />
+          )}
+        </>
       ) : typeof header.cell === 'function' ? (
         header.cell({
           cellData,
@@ -486,6 +506,7 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
           setCellData: (value) => {
             handelDataList(index, header.id, value);
           },
+          tableStyle,
         })
       ) : header.id === 'check' ? (
         <Checkbox
