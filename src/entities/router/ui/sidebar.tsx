@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion';
 
-import { FlexColumn } from 'shared/ui';
+import { FlexColumn, Tooltip } from 'shared/ui';
 import { SidebarHeader } from './sidebar-header';
 import { SidebarItems } from './sidebar-items';
 import { SidebarFooter } from './sidebar-footer';
-import { useRouterMenuContext, useSidebarState } from '@/entities/router';
+import { sidebarActions, useRouterMenuContext, useSidebarState } from '@/entities/router';
 
 export function Sidebar({ headerTitle }: { headerTitle: string }) {
   const sidebarState = useSidebarState();
@@ -21,6 +21,21 @@ export function Sidebar({ headerTitle }: { headerTitle: string }) {
           height: '100%',
         }}
       >
+        {sidebarState.sidebarCollapsed && (
+          <motion.div
+            style={{
+              position: 'absolute',
+              left: 0,
+              zIndex: 10,
+              height: '100%',
+              width: 40,
+              backgroundColor: 'rgba(0, 0, 0, 0.0)',
+            }}
+            whileHover={{ backgroundColor: 'rgba(0, 0, 0, 0.2)' }}
+            transition={{ duration: 0.2 }}
+            onClick={sidebarActions.toggleSidebarCollapsed}
+          />
+        )}
         <FlexColumn
           style={{
             position: 'relative',
