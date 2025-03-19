@@ -89,7 +89,7 @@ export function ExcelUploadDownload() {
         <ModalLayout
           overlayRef={overlayRef}
           containerStyle={{ width: 800, height: 450 }}
-          title={'파일 업로드'}
+          title={'엑셀 업로드'}
           close={close}
         >
           <ExcelUploadModal

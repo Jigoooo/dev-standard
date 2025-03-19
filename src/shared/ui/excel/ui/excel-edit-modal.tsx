@@ -51,9 +51,6 @@ export function ExcelEditModal<TData extends TDataWithIndex>({
         </FlexRow>
         <SaveButton
           onClick={() => {
-            //todo 검증 로직 구현
-            console.log(validationRules);
-
             const problematicResults = headers.flatMap((header) => {
               if (!validationRules) {
                 return [];
