@@ -97,6 +97,7 @@ export function ExcelUploadDownload() {
             validationRules={excelUploadValidationRules}
             close={close}
             registerExcel={registerExcel}
+            excelFormFileLink={'/excel-form/엑셀테스트.xlsx'}
           />
         </ModalLayout>
       );

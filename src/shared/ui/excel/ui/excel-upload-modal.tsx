@@ -26,11 +26,13 @@ export function ExcelUploadModal<TData extends TDataWithIndex>({
   validationRules,
   close,
   registerExcel,
+  excelFormFileLink,
 }: {
   headers: THeader<TData>[];
   validationRules?: TValidationRuleWithHeaderId<TData>[];
   close: () => void;
   registerExcel: (excelNm: string, excelDataList: TData[], close: () => void) => void;
+  excelFormFileLink?: string;
 }) {
   const [files, setFiles] = useState<TFile[]>([]);
   const [excelNm, setExcelNm] = useState('');
@@ -153,10 +155,18 @@ export function ExcelUploadModal<TData extends TDataWithIndex>({
     <FlexRow style={{ height: '100%', padding: 12, overflow: 'hidden' }}>
       <FlexColumn style={{ width: '100%', justifyContent: 'space-between' }}>
         <FlexColumn style={{ width: '100%', height: '80%', gap: 14 }}>
-          <FlexRow style={{ alignItems: 'center', justifyContent: 'flex-end', gap: 4 }}>
-            <RiFileExcel2Line />
-            <Link style={{ fontSize: '0.9rem', fontWeight: 600 }}>업로드 양식</Link>
-          </FlexRow>
+          {excelFormFileLink && (
+            <FlexRow style={{ alignItems: 'center', justifyContent: 'flex-end', gap: 4 }}>
+              <RiFileExcel2Line />
+              <Link
+                href={excelFormFileLink}
+                download
+                style={{ fontSize: '0.9rem', fontWeight: 600 }}
+              >
+                업로드 양식
+              </Link>
+            </FlexRow>
+          )}
 
           <FileUploadForm
             accept={'.xls, .xlsx'}

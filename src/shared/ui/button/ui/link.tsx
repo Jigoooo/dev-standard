@@ -1,17 +1,19 @@
-import { HTMLAttributes, useState } from 'react';
+import { AnchorHTMLAttributes, useState } from 'react';
 
-import { Typography } from '@/shared/ui';
+import { useWindowsStyle } from '@/shared/hooks';
 
 export function Link({
   style,
   children,
   disabled = false,
   ...props
-}: HTMLAttributes<HTMLSpanElement> & { disabled?: boolean; children: string }) {
+}: AnchorHTMLAttributes<HTMLAnchorElement> & { disabled?: boolean; children: string }) {
+  const windowsStyle = useWindowsStyle();
+
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <Typography
+    <a
       onMouseEnter={() => {
         if (disabled) {
           return;
@@ -27,6 +29,7 @@ export function Link({
         setIsHovered(false);
       }}
       style={{
+        ...windowsStyle,
         ...{
           userSelect: 'none',
           borderBottom: isHovered ? '1px solid currentColor' : '1px solid transparent',
@@ -38,6 +41,6 @@ export function Link({
       {...props}
     >
       {children}
-    </Typography>
+    </a>
   );
 }
