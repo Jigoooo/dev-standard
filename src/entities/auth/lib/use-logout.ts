@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { Router } from '@/entities/router';
 
-import { dialogActions, DialogType } from 'shared/ui';
+import { dialogActions, DialogType } from '@/shared/ui';
 import { removeToken } from '@/entities/auth';
 
 export function useLogout() {

@@ -5,6 +5,7 @@ import { format } from 'date-fns';
 import {
   Button,
   ButtonStyle,
+  createHeader,
   dialogActions,
   DialogType,
   Input,
@@ -22,67 +23,12 @@ import { createValidator, formatDateString, thousandSeparator } from '@/shared/l
 
 export function useExcelUploadDownloadHeaders() {
   const excelUploadDataHeaders: THeader<TExcelData>[] = [
-    {
-      id: 'index',
-      pin: 'left',
+    createHeader('index', '', 60, { pin: 'left', dataAlign: 'right', filter: undefined }),
+    createHeader('orderNo', '주문번호', 150),
+    createHeader('productCode', '상품코드', 150),
+    createHeader('productName', '상품명', 150),
+    createHeader('quantity', '수량', 80, {
       dataAlign: 'right',
-      label: '',
-      width: 60,
-      sorter: {
-        sortable: false,
-      },
-    },
-    {
-      id: 'orderNo',
-      pin: 'view',
-      dataAlign: 'left',
-      label: '주문번호',
-      width: 150,
-      sorter: {
-        sortable: true,
-        direction: null,
-      },
-      filter: {
-        filterType: 'text',
-        filterValue: '',
-      },
-    },
-    {
-      id: 'productCode',
-      pin: 'view',
-      dataAlign: 'left',
-      label: '상품코드',
-      width: 150,
-      sorter: {
-        sortable: true,
-        direction: null,
-      },
-      filter: {
-        filterType: 'text',
-        filterValue: '',
-      },
-    },
-    {
-      id: 'productName',
-      pin: 'view',
-      dataAlign: 'left',
-      label: '상품명',
-      width: 150,
-      sorter: {
-        sortable: true,
-        direction: null,
-      },
-      filter: {
-        filterType: 'text',
-        filterValue: '',
-      },
-    },
-    {
-      id: 'quantity',
-      pin: 'view',
-      dataAlign: 'right',
-      label: '수량',
-      width: 80,
       editCell: ({ inputRef, cellData, setCellData, tableStyle, exitEditMode }) => {
         return (
           <Input
@@ -118,105 +64,29 @@ export function useExcelUploadDownloadHeaders() {
       formatter: ({ cellData }) => {
         return thousandSeparator(cellData);
       },
-      sorter: {
-        sortable: true,
-        direction: null,
-      },
-      filter: {
-        filterType: 'text',
-        filterValue: '',
-      },
-    },
-    {
-      id: 'price',
-      pin: 'view',
+    }),
+    createHeader('price', '단가', 100, {
       dataAlign: 'right',
-      label: '단가',
-      width: 100,
       formatter: ({ cellData }) => {
         return thousandSeparator(cellData);
       },
-      sorter: {
-        sortable: true,
-        direction: null,
-      },
-      filter: {
-        filterType: 'text',
-        filterValue: '',
-      },
-    },
-    {
-      id: 'totalAmount',
-      pin: 'view',
+    }),
+    createHeader('totalAmount', '가격', 100, {
       dataAlign: 'right',
-      label: '가격',
-      width: 100,
       formatter: ({ cellData }) => {
         return thousandSeparator(cellData);
       },
-      sorter: {
-        sortable: true,
-        direction: null,
-      },
-      filter: {
-        filterType: 'text',
-        filterValue: '',
-      },
-    },
-    {
-      id: 'orderDate',
-      pin: 'view',
-      dataAlign: 'left',
-      label: '주문일자',
-      width: 120,
+    }),
+    createHeader('orderDate', '주문일자', 120, {
       formatter: ({ cellData }) => {
         return formatDateString(cellData, '-');
       },
-      sorter: {
-        sortable: true,
-        direction: null,
-      },
-      filter: {
-        filterType: 'text',
-        filterValue: '',
-      },
-    },
-    {
-      id: 'customerName',
-      pin: 'view',
-      dataAlign: 'left',
-      label: '주문자',
-      width: 100,
-      sorter: {
-        sortable: true,
-        direction: null,
-      },
-      filter: {
-        filterType: 'text',
-        filterValue: '',
-      },
-    },
-    {
-      id: 'status',
-      pin: 'view',
-      dataAlign: 'left',
-      label: '상태',
-      width: 100,
-      sorter: {
-        sortable: true,
-        direction: null,
-      },
-      filter: {
-        filterType: 'text',
-        filterValue: '',
-      },
-    },
-    {
-      id: 'button',
+    }),
+    createHeader('customerName', '주문자', 100),
+    createHeader('status', '상태', 100),
+    createHeader('button', '', 80, {
       pin: 'right',
       dataAlign: 'center',
-      label: '',
-      width: 80,
       cell: ({ deleteRow }) => {
         return (
           <Button
@@ -234,11 +104,8 @@ export function useExcelUploadDownloadHeaders() {
           </Button>
         );
       },
-      sorter: {
-        sortable: false,
-        direction: null,
-      },
-    },
+      filter: undefined,
+    }),
   ];
 
   const updateExcelMutation = useUpdateExcelMutation();
@@ -351,105 +218,24 @@ export function useExcelUploadDownloadHeaders() {
   };
 
   const excelUploadListHeaders: THeader<TExcelInfo>[] = [
-    {
-      id: 'index',
-      pin: 'left',
-      dataAlign: 'right',
-      label: '',
-      width: 60,
-      sorter: {
-        sortable: false,
-      },
-    },
-    {
-      id: 'excelNm',
-      pin: 'view',
-      dataAlign: 'left',
-      label: '업로드 제목',
-      width: 200,
-      sorter: {
-        sortable: true,
-        direction: null,
-      },
-      filter: {
-        filterType: 'text',
-        filterValue: '',
-      },
-    },
-    {
-      id: 'insDt',
-      pin: 'view',
-      dataAlign: 'left',
-      label: '업로드 일자',
-      width: 180,
+    createHeader('index', '', 60, { pin: 'left', dataAlign: 'right', filter: undefined }),
+    createHeader('excelNm', '업로드 제목', 200),
+    createHeader('insDt', '업로드 일자', 180, {
       formatter: ({ cellData }) => {
         const date = new Date(cellData);
         return format(date, 'yyyy-MM-dd HH:mm:ss');
       },
-      sorter: {
-        sortable: true,
-        direction: null,
-      },
-      filter: {
-        filterType: 'text',
-        filterValue: '',
-      },
-    },
-    {
-      id: 'insMember',
-      pin: 'view',
-      dataAlign: 'left',
-      label: '등록자',
-      width: 150,
-      sorter: {
-        sortable: true,
-        direction: null,
-      },
-      filter: {
-        filterType: 'text',
-        filterValue: '',
-      },
-    },
-    {
-      id: 'updDt',
-      pin: 'view',
-      dataAlign: 'left',
-      label: '수정 일자',
-      width: 180,
+    }),
+    createHeader('insMember', '등록자', 150),
+    createHeader('updDt', '수정 일자', 180, {
       formatter: ({ cellData }) => {
         const date = new Date(cellData);
         return format(date, 'yyyy-MM-dd HH:mm:ss');
       },
-      sorter: {
-        sortable: true,
-        direction: null,
-      },
-      filter: {
-        filterType: 'text',
-        filterValue: '',
-      },
-    },
-    {
-      id: 'updMember',
-      pin: 'view',
-      dataAlign: 'left',
-      label: '수정자',
-      width: 150,
-      sorter: {
-        sortable: true,
-        direction: null,
-      },
-      filter: {
-        filterType: 'text',
-        filterValue: '',
-      },
-    },
-    {
-      id: 'button',
-      pin: 'view',
+    }),
+    createHeader('updMember', '수정자', 150),
+    createHeader('button', '', 80, {
       dataAlign: 'center',
-      label: '',
-      width: 80,
       cell: ({ rowData }) => {
         return (
           <Button
@@ -461,11 +247,8 @@ export function useExcelUploadDownloadHeaders() {
           </Button>
         );
       },
-      sorter: {
-        sortable: false,
-        direction: null,
-      },
-    },
+      filter: undefined,
+    }),
   ];
 
   return { excelUploadListHeaders, excelUploadDataHeaders };
