@@ -7,7 +7,7 @@ const initialState: TSidebarState = {
   sidebarCollapsed: false,
   delayedSidebarCollapsed: false,
   sidebarWidth: 260,
-  sidebarCollapsedWidth: 70,
+  sidebarCollapsedWidth: 0,
   sidebarBackgroundColor: '#1e232e',
 };
 

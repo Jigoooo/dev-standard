@@ -7,8 +7,10 @@ import { AnchorPicker, Button, Divider, FlexColumn, FlexRow, Typography } from '
 import { Router, useRouterMenuContext } from '@/entities/router';
 import { useSidebarState } from '@/entities/router';
 import { useToggle } from '@/shared/hooks';
+import { useMemberState } from '@/entities/member';
 
 export function SidebarFooter() {
+  const memberState = useMemberState();
   const sidebarState = useSidebarState();
   const { myProfileMenu } = useRouterMenuContext();
 
@@ -144,10 +146,10 @@ export function SidebarFooter() {
                     textOverflow: 'ellipsis',
                   }}
                 >
-                  김지우(Jeff)
+                  {memberState.memberNm}({memberState.memberId})
                 </Typography>
                 <Typography style={{ fontSize: '0.8rem', color: '#eeeeee', lineHeight: 1.4 }}>
-                  매니저
+                  {memberState.email}
                 </Typography>
               </FlexColumn>
             )}

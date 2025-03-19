@@ -1,6 +1,7 @@
 import { IconType } from 'react-icons';
 import { JSX, ReactElement, ReactNode } from 'react';
 import { RouteObject } from 'react-router-dom';
+import { YesNoType } from '@/shared/type';
 
 export enum Router {
   SIGN_IN = '/',
@@ -73,12 +74,12 @@ export type RMenuMemberAuth = {
   orderBy: number;
   memberId: string;
   allChecked: boolean;
-  useYn: 'Y' | 'N';
-  authIns: 'Y' | 'N';
-  authDel: 'Y' | 'N';
-  authSearch: 'Y' | 'N';
-  authMod: 'Y' | 'N';
-  excelExport: 'Y' | 'N';
+  useYn: YesNoType;
+  authIns: YesNoType;
+  authDel: YesNoType;
+  authSearch: YesNoType;
+  authMod: YesNoType;
+  excelExport: YesNoType;
 };
 
 export type RMenu = {
@@ -89,7 +90,7 @@ export type RMenu = {
   menuId: string;
   menuTitle: string;
   menuLink: string;
-  displayYn: 'Y' | 'N';
+  displayYn: YesNoType;
 };
 
 export type RMenuList = {

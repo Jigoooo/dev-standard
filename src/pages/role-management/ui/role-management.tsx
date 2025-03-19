@@ -19,10 +19,11 @@ import {
   RMenuMemberAuth,
   RRoleUser,
 } from '@/entities/router';
+import { useMemberState } from '@/entities/member';
 
 export function RoleManagement() {
-  // const { currentMenuMemberAuth } = useRouterMenuContext();
-  // console.log(currentMenuMemberAuth);
+  const memberState = useMemberState();
+  console.log(memberState);
 
   const { roleUserHeaders, roleManagementHeaders } = useRoleManagementHeaders();
   const { dataList, setDataList, handelDataList, deleteDataList } = useTableData<
@@ -57,6 +58,7 @@ export function RoleManagement() {
   useEffect(() => {
     if (getMenuMemberAuthListQuery.data?.data?.menuList) {
       const dataWithIndex = getMenuMemberAuthListQuery.data.data.menuList.map((item, index) => {
+        console.log(item);
         const isAllChecked =
           item.useYn === 'Y' &&
           item.authIns === 'Y' &&
