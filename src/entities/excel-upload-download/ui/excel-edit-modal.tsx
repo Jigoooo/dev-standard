@@ -48,7 +48,7 @@ export function ExcelEditModal<TData extends TDataWithIndex>({
         <Button
           style={{ width: 80 }}
           onClick={() => {
-            console.log(dataList);
+            //todo 검증 로직 구현
 
             close({
               excelNm: name,

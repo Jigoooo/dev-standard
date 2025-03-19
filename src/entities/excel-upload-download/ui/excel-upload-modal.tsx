@@ -146,10 +146,6 @@ export function ExcelUploadModal({ close }: { close: () => void }) {
       return;
     }
 
-    if (excelDataList.length === 0) {
-      setExcelDataList(rows);
-    }
-
     const fileNameWithoutExtension = files[0].file.name.split('.').slice(0, -1).join('.');
 
     excelEditModalOpen({
