@@ -4,6 +4,8 @@ import { addMonths, format } from 'date-fns';
 import {
   Button,
   DateFromToPicker,
+  dialogActions,
+  DialogType,
   FlexColumn,
   FlexRow,
   ModalLayout,
@@ -17,7 +19,10 @@ import {
   TExcelInfo,
   useExcelInfoListQuery,
   useExcelUploadDownloadHeaders,
+  useSaveExcelMutation,
 } from '@/entities/excel-upload-download';
+import { toast } from 'sonner';
+import { TExcelData } from '@/entities/excel-upload-download/model/excel-upload-download-type.ts';
 
 export function ExcelUploadDownload() {
   const excelInfoListQuery = useExcelInfoListQuery();
@@ -27,7 +32,7 @@ export function ExcelUploadDownload() {
     index: index + 1,
   }));
 
-  const { excelUploadListHeaders } = useExcelUploadDownloadHeaders();
+  const { excelUploadDataHeaders, excelUploadListHeaders } = useExcelUploadDownloadHeaders();
   const { dataList, setDataList, handelDataList, deleteDataList } =
     useTableData<TExcelInfo>(excelInfoListWithIndex);
   useEffect(() => {
@@ -39,6 +44,43 @@ export function ExcelUploadDownload() {
     to: format(addMonths(new Date(), 1), 'yyyy-MM-dd'),
   });
 
+  const registerExcelMutation = useSaveExcelMutation();
+  const registerExcel = (excelNm: string, excelDataList: TExcelData[], close: () => void) => {
+    dialogActions.open({
+      title: '등록하시겠습니까?',
+      withCancel: true,
+      overlayClose: true,
+      onConfirm: () => {
+        const excelDataListWithoutIndex = excelDataList.map((row) => {
+          const { index: _index, ...rest } = row;
+          return rest;
+        });
+
+        registerExcelMutation.mutate(
+          {
+            excelNm,
+            excelDataList: excelDataListWithoutIndex,
+          },
+          {
+            onSuccess: (data) => {
+              if (!data.success) {
+                dialogActions.open({
+                  title: '엑셀 등록 실패',
+                  contents: data?.msg ?? '관리자에게 문의해 주세요.',
+                  dialogType: DialogType.ERROR,
+                });
+                return;
+              }
+
+              toast.success('엑셀 등록 성공');
+              close();
+            },
+          },
+        );
+      },
+    });
+  };
+
   const excelUploadModal = useModal();
   const excelUploadModalOpen = () => {
     excelUploadModal.open(({ overlayRef, close }) => {
@@ -49,7 +91,11 @@ export function ExcelUploadDownload() {
           title={'파일 업로드'}
           close={close}
         >
-          <ExcelUploadModal close={close} />
+          <ExcelUploadModal
+            headers={excelUploadDataHeaders}
+            close={close}
+            registerExcel={registerExcel}
+          />
         </ModalLayout>
       );
     });

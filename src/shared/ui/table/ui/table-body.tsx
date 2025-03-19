@@ -52,7 +52,12 @@ export const TableBody = memo(function TableBody<TData extends TDataWithIndex>({
   const requiredKeys = useMemo(() => {
     return headers.map((header) => header.id) as (keyof TData)[];
   }, [headers]);
-  if (!validateTableDataList<TData>(dataList, requiredKeys)) {
+
+  const isValidDataList = useMemo(() => {
+    return validateTableDataList<TData>(dataList, requiredKeys);
+  }, [dataList, requiredKeys]);
+
+  if (!isValidDataList.valid) {
     throw new Error(`dataList does not match the required type: ${JSON.stringify(requiredKeys)}`);
   }
 

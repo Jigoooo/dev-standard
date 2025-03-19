@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { toast } from 'sonner';
 
 import {
   Button,
@@ -11,32 +10,25 @@ import {
   ModalLayout,
   TDataWithIndex,
   TFile,
+  THeader,
   useModal,
 } from '@/shared/ui';
 import { isExtensionAllowed, readExcelFile } from '@/shared/lib';
-import { useExcelUploadDownloadHeaders } from '../lib';
-import { useSaveExcelMutation } from '../api/excel-service.ts';
 import { ExcelEditModal } from './excel-edit-modal.tsx';
-import { RExcelData, TExcelData } from '../model/excel-upload-download-type.ts';
 
-// todo 제거 및 다른 속성들 공통으로 받기
-const headerMappingObj = {
-  orderNo: { index: 0, width: 150 },
-  productCode: { index: 1, width: 150 },
-  productName: { index: 2, width: 150 },
-  quantity: { index: 3, width: 80 },
-  price: { index: 4, width: 100 },
-  totalAmount: { index: 5, width: 100 },
-  orderDate: { index: 6, width: 120 },
-  customerName: { index: 7, width: 100 },
-  status: { index: 8, width: 100 },
-} as const;
-
-export function ExcelUploadModal({ close }: { close: () => void }) {
+type RData<TData extends TDataWithIndex> = Omit<TData, 'index'>;
+export function ExcelUploadModal<TData extends TDataWithIndex>({
+  headers,
+  close,
+  registerExcel,
+}: {
+  headers: THeader<TData>[];
+  close: () => void;
+  registerExcel: (excelNm: string, excelDataList: TData[], close: () => void) => void;
+}) {
   const [files, setFiles] = useState<TFile[]>([]);
   const [excelNm, setExcelNm] = useState('');
-  const { excelUploadDataHeaders } = useExcelUploadDownloadHeaders();
-  const [excelDataList, setExcelDataList] = useState<(TDataWithIndex & RExcelData)[]>([]);
+  const [excelDataList, setExcelDataList] = useState<TData[]>([]);
   const handleFiles = async (files: TFile[]) => {
     if (
       !isExtensionAllowed({
@@ -62,7 +54,7 @@ export function ExcelUploadModal({ close }: { close: () => void }) {
   };
 
   const excelEditModal = useModal();
-  const excelEditModalOpen = ({ excelNm, rows }: { excelNm: string; rows: TExcelData[] }) => {
+  const excelEditModalOpen = ({ excelNm, rows }: { excelNm: string; rows: TData[] }) => {
     excelEditModal.open(({ overlayRef, close }) => {
       return (
         <ModalLayout
@@ -73,7 +65,7 @@ export function ExcelUploadModal({ close }: { close: () => void }) {
         >
           <ExcelEditModal
             excelNm={excelNm}
-            headers={excelUploadDataHeaders}
+            headers={headers}
             rows={rows}
             maxWidth={1200}
             close={({ excelNm, dataList }) => {
@@ -116,24 +108,22 @@ export function ExcelUploadModal({ close }: { close: () => void }) {
 
     const excelRows = readData.rows.slice(1);
 
-    const rows = excelRows.map((rows, rowIndex) => {
+    const rows = excelRows.map((row, rowIndex) => {
+      const filteredHeaders = headers.filter(
+        (header) => !['index', 'check', 'button'].includes(header.id),
+      );
       const entries = Object.fromEntries(
-        rows.map((row, index) => {
-          const findHeader = Object.entries(headerMappingObj).find(
-            ([, value]) => value.index === index,
-          );
-
-          const id = findHeader?.[0] as keyof typeof headerMappingObj;
-
-          return [id, row];
+        filteredHeaders.map((header) => {
+          const headerIndex = headers.findIndex((h) => h.id === header.id);
+          return [header.id, row[headerIndex]];
         }),
-      ) as RExcelData;
+      ) as RData<TData>;
 
       return {
         index: rowIndex + 1,
         ...entries,
       };
-    });
+    }) as TData[];
 
     if (rows.length === 0) {
       dialogActions.open({
@@ -149,43 +139,6 @@ export function ExcelUploadModal({ close }: { close: () => void }) {
     excelEditModalOpen({
       excelNm: excelNm || fileNameWithoutExtension,
       rows: excelDataList.length > 0 ? excelDataList : rows,
-    });
-  };
-
-  const registerExcelMutation = useSaveExcelMutation();
-  const registerExcel = () => {
-    dialogActions.open({
-      title: '등록하시겠습니까?',
-      withCancel: true,
-      overlayClose: true,
-      onConfirm: () => {
-        const excelDataListWithoutIndex = excelDataList.map((row) => {
-          const { index: _index, ...rest } = row;
-          return rest;
-        });
-
-        registerExcelMutation.mutate(
-          {
-            excelNm,
-            excelDataList: excelDataListWithoutIndex,
-          },
-          {
-            onSuccess: (data) => {
-              if (!data.success) {
-                dialogActions.open({
-                  title: '엑셀 등록 실패',
-                  contents: data?.msg ?? '관리자에게 문의해 주세요.',
-                  dialogType: DialogType.ERROR,
-                });
-                return;
-              }
-
-              toast.success('엑셀 등록 성공');
-              close();
-            },
-          },
-        );
-      },
     });
   };
 
@@ -210,7 +163,10 @@ export function ExcelUploadModal({ close }: { close: () => void }) {
               분석
             </Button>
             {excelDataList.length > 0 && (
-              <Button style={{ paddingInline: 18 }} onClick={registerExcel}>
+              <Button
+                style={{ paddingInline: 18 }}
+                onClick={() => registerExcel(excelNm, excelDataList, close)}
+              >
                 업로드
               </Button>
             )}
