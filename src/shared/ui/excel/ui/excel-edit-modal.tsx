@@ -54,6 +54,38 @@ export function ExcelEditModal<TData extends TDataWithIndex>({
             //todo 검증 로직 구현
             console.log(validationRules);
 
+            const problematicResults = headers.flatMap((header) => {
+              if (!validationRules) {
+                return [];
+              }
+
+              const rule = validationRules.find((r) => r.id === header.id);
+              if (!rule) {
+                return [];
+              }
+
+              return dataList
+                .map((data, rowIndex) => {
+                  const value = data[header.id as keyof TData] as string | number | null;
+                  const result = rule.validateFn(value);
+                  if (!result.isValid) {
+                    return {
+                      headerId: header.id,
+                      headerLabel: header.label,
+                      rowIndex: rowIndex + 1,
+                      value,
+                      errorMessage: result.errorMessage,
+                    };
+                  }
+                  return null;
+                })
+                .filter((item): item is NonNullable<typeof item> => item !== null);
+            });
+
+            if (problematicResults.length > 0) {
+              return;
+            }
+
             close({
               excelNm: name,
               dataList,

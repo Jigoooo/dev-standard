@@ -4,7 +4,6 @@ import { ButtonProps, ButtonStyle } from '../model/button-type.ts';
 export function SaveButton({ style, ...props }: Omit<ButtonProps, 'children'>) {
   return (
     <Button
-      buttonStyle={ButtonStyle.OUTLINED}
       style={{
         ...{ width: 80 },
         ...style,

@@ -18,7 +18,7 @@ export function createValidator<TValue extends string | number | null>(value: TV
       if (error) return validator;
       if (typeof value !== 'string') {
         error = true;
-        errorMessage = message ?? '문자열이어야 합니다.';
+        errorMessage = message ?? '문자만 입력할 수 있습니다.';
       }
       return validator;
     },
@@ -26,7 +26,7 @@ export function createValidator<TValue extends string | number | null>(value: TV
       if (error) return validator;
       if (isNaN(Number(value))) {
         error = true;
-        errorMessage = message ?? '숫자여야 합니다.';
+        errorMessage = message ?? '숫자만 입력할 수 있습니다.';
       }
       return validator;
     },

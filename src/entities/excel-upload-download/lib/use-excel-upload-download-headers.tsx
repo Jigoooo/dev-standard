@@ -20,29 +20,53 @@ import { getExcelDataListApi } from '../api/excel-api.ts';
 import { TExcelInfo, TExcelData, RExcelData } from '../model/excel-upload-download-type.ts';
 import { useUpdateExcelMutation } from '@/entities/excel-upload-download';
 import { handleAuthError } from '@/entities/auth';
-import { formatDateString, thousandSeparator } from '@/shared/lib';
+import { createValidator, formatDateString, thousandSeparator } from '@/shared/lib';
 
 export function useExcelUploadDownloadHeaders() {
   const excelUploadValidationRules: TValidationRuleWithHeaderId<TExcelData>[] = [
     {
       id: 'quantity',
-      validateFn: () => true,
+      validateFn: (value) => {
+        const valueWithValidated = createValidator(value).isNumber().validate();
+
+        return {
+          isValid: !valueWithValidated.error,
+          errorMessage: valueWithValidated.errorMessage,
+        };
+      },
     },
     {
       id: 'price',
-      validateFn: () => true,
+      validateFn: (value) => {
+        const valueWithValidated = createValidator(value).isNumber().validate();
+
+        return {
+          isValid: !valueWithValidated.error,
+          errorMessage: valueWithValidated.errorMessage,
+        };
+      },
     },
     {
       id: 'totalAmount',
-      validateFn: () => true,
+      validateFn: (value) => {
+        const valueWithValidated = createValidator(value).isNumber().validate();
+
+        return {
+          isValid: !valueWithValidated.error,
+          errorMessage: valueWithValidated.errorMessage,
+        };
+      },
     },
     {
       id: 'orderDate',
-      validateFn: () => true,
-    },
-    {
-      id: 'status',
-      validateFn: () => true,
+      validateFn: (value) => {
+        const valueWithValidated = createValidator(value).isDate().validate();
+
+        return {
+          isValid: !valueWithValidated.error,
+          errorMessage: valueWithValidated.errorMessage,
+        };
+      },
     },
   ];
 
