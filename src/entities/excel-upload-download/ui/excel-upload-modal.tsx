@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 import {
   Button,
@@ -13,15 +14,12 @@ import {
   useModal,
 } from '@/shared/ui';
 import { isExtensionAllowed, readExcelFile } from '@/shared/lib';
-import {
-  ExcelEditModal,
-  RExcelData,
-  useExcelUploadDownloadHeaders,
-  useSaveExcelMutation,
-} from '@/entities/excel-upload-download';
-import { TExcelData } from '@/entities/excel-upload-download/model/excel-upload-download-type.ts';
-import { toast } from 'sonner';
+import { useExcelUploadDownloadHeaders } from '../lib';
+import { useSaveExcelMutation } from '../api/excel-service.ts';
+import { ExcelEditModal } from './excel-edit-modal.tsx';
+import { RExcelData, TExcelData } from '../model/excel-upload-download-type.ts';
 
+// todo 제거 및 다른 속성들 공통으로 받기
 const headerMappingObj = {
   orderNo: { index: 0, width: 150 },
   productCode: { index: 1, width: 150 },
