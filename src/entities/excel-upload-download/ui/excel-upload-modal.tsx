@@ -180,9 +180,7 @@ export function ExcelUploadModal({ close }: { close: () => void }) {
                 return;
               }
 
-              toast.success('엑셀 등록 성공', {
-                duration: 3000,
-              });
+              toast.success('엑셀 등록 성공');
               close();
             },
           },

@@ -14,9 +14,10 @@ export function AlertProvider() {
       <Toaster
         toastOptions={{
           style: {
-            background: '#333333',
-            color: '#ffffff',
-            borderColor: '#333333',
+            background: '#ffffff',
+            color: '#000000',
+            border: '1px solid #cccccc',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
             fontSize: '0.9rem',
           },
           duration: 5000,

@@ -134,9 +134,7 @@ export function useExcelUploadDownloadHeaders() {
             return;
           }
 
-          toast.success('엑셀 수정 성공', {
-            duration: 3000,
-          });
+          toast.success('엑셀 수정 성공');
 
           close();
         },
