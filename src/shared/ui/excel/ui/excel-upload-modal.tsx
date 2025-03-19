@@ -99,56 +99,65 @@ export function ExcelUploadModal<TData extends TDataWithIndex>({
       return;
     }
 
-    const readData = await readExcelFile({
-      file: files[0].file,
-      options: {
-        header: 1,
-      },
-    });
+    try {
+      const readData = await readExcelFile({
+        file: files[0].file,
+        options: {
+          header: 1,
+        },
+      });
 
-    if (readData.rows.length === 0) {
+      if (readData.rows.length === 0) {
+        dialogActions.open({
+          dialogType: DialogType.ERROR,
+          title: '파일을 읽을 수 없습니다.',
+          overlayClose: true,
+        });
+        return;
+      }
+
+      const excelRows = readData.rows.slice(1);
+
+      const rows = excelRows.map((row, rowIndex) => {
+        const filteredHeaders = headers.filter(
+          (header) => !['index', 'check', 'button'].includes(header.id),
+        );
+        const entries = Object.fromEntries(
+          filteredHeaders.map((header) => {
+            const headerIndex = filteredHeaders.findIndex((h) => h.id === header.id);
+            return [header.id, row[headerIndex]];
+          }),
+        ) as RData<TData>;
+
+        return {
+          index: rowIndex + 1,
+          ...entries,
+        };
+      }) as TData[];
+
+      if (rows.length === 0) {
+        dialogActions.open({
+          dialogType: DialogType.ERROR,
+          title: '엑셀 데이터가 없습니다.',
+          overlayClose: true,
+        });
+        return;
+      }
+
+      const fileNameWithoutExtension = files[0].file.name.split('.').slice(0, -1).join('.');
+
+      excelEditModalOpen({
+        excelNm: excelNm || fileNameWithoutExtension,
+        rows: excelDataList.length > 0 ? excelDataList : rows,
+      });
+    } catch {
       dialogActions.open({
         dialogType: DialogType.ERROR,
-        title: '파일을 읽을 수 없습니다.',
+        title: '읽을 수 없는 파일입니다.',
+        contents: '파일 손상여부를 확인해 주세요.',
         overlayClose: true,
       });
-      return;
     }
-
-    const excelRows = readData.rows.slice(1);
-
-    const rows = excelRows.map((row, rowIndex) => {
-      const filteredHeaders = headers.filter(
-        (header) => !['index', 'check', 'button'].includes(header.id),
-      );
-      const entries = Object.fromEntries(
-        filteredHeaders.map((header) => {
-          const headerIndex = filteredHeaders.findIndex((h) => h.id === header.id);
-          return [header.id, row[headerIndex]];
-        }),
-      ) as RData<TData>;
-
-      return {
-        index: rowIndex + 1,
-        ...entries,
-      };
-    }) as TData[];
-
-    if (rows.length === 0) {
-      dialogActions.open({
-        dialogType: DialogType.ERROR,
-        title: '엑셀 데이터가 없습니다.',
-        overlayClose: true,
-      });
-      return;
-    }
-
-    const fileNameWithoutExtension = files[0].file.name.split('.').slice(0, -1).join('.');
-
-    excelEditModalOpen({
-      excelNm: excelNm || fileNameWithoutExtension,
-      rows: excelDataList.length > 0 ? excelDataList : rows,
-    });
   };
 
   return (

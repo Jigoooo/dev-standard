@@ -51,7 +51,7 @@ export type RExcelDataList = {
   excelDataList: RExcelData[];
 };
 
-export type PSaveExcelData = {
+export type PExcelSaveData = {
   idx?: number;
   excelNm: string;
   excelDataList: RExcelData[];

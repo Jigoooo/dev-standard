@@ -4,7 +4,7 @@ import { TAuthErrorHandlerOptions } from '../model/auth-type.ts';
 import { dialogActions, DialogType } from '@/shared/ui';
 
 export async function handleAuthError(options: TAuthErrorHandlerOptions): Promise<boolean> {
-  const { data, onUnauthenticated, onRefreshSuccess } = options;
+  const { data, onUnauthenticated, onOtherError, onRefreshSuccess } = options;
 
   if (data.success) return false;
   if (data.code === 401 || data.code === 403) {
@@ -42,12 +42,16 @@ export async function handleAuthError(options: TAuthErrorHandlerOptions): Promis
       onRefreshSuccess();
     }
   } else {
-    dialogActions.open({
-      dialogType: DialogType.ERROR,
-      title: data.msg || '오류가 발생하였습니다.',
-      contents: '관리자에게 문의해 주세요.',
-      overlayClose: false,
-    });
+    if (onOtherError) {
+      onOtherError();
+    } else {
+      dialogActions.open({
+        dialogType: DialogType.ERROR,
+        title: data.msg || '오류가 발생하였습니다.',
+        contents: '관리자에게 문의해 주세요.',
+        overlayClose: false,
+      });
+    }
   }
   return true;
 }

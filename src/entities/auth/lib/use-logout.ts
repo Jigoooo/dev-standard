@@ -1,11 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 
-import { Router } from '@/entities/router';
-
+import { Router, useRouterMenuContext } from '@/entities/router';
 import { dialogActions, DialogType } from '@/shared/ui';
 import { removeToken } from '@/entities/auth';
 
 export function useLogout() {
+  const { removeLastLocation } = useRouterMenuContext();
   const navigate = useNavigate();
 
   return () => {
@@ -18,6 +18,7 @@ export function useLogout() {
       confirmText: '로그아웃',
       onConfirm: () => {
         removeToken();
+        removeLastLocation();
         navigate(`${Router.SIGN_IN}?isLogout=true`, { replace: true });
       },
     });

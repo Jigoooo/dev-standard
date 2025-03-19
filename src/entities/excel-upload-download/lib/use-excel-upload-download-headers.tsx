@@ -157,19 +157,33 @@ export function useExcelUploadDownloadHeaders() {
         deleteDataList: deletedDataList,
       },
       {
-        onSuccess: (data) => {
-          if (!data.success) {
-            dialogActions.open({
-              title: '엑셀 수정 실패',
-              contents: data?.msg ?? '관리자에게 문의해 주세요.',
-              dialogType: DialogType.ERROR,
-            });
-            return;
+        onSuccess: async (data, variables) => {
+          const isError = await handleAuthError({
+            data,
+            onUnauthenticated: () => navigate('/', { replace: true }),
+            onOtherError: () => {
+              dialogActions.open({
+                title: '엑셀 수정 실패',
+                contents: data?.msg ?? '관리자에게 문의해 주세요.',
+                dialogType: DialogType.ERROR,
+              });
+            },
+            onRefreshSuccess: () => {
+              updateExcelMutation.mutate(variables, {
+                onSuccess: (data) => {
+                  if (data.success) {
+                    toast.success('엑셀 수정 성공');
+                    close();
+                  }
+                },
+              });
+            },
+          });
+
+          if (!isError) {
+            toast.success('엑셀 수정 성공');
+            close();
           }
-
-          toast.success('엑셀 수정 성공');
-
-          close();
         },
       },
     );

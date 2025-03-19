@@ -8,7 +8,7 @@ import { SignIn } from '@/pages/sign-in';
 import { Main } from '@/pages/main';
 import { MyProfile } from '@/pages/my-profile';
 import { ModalContextWrapper, RouteErrorPage } from '@/shared/ui';
-import { sessionStorageKey } from '@/shared/constants';
+import { localStorageKey } from '@/shared/constants';
 import { AuthGuard, handleAuthError, MainAuthGuard } from '@/entities/auth';
 
 const defaultRoutes: RouteObject[] = [
@@ -123,7 +123,6 @@ function makeGroupMenus(responseMenus: RMenu[]): TMenu[] {
     }
   }
 
-  // const flatMenus = mainMenus.flatMap((menu) => menu.children || []);
   return mainMenus;
 }
 
@@ -150,14 +149,14 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
     `${Router.MAIN}/${Router.FILE}`,
     `${Router.MAIN}/${Router.MY_PROFILE}`,
   ];
-  const lastLocation = sessionStorage.getItem(sessionStorageKey.LAST_LOCATION);
+  const lastLocation = localStorage.getItem(localStorageKey.LAST_LOCATION);
 
   const setLastLocation = (lastLocation: string) => {
-    sessionStorage.setItem(sessionStorageKey.LAST_LOCATION, lastLocation);
+    localStorage.setItem(localStorageKey.LAST_LOCATION, lastLocation);
   };
 
   const removeLastLocation = () => {
-    sessionStorage.removeItem(sessionStorageKey.LAST_LOCATION);
+    localStorage.removeItem(localStorageKey.LAST_LOCATION);
   };
 
   const updateRouteChildren = (parentPath: string, newChildren: RouteObject[], merge?: boolean) => {

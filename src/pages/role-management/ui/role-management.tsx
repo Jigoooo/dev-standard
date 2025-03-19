@@ -20,8 +20,12 @@ import {
   RRoleUser,
 } from '@/entities/router';
 import { useMemberState } from '@/entities/member';
+import { handleAuthError } from '@/entities/auth';
+import { useNavigate } from 'react-router-dom';
 
 export function RoleManagement() {
+  const navigate = useNavigate();
+
   const memberState = useMemberState();
   console.log(memberState);
 
@@ -84,19 +88,31 @@ export function RoleManagement() {
       overlayClose: true,
       onConfirm: () => {
         updateMenuMemberAuthMutation.mutate(menuAuthList, {
-          onSuccess: (data) => {
-            if (!data.success) {
-              console.log(data);
-              dialogActions.open({
-                dialogType: DialogType.ERROR,
-                title: '권한 저장에 실패하였습니다.',
-                contents: data.msg ?? '관리자에게 문의해 주세요.',
-              });
+          onSuccess: async (data, variables) => {
+            const isError = await handleAuthError({
+              data,
+              onUnauthenticated: () => navigate('/', { replace: true }),
+              onOtherError: () => {
+                dialogActions.open({
+                  dialogType: DialogType.ERROR,
+                  title: '권한 저장에 실패하였습니다.',
+                  contents: data.msg ?? '관리자에게 문의해 주세요.',
+                });
+              },
+              onRefreshSuccess: () => {
+                updateMenuMemberAuthMutation.mutate(variables, {
+                  onSuccess: (data) => {
+                    if (data.success) {
+                      toast.success('권한이 수정되었습니다.');
+                    }
+                  },
+                });
+              },
+            });
 
-              return;
+            if (!isError) {
+              toast.success('엑셀 등록 성공');
             }
-
-            toast.success('권한이 수정되었습니다.');
           },
         });
       },

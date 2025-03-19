@@ -23,8 +23,12 @@ import {
   useSaveExcelMutation,
 } from '@/entities/excel-upload-download';
 import { toast } from 'sonner';
+import { handleAuthError } from '@/entities/auth';
+import { useNavigate } from 'react-router-dom';
 
 export function ExcelUploadDownload() {
+  const navigate = useNavigate();
+
   const excelInfoListQuery = useExcelInfoListQuery();
   const excelInfoList = excelInfoListQuery.data?.data?.excelInfoList ?? [];
   const excelInfoListWithIndex = excelInfoList.map((item, index) => ({
@@ -63,18 +67,33 @@ export function ExcelUploadDownload() {
             excelDataList: excelDataListWithoutIndex,
           },
           {
-            onSuccess: (data) => {
-              if (!data.success) {
-                dialogActions.open({
-                  title: '엑셀 등록 실패',
-                  contents: data?.msg ?? '관리자에게 문의해 주세요.',
-                  dialogType: DialogType.ERROR,
-                });
-                return;
-              }
+            onSuccess: async (data, variables) => {
+              const isError = await handleAuthError({
+                data,
+                onUnauthenticated: () => navigate('/', { replace: true }),
+                onOtherError: () => {
+                  dialogActions.open({
+                    title: '엑셀 등록 실패',
+                    contents: data?.msg ?? '관리자에게 문의해 주세요.',
+                    dialogType: DialogType.ERROR,
+                  });
+                },
+                onRefreshSuccess: () => {
+                  registerExcelMutation.mutate(variables, {
+                    onSuccess: (data) => {
+                      if (data.success) {
+                        toast.success('엑셀 수정 성공');
+                        close();
+                      }
+                    },
+                  });
+                },
+              });
 
-              toast.success('엑셀 등록 성공');
-              close();
+              if (!isError) {
+                toast.success('엑셀 등록 성공');
+                close();
+              }
             },
           },
         );

@@ -2,7 +2,7 @@ import { apiRequest, customedAxios } from '@/shared/api';
 import {
   PExcelDataList,
   PExcelInfoList,
-  PSaveExcelData,
+  PExcelSaveData,
   RExcelDataList,
   RExcelInfoList,
 } from '../model/excel-upload-download-type.ts';
@@ -23,10 +23,10 @@ export async function getExcelDataListApi(params: PExcelDataList) {
   );
 }
 
-export async function saveExcelApi(data: PSaveExcelData) {
-  return await apiRequest<null>(customedAxios.post('/excel/save', data));
+export async function excelSaveApi(data: PExcelSaveData) {
+  return await apiRequest<null>(customedAxios.post('/excel/excelSave', data));
 }
 
-export async function updateExcelApi(data: PSaveExcelData) {
-  return await apiRequest<null>(customedAxios.post('/excel/update', data));
+export async function excelUpdateApi(data: PExcelSaveData) {
+  return await apiRequest<null>(customedAxios.post('/excel/excelUpdate', data));
 }
