@@ -1,5 +1,5 @@
 import { Button } from './button.tsx';
-import { ButtonProps, ButtonStyle } from '../model/button-type.ts';
+import { ButtonProps } from '../model/button-type.ts';
 
 export function SaveButton({ style, ...props }: Omit<ButtonProps, 'children'>) {
   return (
