@@ -7,6 +7,7 @@ import {
   isValidPassword,
   isValidPhoneNumber,
 } from '@/shared/lib';
+import { isValid, parse } from 'date-fns';
 
 export function createValidator<TValue extends string | number | null>(value: TValue) {
   let error = false;
@@ -26,6 +27,31 @@ export function createValidator<TValue extends string | number | null>(value: TV
       if (isNaN(Number(value))) {
         error = true;
         errorMessage = message ?? '숫자여야 합니다.';
+      }
+      return validator;
+    },
+    isDate({
+      parsedFormat = 'yyyyMMdd',
+      message,
+    }: { parsedFormat?: string; message?: string } = {}) {
+      if (error) return validator;
+      if (typeof value !== 'string' && typeof value !== 'number') {
+        error = true;
+        errorMessage = message ?? '입력 값이 날짜 형식이 아닙니다.';
+        return validator;
+      }
+      const stringValue = '' + value;
+
+      if (stringValue.length !== parsedFormat.length) {
+        error = true;
+        errorMessage = message ?? '입력 값이 날짜 형식이 아닙니다.';
+        return validator;
+      }
+
+      const dateValue = parse(stringValue, parsedFormat, new Date());
+      if (!isValid(dateValue)) {
+        error = true;
+        errorMessage = message ?? '유효한 날짜가 아닙니다.';
       }
       return validator;
     },

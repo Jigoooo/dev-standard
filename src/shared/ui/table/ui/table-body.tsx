@@ -468,6 +468,7 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
               },
               tableStyle,
               exitEditMode: () => {
+                inputRef.current?.blur();
                 setIsEditMode(false);
               },
             })
@@ -487,6 +488,7 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
               }}
               onKeyDown={(event) => {
                 if (event.key === 'Enter') {
+                  inputRef.current?.blur();
                   setIsEditMode(false);
                 }
               }}

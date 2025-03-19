@@ -6,9 +6,10 @@ import {
   Button,
   ButtonStyle,
   createHeader,
+  DateEditCell,
+  InputNumberEditCell,
   dialogActions,
   DialogType,
-  Input,
   ModalLayout,
   THeader,
   useModal,
@@ -19,7 +20,7 @@ import { ExcelEditModal } from '../ui/excel-edit-modal.tsx';
 import { useUpdateExcelMutation } from '@/entities/excel-upload-download';
 import { colors } from '@/shared/constants';
 import { handleAuthError } from '@/entities/auth';
-import { createValidator, formatDateString, thousandSeparator } from '@/shared/lib';
+import { formatDateString, thousandSeparator } from '@/shared/lib';
 
 export function useExcelUploadDownloadHeaders() {
   const excelUploadDataHeaders: THeader<TExcelData>[] = [
@@ -29,37 +30,8 @@ export function useExcelUploadDownloadHeaders() {
     createHeader('productName', '상품명', 150),
     createHeader('quantity', '수량', 80, {
       dataAlign: 'right',
-      editCell: ({ inputRef, cellData, setCellData, tableStyle, exitEditMode }) => {
-        return (
-          <Input
-            ref={inputRef}
-            style={{
-              height: tableStyle.tableHeaderHeight,
-              fontSize: '0.8rem',
-              width: '100%',
-              borderRadius: 0,
-              boxShadow: 'none',
-            }}
-            value={cellData}
-            onChange={(event) => {
-              const valueWithValidated = createValidator(event.target.value)
-                .isNumber({ message: '숫자만 입력할 수 있습니다.' })
-                .validate();
-
-              if (valueWithValidated.error) {
-                toast.error(valueWithValidated.errorMessage);
-                return;
-              }
-
-              setCellData(Number(valueWithValidated.value));
-            }}
-            onKeyDown={(event) => {
-              if (event.key === 'Enter') {
-                exitEditMode();
-              }
-            }}
-          />
-        );
+      editCell: (editCellOptions) => {
+        return <InputNumberEditCell {...editCellOptions} />;
       },
       formatter: ({ cellData }) => {
         return thousandSeparator(cellData);
@@ -67,17 +39,26 @@ export function useExcelUploadDownloadHeaders() {
     }),
     createHeader('price', '단가', 100, {
       dataAlign: 'right',
+      editCell: (editCellOptions) => {
+        return <InputNumberEditCell {...editCellOptions} />;
+      },
       formatter: ({ cellData }) => {
         return thousandSeparator(cellData);
       },
     }),
     createHeader('totalAmount', '가격', 100, {
       dataAlign: 'right',
+      editCell: (editCellOptions) => {
+        return <InputNumberEditCell {...editCellOptions} />;
+      },
       formatter: ({ cellData }) => {
         return thousandSeparator(cellData);
       },
     }),
     createHeader('orderDate', '주문일자', 120, {
+      editCell: (editCellOptions) => {
+        return <DateEditCell {...editCellOptions} />;
+      },
       formatter: ({ cellData }) => {
         return formatDateString(cellData, '-');
       },

@@ -51,6 +51,16 @@ export type THeaderGroup<TData> = {
   headerIds: (keyof TData)[];
 };
 
+export type TEditCell<TData> = {
+  inputRef: RefObject<HTMLInputElement | null>;
+  cellData: any;
+  rowData: TData;
+  handleRowData: (key: keyof TData, value: any) => void;
+  setCellData: (value: any) => void;
+  tableStyle: TTableStyle;
+  exitEditMode: () => void;
+};
+
 export type THeader<TData = Record<string, any>> = {
   id: Extract<keyof TData, string> | 'index' | 'check' | 'button';
   label: string;
@@ -78,15 +88,7 @@ export type THeader<TData = Record<string, any>> = {
     handleRowData,
     tableStyle,
     exitEditMode,
-  }: {
-    inputRef: RefObject<HTMLInputElement | null>;
-    cellData: any;
-    rowData: TData;
-    handleRowData: (key: keyof TData, value: any) => void;
-    setCellData: (value: any) => void;
-    tableStyle: TTableStyle;
-    exitEditMode: () => void;
-  }) => ReactNode;
+  }: TEditCell<TData>) => ReactNode;
   formatter?: ({ cellData, rowData }: { cellData: any; rowData: TData }) => string | number;
   pin: 'view' | 'left' | 'right';
   headerAlign?: 'left' | 'center' | 'right';
