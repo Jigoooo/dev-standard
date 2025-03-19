@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 import {
-  Button,
   dialogActions,
   DialogType,
   FlexColumn,
   FlexRow,
+  SaveButton,
   Table,
   TDataWithIndex,
   useTableData,
-} from 'shared/ui';
+} from '@/shared/ui';
 import {
   useGetMemberListQuery,
   useGetMenuMemberAuthListQuery,
@@ -18,7 +19,6 @@ import {
   RMenuMemberAuth,
   RRoleUser,
 } from '@/entities/router';
-import { toast } from 'sonner';
 
 export function RoleManagement() {
   // const { currentMenuMemberAuth } = useRouterMenuContext();
@@ -121,11 +121,7 @@ export function RoleManagement() {
           height: 65,
         }}
       >
-        {memberId !== '' && (
-          <Button style={{ width: 80 }} onClick={updateMenuMemberAuth}>
-            저장
-          </Button>
-        )}
+        {memberId !== '' && <SaveButton onClick={updateMenuMemberAuth} />}
       </FlexRow>
 
       <FlexRow style={{ height: '100%', gap: 12 }}>

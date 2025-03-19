@@ -102,7 +102,6 @@ export type THeader<TData = Record<string, any>> = {
     filterCondition?: (filterValue: string) => boolean;
     filterValue: string;
   };
-  // validateEdit?: (value: any) => boolean;
 };
 
 export type TDataWithIndex = {

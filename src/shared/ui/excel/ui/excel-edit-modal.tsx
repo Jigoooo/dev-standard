@@ -1,5 +1,6 @@
+import { useState } from 'react';
+
 import {
-  Button,
   FlexColumn,
   FlexRow,
   Input,
@@ -9,8 +10,8 @@ import {
   TValidationRuleWithHeaderId,
   Typography,
   useTableData,
+  SaveButton,
 } from '@/shared/ui';
-import { useState } from 'react';
 
 export function ExcelEditModal<TData extends TDataWithIndex>({
   excelNm,
@@ -48,8 +49,7 @@ export function ExcelEditModal<TData extends TDataWithIndex>({
           <Typography style={{ fontSize: '0.9rem' }}>엑셀명: </Typography>
           <Input value={name} onChange={(event) => setName(event.target.value)} />
         </FlexRow>
-        <Button
-          style={{ width: 80 }}
+        <SaveButton
           onClick={() => {
             //todo 검증 로직 구현
             console.log(validationRules);
@@ -59,9 +59,7 @@ export function ExcelEditModal<TData extends TDataWithIndex>({
               dataList,
             });
           }}
-        >
-          저장
-        </Button>
+        />
       </FlexRow>
     </FlexColumn>
   );

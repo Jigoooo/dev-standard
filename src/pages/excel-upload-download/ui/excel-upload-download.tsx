@@ -140,9 +140,6 @@ export function ExcelUploadDownload() {
         tableDataList={dataList}
         handelDataList={handelDataList}
         deleteDataList={deleteDataList}
-        handleSyncCheckList={(checkedList) => {
-          console.log(checkedList);
-        }}
       />
     </FlexColumn>
   );

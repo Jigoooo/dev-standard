@@ -3,8 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 
 import {
-  Button,
-  ButtonStyle,
   createHeader,
   DateEditCell,
   InputNumberEditCell,
@@ -15,11 +13,12 @@ import {
   useModal,
   ExcelEditModal,
   TValidationRuleWithHeaderId,
+  DeleteButton,
+  ModifyButton,
 } from '@/shared/ui';
 import { getExcelDataListApi } from '../api/excel-api.ts';
 import { TExcelInfo, TExcelData, RExcelData } from '../model/excel-upload-download-type.ts';
 import { useUpdateExcelMutation } from '@/entities/excel-upload-download';
-import { colors } from '@/shared/constants';
 import { handleAuthError } from '@/entities/auth';
 import { formatDateString, thousandSeparator } from '@/shared/lib';
 
@@ -93,21 +92,7 @@ export function useExcelUploadDownloadHeaders() {
       pin: 'right',
       dataAlign: 'center',
       cell: ({ deleteRow }) => {
-        return (
-          <Button
-            buttonStyle={ButtonStyle.OUTLINED}
-            style={{
-              width: '100%',
-              height: 30,
-              fontSize: '0.76rem',
-              borderColor: colors.error[500],
-              color: colors.error[500],
-            }}
-            onClick={deleteRow}
-          >
-            삭제
-          </Button>
-        );
+        return <DeleteButton onClick={deleteRow} />;
       },
       filter: undefined,
     }),
@@ -241,15 +226,7 @@ export function useExcelUploadDownloadHeaders() {
     createHeader('button', '', 80, {
       dataAlign: 'center',
       cell: ({ rowData }) => {
-        return (
-          <Button
-            buttonStyle={ButtonStyle.OUTLINED}
-            style={{ width: '100%', height: 30, fontSize: '0.76rem' }}
-            onClick={() => excelEditModalOpen(rowData)}
-          >
-            상세
-          </Button>
-        );
+        return <ModifyButton onClick={() => excelEditModalOpen(rowData)} />;
       },
       filter: undefined,
     }),
