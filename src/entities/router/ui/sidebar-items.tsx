@@ -116,7 +116,7 @@ export function SidebarItems({
           const secondDepthMenus = menu.children;
 
           return (
-            <FlexColumn style={{ width: '100%' }} key={menu.router}>
+            <FlexColumn style={{ width: '100%', overflow: 'hidden' }} key={menu.router}>
               <SidebarItem
                 style={{ backgroundColor: sidebarBackgroundColor }}
                 isSelected={isSelected}
