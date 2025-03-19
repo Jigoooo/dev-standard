@@ -11,6 +11,7 @@ import {
   Typography,
   useTableData,
   SaveButton,
+  dialogActions,
 } from '@/shared/ui';
 
 export function ExcelEditModal<TData extends TDataWithIndex>({
@@ -80,6 +81,21 @@ export function ExcelEditModal<TData extends TDataWithIndex>({
             });
 
             if (problematicResults.length > 0) {
+              const errorMessages = problematicResults.map(
+                (result) =>
+                  `${result.headerLabel} (${result.rowIndex}행): ${result.errorMessage}\n`,
+              );
+              dialogActions.open({
+                title: '엑셀 유효성 검사 결과',
+                contents: (
+                  <Typography
+                    style={{ fontSize: '0.9rem', fontWeight: 400, paddingRight: 12, lineHeight: 2 }}
+                  >
+                    {errorMessages}
+                  </Typography>
+                ),
+                overlayClose: true,
+              });
               return;
             }
 

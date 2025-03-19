@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import { RiFileExcel2Line } from 'react-icons/ri';
+
 import {
   Button,
   dialogActions,
@@ -7,6 +9,7 @@ import {
   FileUploadForm,
   FlexColumn,
   FlexRow,
+  Link,
   ModalLayout,
   TDataWithIndex,
   TFile,
@@ -149,7 +152,12 @@ export function ExcelUploadModal<TData extends TDataWithIndex>({
   return (
     <FlexRow style={{ height: '100%', padding: 12, overflow: 'hidden' }}>
       <FlexColumn style={{ width: '100%', justifyContent: 'space-between' }}>
-        <div style={{ width: '100%', height: '80%' }}>
+        <FlexColumn style={{ width: '100%', height: '80%', gap: 14 }}>
+          <FlexRow style={{ alignItems: 'center', justifyContent: 'flex-end', gap: 4 }}>
+            <RiFileExcel2Line />
+            <Link style={{ fontSize: '0.9rem', fontWeight: 600 }}>업로드 양식</Link>
+          </FlexRow>
+
           <FileUploadForm
             accept={'.xls, .xlsx'}
             files={files}
@@ -157,8 +165,8 @@ export function ExcelUploadModal<TData extends TDataWithIndex>({
             fileDelete={deleteFile}
             disabled={files.length > 0}
           />
-        </div>
-        {files.length > 0 && (
+        </FlexColumn>
+        {files.length > 0 ? (
           <FlexRow style={{ alignItems: 'center', justifyContent: 'flex-end', gap: 6 }}>
             <Button
               style={{ paddingInline: 18, backgroundColor: '#333333' }}
@@ -175,6 +183,8 @@ export function ExcelUploadModal<TData extends TDataWithIndex>({
               </Button>
             )}
           </FlexRow>
+        ) : (
+          <div />
         )}
       </FlexColumn>
     </FlexRow>

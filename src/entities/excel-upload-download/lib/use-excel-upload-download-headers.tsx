@@ -112,7 +112,7 @@ export function useExcelUploadDownloadHeaders() {
     }),
     createHeader('customerName', '주문자', 100),
     createHeader('status', '상태', 100),
-    createHeader('button', '', 80, {
+    createHeader('button', '', 100, {
       pin: 'right',
       dataAlign: 'center',
       cell: ({ deleteRow }) => {

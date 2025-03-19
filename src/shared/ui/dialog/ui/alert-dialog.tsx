@@ -118,10 +118,22 @@ function AlertDialogContents({ contents }: { contents?: ReactNode }) {
   return (
     <>
       {contents ? (
-        <FlexColumn style={{ paddingTop: 8, paddingBottom: 24, whiteSpace: 'pre-line' }}>
-          <Typography style={{ fontSize: '0.9rem', fontWeight: 400, paddingRight: 12 }}>
-            {contents}
-          </Typography>
+        <FlexColumn
+          style={{
+            paddingTop: 8,
+            paddingBottom: 24,
+            whiteSpace: 'pre-line',
+            overflowY: 'auto',
+            marginBottom: 10,
+          }}
+        >
+          {typeof contents === 'string' ? (
+            <Typography style={{ fontSize: '0.9rem', fontWeight: 400, paddingRight: 12 }}>
+              {contents}
+            </Typography>
+          ) : (
+            contents
+          )}
         </FlexColumn>
       ) : (
         <div style={{ height: 10 }}></div>

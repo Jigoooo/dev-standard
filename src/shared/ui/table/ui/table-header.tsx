@@ -363,11 +363,14 @@ function TableHeaderCell({
   isVisibleHandler: boolean;
   position: 'left' | 'right';
 }) {
-  const { tableStyle, checkedState, handleCheckAll, handleSort } = useTableContext();
+  const { headers, tableStyle, verticalScrollWidth, checkedState, handleCheckAll, handleSort } =
+    useTableContext();
 
   if (header.id === 'check' && checkedState === undefined) {
     throw new Error('checkedState is required for check header');
   }
+
+  const isLastCell = headers[headers.length - 1].id === header.id;
 
   const justifyContent =
     header.headerAlign === 'left' || header.headerAlign === undefined
@@ -384,6 +387,7 @@ function TableHeaderCell({
           boxSizing: 'border-box',
           justifyContent: header.id === 'check' ? 'center' : justifyContent,
           alignItems: 'center',
+          marginRight: isLastCell ? verticalScrollWidth : 0,
           paddingInline: 12,
           width: header.width,
           height: tableStyle.tableHeaderHeight,
@@ -443,7 +447,8 @@ function TableHeaderFilterCell({
   isVisibleHandler: boolean;
   position: 'left' | 'right';
 }) {
-  const { tableStyle, onChangeFilterValue } = useTableContext();
+  const { headers, tableStyle, verticalScrollWidth, onChangeFilterValue } = useTableContext();
+  const isLastCell = headers[headers.length - 1].id === header.id;
 
   return (
     <FlexRow
@@ -451,6 +456,7 @@ function TableHeaderFilterCell({
       style={{
         ...{
           alignItems: 'center',
+          marginRight: isLastCell ? verticalScrollWidth : 0,
           paddingInline: 12,
           width: header.width,
           height: '100%',

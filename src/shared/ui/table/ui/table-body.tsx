@@ -376,8 +376,16 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
   hoverIndex: number | null;
   rowClickIndex: number | null;
 }) {
-  const { tableStyle, headers, handelDataList, deleteDataList, isChecked, handleCheck, editMode } =
-    useTableContext();
+  const {
+    tableStyle,
+    headers,
+    verticalScrollWidth,
+    handelDataList,
+    deleteDataList,
+    isChecked,
+    handleCheck,
+    editMode,
+  } = useTableContext();
 
   if (header.id === 'check' && (isChecked === undefined || handleCheck === undefined)) {
     throw new Error('checkedState is required for check header');
@@ -429,6 +437,7 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
   };
 
   const isCheckedAvailableHeader = headers.find((header) => header.id === 'check');
+  const isLastCell = headers[headers.length - 1].id === header.id;
 
   return (
     <FlexRow
@@ -439,6 +448,7 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
         justifyContent,
         alignItems: 'center',
         paddingInline: isEditMode ? 0 : 12,
+        marginRight: isLastCell ? verticalScrollWidth : 0,
         width: header.id === 'check' ? header.width + 1 : header.width,
         height: '100%',
         backgroundColor: getBackgroundColor(),

@@ -185,6 +185,7 @@ export function Table<TData extends TDataWithIndex & Record<string, any>>({
     viewportWidth,
     bodyMaxHeight,
     headerHeight,
+    verticalScrollWidth,
     headerGroups: tableHeaderGroups,
     headers,
     sortedHeaders,

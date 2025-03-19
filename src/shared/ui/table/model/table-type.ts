@@ -7,6 +7,7 @@ export type TTableContext<TData> = {
   viewportWidth: number;
   bodyMaxHeight: number;
   headerHeight: number;
+  verticalScrollWidth: number;
   headerGroups: THeaderGroup<TData>[];
   headers: THeader<TData>[];
   sortedHeaders: THeader<TData>[];
