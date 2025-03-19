@@ -48,7 +48,7 @@ export function RoleManagement() {
       const dataWithIndex = getMemberListQuery.data.data.menuList.map((item, index) => {
         return {
           ...item,
-          index: (index + 1).toString(),
+          index: index + 1,
         };
       });
       setDataList(dataWithIndex);
@@ -67,7 +67,7 @@ export function RoleManagement() {
 
         return {
           ...item,
-          index: (index + 1).toString(),
+          index: index + 1,
           allChecked: isAllChecked,
         };
       });

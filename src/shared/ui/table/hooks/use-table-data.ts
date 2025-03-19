@@ -5,10 +5,10 @@ import { TDataWithIndex } from '@/shared/ui';
 export function useTableData<TData extends TDataWithIndex>(tableDataList: TData[]) {
   const [dataList, setDataList] = useState(tableDataList);
 
-  const handelDataList = (index: string, key: string, value: any) => {
+  const handelDataList = (dataIndex: number, key: string, value: any) => {
     setDataList((prevState) => {
       return prevState.map((item) => {
-        if (item.index === index) {
+        if (item.index === dataIndex) {
           return {
             ...item,
             [key]: value,
@@ -19,9 +19,9 @@ export function useTableData<TData extends TDataWithIndex>(tableDataList: TData[
     });
   };
 
-  const deleteDataList = (index: string) => {
+  const deleteDataList = (dataIndex: number) => {
     setDataList((prevState) => {
-      return prevState.filter((item) => item.index !== index);
+      return prevState.filter((item) => item.index !== dataIndex);
     });
   };
 

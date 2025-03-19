@@ -13,6 +13,7 @@ import {
   ModalLayout,
   THeader,
   useModal,
+  TValidationRule,
 } from '@/shared/ui';
 import { getExcelDataListApi } from '../api/excel-api.ts';
 import { TExcelInfo, TExcelData, RExcelData } from '../model/excel-upload-download-type.ts';
@@ -23,6 +24,29 @@ import { handleAuthError } from '@/entities/auth';
 import { formatDateString, thousandSeparator } from '@/shared/lib';
 
 export function useExcelUploadDownloadHeaders() {
+  const excelUploadValidationRules: TValidationRule<TExcelData>[] = [
+    {
+      id: 'quantity',
+      validateFn: () => true,
+    },
+    {
+      id: 'price',
+      validateFn: () => true,
+    },
+    {
+      id: 'totalAmount',
+      validateFn: () => true,
+    },
+    {
+      id: 'orderDate',
+      validateFn: () => true,
+    },
+    {
+      id: 'status',
+      validateFn: () => true,
+    },
+  ];
+
   const excelUploadDataHeaders: THeader<TExcelData>[] = [
     createHeader('index', '', 60, { pin: 'left', dataAlign: 'right', filter: undefined }),
     createHeader('orderNo', '주문번호', 150),
@@ -164,7 +188,7 @@ export function useExcelUploadDownloadHeaders() {
     const excelDataList = response.data?.excelDataList ?? [];
     const excelDataWithIndex: TExcelData[] = excelDataList.map((item, index) => ({
       ...item,
-      index: (index + 1).toString(),
+      index: index + 1,
     }));
 
     excelEditModal.open(({ overlayRef, close }) => {
@@ -230,5 +254,5 @@ export function useExcelUploadDownloadHeaders() {
     }),
   ];
 
-  return { excelUploadListHeaders, excelUploadDataHeaders };
+  return { excelUploadValidationRules, excelUploadListHeaders, excelUploadDataHeaders };
 }

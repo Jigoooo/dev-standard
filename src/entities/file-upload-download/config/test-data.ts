@@ -6,7 +6,7 @@ let currentIndex = 1;
 
 const createRandomData = (): TFileDownload => {
   return {
-    index: String(currentIndex++),
+    index: currentIndex++,
     fileUploadTitle: faker.lorem.word(),
     note: faker.lorem.sentences(),
     uploadDateTime: format(faker.date.past(), 'yyyy-MM-dd HH:mm:ss'),

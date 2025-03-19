@@ -24,7 +24,7 @@ export function ExcelUploadDownload() {
   const excelInfoList = excelInfoListQuery.data?.data?.excelInfoList ?? [];
   const excelInfoListWithIndex = excelInfoList.map((item, index) => ({
     ...item,
-    index: (index + 1).toString(),
+    index: index + 1,
   }));
 
   const { excelUploadListHeaders } = useExcelUploadDownloadHeaders();

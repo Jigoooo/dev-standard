@@ -11,8 +11,8 @@ export type TTableContext<TData> = {
   headers: THeader<TData>[];
   sortedHeaders: THeader<TData>[];
   dataList: (TData & TDataWithIndex)[];
-  handelDataList: (index: string, key: string, value: any) => void;
-  deleteDataList: (index: string) => void;
+  handelDataList: (dataIndex: number, key: string, value: any) => void;
+  deleteDataList: (dataIndex: number) => void;
   editMode: boolean;
   filterRowEnabled: boolean;
   onChangeFilterValue: (headerId: string, value: string) => void;
@@ -105,8 +105,13 @@ export type THeader<TData = Record<string, any>> = {
   // validateEdit?: (value: any) => boolean;
 };
 
+export type TValidationRule<TData = Record<string, any>> = {
+  id: Extract<keyof TData, string>;
+  validateFn: (value?: string | number | null) => boolean;
+};
+
 export type TDataWithIndex = {
-  index: string;
+  index: number;
 };
 
 export type TDataWithCheck = {
@@ -119,9 +124,8 @@ export type TableBodyRowProps = {
   headers: THeader[];
   virtualItem: { index: number; start: number };
   rowWidth: string | number;
-  hoverIndex: string | null;
-  setHoverIndex: (index: string | null) => void;
-  index: string;
-  rowClickIndex: string | null;
-  setRowClickIndex: (index: string | null) => void;
+  hoverIndex: number | null;
+  setHoverIndex: (index: number | null) => void;
+  rowClickIndex: number | null;
+  setRowClickIndex: (index: number | null) => void;
 };

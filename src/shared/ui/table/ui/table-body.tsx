@@ -56,8 +56,8 @@ export const TableBody = memo(function TableBody<TData extends TDataWithIndex>({
     throw new Error(`dataList does not match the required type: ${JSON.stringify(requiredKeys)}`);
   }
 
-  const [hoverIndex, setHoverIndex] = useState<string | null>(null);
-  const [rowClickIndex, setRowClickIndex] = useState<string | null>(null);
+  const [hoverIndex, setHoverIndex] = useState<number | null>(null);
+  const [rowClickIndex, setRowClickIndex] = useState<number | null>(null);
 
   const getItemKey = useCallback((index: number) => dataList[index].index, [dataList]);
   const scrollToFn = useTableScrollToFn(bodyYRef);
@@ -159,10 +159,10 @@ const TableBodyView = memo(function TableBodyView({
   headers: THeader[];
   rowTotalSize: number;
   virtualItems: VirtualItem[];
-  hoverIndex: string | null;
-  setHoverIndex: (index: string | null) => void;
-  rowClickIndex: string | null;
-  setRowClickIndex: (index: string | null) => void;
+  hoverIndex: number | null;
+  setHoverIndex: (index: number | null) => void;
+  rowClickIndex: number | null;
+  setRowClickIndex: (index: number | null) => void;
 }) {
   const { viewportWidth, dataList } = useTableContext();
 
@@ -199,7 +199,6 @@ const TableBodyView = memo(function TableBodyView({
               rowWidth={viewWidth}
               hoverIndex={hoverIndex}
               setHoverIndex={setHoverIndex}
-              index={index}
               rowClickIndex={rowClickIndex}
               setRowClickIndex={setRowClickIndex}
             />
@@ -224,10 +223,10 @@ const TableBodyPin = memo(function TableBodyPin({
   headers: THeader[];
   rowTotalSize: number;
   virtualItems: VirtualItem[];
-  hoverIndex: string | null;
-  setHoverIndex: (index: string | null) => void;
-  rowClickIndex: string | null;
-  setRowClickIndex: (index: string | null) => void;
+  hoverIndex: number | null;
+  setHoverIndex: (index: number | null) => void;
+  rowClickIndex: number | null;
+  setRowClickIndex: (index: number | null) => void;
 }) {
   const { tableStyle, dataList } = useTableContext();
 
@@ -267,7 +266,6 @@ const TableBodyPin = memo(function TableBodyPin({
             rowWidth={'100%'}
             hoverIndex={hoverIndex}
             setHoverIndex={setHoverIndex}
-            index={index}
             rowClickIndex={rowClickIndex}
             setRowClickIndex={setRowClickIndex}
           />
@@ -326,10 +324,11 @@ const TableBodyRow = memo(function TableBodyRow({
         return (
           <TableBodyCell
             key={header.id + virtualItem.index + headerIndex}
-            rowIndex={virtualItem.index}
+            virtualRowIndex={virtualItem.index}
             isLastHeaderIndex={headerIndex === array.length - 1}
             data={data}
-            index={index}
+            dataIndex={index}
+            cellIndex={headerIndex}
             isOdd={isOdd}
             header={header}
             hoverIndex={hoverIndex}
@@ -342,23 +341,25 @@ const TableBodyRow = memo(function TableBodyRow({
 });
 
 const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, any>>({
-  rowIndex,
+  virtualRowIndex,
   isLastHeaderIndex,
   data,
-  index,
+  dataIndex,
+  cellIndex: _cellIndex,
   isOdd,
   header,
   hoverIndex,
   rowClickIndex,
 }: {
-  rowIndex: number;
+  virtualRowIndex: number;
   isLastHeaderIndex: boolean;
   data: TData;
-  index: string;
+  dataIndex: number;
+  cellIndex: number;
   isOdd: boolean;
   header: THeader;
-  hoverIndex: string | null;
-  rowClickIndex: string | null;
+  hoverIndex: number | null;
+  rowClickIndex: number | null;
 }) {
   const { tableStyle, headers, handelDataList, deleteDataList, isChecked, handleCheck, editMode } =
     useTableContext();
@@ -386,23 +387,23 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
   const cellData = data[header.id];
 
   const getBackgroundColor = () => {
-    if (header.id === 'index' && rowClickIndex !== index) {
+    if (header.id === 'index' && rowClickIndex !== dataIndex) {
       return tableStyle.tableHeaderBackgroundColor;
     }
     if (
-      (isChecked!(data) && hoverIndex === index) ||
-      (hoverIndex === index && rowClickIndex === index)
+      (isChecked!(data) && hoverIndex === dataIndex) ||
+      (hoverIndex === dataIndex && rowClickIndex === dataIndex)
     ) {
       return colors.primary[100];
     }
     if (isChecked!(data)) {
       return colors.primary[50];
     }
-    if (rowClickIndex === index) {
+    if (rowClickIndex === dataIndex) {
       // return tableStyle.tableBodyHoverBackgroundColor;
       return colors.primary[50];
     }
-    if (hoverIndex === index) {
+    if (hoverIndex === dataIndex) {
       return tableStyle.tableBodyHoverBackgroundColor;
     }
     if (isOdd) {
@@ -461,10 +462,10 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
               cellData,
               rowData: data,
               handleRowData: (key, value) => {
-                handelDataList(index, key, value);
+                handelDataList(dataIndex, key, value);
               },
               setCellData: (value) => {
-                handelDataList(index, header.id, value);
+                handelDataList(dataIndex, header.id, value);
               },
               tableStyle,
               exitEditMode: () => {
@@ -484,7 +485,7 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
               }}
               value={cellData}
               onChange={(event) => {
-                handelDataList(index, header.id, event.target.value);
+                handelDataList(dataIndex, header.id, event.target.value);
               }}
               onKeyDown={(event) => {
                 if (event.key === 'Enter') {
@@ -500,13 +501,13 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
           cellData,
           rowData: data,
           handleRowData: (key, value) => {
-            handelDataList(index, key, value);
+            handelDataList(dataIndex, key, value);
           },
           deleteRow: () => {
-            deleteDataList(index);
+            deleteDataList(dataIndex);
           },
           setCellData: (value) => {
-            handelDataList(index, header.id, value);
+            handelDataList(dataIndex, header.id, value);
           },
           tableStyle,
         })
@@ -531,7 +532,7 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
           }}
         >
           {header.id === 'index'
-            ? rowIndex + 1
+            ? virtualRowIndex + 1
             : header.formatter
               ? header.formatter({
                   cellData,

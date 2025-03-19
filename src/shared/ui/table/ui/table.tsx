@@ -57,8 +57,8 @@ export function Table<TData extends TDataWithIndex & Record<string, any>>({
   tableHeaderGroups?: THeaderGroup<TData>[];
   tableHeaders: THeader<TData>[];
   tableDataList: TData[];
-  handelDataList: (index: string, key: string, value: any) => void;
-  deleteDataList: (index: string) => void;
+  handelDataList: (dataIndex: number, key: string, value: any) => void;
+  deleteDataList: (dataIndex: number) => void;
   handleSyncCheckList?: (checkedList: string[]) => void;
   tableStyle?: Partial<TTableStyle>;
   dataKey?: keyof TData;

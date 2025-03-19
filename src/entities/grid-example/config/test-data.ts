@@ -5,7 +5,7 @@ let currentIndex = 1;
 
 const createRandomUser = () => {
   return {
-    index: String(currentIndex++),
+    index: currentIndex++,
     check: false,
     name: faker.internet.username(),
     email: faker.internet.email(),

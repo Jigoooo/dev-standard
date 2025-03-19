@@ -130,7 +130,7 @@ export function ExcelUploadModal({ close }: { close: () => void }) {
       ) as RExcelData;
 
       return {
-        index: (rowIndex + 1).toString(),
+        index: rowIndex + 1,
         ...entries,
       };
     });
