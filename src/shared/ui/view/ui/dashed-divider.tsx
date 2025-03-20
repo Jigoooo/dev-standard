@@ -1,4 +1,5 @@
 import { CSSProperties, SVGProps } from 'react';
+import { FlexRow } from '@/shared/ui';
 
 export function DashedDivider({
   style,
@@ -6,22 +7,28 @@ export function DashedDivider({
   ...props
 }: SVGProps<SVGSVGElement> & { style?: CSSProperties; strokeColor?: string }) {
   return (
-    <svg
+    <FlexRow
       style={{
-        ...{ width: '100%', height: 1 },
+        ...{ height: 1 },
         ...style,
       }}
-      {...props}
     >
-      <line
-        x1='0'
-        y1='0'
-        x2='100%'
-        y2='0'
-        stroke={strokeColor}
-        strokeWidth='2'
-        strokeDasharray='4, 4'
-      />
-    </svg>
+      <svg
+        style={{
+          ...{ width: '100%', height: '100%' },
+        }}
+        {...props}
+      >
+        <line
+          x1='0'
+          y1='0'
+          x2='100%'
+          y2='0'
+          stroke={strokeColor}
+          strokeWidth='2'
+          strokeDasharray='4, 4'
+        />
+      </svg>
+    </FlexRow>
   );
 }
