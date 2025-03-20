@@ -247,7 +247,7 @@ export function UiComponent() {
 
       <FlexRow style={{ alignItems: 'center' }}>
         <Typography style={{ width: 200, fontWeight: 500 }}>Tooltip: </Typography>
-        <Tooltip content={'Tooltip'} placement={'right'}>
+        <Tooltip content={'Tooltip'} placement={'top'}>
           <div style={{ border: '1px solid #bbbbbb', padding: 4, borderRadius: 4 }}>
             <Typography>Tooltip</Typography>
           </div>
