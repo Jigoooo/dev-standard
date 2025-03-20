@@ -1,4 +1,5 @@
 export const zIndex = {
+  modalOverlay: 98,
   modal: 99,
   anchorOverlay: 101,
   anchor: 101,
