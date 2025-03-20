@@ -1,6 +1,6 @@
 import { toast } from 'sonner';
 
-import { TEditCell } from '@/shared/ui/table/model/table-type.ts';
+import { TEditCell } from '../model/table-type.ts';
 import { createValidator } from '@/shared/lib';
 import { Input } from '@/shared/ui';
 
@@ -21,7 +21,7 @@ export function InputNumberEditCell<TData>({
         borderRadius: 0,
         boxShadow: 'none',
       }}
-      value={cellData}
+      value={cellData ?? ''}
       onChange={(event) => {
         const valueWithValidated = createValidator(event.target.value)
           .isNumber({ message: '숫자만 입력할 수 있습니다.' })

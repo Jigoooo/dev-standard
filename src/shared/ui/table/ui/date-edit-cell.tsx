@@ -1,47 +1,29 @@
-import { TEditCell } from '@/shared/ui/table/model/table-type.ts';
-import { createValidator } from '@/shared/lib';
-import { toast } from 'sonner';
-import { Input } from '@/shared/ui';
-import { useState } from 'react';
+import { TEditCell } from '../model/table-type.ts';
+import { DatePicker } from '@/shared/ui';
 
 export function DateEditCell<TData>({
-  inputRef,
   cellData,
   setCellData,
-  tableStyle,
+  setEditType,
   exitEditMode,
 }: TEditCell<TData>) {
-  const [tempValue, setTempValue] = useState('' + cellData);
-  const [originalValue, setOriginalValue] = useState('' + cellData);
-
-  const validateAndSubmit = () => {
-    const result = createValidator(tempValue).isDate().validate();
-    if (result.error) {
-      toast.error(result.errorMessage);
-      setTempValue(originalValue);
-    } else {
-      setOriginalValue(tempValue);
-      setCellData(result.value);
-      exitEditMode();
-    }
-  };
-
   return (
-    <Input
-      ref={inputRef}
-      style={{
-        height: tableStyle.tableHeaderHeight,
-        fontSize: '0.8rem',
-        width: '100%',
-        borderRadius: 0,
-        boxShadow: 'none',
-      }}
-      value={tempValue}
-      onChange={(event) => setTempValue(event.target.value)}
-      onBlur={validateAndSubmit}
-      onKeyDown={(event) => {
-        if (event.key === 'Enter') {
+    <DatePicker
+      width={'100%'}
+      dateFormat={'yyyyMMdd'}
+      strategy={'fixed'}
+      dateString={cellData ? cellData.toString() : undefined}
+      onChange={(dateString) => {
+        setCellData(dateString);
+        setTimeout(() => {
           exitEditMode();
+        }, 100);
+      }}
+      openListener={(isShowDatePicker) => {
+        if (isShowDatePicker) {
+          setEditType('date');
+        } else {
+          setEditType('none');
         }
       }}
     />

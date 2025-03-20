@@ -11,6 +11,7 @@ import {
   getDay,
   subDays,
   addDays,
+  isValid,
 } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import {
@@ -45,6 +46,7 @@ type TDatePicker = {
   dateFormat?: string;
   minDate?: Date;
   maxDate?: Date;
+  openListener?: (isShowDatePicker: boolean) => void;
 };
 
 // 헬퍼: 달력에 표시할 날짜 배열 생성
@@ -74,13 +76,13 @@ function useDatePicker({
   dateFormat: string;
 }) {
   const [selectedDate, setSelectedDate] = useState<Date | null>(
-    dateString ? new Date(dateString) : null,
+    dateString && isValid(new Date(dateString)) ? new Date(dateString) : null,
   );
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [currentDate, setCurrentDate] = useState(new Date());
 
   useEffect(() => {
-    if (dateString) {
+    if (dateString && isValid(new Date(dateString))) {
       setSelectedDate(new Date(dateString));
     }
   }, [dateString]);
@@ -285,6 +287,7 @@ export function DatePicker({
   dateFormat = 'yyyy-MM-dd',
   minDate,
   maxDate,
+  openListener,
 }: TDatePicker) {
   const {
     selectedDate,
@@ -303,6 +306,12 @@ export function DatePicker({
       }
     },
   });
+
+  useEffect(() => {
+    if (openListener) {
+      openListener(showDatePicker);
+    }
+  }, [showDatePicker]);
 
   const { refs, floatingStyles, context } = useFloating({
     open: showDatePicker,
@@ -338,7 +347,7 @@ export function DatePicker({
       <div ref={refs.setReference} {...getReferenceProps()}>
         {!isInputMode ? (
           <Input
-            style={{ width: 160, cursor: 'pointer' }}
+            style={{ width: width !== 'auto' ? width : 160, cursor: 'pointer' }}
             value={inputSelectedDateString}
             onClick={handleInputClick}
             readOnly

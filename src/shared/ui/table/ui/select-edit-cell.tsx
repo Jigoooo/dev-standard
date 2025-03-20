@@ -1,4 +1,4 @@
-import { TEditCell } from '@/shared/ui/table/model/table-type.ts';
+import { TEditCell } from '../model/table-type.ts';
 import { Select, SelectOption } from '@/shared/ui';
 
 export function SelectEditCell<TData>({
@@ -8,7 +8,7 @@ export function SelectEditCell<TData>({
   setEditType,
   exitEditMode,
 }: TEditCell<TData> & {
-  options: SelectOption<typeof cellData>[];
+  options: SelectOption<string | number>[];
 }) {
   const OptionValueByLabel = options.find((option) => option.label === cellData)?.value || '';
 

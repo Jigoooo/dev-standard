@@ -56,7 +56,7 @@ export type EditType = 'input' | 'select' | 'date' | 'datetime' | 'none';
 
 export type TEditCell<TData> = {
   inputRef: RefObject<HTMLInputElement | null>;
-  cellData: string | number;
+  cellData: string | number | null;
   rowData: TData;
   handleRowData: (key: keyof TData, value: string | number) => void;
   setCellData: (value: string | number) => void;

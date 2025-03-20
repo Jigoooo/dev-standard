@@ -56,6 +56,7 @@ type TDatePicker = {
   dateFormat?: string;
   minDate?: Date;
   maxDate?: Date;
+  openListener?: (isShowDatePicker: boolean) => void;
 };
 
 // 헬퍼: 달력에 표시할 날짜 배열 생성
@@ -85,14 +86,26 @@ function useDateFromToPicker({
   dateFormat: string;
 }) {
   const [selectedFromToDate, setSelectedFromToDate] = useState<FromToDates>({
-    from: fromToDateString ? new Date(fromToDateString.from) : null,
-    to: fromToDateString ? new Date(fromToDateString.to) : null,
+    from:
+      fromToDateString && isValid(new Date(fromToDateString.from))
+        ? new Date(fromToDateString.from)
+        : null,
+    to:
+      fromToDateString && isValid(new Date(fromToDateString.to))
+        ? new Date(fromToDateString.to)
+        : null,
   });
 
   const [showFromToDatePicker, setShowFromToDatePicker] = useState(false);
   const [currentFromToDate, setCurrentFromToDate] = useState<FromToCurrentDates>({
-    from: fromToDateString ? new Date(fromToDateString.from) : new Date(),
-    to: fromToDateString ? new Date(fromToDateString.to) : addMonths(new Date(), 1),
+    from:
+      fromToDateString && isValid(new Date(fromToDateString.from))
+        ? new Date(fromToDateString.from)
+        : new Date(),
+    to:
+      fromToDateString && isValid(new Date(fromToDateString.to))
+        ? new Date(fromToDateString.to)
+        : addMonths(new Date(), 1),
   });
 
   useEffect(() => {
@@ -434,6 +447,7 @@ export function DateFromToPicker({
   dateFormat = 'yyyy-MM-dd',
   minDate,
   maxDate,
+  openListener,
 }: TDatePicker) {
   const {
     selectedFromToDate,
@@ -455,6 +469,12 @@ export function DateFromToPicker({
       }
     },
   });
+
+  useEffect(() => {
+    if (openListener) {
+      openListener(showFromToDatePicker);
+    }
+  }, [showFromToDatePicker]);
 
   const { refs, floatingStyles, context } = useFloating({
     open: showFromToDatePicker,

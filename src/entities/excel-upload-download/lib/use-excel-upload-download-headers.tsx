@@ -4,7 +4,6 @@ import { format } from 'date-fns';
 
 import {
   createHeader,
-  DateEditCell,
   InputNumberEditCell,
   dialogActions,
   DialogType,
@@ -22,6 +21,7 @@ import { TExcelInfo, TExcelData, RExcelData } from '../model/excel-upload-downlo
 import { useUpdateExcelMutation } from '@/entities/excel-upload-download';
 import { handleAuthError } from '@/entities/auth';
 import { createValidator, formatDateString, thousandSeparator } from '@/shared/lib';
+import { DateEditCell } from '@/shared/ui/table/ui/date-edit-cell.tsx';
 
 export function useExcelUploadDownloadHeaders() {
   const excelUploadValidationRules: TValidationRuleWithHeaderId<TExcelData>[] = [
