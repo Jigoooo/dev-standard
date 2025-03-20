@@ -57,69 +57,89 @@ export function SignIn() {
           }}
           action={signIn}
         >
-          <FlexColumn
-            className={'selection-none'}
-            style={{
-              height: 70,
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 6,
-            }}
-          >
-            <img src={TriphosLogo} alt={'로고'} width={120} />
-            <Typography style={{ color: '#555555', fontWeight: 600, fontSize: '1.2rem' }}>
-              개발 표준
-            </Typography>
-          </FlexColumn>
-          <FlexColumn
-            style={{
-              width: '100%',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 14,
-            }}
-          >
-            <FlexColumn style={{ width: '100%', gap: 4 }}>
-              <Typography style={{ color: '#555555', fontWeight: 500, fontSize: '0.8rem' }}>
-                아이디
-              </Typography>
-              <Input
-                name={signInFields.id}
-                defaultValue={saveId}
-                style={{ width: '100%', height: 42 }}
-                autoComplete={'current-password'}
-              />
-            </FlexColumn>
-            <FlexColumn style={{ width: '100%', gap: 4 }}>
-              <Typography style={{ color: '#555555', fontWeight: 500, fontSize: '0.8rem' }}>
-                비밀번호
-              </Typography>
-              <Input
-                name={signInFields.password}
-                style={{ width: '100%', height: 42 }}
-                type={'password'}
-                autoComplete={'current-password'}
-              />
-            </FlexColumn>
-
-            <FlexRow
-              style={{
-                width: '100%',
-              }}
-            >
-              <Checkbox
-                checked={saveIdChecked}
-                onClick={toggleSaveIdChecked}
-                label={'아이디 저장'}
-              />
-            </FlexRow>
-          </FlexColumn>
+          <SignInHeader />
+          <SignInForm
+            saveId={saveId}
+            saveIdChecked={saveIdChecked}
+            toggleSaveIdChecked={toggleSaveIdChecked}
+          />
           <Button type={'submit'} style={{ width: '100%', height: 48 }}>
             <Typography style={{ fontSize: '1rem', fontWeight: 600 }}>로그인</Typography>
           </Button>
         </Form>
       </FlexRow>
     </FlexRow>
+  );
+}
+
+function SignInHeader() {
+  return (
+    <FlexColumn
+      className={'selection-none'}
+      style={{
+        height: 70,
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 6,
+      }}
+    >
+      <img src={TriphosLogo} alt={'로고'} width={120} />
+      <Typography style={{ color: '#555555', fontWeight: 600, fontSize: '1.2rem' }}>
+        개발 표준
+      </Typography>
+    </FlexColumn>
+  );
+}
+
+function SignInForm({
+  saveId,
+  saveIdChecked,
+  toggleSaveIdChecked,
+}: {
+  saveId: string;
+  saveIdChecked: boolean;
+  toggleSaveIdChecked: () => void;
+}) {
+  return (
+    <FlexColumn
+      style={{
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 14,
+      }}
+    >
+      <FlexColumn style={{ width: '100%', gap: 4 }}>
+        <Typography style={{ color: '#555555', fontWeight: 500, fontSize: '0.8rem' }}>
+          아이디
+        </Typography>
+        <Input
+          name={signInFields.id}
+          defaultValue={saveId}
+          style={{ width: '100%', height: 42 }}
+          autoComplete={'current-password'}
+        />
+      </FlexColumn>
+      <FlexColumn style={{ width: '100%', gap: 4 }}>
+        <Typography style={{ color: '#555555', fontWeight: 500, fontSize: '0.8rem' }}>
+          비밀번호
+        </Typography>
+        <Input
+          name={signInFields.password}
+          style={{ width: '100%', height: 42 }}
+          type={'password'}
+          autoComplete={'current-password'}
+        />
+      </FlexColumn>
+
+      <FlexRow
+        style={{
+          width: '100%',
+        }}
+      >
+        <Checkbox checked={saveIdChecked} onClick={toggleSaveIdChecked} label={'아이디 저장'} />
+      </FlexRow>
+    </FlexColumn>
   );
 }
 
