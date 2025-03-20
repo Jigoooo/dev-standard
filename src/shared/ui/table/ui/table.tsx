@@ -75,7 +75,7 @@ export function Table<TData extends TDataWithIndex & Record<string, any>>({
   const bodyXRef = useRef<HTMLDivElement>(null);
   const bodyYRef = useRef<HTMLDivElement>(null);
 
-  useSyncScroll(headerRef, bodyXRef);
+  useSyncScroll(tableDataList, headerRef, bodyXRef);
 
   const tableSize = useElementSize(tableRef);
 
@@ -258,10 +258,22 @@ export function Table<TData extends TDataWithIndex & Record<string, any>>({
   );
 }
 
-function useSyncScroll(
+function useSyncScroll<TData>(
+  tableDataList: TData[],
   headerRef: RefObject<HTMLDivElement | null>,
   bodyRef: RefObject<HTMLDivElement | null>,
 ) {
+  useEffect(() => {
+    if (tableDataList.length > 0) {
+      if (headerRef.current) {
+        headerRef.current.scrollLeft = 0;
+      }
+      if (bodyRef.current) {
+        bodyRef.current.scrollLeft = 0;
+      }
+    }
+  }, [tableDataList]);
+
   useEffect(() => {
     const headerEl = headerRef.current;
     const bodyEl = bodyRef.current;
