@@ -49,7 +49,7 @@ export function Tooltip({ style, placement, children, content, disabled = false 
                 userSelect: 'none',
                 paddingInline: 14,
                 paddingBlock: 4,
-                backgroundColor: '#414141',
+                backgroundColor: 'rgba(0, 0, 0, 0.8)',
                 color: 'white',
                 borderRadius: 4,
                 whiteSpace: 'nowrap',
