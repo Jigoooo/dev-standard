@@ -40,7 +40,7 @@ export function ExcelUploadModal<TData extends TDataWithIndex>({
   const handleFiles = async (files: TFile[]) => {
     if (
       !isExtensionAllowed({
-        extensions: ['.xls', '.xlsx'],
+        extensions: ['.xls', '.xlsx', '.csv'],
         fileName: files[0].file.name,
       })
     ) {
@@ -178,7 +178,7 @@ export function ExcelUploadModal<TData extends TDataWithIndex>({
           )}
 
           <FileUploadForm
-            accept={'.xls, .xlsx'}
+            accept={'.xls, .xlsx, .csv'}
             files={files}
             handleFiles={handleFiles}
             fileDelete={deleteFile}
