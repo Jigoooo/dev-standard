@@ -1,4 +1,4 @@
-import { KeyboardEvent, useEffect, useRef, useState } from 'react';
+import { CSSProperties, HTMLProps, KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { HiChevronUpDown } from 'react-icons/hi2';
@@ -8,6 +8,18 @@ import { FiSearch } from 'react-icons/fi';
 import { colors, zIndex } from '@/shared/constants';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
 import { Checkbox, FlexRow, Input, InputStyle, Typography } from '@/shared/ui';
+import {
+  flip,
+  FloatingOverlay,
+  FloatingPortal,
+  offset,
+  ReferenceType,
+  size,
+  useClick,
+  useFloating,
+  useInteractions,
+  VirtualElement,
+} from '@floating-ui/react';
 
 type SelectOption = {
   label: string;
@@ -15,6 +27,7 @@ type SelectOption = {
 };
 
 export function MultiSelect<ValuesType extends (string | number)[]>({
+  strategy = 'absolute',
   label = '',
   values,
   onChange,
@@ -23,24 +36,63 @@ export function MultiSelect<ValuesType extends (string | number)[]>({
   containerMinWidth = 160,
   containerHeight = 32,
   isAutocomplete = false,
+  openListener,
 }: {
+  strategy?: 'absolute' | 'fixed';
   label?: string;
   values: ValuesType;
   onChange: (value: ValuesType) => void;
   options: SelectOption[];
   containerWidth?: string | number;
   containerMinWidth?: string | number;
-  containerHeight?: number;
+  containerHeight?: string | number;
   isAutocomplete?: boolean;
+  openListener?: (isOpen: boolean) => void;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [filterText, setFilterText] = useState('');
   const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null);
 
+  useEffect(() => {
+    if (openListener) {
+      openListener(isOpen);
+    }
+  }, [isOpen]);
+
   const ref = useHandleClickOutsideRef({
     condition: isOpen,
-    outsideClickAction: () => setIsOpen(false),
+    outsideClickAction: () => {
+      if (strategy === 'absolute') {
+        setIsOpen(false);
+      }
+    },
   });
+
+  const { refs, floatingStyles, context } = useFloating({
+    open: isOpen,
+    onOpenChange: setIsOpen,
+    strategy,
+    placement: 'bottom',
+    transform: false,
+    middleware: [
+      offset({
+        mainAxis: 4,
+      }),
+      flip({ padding: 10 }),
+      size({
+        apply({ rects, elements, availableHeight }) {
+          Object.assign(elements.floating.style, {
+            minWidth: `${rects.reference.width}px`,
+            maxHeight: `${availableHeight}px`,
+            // maxWidth: `${rects.reference.width}px`,
+          });
+        },
+        padding: 10,
+      }),
+    ],
+  });
+  const click = useClick(context);
+  const { getReferenceProps, getFloatingProps } = useInteractions([click]);
 
   const selectedOptions = options
     .filter((option) => values.includes(option.value))
@@ -123,6 +175,7 @@ export function MultiSelect<ValuesType extends (string | number)[]>({
       className='selection-none'
     >
       <SelectContainer
+        ref={refs.setReference}
         label={label}
         selectedOptions={selectedOptions}
         deleteValue={(option) => {
@@ -136,28 +189,58 @@ export function MultiSelect<ValuesType extends (string | number)[]>({
         toggleSelectBox={toggleSelectBox}
         containerWidth={containerWidth}
         containerHeight={containerHeight}
+        getReferenceProps={getReferenceProps}
       />
       <AnimatePresence>
-        {isOpen && (
-          <SelectItems
-            options={getFilteredOptions()}
-            selectedValues={values}
-            selectValue={(newValues) => {
-              onChange(newValues);
-            }}
-            isAutocomplete={isAutocomplete}
-            filterText={filterText}
-            handleFilterText={handleFilterText}
-            handleKeyDown={handleKeyDown}
-            highlightedIndex={highlightedIndex}
-          />
-        )}
+        {isOpen &&
+          (strategy === 'fixed' ? (
+            <FloatingPortal>
+              <FloatingOverlay
+                style={{ zIndex: zIndex.anchorOverlay }}
+                onClick={() => {
+                  setIsOpen(false);
+                }}
+              />
+              <SelectItems
+                setFloating={refs.setFloating}
+                floatingStyles={floatingStyles}
+                getFloatingProps={getFloatingProps}
+                options={getFilteredOptions()}
+                selectedValues={values}
+                selectValue={(newValues) => {
+                  onChange(newValues);
+                }}
+                isAutocomplete={isAutocomplete}
+                filterText={filterText}
+                handleFilterText={handleFilterText}
+                handleKeyDown={handleKeyDown}
+                highlightedIndex={highlightedIndex}
+              />
+            </FloatingPortal>
+          ) : (
+            <SelectItems
+              setFloating={refs.setFloating}
+              floatingStyles={floatingStyles}
+              getFloatingProps={getFloatingProps}
+              options={getFilteredOptions()}
+              selectedValues={values}
+              selectValue={(newValues) => {
+                onChange(newValues);
+              }}
+              isAutocomplete={isAutocomplete}
+              filterText={filterText}
+              handleFilterText={handleFilterText}
+              handleKeyDown={handleKeyDown}
+              highlightedIndex={highlightedIndex}
+            />
+          ))}
       </AnimatePresence>
     </div>
   );
 }
 
 function SelectContainer({
+  ref,
   label,
   selectedOptions = [],
   deleteValue,
@@ -165,14 +248,17 @@ function SelectContainer({
   toggleSelectBox,
   containerWidth,
   containerHeight,
+  getReferenceProps,
 }: {
+  ref?: ((node: ReferenceType | null) => void) & ((node: Element | VirtualElement | null) => void);
   label?: string;
   selectedOptions: SelectOption[];
   deleteValue: (option: SelectOption) => void;
   isAllSelected: boolean;
   toggleSelectBox: () => void;
   containerWidth?: string | number;
-  containerHeight: number;
+  containerHeight: string | number;
+  getReferenceProps: (userProps?: HTMLProps<Element>) => Record<string, unknown>;
 }) {
   const selectedOptionsContainerRef = useRef<HTMLDivElement>(null);
   const [optionsContainerWidth, setOptionsContainerWidth] = useState(0);
@@ -192,6 +278,7 @@ function SelectContainer({
 
   return (
     <FlexRow
+      ref={ref}
       as={motion.div}
       style={{
         justifyContent: 'space-between',
@@ -211,6 +298,7 @@ function SelectContainer({
       onClick={toggleSelectBox}
       whileHover={{ backgroundColor: '#f4f4f4' }}
       transition={{ duration: 0.14 }}
+      {...getReferenceProps()}
     >
       <FlexRow
         ref={selectedOptionsContainerRef}
@@ -321,6 +409,9 @@ function SelectContainer({
 }
 
 function SelectItems<ValuesType extends (string | number)[]>({
+  setFloating,
+  floatingStyles,
+  getFloatingProps,
   selectValue,
   selectedValues,
   options,
@@ -330,6 +421,9 @@ function SelectItems<ValuesType extends (string | number)[]>({
   handleKeyDown,
   highlightedIndex,
 }: {
+  setFloating: (node: HTMLElement | null) => void;
+  floatingStyles: CSSProperties;
+  getFloatingProps: (userProps?: HTMLProps<HTMLElement>) => Record<string, unknown>;
   selectValue: (value: ValuesType) => void;
   selectedValues: ValuesType;
   options: SelectOption[];
@@ -341,21 +435,20 @@ function SelectItems<ValuesType extends (string | number)[]>({
 }) {
   return (
     <motion.div
+      ref={setFloating}
       className='shadow-scroll'
       style={{
-        position: 'absolute',
-        top: '115%',
-        left: 0,
-        width: '100%',
-        backgroundColor: 'white',
-        border: '1px solid #ddd',
-        borderRadius: 4,
-        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.2)',
-        maxHeight: 300,
-        overflowY: 'auto',
-        zIndex: zIndex.selectBoxItem,
-        transformOrigin: 'top center',
-        padding: 6,
+        ...{
+          backgroundColor: 'white',
+          border: '1px solid #ddd',
+          borderRadius: 4,
+          boxShadow: '0 2px 10px rgba(0, 0, 0, 0.2)',
+          maxHeight: 300,
+          overflowY: 'auto',
+          zIndex: zIndex.selectBoxItem,
+          padding: 6,
+        },
+        ...floatingStyles,
       }}
       initial={{
         opacity: 0,
@@ -370,6 +463,7 @@ function SelectItems<ValuesType extends (string | number)[]>({
         scale: 0.95,
       }}
       transition={{ duration: 0.14, ease: 'easeInOut' }}
+      {...getFloatingProps()}
     >
       {isAutocomplete && (
         <Input

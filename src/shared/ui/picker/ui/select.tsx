@@ -61,7 +61,11 @@ export function Select<ValueType extends string | number>({
 
   const ref = useHandleClickOutsideRef({
     condition: isOpen,
-    outsideClickAction: () => setIsOpen(false),
+    outsideClickAction: () => {
+      if (strategy === 'absolute') {
+        setIsOpen(false);
+      }
+    },
   });
   const { refs, floatingStyles, context } = useFloating({
     open: isOpen,
@@ -170,7 +174,10 @@ export function Select<ValueType extends string | number>({
         {isOpen &&
           (strategy === 'fixed' ? (
             <FloatingPortal>
-              <FloatingOverlay style={{ zIndex: zIndex.anchorOverlay }} />
+              <FloatingOverlay
+                style={{ zIndex: zIndex.anchorOverlay }}
+                onClick={() => setIsOpen(false)}
+              />
               <SelectItems
                 setFloating={refs.setFloating}
                 floatingStyles={floatingStyles}
