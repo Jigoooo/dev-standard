@@ -1,10 +1,10 @@
 import { ReactNode, RefObject, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { createPortal } from 'react-dom';
 
 import { FlexRow, ModalContext } from '@/shared/ui';
 import { zIndex } from '@/shared/constants';
 import { TModalRenderProps, TModalItem, TIsPossibleOverlayClose } from '../model/modal-type.ts';
-import { createPortal } from 'react-dom';
 
 export function ModalContextWrapper({ children }: { children: ReactNode }) {
   const overlayRefs = useRef<Record<string, RefObject<HTMLDivElement | null>>>({});

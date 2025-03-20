@@ -1,5 +1,6 @@
 import { ReactNode, useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { createPortal } from 'react-dom';
 
 import {
   Button,
@@ -14,9 +15,7 @@ import {
 } from '@/shared/ui';
 import { useModalClose } from '@/shared/hooks';
 import { colors, zIndex } from '@/shared/constants';
-
 import { DialogInfoStates } from '../model/dialog-type.ts';
-import { createPortal } from 'react-dom';
 
 /* todo 모바일버전 만들어야 함 */
 
