@@ -27,7 +27,7 @@ export function Tooltip({ style, placement, children, content, disabled = false 
         element: arrowRef,
       }),
       offset({
-        mainAxis: 14,
+        mainAxis: placement === 'top' || placement === 'bottom' ? 14 : 6,
         crossAxis: -3,
       }),
     ],
