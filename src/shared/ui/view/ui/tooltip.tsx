@@ -1,13 +1,6 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-  arrow,
-  FloatingArrow,
-  offset,
-  useFloating,
-  useHover,
-  useInteractions,
-} from '@floating-ui/react';
+import { offset, useFloating, useHover, useInteractions } from '@floating-ui/react';
 
 import { zIndex } from '@/shared/constants';
 import { TooltipProps } from '../model/view-type.ts';
@@ -15,7 +8,7 @@ import { TooltipProps } from '../model/view-type.ts';
 export function Tooltip({ style, placement, children, content, disabled = false }: TooltipProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const arrowRef = useRef(null);
+  // const arrowRef = useRef(null);
 
   const { refs, floatingStyles, context } = useFloating({
     open: isOpen,
@@ -23,11 +16,11 @@ export function Tooltip({ style, placement, children, content, disabled = false 
     onOpenChange: setIsOpen,
     transform: false,
     middleware: [
-      arrow({
-        element: arrowRef,
-      }),
+      // arrow({
+      //   element: arrowRef,
+      // }),
       offset({
-        mainAxis: placement.includes('top') || placement.includes('bottom') ? 14 : 6,
+        mainAxis: placement.includes('top') || placement.includes('bottom') ? 10 : 6,
         crossAxis: -3,
       }),
     ],
@@ -47,35 +40,37 @@ export function Tooltip({ style, placement, children, content, disabled = false 
           <motion.div
             key='tooltip'
             ref={refs.setFloating}
-            initial={{ opacity: 0, scale: 0.8 }}
+            initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.2 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ type: 'spring', stiffness: 600, damping: 20, duration: 0.04 }}
             style={{
               ...{
                 userSelect: 'none',
-                padding: 8,
+                paddingInline: 14,
+                paddingBlock: 4,
                 backgroundColor: '#414141',
                 color: 'white',
                 borderRadius: 4,
                 whiteSpace: 'nowrap',
                 zIndex: zIndex.tooltip,
                 margin: 4,
+                fontSize: '0.82rem',
               },
               ...style,
               ...floatingStyles,
             }}
             {...getFloatingProps()}
           >
-            <FloatingArrow
-              ref={arrowRef}
-              context={context}
-              width={10}
-              height={8}
-              tipRadius={2}
-              fill={'#414141'}
-              stroke={'#414141'}
-            />
+            {/*<FloatingArrow*/}
+            {/*  ref={arrowRef}*/}
+            {/*  context={context}*/}
+            {/*  width={10}*/}
+            {/*  height={8}*/}
+            {/*  tipRadius={2}*/}
+            {/*  fill={'#414141'}*/}
+            {/*  stroke={'#414141'}*/}
+            {/*/>*/}
             {content}
           </motion.div>
         )}
