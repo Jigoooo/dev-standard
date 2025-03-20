@@ -1,4 +1,4 @@
-import { ReactNode, useRef } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import {
@@ -32,28 +32,28 @@ export function AlertDialog() {
 
   // useModalClose(dialogOpen, dialogActions.close);
 
-  // useEffect(() => {
-  //   if (dialogOpen) {
-  //     setTimeout(() => {
-  //       modalRef.current?.focus();
-  //     }, 50);
-  //
-  //     const handleKeyDown = (event: KeyboardEvent) => {
-  //       if (event.key === 'Escape') {
-  //         event.preventDefault();
-  //       }
-  //       if (event.key === 'Tab') {
-  //         event.preventDefault();
-  //         modalRef.current?.focus();
-  //       }
-  //     };
-  //
-  //     document.addEventListener('keydown', handleKeyDown);
-  //     return () => {
-  //       document.removeEventListener('keydown', handleKeyDown);
-  //     };
-  //   }
-  // }, [dialogOpen]);
+  useEffect(() => {
+    if (dialogOpen) {
+      setTimeout(() => {
+        modalRef.current?.focus();
+      }, 50);
+
+      const handleKeyDown = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+          event.preventDefault();
+        }
+        if (event.key === 'Tab') {
+          event.preventDefault();
+          modalRef.current?.focus();
+        }
+      };
+
+      document.addEventListener('keydown', handleKeyDown);
+      return () => {
+        document.removeEventListener('keydown', handleKeyDown);
+      };
+    }
+  }, [dialogOpen]);
 
   return (
     <FloatingPortal>
