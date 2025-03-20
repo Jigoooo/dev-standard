@@ -8,20 +8,6 @@ import { preconnect } from 'react-dom';
 import { withRouterMenuHoc } from '@/app/providers';
 import { useRouterMenuContext } from '@/entities/router';
 
-if (import.meta.env.PROD) {
-  (function () {
-    const originalConsoleLog = console.log;
-    console.log = function (...args) {
-      if (
-        args.some((arg) => typeof arg === 'string' && ['Unauthorized', '401', '403'].includes(arg))
-      ) {
-        return;
-      }
-      originalConsoleLog.apply(console, args);
-    };
-  })();
-}
-
 function App() {
   preconnect(import.meta.env.VITE_DEV_API_TARGET_URL);
 

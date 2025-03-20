@@ -10,6 +10,10 @@ export async function apiRequest<T>(
   try {
     const response = await request;
 
+    if (response.status === 401 || response.status === 403) {
+      console.clear();
+    }
+
     if (typeof response.data === 'string') {
       return {
         code: response.status,
