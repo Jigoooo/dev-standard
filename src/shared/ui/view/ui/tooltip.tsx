@@ -1,34 +1,52 @@
-import { CSSProperties, useState } from 'react';
+import { useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import {
+  arrow,
+  FloatingArrow,
+  offset,
+  useFloating,
+  useHover,
+  useInteractions,
+} from '@floating-ui/react';
 
 import { zIndex } from '@/shared/constants';
-import { TooltipPosition, TooltipProps } from '../model/view-type.ts';
+import { TooltipProps } from '../model/view-type.ts';
 
-const tooltipPositionStyles: Record<TooltipPosition, CSSProperties> = {
-  top: { bottom: '100%', left: '50%', transform: 'translateX(-50%)' },
-  topLeft: { bottom: '100%', right: '100%' },
-  topRight: { bottom: '100%', left: '100%' },
-  bottom: { top: '100%', left: '50%', transform: 'translateX(-50%)' },
-  bottomLeft: { top: '100%', right: '100%' },
-  bottomRight: { top: '100%', left: '100%' },
-  left: { right: '100%', top: 0, transform: 'translateY(-50%)' },
-  right: { left: '100%', top: 0, transform: 'translateY(-50%)' },
-};
+export function Tooltip({ style, placement, children, content, disabled = false }: TooltipProps) {
+  const [isOpen, setIsOpen] = useState(false);
 
-export function Tooltip({ style, position, children, content, disabled = false }: TooltipProps) {
-  const [isHovered, setIsHovered] = useState(false);
+  const arrowRef = useRef(null);
+
+  const { refs, floatingStyles, context } = useFloating({
+    open: isOpen,
+    placement,
+    onOpenChange: setIsOpen,
+    transform: false,
+    middleware: [
+      arrow({
+        element: arrowRef,
+      }),
+      offset({
+        mainAxis: 14,
+        crossAxis: -3,
+      }),
+    ],
+  });
+
+  const hover = useHover(context);
+
+  const { getReferenceProps, getFloatingProps } = useInteractions([hover]);
 
   return (
-    <div
-      style={{ position: 'relative' }}
-      onMouseEnter={() => !disabled && setIsHovered(true)}
-      onMouseLeave={() => !disabled && setIsHovered(false)}
-    >
-      {children}
+    <>
+      <div ref={refs.setReference} {...getReferenceProps()}>
+        {children}
+      </div>
       <AnimatePresence>
-        {isHovered && (
+        {isOpen && !disabled && (
           <motion.div
             key='tooltip'
+            ref={refs.setFloating}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
@@ -36,9 +54,7 @@ export function Tooltip({ style, position, children, content, disabled = false }
             style={{
               ...{
                 userSelect: 'none',
-                position: 'absolute',
-                ...tooltipPositionStyles[position],
-                padding: 12,
+                padding: 8,
                 backgroundColor: '#414141',
                 color: 'white',
                 borderRadius: 4,
@@ -47,12 +63,23 @@ export function Tooltip({ style, position, children, content, disabled = false }
                 margin: 4,
               },
               ...style,
+              ...floatingStyles,
             }}
+            {...getFloatingProps()}
           >
+            <FloatingArrow
+              ref={arrowRef}
+              context={context}
+              width={10}
+              height={8}
+              tipRadius={2}
+              fill={'#414141'}
+              stroke={'#414141'}
+            />
             {content}
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </>
   );
 }

@@ -40,7 +40,7 @@ export function SidebarItem({
   return (
     <Tooltip
       style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
-      position={'right'}
+      placement={'right'}
       content={menu.name}
       disabled={!sidebarState.sidebarCollapsed}
     >

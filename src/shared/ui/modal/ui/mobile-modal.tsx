@@ -119,7 +119,7 @@ function ModalHeader({
       onMouseDown={onMouseDown}
     >
       <Typography style={{ fontSize: '1.6rem', fontWeight: 700 }}>{title}</Typography>
-      <Tooltip content={'닫기'} position={'top'}>
+      <Tooltip content={'닫기'} placement={'top'}>
         <Button onClick={onClose} style={{ backgroundColor: '#ffffff' }}>
           <CloseIcon style={{ fontSize: 32 }} />
         </Button>
