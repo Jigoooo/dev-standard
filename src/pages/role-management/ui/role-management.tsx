@@ -24,10 +24,7 @@ import { useMemberState } from '@/entities/member';
 import { handleAuthError } from '@/entities/auth';
 
 export function RoleManagement() {
-  const navigate = useNavigate();
-
   const memberState = useMemberState();
-  console.log(memberState);
 
   const { roleUserHeaders, roleManagementHeaders } = useRoleManagementHeaders();
   const { dataList, setDataList, handelDataList, deleteDataList } = useTableData<
@@ -46,7 +43,6 @@ export function RoleManagement() {
   const getMenuMemberAuthListQuery = useGetMenuMemberAuthListQuery({
     memberId,
   });
-  const updateMenuMemberAuthMutation = useUpdateMenuMemberAuthMutation();
 
   useEffect(() => {
     if (getMemberListQuery.data?.data?.menuList) {
@@ -59,10 +55,24 @@ export function RoleManagement() {
       setDataList(dataWithIndex);
     }
   }, [getMemberListQuery.data?.data?.menuList]);
+
   useEffect(() => {
     if (getMenuMemberAuthListQuery.data?.data?.menuList) {
-      const dataWithIndex = getMenuMemberAuthListQuery.data.data.menuList.map((item, index) => {
-        console.log(item);
+      const menuList = getMenuMemberAuthListQuery.data.data.menuList;
+
+      const groupByMenus = menuList.reduce((acc, item) => {
+        const menuCd = item.mainCd;
+        if (!acc[menuCd]) {
+          acc[menuCd] = [];
+        }
+        acc[menuCd].push(item);
+        return acc;
+      }, {});
+
+      console.log(menuList);
+      console.log(groupByMenus);
+
+      const dataWithIndex = menuList.map((item, index) => {
         const isAllChecked =
           item.useYn === 'Y' &&
           item.authIns === 'Y' &&
@@ -81,43 +91,11 @@ export function RoleManagement() {
     }
   }, [getMenuMemberAuthListQuery.data?.data?.menuList]);
 
-  const updateMenuMemberAuth = () => {
-    dialogActions.open({
-      title: '권한을 수정하시겠습니까?',
-      withCancel: true,
-      overlayClose: true,
-      onConfirm: () => {
-        updateMenuMemberAuthMutation.mutate(menuAuthList, {
-          onSuccess: async (data, variables) => {
-            const isError = await handleAuthError({
-              data,
-              onUnauthenticated: () => navigate('/', { replace: true }),
-              onOtherError: () => {
-                dialogActions.open({
-                  dialogType: DialogType.ERROR,
-                  title: '권한 저장에 실패하였습니다.',
-                  contents: data.msg ?? '관리자에게 문의해 주세요.',
-                });
-              },
-              onRefreshSuccess: () => {
-                updateMenuMemberAuthMutation.mutate(variables, {
-                  onSuccess: (data) => {
-                    if (data.success) {
-                      toast.success('권한이 수정되었습니다.');
-                    }
-                  },
-                });
-              },
-            });
+  const updateMenuMemberAuth = useUpdateMenuMemberAuth({
+    menuAuthList,
+  });
 
-            if (!isError) {
-              toast.success('엑셀 등록 성공');
-            }
-          },
-        });
-      },
-    });
-  };
+  console.log(memberState);
 
   return (
     <FlexColumn
@@ -169,4 +147,48 @@ export function RoleManagement() {
       </FlexRow>
     </FlexColumn>
   );
+}
+
+function useUpdateMenuMemberAuth({ menuAuthList }: { menuAuthList: RMenuMemberAuth[] }) {
+  const navigate = useNavigate();
+
+  const updateMenuMemberAuthMutation = useUpdateMenuMemberAuthMutation();
+
+  return () => {
+    dialogActions.open({
+      title: '권한을 수정하시겠습니까?',
+      withCancel: true,
+      overlayClose: true,
+      onConfirm: () => {
+        updateMenuMemberAuthMutation.mutate(menuAuthList, {
+          onSuccess: async (data, variables) => {
+            const isError = await handleAuthError({
+              data,
+              onUnauthenticated: () => navigate('/', { replace: true }),
+              onOtherError: () => {
+                dialogActions.open({
+                  dialogType: DialogType.ERROR,
+                  title: '권한 저장에 실패하였습니다.',
+                  contents: data.msg ?? '관리자에게 문의해 주세요.',
+                });
+              },
+              onRefreshSuccess: () => {
+                updateMenuMemberAuthMutation.mutate(variables, {
+                  onSuccess: (data) => {
+                    if (data.success) {
+                      toast.success('권한이 수정되었습니다.');
+                    }
+                  },
+                });
+              },
+            });
+
+            if (!isError) {
+              toast.success('엑셀 등록 성공');
+            }
+          },
+        });
+      },
+    });
+  };
 }

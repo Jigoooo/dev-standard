@@ -107,7 +107,7 @@ export function useRoleManagementHeaders() {
       id: 'menuTitle',
       pin: 'view',
       dataAlign: 'left',
-      label: '메뉴명',
+      label: '메인메뉴',
       width: 150,
       sorter: {
         sortable: true,
@@ -118,6 +118,21 @@ export function useRoleManagementHeaders() {
         filterValue: '',
       },
     },
+    // {
+    //   id: 'subTitle',
+    //   pin: 'view',
+    //   dataAlign: 'left',
+    //   label: '서브메뉴',
+    //   width: 150,
+    //   sorter: {
+    //     sortable: true,
+    //     direction: null,
+    //   },
+    //   filter: {
+    //     filterType: 'text',
+    //     filterValue: '',
+    //   },
+    // },
     {
       id: 'useYn',
       pin: 'view',
