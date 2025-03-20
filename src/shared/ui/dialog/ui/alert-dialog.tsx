@@ -1,6 +1,5 @@
 import { ReactNode, useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { createPortal } from 'react-dom';
 
 import {
   Button,
@@ -13,9 +12,9 @@ import {
   FlexRow,
   Typography,
 } from '@/shared/ui';
-import { useModalClose } from '@/shared/hooks';
 import { colors, zIndex } from '@/shared/constants';
 import { DialogInfoStates } from '../model/dialog-type.ts';
+import { FloatingOverlay, FloatingPortal } from '@floating-ui/react';
 
 /* todo 모바일버전 만들어야 함 */
 
@@ -31,7 +30,7 @@ export function AlertDialog() {
   const dialogInfos = useDialogInfos();
   const modalRef = useRef<HTMLDivElement | null>(null);
 
-  useModalClose(dialogOpen, dialogActions.close);
+  // useModalClose(dialogOpen, dialogActions.close);
 
   useEffect(() => {
     if (dialogOpen) {
@@ -56,44 +55,59 @@ export function AlertDialog() {
     }
   }, [dialogOpen]);
 
-  return createPortal(
-    <AnimatePresence>
-      {dialogOpen && (
-        <>
-          <FlexColumn
-            as={motion.div}
-            initial={{ opacity: 0.6, scale: 0.94, x: '-50%', y: '-40%' }}
-            animate={{ opacity: 1, scale: 1, x: '-50%', y: '-50%' }}
-            exit={{ opacity: 0.2, scale: 0.98, x: '-50%', y: '-45%' }}
-            transition={{ duration: 0.1 }}
-            ref={modalRef}
-            tabIndex={-1}
-            style={{
-              position: 'fixed',
-              top: '50%',
-              left: '50%',
-              zIndex: zIndex.dialog,
-              minWidth: 350,
-              maxWidth: 600,
-              maxHeight: 400,
-              background: '#ffffff',
-              paddingInline: 21,
-              paddingBlock: 18,
-              borderRadius: 8,
-              justifyContent: 'space-between',
-              outline: 'none',
-            }}
-          >
-            <AlertDialogHeader title={dialogInfos.title} />
-            <AlertDialogContents contents={dialogInfos.contents} />
-            <AlertDialogActions dialogInfos={dialogInfos} />
-          </FlexColumn>
+  return (
+    <FloatingPortal>
+      <AnimatePresence initial={false}>
+        {dialogOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.1 }}
+            >
+              <FloatingOverlay
+                lockScroll
+                style={{ zIndex: zIndex.dialogOverlay, backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
+                onClick={() => {
+                  dialogActions.close();
+                  window.history.back();
+                }}
+              />
+            </motion.div>
 
-          <AlertDialogOverlay overlayClose={dialogInfos.overlayClose} />
-        </>
-      )}
-    </AnimatePresence>,
-    document.body,
+            <FlexColumn
+              as={motion.div}
+              initial={{ opacity: 0.6, scale: 0.94, x: '-50%', y: '-40%' }}
+              animate={{ opacity: 1, scale: 1, x: '-50%', y: '-50%' }}
+              exit={{ opacity: 0.2, scale: 0.98, x: '-50%', y: '-45%' }}
+              transition={{ duration: 0.1 }}
+              ref={modalRef}
+              tabIndex={-1}
+              style={{
+                position: 'fixed',
+                top: '50%',
+                left: '50%',
+                zIndex: zIndex.dialog,
+                minWidth: 350,
+                maxWidth: 600,
+                maxHeight: 400,
+                background: '#ffffff',
+                paddingInline: 21,
+                paddingBlock: 18,
+                borderRadius: 8,
+                justifyContent: 'space-between',
+                outline: 'none',
+              }}
+            >
+              <AlertDialogHeader title={dialogInfos.title} />
+              <AlertDialogContents contents={dialogInfos.contents} />
+              <AlertDialogActions dialogInfos={dialogInfos} />
+            </FlexColumn>
+          </>
+        )}
+      </AnimatePresence>
+    </FloatingPortal>
   );
 }
 
@@ -186,33 +200,5 @@ function AlertDialogActions({ dialogInfos }: { dialogInfos: DialogInfoStates }) 
         {dialogInfos.confirmText}
       </Button>
     </FlexRow>
-  );
-}
-
-function AlertDialogOverlay({ overlayClose }: { overlayClose?: boolean }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.1 }}
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        zIndex: zIndex.dialogOverlay,
-      }}
-      onClick={() => {
-        if (!overlayClose) {
-          return;
-        }
-
-        dialogActions.close();
-        window.history.back();
-      }}
-    />
   );
 }

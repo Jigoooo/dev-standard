@@ -559,6 +559,7 @@ export function DateFromToPicker({
         (strategy === 'fixed' ? (
           <FloatingPortal>
             <FloatingOverlay
+              lockScroll
               style={{ zIndex: zIndex.anchorOverlay }}
               onClick={() => setShowFromToDatePicker(false)}
             />

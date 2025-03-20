@@ -370,6 +370,7 @@ export function DatePicker({
         (strategy === 'fixed' ? (
           <FloatingPortal>
             <FloatingOverlay
+              lockScroll
               style={{ zIndex: zIndex.anchorOverlay }}
               onClick={() => setShowDatePicker(false)}
             />

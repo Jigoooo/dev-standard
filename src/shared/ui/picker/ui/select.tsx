@@ -175,6 +175,7 @@ export function Select<ValueType extends string | number>({
           (strategy === 'fixed' ? (
             <FloatingPortal>
               <FloatingOverlay
+                lockScroll
                 style={{ zIndex: zIndex.anchorOverlay }}
                 onClick={() => setIsOpen(false)}
               />

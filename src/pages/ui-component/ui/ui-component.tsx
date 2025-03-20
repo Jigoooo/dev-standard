@@ -121,6 +121,7 @@ export function UiComponent() {
               title: 'Dialog Title',
               contents: 'Dialog Contents',
               withCancel: true,
+              overlayClose: true,
             });
           }}
           style={{ backgroundColor: '#ec6e6e' }}

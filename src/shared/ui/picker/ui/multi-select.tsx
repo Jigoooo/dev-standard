@@ -196,6 +196,7 @@ export function MultiSelect<ValuesType extends (string | number)[]>({
           (strategy === 'fixed' ? (
             <FloatingPortal>
               <FloatingOverlay
+                lockScroll
                 style={{ zIndex: zIndex.anchorOverlay }}
                 onClick={() => {
                   setIsOpen(false);
