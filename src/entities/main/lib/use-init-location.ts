@@ -15,12 +15,15 @@ export function useInitLocation() {
         navigate(lastLocation);
       } else {
         const firstNonHeaderMenu = findFirstNonHeaderMenu(sidebarMainMenus);
+
         if (firstNonHeaderMenu !== null) {
           navigate(firstNonHeaderMenu.fullRouterPath);
         } else {
           window.location.reload();
         }
       }
+    } else {
+      window.location.reload();
     }
   }, [lastLocation, sidebarMainMenus]);
 
