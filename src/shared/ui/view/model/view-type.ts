@@ -14,16 +14,6 @@ export type FlexColumnProps<E extends ElementType> =
         MotionProps & { as: E; ref?: Ref<any> | null; children?: ReactNode }
     : HTMLAttributes<HTMLElement> & { as?: E; ref?: Ref<any> | null; children?: ReactNode };
 
-export type TooltipPosition =
-  | 'top'
-  | 'topLeft'
-  | 'topRight'
-  | 'bottom'
-  | 'bottomLeft'
-  | 'bottomRight'
-  | 'left'
-  | 'right';
-
 export type TooltipProps = {
   style?: CSSProperties;
   placement: Placement;
