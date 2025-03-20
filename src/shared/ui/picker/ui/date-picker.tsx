@@ -13,6 +13,18 @@ import {
   addDays,
 } from 'date-fns';
 import { ko } from 'date-fns/locale';
+import {
+  flip,
+  FloatingOverlay,
+  FloatingPortal,
+  offset,
+  size,
+  Strategy,
+  useClick,
+  useFloating,
+  useInteractions,
+} from '@floating-ui/react';
+import { Placement } from '@floating-ui/utils';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -22,16 +34,6 @@ import { FlexRow, Input, Button, FlexColumn, Typography } from '@/shared/ui';
 import { colors, zIndex } from '@/shared/constants';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
 import { DateInputField } from './date-input-field';
-import {
-  flip,
-  offset,
-  size,
-  Strategy,
-  useClick,
-  useFloating,
-  useInteractions,
-} from '@floating-ui/react';
-import { Placement } from '@floating-ui/utils';
 
 type TDatePicker = {
   strategy?: Strategy;
@@ -295,7 +297,11 @@ export function DatePicker({
   } = useDatePicker({ dateString, onChange, dateFormat });
   const datePickerRef = useHandleClickOutsideRef({
     condition: showDatePicker,
-    outsideClickAction: () => setShowDatePicker(false),
+    outsideClickAction: () => {
+      if (strategy === 'absolute') {
+        setShowDatePicker(false);
+      }
+    },
   });
 
   const { refs, floatingStyles, context } = useFloating({
@@ -348,20 +354,40 @@ export function DatePicker({
           />
         )}
       </div>
-      {showDatePicker && (
-        <Picker
-          setFloating={refs.setFloating}
-          floatingStyles={floatingStyles}
-          getFloatingProps={getFloatingProps}
-          handleDateClick={handleDateClick}
-          handlePrevMonth={handlePrevMonth}
-          handleNextMonth={handleNextMonth}
-          selectedDate={selectedDate}
-          currentDate={currentDate}
-          minDate={minDate ? subDays(minDate, 1) : undefined}
-          maxDate={maxDate}
-        />
-      )}
+      {showDatePicker &&
+        (strategy === 'fixed' ? (
+          <FloatingPortal>
+            <FloatingOverlay
+              style={{ zIndex: zIndex.anchorOverlay }}
+              onClick={() => setShowDatePicker(false)}
+            />
+            <Picker
+              setFloating={refs.setFloating}
+              floatingStyles={floatingStyles}
+              getFloatingProps={getFloatingProps}
+              handleDateClick={handleDateClick}
+              handlePrevMonth={handlePrevMonth}
+              handleNextMonth={handleNextMonth}
+              selectedDate={selectedDate}
+              currentDate={currentDate}
+              minDate={minDate ? subDays(minDate, 1) : undefined}
+              maxDate={maxDate}
+            />
+          </FloatingPortal>
+        ) : (
+          <Picker
+            setFloating={refs.setFloating}
+            floatingStyles={floatingStyles}
+            getFloatingProps={getFloatingProps}
+            handleDateClick={handleDateClick}
+            handlePrevMonth={handlePrevMonth}
+            handleNextMonth={handleNextMonth}
+            selectedDate={selectedDate}
+            currentDate={currentDate}
+            minDate={minDate ? subDays(minDate, 1) : undefined}
+            maxDate={maxDate}
+          />
+        ))}
     </FlexColumn>
   );
 }
