@@ -252,8 +252,8 @@ function SelectContainer({
 }: {
   ref?: ((node: ReferenceType | null) => void) & ((node: Element | VirtualElement | null) => void);
   label?: string;
-  selectedOptions: SelectOption[];
-  deleteValue: (option: SelectOption) => void;
+  selectedOptions: MultiSelectOption[];
+  deleteValue: (option: MultiSelectOption) => void;
   isAllSelected: boolean;
   toggleSelectBox: () => void;
   containerWidth?: string | number;
@@ -426,7 +426,7 @@ function SelectItems<ValuesType extends (string | number)[]>({
   getFloatingProps: (userProps?: HTMLProps<HTMLElement>) => Record<string, unknown>;
   selectValue: (value: ValuesType) => void;
   selectedValues: ValuesType;
-  options: SelectOption[];
+  options: MultiSelectOption[];
   isAutocomplete: boolean;
   filterText: string;
   handleFilterText: (text: string) => void;
