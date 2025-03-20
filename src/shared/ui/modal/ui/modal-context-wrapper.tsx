@@ -66,19 +66,16 @@ export function ModalContextWrapper({ children }: { children: ReactNode }) {
               <div key={modal.id} style={{ userSelect: 'none' }}>
                 <FlexRow
                   as={motion.div}
-                  initial={{ opacity: 0, y: '5%' }}
-                  animate={{ opacity: 1, y: '0%' }}
-                  exit={{ opacity: 0, y: '5%' }}
+                  initial={{ opacity: 0, x: '-50%', y: '-45%' }}
+                  animate={{ opacity: 1, x: '-50%', y: '-50%' }}
+                  exit={{ opacity: 0, x: '-50%', y: '-45%' }}
                   transition={{
-                    stiffness: 300,
-                    damping: 25,
                     duration: 0.1,
                   }}
                   style={{
                     position: 'fixed',
-                    top: '35%',
-                    left: '35%',
-                    transform: 'translate(-50%, -50%)',
+                    top: '50%',
+                    left: '50%',
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
