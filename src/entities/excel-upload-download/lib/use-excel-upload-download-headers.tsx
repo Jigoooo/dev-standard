@@ -15,7 +15,7 @@ import {
   TValidationRuleWithHeaderId,
   DeleteButton,
   ModifyButton,
-  Select,
+  SelectEditCell,
 } from '@/shared/ui';
 import { getExcelDataListApi } from '../api/excel-api.ts';
 import { TExcelInfo, TExcelData, RExcelData } from '../model/excel-upload-download-type.ts';
@@ -113,28 +113,13 @@ export function useExcelUploadDownloadHeaders() {
     }),
     createHeader('customerName', '주문자', 100),
     createHeader('status', '상태', 100, {
-      editCell: ({ setEditType, exitEditMode }) => {
+      editCell: (editCellOptions) => {
         return (
-          <Select
-            containerMinWidth={0}
-            strategy={'fixed'}
-            isAutocomplete={true}
-            value={'1'}
-            onChange={() => {
-              setTimeout(() => {
-                exitEditMode();
-              }, 100);
-            }}
-            openListener={(isOpen) => {
-              if (isOpen) {
-                setEditType('select');
-              } else {
-                setEditType('none');
-              }
-            }}
+          <SelectEditCell
+            {...editCellOptions}
             options={[
               { value: '1', label: 'Select 1' },
-              { value: '2', label: 'Select 2' },
+              { value: '2', label: '주문입건' },
               { value: '3', label: 'Select 3' },
               { value: '4', label: 'Select 4' },
               { value: '5', label: 'Select 5' },

@@ -22,11 +22,7 @@ import { FiSearch } from 'react-icons/fi';
 import { colors, zIndex } from '@/shared/constants';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
 import { Checkbox, FlexRow, Input, InputStyle, Typography } from '@/shared/ui';
-
-type SelectOption = {
-  label: string;
-  value: string | number;
-};
+import { MultiSelectOption } from '../model';
 
 export function MultiSelect<ValuesType extends (string | number)[]>({
   strategy = 'absolute',
@@ -46,7 +42,7 @@ export function MultiSelect<ValuesType extends (string | number)[]>({
   label?: string;
   values: ValuesType;
   onChange: (value: ValuesType) => void;
-  options: SelectOption[];
+  options: MultiSelectOption[];
   containerWidth?: string | number;
   containerMinWidth?: string | number;
   containerHeight?: string | number;

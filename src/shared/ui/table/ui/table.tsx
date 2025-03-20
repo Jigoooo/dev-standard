@@ -272,7 +272,7 @@ function useSyncScroll<TData>(
         bodyRef.current.scrollLeft = 0;
       }
     }
-  }, [tableDataList]);
+  }, [tableDataList.length]);
 
   useEffect(() => {
     const headerEl = headerRef.current;

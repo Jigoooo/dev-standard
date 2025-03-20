@@ -56,10 +56,10 @@ export type EditType = 'input' | 'select' | 'date' | 'datetime' | 'none';
 
 export type TEditCell<TData> = {
   inputRef: RefObject<HTMLInputElement | null>;
-  cellData: any;
+  cellData: string | number;
   rowData: TData;
-  handleRowData: (key: keyof TData, value: any) => void;
-  setCellData: (value: any) => void;
+  handleRowData: (key: keyof TData, value: string | number) => void;
+  setCellData: (value: string | number) => void;
   tableStyle: TTableStyle;
   exitEditMode: () => void;
   setEditType: (editType: EditType) => void;
