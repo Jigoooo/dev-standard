@@ -14,9 +14,6 @@ importers:
       '@floating-ui/react':
         specifier: ^0.27.5
         version: 0.27.5(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      '@floating-ui/utils':
-        specifier: ^0.2.9
-        version: 0.2.9
       '@mui/icons-material':
         specifier: ^6.4.8
         version: 6.4.8(@mui/material@6.4.4(@emotion/react@11.14.0(@types/react@19.0.12)(react@19.0.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.0.12)(react@19.0.0))(@types/react@19.0.12)(react@19.0.0))(@types/react@19.0.12)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@types/react@19.0.12)(react@19.0.0)

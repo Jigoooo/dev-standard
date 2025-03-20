@@ -16,13 +16,25 @@ import {
   subMonths,
 } from 'date-fns';
 import { ko } from 'date-fns/locale';
+import {
+  Strategy,
+  Placement,
+  useFloating,
+  offset,
+  flip,
+  size,
+  useClick,
+  useInteractions,
+  FloatingPortal,
+  FloatingOverlay,
+} from '@floating-ui/react';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
 import { FlexRow, Input, Button, FlexColumn, Typography } from '@/shared/ui';
-import { colors } from '@/shared/constants';
+import { colors, zIndex } from '@/shared/constants';
 import { useHandleClickOutsideRef, useWindowsStyle } from '@/shared/hooks';
 import { DateInputField } from './date-input-field.tsx';
 
@@ -35,6 +47,8 @@ type FromToDates = Record<keyof FromToDateString, Date | null>;
 type FromToCurrentDates = Record<keyof FromToDateString, Date>;
 
 type TDatePicker = {
+  strategy?: Strategy;
+  placement?: Placement;
   width?: number | string;
   isInputMode?: boolean;
   fromToDateString?: FromToDateString;
@@ -411,6 +425,8 @@ function FromToPicker({
 }
 
 export function DateFromToPicker({
+  strategy = 'absolute',
+  placement = 'bottom-start',
   width = 'auto',
   isInputMode = false,
   fromToDateString,
@@ -433,8 +449,39 @@ export function DateFromToPicker({
   } = useDateFromToPicker({ fromToDateString, onChange, dateFormat });
   const datePickerRef = useHandleClickOutsideRef({
     condition: showFromToDatePicker,
-    outsideClickAction: () => setShowFromToDatePicker(false),
+    outsideClickAction: () => {
+      if (strategy === 'absolute') {
+        setShowFromToDatePicker(false);
+      }
+    },
   });
+
+  const { refs, floatingStyles, context } = useFloating({
+    open: showFromToDatePicker,
+    onOpenChange: setShowFromToDatePicker,
+    strategy,
+    placement,
+    transform: false,
+    middleware: [
+      offset({
+        mainAxis: 4,
+      }),
+      flip({ padding: 10 }),
+      size({
+        apply({ rects, elements, availableHeight }) {
+          Object.assign(elements.floating.style, {
+            minWidth: `${rects.reference.width}px`,
+            maxHeight: `${availableHeight}px`,
+            // maxWidth: `${rects.reference.width}px`,
+          });
+        },
+        padding: 10,
+      }),
+    ],
+  });
+  const click = useClick(context);
+  const { getReferenceProps, getFloatingProps } = useInteractions([click]);
+
   const handleInputClick = () => setShowFromToDatePicker((prev) => !prev);
   const inputSelectedFromDateString = selectedFromToDate.from
     ? format(selectedFromToDate.from, dateFormat)
@@ -445,83 +492,129 @@ export function DateFromToPicker({
 
   return (
     <FlexColumn ref={datePickerRef} style={{ position: 'relative', width }}>
-      {!isInputMode ? (
-        <FlexRow style={{ gap: 6 }}>
-          <Input
-            style={{ width: 160, cursor: 'pointer' }}
-            value={inputSelectedFromDateString}
-            onClick={handleInputClick}
-            readOnly
-            endDecorator={<CalendarMonthIcon style={{ fontSize: '1.2rem' }} />}
-            isFocusEffect={false}
-          />
-          <Input
-            style={{ width: 160, cursor: 'pointer' }}
-            value={inputSelectedToDateString}
-            onClick={handleInputClick}
-            readOnly
-            endDecorator={<CalendarMonthIcon style={{ fontSize: '1.2rem' }} />}
-            isFocusEffect={false}
-          />
-        </FlexRow>
-      ) : (
-        <FlexRow style={{ gap: 6 }}>
-          <DateInputField
-            selectedDate={selectedFromToDate.from}
-            handleDateClick={(date) => {
-              handleDateInput('from', format(date, dateFormat));
+      <div ref={refs.setReference} {...getReferenceProps()}>
+        {!isInputMode ? (
+          <FlexRow style={{ gap: 6 }}>
+            <Input
+              style={{ width: 160, cursor: 'pointer' }}
+              value={inputSelectedFromDateString}
+              onClick={handleInputClick}
+              readOnly
+              endDecorator={<CalendarMonthIcon style={{ fontSize: '1.2rem' }} />}
+              isFocusEffect={false}
+            />
+            <Input
+              style={{ width: 160, cursor: 'pointer' }}
+              value={inputSelectedToDateString}
+              onClick={handleInputClick}
+              readOnly
+              endDecorator={<CalendarMonthIcon style={{ fontSize: '1.2rem' }} />}
+              isFocusEffect={false}
+            />
+          </FlexRow>
+        ) : (
+          <FlexRow style={{ gap: 6 }}>
+            <DateInputField
+              selectedDate={selectedFromToDate.from}
+              handleDateClick={(date) => {
+                handleDateInput('from', format(date, dateFormat));
+              }}
+              handleInputClick={handleInputClick}
+              minDate={minDate}
+              maxDate={maxDate}
+            />
+            <DateInputField
+              selectedDate={selectedFromToDate.to}
+              handleDateClick={(date) => {
+                handleDateInput('to', format(date, dateFormat));
+              }}
+              handleInputClick={handleInputClick}
+              minDate={minDate}
+              maxDate={maxDate}
+            />
+          </FlexRow>
+        )}
+      </div>
+      {showFromToDatePicker &&
+        (strategy === 'fixed' ? (
+          <FloatingPortal>
+            <FloatingOverlay
+              style={{ zIndex: zIndex.anchorOverlay }}
+              onClick={() => setShowFromToDatePicker(false)}
+            />
+            <FlexRow
+              ref={refs.setFloating}
+              style={{
+                ...{
+                  zIndex: zIndex.anchorOverlay,
+                  gap: 8,
+                },
+                ...floatingStyles,
+              }}
+              {...getFloatingProps()}
+            >
+              <FromToPicker
+                pickerType={'from'}
+                selectedFromToDate={selectedFromToDate}
+                currentFromToDate={currentFromToDate}
+                handleDateClick={handleDateClick}
+                handlePrevMonth={handlePrevFromMonth}
+                handleNextMonth={handleNextFromMonth}
+                selectedDate={selectedFromToDate.from}
+                currentDate={currentFromToDate.from}
+                minDate={minDate ? subDays(minDate, 1) : undefined}
+                maxDate={maxDate}
+              />
+              <FromToPicker
+                pickerType={'to'}
+                selectedFromToDate={selectedFromToDate}
+                currentFromToDate={currentFromToDate}
+                handleDateClick={handleDateClick}
+                handlePrevMonth={handlePrevToMonth}
+                handleNextMonth={handleNextToMonth}
+                selectedDate={selectedFromToDate.to}
+                currentDate={currentFromToDate.to}
+                minDate={minDate ? subDays(minDate, 1) : undefined}
+                maxDate={maxDate}
+              />
+            </FlexRow>
+          </FloatingPortal>
+        ) : (
+          <FlexRow
+            style={{
+              position: 'absolute',
+              top: '100%',
+              left: 0,
+              zIndex: 1,
+              gap: 8,
             }}
-            handleInputClick={handleInputClick}
-            minDate={minDate}
-            maxDate={maxDate}
-          />
-          <DateInputField
-            selectedDate={selectedFromToDate.to}
-            handleDateClick={(date) => {
-              handleDateInput('to', format(date, dateFormat));
-            }}
-            handleInputClick={handleInputClick}
-            minDate={minDate}
-            maxDate={maxDate}
-          />
-        </FlexRow>
-      )}
-      {showFromToDatePicker && (
-        <FlexRow
-          style={{
-            position: 'absolute',
-            top: '100%',
-            left: 0,
-            zIndex: 1,
-            gap: 8,
-          }}
-        >
-          <FromToPicker
-            pickerType={'from'}
-            selectedFromToDate={selectedFromToDate}
-            currentFromToDate={currentFromToDate}
-            handleDateClick={handleDateClick}
-            handlePrevMonth={handlePrevFromMonth}
-            handleNextMonth={handleNextFromMonth}
-            selectedDate={selectedFromToDate.from}
-            currentDate={currentFromToDate.from}
-            minDate={minDate ? subDays(minDate, 1) : undefined}
-            maxDate={maxDate}
-          />
-          <FromToPicker
-            pickerType={'to'}
-            selectedFromToDate={selectedFromToDate}
-            currentFromToDate={currentFromToDate}
-            handleDateClick={handleDateClick}
-            handlePrevMonth={handlePrevToMonth}
-            handleNextMonth={handleNextToMonth}
-            selectedDate={selectedFromToDate.to}
-            currentDate={currentFromToDate.to}
-            minDate={minDate ? subDays(minDate, 1) : undefined}
-            maxDate={maxDate}
-          />
-        </FlexRow>
-      )}
+          >
+            <FromToPicker
+              pickerType={'from'}
+              selectedFromToDate={selectedFromToDate}
+              currentFromToDate={currentFromToDate}
+              handleDateClick={handleDateClick}
+              handlePrevMonth={handlePrevFromMonth}
+              handleNextMonth={handleNextFromMonth}
+              selectedDate={selectedFromToDate.from}
+              currentDate={currentFromToDate.from}
+              minDate={minDate ? subDays(minDate, 1) : undefined}
+              maxDate={maxDate}
+            />
+            <FromToPicker
+              pickerType={'to'}
+              selectedFromToDate={selectedFromToDate}
+              currentFromToDate={currentFromToDate}
+              handleDateClick={handleDateClick}
+              handlePrevMonth={handlePrevToMonth}
+              handleNextMonth={handleNextToMonth}
+              selectedDate={selectedFromToDate.to}
+              currentDate={currentFromToDate.to}
+              minDate={minDate ? subDays(minDate, 1) : undefined}
+              maxDate={maxDate}
+            />
+          </FlexRow>
+        ))}
     </FlexColumn>
   );
 }

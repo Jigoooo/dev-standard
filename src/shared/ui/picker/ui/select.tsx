@@ -12,8 +12,8 @@ import {
   useFloating,
   useInteractions,
   VirtualElement,
+  Placement,
 } from '@floating-ui/react';
-import { Placement } from '@floating-ui/utils';
 
 import { HiChevronUpDown } from 'react-icons/hi2';
 import { IoMdCheckmark } from 'react-icons/io';

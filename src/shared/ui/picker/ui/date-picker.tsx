@@ -23,8 +23,8 @@ import {
   useClick,
   useFloating,
   useInteractions,
+  Placement,
 } from '@floating-ui/react';
-import { Placement } from '@floating-ui/utils';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
