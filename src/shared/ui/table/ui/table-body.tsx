@@ -397,7 +397,7 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
   const cellRef = useHandleClickOutsideRef({
     condition: isEdit,
     outsideClickAction: () => {
-      if (editType === 'select') {
+      if (editType !== 'input' && editType !== 'none') {
         return;
       }
       setIsEdit(false);

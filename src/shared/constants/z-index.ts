@@ -2,6 +2,7 @@ export const zIndex = {
   modal: 99,
   anchorOverlay: 101,
   anchor: 101,
+  datePicker: 101,
   selectBoxItem: 200,
   dialogOverlay: 500,
   dialog: 600,

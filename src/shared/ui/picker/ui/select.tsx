@@ -7,11 +7,13 @@ import {
   offset,
   ReferenceType,
   size,
+  Strategy,
   useClick,
   useFloating,
   useInteractions,
   VirtualElement,
 } from '@floating-ui/react';
+import { Placement } from '@floating-ui/utils';
 
 import { HiChevronUpDown } from 'react-icons/hi2';
 import { IoMdCheckmark } from 'react-icons/io';
@@ -28,6 +30,7 @@ type SelectOption<ValueType extends string | number> = {
 
 export function Select<ValueType extends string | number>({
   strategy = 'absolute',
+  placement = 'bottom',
   label = '',
   value,
   onChange,
@@ -38,7 +41,8 @@ export function Select<ValueType extends string | number>({
   isAutocomplete = false,
   openListener,
 }: {
-  strategy?: 'absolute' | 'fixed';
+  strategy?: Strategy;
+  placement?: Placement;
   label?: string;
   value: ValueType;
   onChange: (value: ValueType) => void;
@@ -71,7 +75,7 @@ export function Select<ValueType extends string | number>({
     open: isOpen,
     onOpenChange: setIsOpen,
     strategy,
-    placement: 'bottom',
+    placement,
     transform: false,
     middleware: [
       offset({

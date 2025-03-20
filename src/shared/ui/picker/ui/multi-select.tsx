@@ -1,5 +1,19 @@
 import { CSSProperties, HTMLProps, KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import {
+  flip,
+  FloatingOverlay,
+  FloatingPortal,
+  offset,
+  ReferenceType,
+  size,
+  Strategy,
+  useClick,
+  useFloating,
+  useInteractions,
+  VirtualElement,
+} from '@floating-ui/react';
+import { Placement } from '@floating-ui/utils';
 
 import { HiChevronUpDown } from 'react-icons/hi2';
 import CloseIcon from '@mui/icons-material/Close';
@@ -8,18 +22,6 @@ import { FiSearch } from 'react-icons/fi';
 import { colors, zIndex } from '@/shared/constants';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
 import { Checkbox, FlexRow, Input, InputStyle, Typography } from '@/shared/ui';
-import {
-  flip,
-  FloatingOverlay,
-  FloatingPortal,
-  offset,
-  ReferenceType,
-  size,
-  useClick,
-  useFloating,
-  useInteractions,
-  VirtualElement,
-} from '@floating-ui/react';
 
 type SelectOption = {
   label: string;
@@ -28,6 +30,7 @@ type SelectOption = {
 
 export function MultiSelect<ValuesType extends (string | number)[]>({
   strategy = 'absolute',
+  placement = 'bottom',
   label = '',
   values,
   onChange,
@@ -38,7 +41,8 @@ export function MultiSelect<ValuesType extends (string | number)[]>({
   isAutocomplete = false,
   openListener,
 }: {
-  strategy?: 'absolute' | 'fixed';
+  strategy?: Strategy;
+  placement?: Placement;
   label?: string;
   values: ValuesType;
   onChange: (value: ValuesType) => void;
@@ -72,7 +76,7 @@ export function MultiSelect<ValuesType extends (string | number)[]>({
     open: isOpen,
     onOpenChange: setIsOpen,
     strategy,
-    placement: 'bottom',
+    placement,
     transform: false,
     middleware: [
       offset({

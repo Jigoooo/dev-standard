@@ -13,11 +13,7 @@ if (import.meta.env.PROD) {
     const originalConsoleLog = console.log;
     console.log = function (...args) {
       if (
-        args.some(
-          (arg) =>
-            typeof arg === 'string' &&
-            (arg.includes('Unauthorized') || arg.includes('401') || arg.includes('403')),
-        )
+        args.some((arg) => typeof arg === 'string' && ['Unauthorized', '401', '403'].includes(arg))
       ) {
         return;
       }

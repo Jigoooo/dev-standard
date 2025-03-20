@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, CSSProperties, HTMLProps } from 'react';
 import {
   addMonths,
   subMonths,
@@ -19,11 +19,23 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
 import { FlexRow, Input, Button, FlexColumn, Typography } from '@/shared/ui';
-import { colors } from '@/shared/constants';
+import { colors, zIndex } from '@/shared/constants';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
 import { DateInputField } from './date-input-field';
+import {
+  flip,
+  offset,
+  size,
+  Strategy,
+  useClick,
+  useFloating,
+  useInteractions,
+} from '@floating-ui/react';
+import { Placement } from '@floating-ui/utils';
 
 type TDatePicker = {
+  strategy?: Strategy;
+  placement?: Placement;
   width?: number | string;
   isInputMode?: boolean;
   dateString?: string;
@@ -104,8 +116,10 @@ function useDatePicker({
   };
 }
 
-// Picker 컴포넌트의 prop 타입 정리
 type PickerProps = {
+  setFloating: (node: HTMLElement | null) => void;
+  floatingStyles: CSSProperties;
+  getFloatingProps: (userProps?: HTMLProps<HTMLElement>) => Record<string, unknown>;
   handleDateClick: (date: Date) => void;
   handlePrevMonth: () => void;
   handleNextMonth: () => void;
@@ -113,7 +127,6 @@ type PickerProps = {
   currentDate: Date;
   minDate?: Date;
   maxDate?: Date;
-  offsetX: number;
 };
 
 // 날짜 셀의 스타일 계산 헬퍼 함수들
@@ -141,6 +154,9 @@ function getCellTextColor(
 
 // Picker 컴포넌트: 달력 렌더링
 function Picker({
+  setFloating,
+  floatingStyles,
+  getFloatingProps,
   handleDateClick,
   handlePrevMonth,
   handleNextMonth,
@@ -148,7 +164,6 @@ function Picker({
   currentDate,
   minDate,
   maxDate,
-  offsetX,
 }: PickerProps) {
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -175,18 +190,20 @@ function Picker({
 
   return (
     <div
+      ref={setFloating}
       style={{
-        position: 'absolute',
-        top: '100%',
-        left: offsetX,
-        zIndex: 1,
-        marginTop: 8,
-        padding: 16,
-        backgroundColor: '#ffffff',
-        borderRadius: 10,
-        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.2)',
-        width: 300,
+        ...{
+          marginTop: 8,
+          padding: 16,
+          backgroundColor: '#ffffff',
+          borderRadius: 10,
+          boxShadow: '0 2px 10px rgba(0, 0, 0, 0.2)',
+          width: 300,
+          zIndex: zIndex.datePicker,
+        },
+        ...floatingStyles,
       }}
+      {...getFloatingProps()}
     >
       <FlexRow style={{ justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
         <Button
@@ -257,6 +274,8 @@ function Picker({
 }
 
 export function DatePicker({
+  strategy = 'absolute',
+  placement = 'bottom-start',
   width = 'auto',
   isInputMode = false,
   dateString,
@@ -278,30 +297,62 @@ export function DatePicker({
     condition: showDatePicker,
     outsideClickAction: () => setShowDatePicker(false),
   });
+
+  const { refs, floatingStyles, context } = useFloating({
+    open: showDatePicker,
+    onOpenChange: setShowDatePicker,
+    strategy,
+    placement,
+    transform: false,
+    middleware: [
+      offset({
+        mainAxis: 4,
+      }),
+      flip({ padding: 10 }),
+      size({
+        apply({ rects, elements, availableHeight }) {
+          Object.assign(elements.floating.style, {
+            minWidth: `${rects.reference.width}px`,
+            maxHeight: `${availableHeight}px`,
+            // maxWidth: `${rects.reference.width}px`,
+          });
+        },
+        padding: 10,
+      }),
+    ],
+  });
+  const click = useClick(context);
+  const { getReferenceProps, getFloatingProps } = useInteractions([click]);
+
   const handleInputClick = () => setShowDatePicker((prev) => !prev);
   const inputSelectedDateString = selectedDate ? format(selectedDate, dateFormat) : '';
 
   return (
     <FlexColumn ref={datePickerRef} style={{ position: 'relative', width }}>
-      {!isInputMode ? (
-        <Input
-          style={{ width: 160, cursor: 'pointer' }}
-          value={inputSelectedDateString}
-          onClick={handleInputClick}
-          readOnly
-          endDecorator={<CalendarMonthIcon style={{ fontSize: '1.2rem' }} />}
-        />
-      ) : (
-        <DateInputField
-          selectedDate={selectedDate}
-          handleDateClick={handleDateClick}
-          handleInputClick={handleInputClick}
-          minDate={minDate}
-          maxDate={maxDate}
-        />
-      )}
+      <div ref={refs.setReference} {...getReferenceProps()}>
+        {!isInputMode ? (
+          <Input
+            style={{ width: 160, cursor: 'pointer' }}
+            value={inputSelectedDateString}
+            onClick={handleInputClick}
+            readOnly
+            endDecorator={<CalendarMonthIcon style={{ fontSize: '1.2rem' }} />}
+          />
+        ) : (
+          <DateInputField
+            selectedDate={selectedDate}
+            handleDateClick={handleDateClick}
+            handleInputClick={handleInputClick}
+            minDate={minDate}
+            maxDate={maxDate}
+          />
+        )}
+      </div>
       {showDatePicker && (
         <Picker
+          setFloating={refs.setFloating}
+          floatingStyles={floatingStyles}
+          getFloatingProps={getFloatingProps}
           handleDateClick={handleDateClick}
           handlePrevMonth={handlePrevMonth}
           handleNextMonth={handleNextMonth}
@@ -309,7 +360,6 @@ export function DatePicker({
           currentDate={currentDate}
           minDate={minDate ? subDays(minDate, 1) : undefined}
           maxDate={maxDate}
-          offsetX={0}
         />
       )}
     </FlexColumn>
