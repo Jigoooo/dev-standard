@@ -57,6 +57,8 @@ export function AlertDialog() {
 
   return (
     <FloatingPortal>
+      <div ref={modalRef} tabIndex={-1} />
+
       <AnimatePresence initial={false}>
         {dialogOpen && (
           <>
@@ -66,8 +68,6 @@ export function AlertDialog() {
               animate={{ opacity: 1, scale: 1, x: '-50%', y: '-50%' }}
               exit={{ opacity: 0.2, scale: 0.98, x: '-50%', y: '-45%' }}
               transition={{ duration: 0.1 }}
-              ref={modalRef}
-              tabIndex={-1}
               style={{
                 position: 'fixed',
                 top: '50%',

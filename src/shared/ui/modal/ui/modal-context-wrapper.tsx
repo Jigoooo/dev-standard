@@ -1,4 +1,4 @@
-import { ReactNode, RefObject, useRef, useState } from 'react';
+import { ReactNode, RefObject, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { FlexRow, ModalContext } from '@/shared/ui';
@@ -8,6 +8,7 @@ import { FloatingOverlay, FloatingPortal } from '@floating-ui/react';
 
 export function ModalContextWrapper({ children }: { children: ReactNode }) {
   const overlayRefs = useRef<Record<string, RefObject<HTMLDivElement | null>>>({});
+  const modalRef = useRef<HTMLDivElement | null>(null);
 
   const [modalList, setModalList] = useState<TModalItem[]>([]);
   const [isPossibleOverlayClose, setIsPossibleOverlayClose] =
@@ -32,10 +33,35 @@ export function ModalContextWrapper({ children }: { children: ReactNode }) {
 
   const modalIds = modalList.map((modal) => ({ id: modal.id }));
 
+  useEffect(() => {
+    if (modalList.length > 0) {
+      setTimeout(() => {
+        modalRef.current?.focus();
+      }, 50);
+
+      const handleKeyDown = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+          event.preventDefault();
+        }
+        if (event.key === 'Tab') {
+          event.preventDefault();
+          modalRef.current?.focus();
+        }
+      };
+
+      document.addEventListener('keydown', handleKeyDown);
+      return () => {
+        document.removeEventListener('keydown', handleKeyDown);
+      };
+    }
+  }, [modalList.length]);
+
   return (
     <ModalContext value={{ modalIds, open, close, handleIsPossibleOverlayClose }}>
       {children}
       <FloatingPortal>
+        <div ref={modalRef} tabIndex={-1} />
+
         <AnimatePresence initial={false}>
           {modalList.map((modal, index) => {
             if (!overlayRefs.current[modal.id]) {
@@ -61,7 +87,6 @@ export function ModalContextWrapper({ children }: { children: ReactNode }) {
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    overflow: 'auto',
                     zIndex: zIndex.modal + index,
                   }}
                   onClick={(e) => e.stopPropagation()}
