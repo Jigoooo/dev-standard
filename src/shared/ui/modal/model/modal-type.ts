@@ -3,6 +3,7 @@ import { ReactNode, RefObject } from 'react';
 export type TModalItem = {
   id: string;
   render: (props: TModalRenderProps) => ReactNode;
+  order: number;
 };
 
 export type TModalRenderProps = {

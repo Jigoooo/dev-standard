@@ -11,9 +11,6 @@ export function useModalClose(isOpen: boolean, onClose: () => void) {
 
     if (isOpen) {
       addQueryParam('modal', 'true');
-      document.body.style.overflow = 'hidden';
-    } else if (!isOpen) {
-      document.body.style.overflow = '';
     }
 
     const handlePopState = () => {
@@ -24,7 +21,6 @@ export function useModalClose(isOpen: boolean, onClose: () => void) {
 
     return () => {
       window.removeEventListener('popstate', handlePopState);
-      document.body.style.overflow = '';
     };
   }, [isOpen]);
 }

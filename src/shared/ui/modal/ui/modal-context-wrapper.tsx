@@ -5,6 +5,7 @@ import { FlexRow, ModalContext } from '@/shared/ui';
 import { zIndex } from '@/shared/constants';
 import { TModalRenderProps, TModalItem, TIsPossibleOverlayClose } from '../model/modal-type.ts';
 import { FloatingOverlay, FloatingPortal } from '@floating-ui/react';
+import { useModalClose } from '@/shared/hooks';
 
 export function ModalContextWrapper({ children }: { children: ReactNode }) {
   const overlayRefs = useRef<Record<string, RefObject<HTMLDivElement | null>>>({});
@@ -24,7 +25,7 @@ export function ModalContextWrapper({ children }: { children: ReactNode }) {
   };
 
   const open = (id: string, render: (props: TModalRenderProps) => ReactNode) => {
-    setModalList((prev) => [...prev, { id, render }]);
+    setModalList((prevState) => [...prevState, { id, render, order: prevState.length }]);
   };
 
   const close = (id: string) => {
@@ -32,6 +33,16 @@ export function ModalContextWrapper({ children }: { children: ReactNode }) {
   };
 
   const modalIds = modalList.map((modal) => ({ id: modal.id }));
+
+  useModalClose(modalList.length > 0, () => {
+    if (modalList.length > 0) {
+      const findLastOrderModal = modalList.find((modal) => modal.order === modalList.length - 1);
+
+      if (findLastOrderModal) {
+        close(findLastOrderModal.id);
+      }
+    }
+  });
 
   useEffect(() => {
     if (modalList.length > 0) {
@@ -94,7 +105,10 @@ export function ModalContextWrapper({ children }: { children: ReactNode }) {
                   {modal.render({
                     overlayRef: overlayRefs.current[modal.id],
                     isOpen: true,
-                    close: () => close(modal.id),
+                    close: () => {
+                      close(modal.id);
+                      window.history.back();
+                    },
                   })}
                 </FlexRow>
 
@@ -118,6 +132,7 @@ export function ModalContextWrapper({ children }: { children: ReactNode }) {
                     onClick={() => {
                       if (isPossibleOverlayClose !== null && isPossibleOverlayClose[modal.id]) {
                         close(modal.id);
+                        window.history.back();
                       }
                     }}
                   />

@@ -15,6 +15,7 @@ import {
 import { colors, zIndex } from '@/shared/constants';
 import { DialogInfoStates } from '../model/dialog-type.ts';
 import { FloatingOverlay, FloatingPortal } from '@floating-ui/react';
+import { useModalClose } from '@/shared/hooks';
 
 /* todo 모바일버전 만들어야 함 */
 
@@ -30,7 +31,7 @@ export function AlertDialog() {
   const dialogInfos = useDialogInfos();
   const modalRef = useRef<HTMLDivElement | null>(null);
 
-  // useModalClose(dialogOpen, dialogActions.close);
+  useModalClose(dialogOpen, dialogActions.close);
 
   useEffect(() => {
     if (dialogOpen) {
@@ -100,7 +101,7 @@ export function AlertDialog() {
                 style={{ zIndex: zIndex.dialogOverlay, backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
                 onClick={() => {
                   dialogActions.close();
-                  // window.history.back();
+                  window.history.back();
                 }}
               />
             </motion.div>
@@ -176,7 +177,7 @@ function AlertDialogActions({ dialogInfos }: { dialogInfos: DialogInfoStates }) 
             borderColor: '#bbbbbb',
           }}
           onClick={() => {
-            // window.history.back();
+            window.history.back();
             dialogInfos?.onCancel?.();
           }}
         >
@@ -193,7 +194,7 @@ function AlertDialogActions({ dialogInfos }: { dialogInfos: DialogInfoStates }) 
           backgroundColor: dialogColor,
         }}
         onClick={() => {
-          // window.history.back();
+          window.history.back();
           setTimeout(() => dialogInfos?.onConfirm?.(), 10);
         }}
       >

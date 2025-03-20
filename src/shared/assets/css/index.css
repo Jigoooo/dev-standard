@@ -15,6 +15,12 @@
   touch-action: manipulation;
 }
 
+div {
+  -webkit-tap-highlight-color: transparent;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+}
+
 html {
   font-size: 16px;
 }
