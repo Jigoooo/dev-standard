@@ -60,18 +60,6 @@ export function RoleManagement() {
     if (getMenuMemberAuthListQuery.data?.data?.menuList) {
       const menuList = getMenuMemberAuthListQuery.data.data.menuList;
 
-      const groupByMenus = menuList.reduce((acc, item) => {
-        const menuCd = item.mainCd;
-        if (!acc[menuCd]) {
-          acc[menuCd] = [];
-        }
-        acc[menuCd].push(item);
-        return acc;
-      }, {});
-
-      console.log(menuList);
-      console.log(groupByMenus);
-
       const dataWithIndex = menuList.map((item, index) => {
         const isAllChecked =
           item.useYn === 'Y' &&
