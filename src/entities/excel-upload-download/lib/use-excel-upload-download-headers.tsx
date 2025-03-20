@@ -15,6 +15,7 @@ import {
   TValidationRuleWithHeaderId,
   DeleteButton,
   ModifyButton,
+  Select,
 } from '@/shared/ui';
 import { getExcelDataListApi } from '../api/excel-api.ts';
 import { TExcelInfo, TExcelData, RExcelData } from '../model/excel-upload-download-type.ts';
@@ -111,7 +112,47 @@ export function useExcelUploadDownloadHeaders() {
       },
     }),
     createHeader('customerName', '주문자', 100),
-    createHeader('status', '상태', 100),
+    createHeader('status', '상태', 100, {
+      editCell: ({ setEditType, exitEditMode }) => {
+        return (
+          <Select
+            containerMinWidth={0}
+            strategy={'fixed'}
+            isAutocomplete={true}
+            value={'1'}
+            onChange={() => {
+              setTimeout(() => {
+                exitEditMode();
+              }, 100);
+            }}
+            openListener={(isOpen) => {
+              if (isOpen) {
+                setEditType('select');
+              } else {
+                setEditType('none');
+              }
+            }}
+            options={[
+              { value: '1', label: 'Select 1' },
+              { value: '2', label: 'Select 2' },
+              { value: '3', label: 'Select 3' },
+              { value: '4', label: 'Select 4' },
+              { value: '5', label: 'Select 5' },
+              { value: '6', label: 'Select 6' },
+              { value: '7', label: 'Select 7' },
+              { value: '8', label: 'Select 8' },
+              { value: '9', label: 'Select 9' },
+              { value: '10', label: 'Select 10' },
+              { value: '11', label: 'Select 11' },
+              { value: '12', label: 'Select 12' },
+              { value: '13', label: 'Select 13' },
+              { value: '14', label: 'Select 14' },
+              { value: '15', label: 'Select 15' },
+            ]}
+          />
+        );
+      },
+    }),
     createHeader('button', '', 100, {
       pin: 'right',
       dataAlign: 'center',

@@ -52,6 +52,8 @@ export type THeaderGroup<TData> = {
   headerIds: (keyof TData)[];
 };
 
+export type EditType = 'input' | 'select' | 'none';
+
 export type TEditCell<TData> = {
   inputRef: RefObject<HTMLInputElement | null>;
   cellData: any;
@@ -60,6 +62,7 @@ export type TEditCell<TData> = {
   setCellData: (value: any) => void;
   tableStyle: TTableStyle;
   exitEditMode: () => void;
+  setEditType: (editType: EditType) => void;
 };
 
 export type THeader<TData = Record<string, any>> = {

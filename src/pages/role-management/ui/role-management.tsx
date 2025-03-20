@@ -84,6 +84,7 @@ export function RoleManagement() {
   });
 
   console.log(memberState);
+  console.log(menuAuthList);
 
   return (
     <FlexColumn

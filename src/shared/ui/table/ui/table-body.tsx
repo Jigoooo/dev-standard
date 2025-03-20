@@ -10,7 +10,7 @@ import {
   Typography,
 } from '@/shared/ui';
 import { colors } from '@/shared/constants';
-import { TableBodyRowProps, TDataWithIndex, THeader } from '../model/table-type.ts';
+import { EditType, TableBodyRowProps, TDataWithIndex, THeader } from '../model/table-type.ts';
 import { useTableContext } from '../model/table-context.ts';
 import { validateTableDataList } from '../lib/validate-table-data-list.ts';
 import { useTableScrollToFn, useVirtualRow } from '../hooks';
@@ -391,12 +391,16 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
     throw new Error('checkedState is required for check header');
   }
 
-  const [isEditMode, setIsEditMode] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const [editType, setEditType] = useState<EditType>('input');
   const inputRef = useRef<HTMLInputElement>(null);
   const cellRef = useHandleClickOutsideRef({
-    condition: isEditMode,
+    condition: isEdit,
     outsideClickAction: () => {
-      setIsEditMode(false);
+      if (editType === 'select') {
+        return;
+      }
+      setIsEdit(false);
     },
   });
 
@@ -447,7 +451,7 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
         boxSizing: 'border-box',
         justifyContent,
         alignItems: 'center',
-        paddingInline: isEditMode ? 0 : 12,
+        paddingInline: isEdit ? 0 : 12,
         marginRight: isLastCell ? verticalScrollWidth : 0,
         width: header.id === 'check' ? header.width + 1 : header.width,
         height: '100%',
@@ -471,7 +475,7 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
           return;
         }
 
-        setIsEditMode(true);
+        setIsEdit(true);
         setTimeout(() => {
           if (inputRef.current) {
             inputRef?.current.focus();
@@ -479,7 +483,7 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
         }, 0);
       }}
     >
-      {isEditMode ? (
+      {isEdit ? (
         <>
           {typeof header.editCell === 'function' ? (
             header.editCell({
@@ -495,8 +499,9 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
               tableStyle,
               exitEditMode: () => {
                 inputRef.current?.blur();
-                setIsEditMode(false);
+                setIsEdit(false);
               },
+              setEditType,
             })
           ) : (
             <Input
@@ -515,7 +520,7 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
               onKeyDown={(event) => {
                 if (event.key === 'Enter') {
                   inputRef.current?.blur();
-                  setIsEditMode(false);
+                  setIsEdit(false);
                 }
               }}
             />

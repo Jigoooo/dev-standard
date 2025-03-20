@@ -1,8 +1,8 @@
 export const zIndex = {
+  modal: 99,
   anchorOverlay: 101,
   anchor: 101,
   selectBoxItem: 200,
-  modal: 400,
   dialogOverlay: 500,
   dialog: 600,
   snackbar: 700,

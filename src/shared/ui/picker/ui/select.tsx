@@ -1,5 +1,17 @@
-import { useState, KeyboardEvent } from 'react';
+import { useState, KeyboardEvent, CSSProperties, HTMLProps, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import {
+  flip,
+  FloatingOverlay,
+  FloatingPortal,
+  offset,
+  ReferenceType,
+  size,
+  useClick,
+  useFloating,
+  useInteractions,
+  VirtualElement,
+} from '@floating-ui/react';
 
 import { HiChevronUpDown } from 'react-icons/hi2';
 import { IoMdCheckmark } from 'react-icons/io';
@@ -15,6 +27,7 @@ type SelectOption<ValueType extends string | number> = {
 };
 
 export function Select<ValueType extends string | number>({
+  strategy = 'absolute',
   label = '',
   value,
   onChange,
@@ -23,24 +36,58 @@ export function Select<ValueType extends string | number>({
   containerMinWidth = 160,
   containerHeight = 32,
   isAutocomplete = false,
+  openListener,
 }: {
+  strategy?: 'absolute' | 'fixed';
   label?: string;
   value: ValueType;
   onChange: (value: ValueType) => void;
   options: SelectOption<ValueType>[];
   containerWidth?: string | number;
   containerMinWidth?: string | number;
-  containerHeight?: number;
+  containerHeight?: string | number;
   isAutocomplete?: boolean;
+  openListener?: (isOpen: boolean) => void;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [filterText, setFilterText] = useState('');
   const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null);
 
+  useEffect(() => {
+    if (openListener) {
+      openListener(isOpen);
+    }
+  }, [isOpen]);
+
   const ref = useHandleClickOutsideRef({
     condition: isOpen,
     outsideClickAction: () => setIsOpen(false),
   });
+  const { refs, floatingStyles, context } = useFloating({
+    open: isOpen,
+    onOpenChange: setIsOpen,
+    strategy,
+    placement: 'bottom',
+    transform: false,
+    middleware: [
+      offset({
+        mainAxis: 4,
+      }),
+      flip({ padding: 10 }),
+      size({
+        apply({ rects, elements, availableHeight }) {
+          Object.assign(elements.floating.style, {
+            minWidth: `${rects.reference.width}px`,
+            maxHeight: `${availableHeight}px`,
+            // maxWidth: `${rects.reference.width}px`,
+          });
+        },
+        padding: 10,
+      }),
+    ],
+  });
+  const click = useClick(context);
+  const { getReferenceProps, getFloatingProps } = useInteractions([click]);
 
   const selectedLabel = options.find((option) => option.value === value)?.label || '';
 
@@ -112,46 +159,78 @@ export function Select<ValueType extends string | number>({
       className='selection-none'
     >
       <SelectContainer
+        ref={refs.setReference}
         label={label}
         selectedLabel={selectedLabel}
         toggleSelectBox={toggleSelectBox}
         containerHeight={containerHeight}
+        getReferenceProps={getReferenceProps}
       />
       <AnimatePresence initial={false}>
-        {isOpen && (
-          <SelectItems
-            options={getFilteredOptions()}
-            isAutocomplete={isAutocomplete}
-            filterText={filterText}
-            handleFilterText={handleFilterText}
-            handleKeyDown={handleKeyDown}
-            selectedValue={value}
-            highlightedIndex={highlightedIndex}
-            selectValue={(newValue) => {
-              onChange(newValue);
-              setIsOpen(false);
-              setFilterText('');
-            }}
-          />
-        )}
+        {isOpen &&
+          (strategy === 'fixed' ? (
+            <FloatingPortal>
+              <FloatingOverlay style={{ zIndex: zIndex.anchorOverlay }} />
+              <SelectItems
+                setFloating={refs.setFloating}
+                floatingStyles={floatingStyles}
+                getFloatingProps={getFloatingProps}
+                options={getFilteredOptions()}
+                isAutocomplete={isAutocomplete}
+                filterText={filterText}
+                handleFilterText={handleFilterText}
+                handleKeyDown={handleKeyDown}
+                selectedValue={value}
+                highlightedIndex={highlightedIndex}
+                selectValue={(newValue) => {
+                  onChange(newValue);
+                  setIsOpen(false);
+                  setFilterText('');
+                }}
+              />
+            </FloatingPortal>
+          ) : (
+            <SelectItems
+              setFloating={refs.setFloating}
+              floatingStyles={floatingStyles}
+              getFloatingProps={getFloatingProps}
+              options={getFilteredOptions()}
+              isAutocomplete={isAutocomplete}
+              filterText={filterText}
+              handleFilterText={handleFilterText}
+              handleKeyDown={handleKeyDown}
+              selectedValue={value}
+              highlightedIndex={highlightedIndex}
+              selectValue={(newValue) => {
+                onChange(newValue);
+                setIsOpen(false);
+                setFilterText('');
+              }}
+            />
+          ))}
       </AnimatePresence>
     </div>
   );
 }
 
 function SelectContainer({
+  ref,
   label,
   selectedLabel,
   toggleSelectBox,
   containerHeight,
+  getReferenceProps,
 }: {
+  ref?: ((node: ReferenceType | null) => void) & ((node: Element | VirtualElement | null) => void);
   label?: string;
   selectedLabel?: string;
   toggleSelectBox: () => void;
-  containerHeight: number;
+  containerHeight: string | number;
+  getReferenceProps: (userProps?: HTMLProps<Element>) => Record<string, unknown>;
 }) {
   return (
     <FlexRow
+      ref={ref}
       as={motion.div}
       style={{
         justifyContent: 'space-between',
@@ -174,8 +253,9 @@ function SelectContainer({
       }}
       whileHover={{ backgroundColor: '#f4f4f4' }}
       transition={{ duration: 0.14 }}
+      {...getReferenceProps()}
     >
-      <FlexRow style={{ alignItems: 'center', gap: 8 }}>
+      <FlexRow style={{ alignItems: 'center', gap: 8, overflow: 'hidden' }}>
         {label && (
           <>
             <Typography style={{ fontSize: '0.8rem', fontWeight: 400, color: '#333333' }}>
@@ -192,6 +272,9 @@ function SelectContainer({
             borderRadius: 4,
             fontWeight: 500,
             fontSize: '0.94rem',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
           }}
         >
           {selectedLabel}
@@ -210,6 +293,9 @@ function SelectContainer({
 }
 
 function SelectItems<ValueType extends string | number>({
+  setFloating,
+  floatingStyles,
+  getFloatingProps,
   selectValue,
   selectedValue,
   options,
@@ -219,6 +305,9 @@ function SelectItems<ValueType extends string | number>({
   handleKeyDown,
   highlightedIndex,
 }: {
+  setFloating: (node: HTMLElement | null) => void;
+  floatingStyles: CSSProperties;
+  getFloatingProps: (userProps?: HTMLProps<HTMLElement>) => Record<string, unknown>;
   selectValue: (value: ValueType) => void;
   selectedValue: ValueType;
   options: SelectOption<ValueType>[];
@@ -230,21 +319,20 @@ function SelectItems<ValueType extends string | number>({
 }) {
   return (
     <motion.div
+      ref={setFloating}
       className='shadow-scroll'
       style={{
-        position: 'absolute',
-        top: '115%',
-        left: 0,
-        width: '100%',
-        backgroundColor: 'white',
-        border: '1px solid #ddd',
-        borderRadius: 4,
-        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.2)',
-        maxHeight: 300,
-        overflowY: 'auto',
-        zIndex: zIndex.selectBoxItem,
-        transformOrigin: 'top center',
-        padding: 6,
+        ...{
+          backgroundColor: 'white',
+          border: '1px solid #ddd',
+          borderRadius: 4,
+          boxShadow: '0 2px 10px rgba(0, 0, 0, 0.2)',
+          maxHeight: 300,
+          overflowY: 'auto',
+          zIndex: zIndex.selectBoxItem,
+          padding: 6,
+        },
+        ...floatingStyles,
       }}
       initial={{
         opacity: 0,
@@ -259,6 +347,7 @@ function SelectItems<ValueType extends string | number>({
         scale: 0.95,
       }}
       transition={{ duration: 0.14, ease: 'easeInOut' }}
+      {...getFloatingProps()}
     >
       {isAutocomplete && (
         <Input
