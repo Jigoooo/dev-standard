@@ -2,7 +2,7 @@ import { CSSProperties, ReactNode, RefObject } from 'react';
 
 import CloseIcon from '@mui/icons-material/Close';
 
-import { Button, FlexColumn, FlexRow, Divider, Typography } from 'shared/ui';
+import { Button, FlexColumn, FlexRow, Divider, Typography } from '@/shared/ui';
 import { motion, useDragControls } from 'framer-motion';
 
 const modalContainerDefaultStyle: CSSProperties = {

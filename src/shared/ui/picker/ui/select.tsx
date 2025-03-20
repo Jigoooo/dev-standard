@@ -7,7 +7,7 @@ import { FiSearch } from 'react-icons/fi';
 
 import { zIndex } from '@/shared/constants';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
-import { FlexRow, Input, InputStyle, Typography } from 'shared/ui';
+import { FlexRow, Input, InputStyle, Typography } from '@/shared/ui';
 
 type SelectOption<ValueType extends string | number> = {
   label: string;

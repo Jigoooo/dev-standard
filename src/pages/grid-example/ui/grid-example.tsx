@@ -2,7 +2,14 @@ import { useEffect } from 'react';
 
 import { FiSearch } from 'react-icons/fi';
 
-import { FlexRow, Input, SearchButton, Table, TDataWithIndexCheck, useTableData } from 'shared/ui';
+import {
+  FlexRow,
+  Input,
+  SearchButton,
+  Table,
+  TDataWithIndexCheck,
+  useTableData,
+} from '@/shared/ui';
 import { generateUsers } from '@/entities/grid-example/config/test-data.ts';
 import { RGridExample, useGridExampleHeaders } from '@/entities/grid-example';
 

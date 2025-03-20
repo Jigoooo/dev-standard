@@ -7,7 +7,7 @@ import { IoClose } from 'react-icons/io5';
 import { IoRefreshCircleOutline } from 'react-icons/io5';
 import { IoIosCloseCircleOutline } from 'react-icons/io';
 
-import { Button, Divider, FlexColumn, FlexRow, Typography } from 'shared/ui';
+import { Button, Divider, FlexColumn, FlexRow, Typography } from '@/shared/ui';
 import { TCacheNode, TMenu, useRouterMenuContext } from '@/entities/router';
 
 export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undefined> }) {

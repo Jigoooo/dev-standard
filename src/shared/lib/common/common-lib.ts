@@ -1,6 +1,6 @@
 import { endOfYear, format, subYears } from 'date-fns';
 
-import { dialogActions, DialogType } from 'shared/ui';
+import { dialogActions, DialogType } from '@/shared/ui';
 
 export function sleep(time: number) {
   return new Promise((resolve) => setTimeout(resolve, time));

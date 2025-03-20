@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { useLogout } from '@/entities/auth';
-import { AnchorPicker, Button, Divider, FlexColumn, FlexRow, Typography } from 'shared/ui';
+import { AnchorPicker, Button, Divider, FlexColumn, FlexRow, Typography } from '@/shared/ui';
 import { Router, useRouterMenuContext } from '@/entities/router';
 import { useSidebarState } from '@/entities/router';
 import { useToggle } from '@/shared/hooks';

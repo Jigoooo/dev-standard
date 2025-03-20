@@ -5,7 +5,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import { zIndex } from '@/shared/constants';
 import { useDraggable } from '@/shared/hooks/common/use-draggable.ts';
-import { Button, FlexRow, Tooltip, Typography } from 'shared/ui';
+import { Button, FlexRow, Tooltip, Typography } from '@/shared/ui';
 import { TMobileModal } from '../model/modal-type.ts';
 
 const modalHeaderHeight = 80;

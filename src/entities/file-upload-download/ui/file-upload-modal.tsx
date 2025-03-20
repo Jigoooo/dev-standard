@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { FileUploadForm, FlexRow, TFile } from 'shared/ui';
+import { FileUploadForm, FlexRow, TFile } from '@/shared/ui';
 
 export function FileUploadModal() {
   const [files, setFiles] = useState<TFile[]>([]);

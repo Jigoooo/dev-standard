@@ -6,8 +6,9 @@ import {
   useScroll,
   useTransform,
 } from 'framer-motion';
+
 import { useKeepAliveScrollHistoryRef } from '@/shared/hooks';
-import { handleTrackMouseDown } from 'shared/ui';
+import { handleTrackMouseDown } from '@/shared/ui';
 
 type CustomHorizontalScrollbarProps = {
   ref: RefObject<HTMLDivElement | null>;

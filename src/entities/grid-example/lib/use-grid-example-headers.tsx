@@ -1,4 +1,4 @@
-import { createHeader, Input, THeader, THeaderGroup } from 'shared/ui';
+import { createHeader, Input, THeader, THeaderGroup } from '@/shared/ui';
 import { RGridExample } from '@/entities/grid-example';
 
 export function useGridExampleHeaders() {

@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 import { IoChevronDownOutline } from 'react-icons/io5';
 
-import { FlexRow, Tooltip } from 'shared/ui';
+import { FlexRow, Tooltip } from '@/shared/ui';
 import { TMenu, useSidebarState } from '@/entities/router';
 import { useElementSize } from '@/shared/hooks';
 

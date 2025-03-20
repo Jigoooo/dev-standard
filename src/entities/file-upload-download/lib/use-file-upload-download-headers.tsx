@@ -1,4 +1,4 @@
-import { Button, ButtonStyle, createHeader, THeader } from 'shared/ui';
+import { Button, ButtonStyle, createHeader, THeader } from '@/shared/ui';
 import { TFileDownload } from '@/entities/file-upload-download';
 
 export function useFileUploadDownloadHeaders(): THeader<TFileDownload>[] {

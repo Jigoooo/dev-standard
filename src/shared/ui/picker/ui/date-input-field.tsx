@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { format, isAfter, isBefore } from 'date-fns';
-import { FlexRow, Input, Typography } from 'shared/ui';
+
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+
+import { FlexRow, Input, Typography } from '@/shared/ui';
 
 export function DateInputField({
   selectedDate,

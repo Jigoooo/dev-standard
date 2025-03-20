@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { TTablePagination } from 'shared/ui';
+import { TTablePagination } from '@/shared/ui';
 
 export function useTablePaging<T>({
   dataList = [],

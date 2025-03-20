@@ -1,4 +1,4 @@
-import { SyncLoading, useLoading } from 'shared/ui';
+import { SyncLoading, useLoading } from '@/shared/ui';
 import { zIndex } from '@/shared/constants';
 
 export function LoadingProvider() {

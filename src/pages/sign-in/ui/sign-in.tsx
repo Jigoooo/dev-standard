@@ -3,8 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import TriphosLogo from '@/shared/assets/images/triphos_logo.png';
 
 import { Router, useRouterMenuContext } from '@/entities/router';
-import { Form, Input, Checkbox, Button, dialogActions, DialogType, Typography } from 'shared/ui';
-import { FlexColumn, FlexRow } from 'shared/ui';
+import {
+  FlexColumn,
+  FlexRow,
+  Form,
+  Input,
+  Checkbox,
+  Button,
+  dialogActions,
+  DialogType,
+  Typography,
+} from '@/shared/ui';
 import { useToggle } from '@/shared/hooks';
 import { createValidator, getFormValues } from '@/shared/lib';
 import { localStorageKey } from '@/shared/constants';
@@ -22,73 +31,12 @@ const signInFields: Record<
 };
 
 export function SignIn() {
-  const navigate = useNavigate();
-
   const saveId = localStorage.getItem(localStorageKey.ID) ?? '';
-
   const [saveIdChecked, toggleSaveIdChecked] = useToggle(!!saveId);
 
-  const signInMutation = useSignInMutation();
-  const { updateMainRouteChildren } = useRouterMenuContext();
-
-  const signIn = (formData: FormData) => {
-    const { id, password } = getFormValues<PSignIn>(formData, signInFields);
-    const idWithValidated = createValidator(id)
-      .required({ message: '아이디를 입력해 주세요.' })
-      .validate();
-    const passwordWithValidated = createValidator(password)
-      .required({ message: '비밀번호를 입력해 주세요.' })
-      .validate();
-
-    if (idWithValidated.error) {
-      return dialogActions.open({
-        dialogType: DialogType.WARNING,
-        contents: idWithValidated.errorMessage,
-      });
-    }
-
-    if (passwordWithValidated.error) {
-      return dialogActions.open({
-        dialogType: DialogType.WARNING,
-        contents: passwordWithValidated.errorMessage,
-      });
-    }
-
-    signInMutation.mutate(
-      { id: idWithValidated.value, password: passwordWithValidated.value },
-      {
-        onSuccess: (data) => {
-          if (!data.success) {
-            dialogActions.open({
-              dialogType: DialogType.WARNING,
-              title: '로그인 실패',
-              contents: data?.msg ?? '아이디 비밀번호를 다시 확인해 주세요.',
-            });
-
-            return;
-          }
-
-          if (data.data) {
-            setToken({
-              accessToken: data.data.accessToken,
-              refreshToken: data.data.refreshToken,
-              expiresIn: data.data.expiresIn,
-            });
-
-            updateMainRouteChildren(data.data.menuList);
-          }
-
-          if (saveIdChecked) {
-            localStorage.setItem(localStorageKey.ID, id);
-          } else {
-            localStorage.removeItem(localStorageKey.ID);
-          }
-
-          navigate(Router.MAIN, { viewTransition: true, replace: true });
-        },
-      },
-    );
-  };
+  const signIn = useSignIn({
+    saveIdChecked,
+  });
 
   return (
     <FlexRow style={{ width: '100vw', height: '100vh', backgroundColor: '#f8f8f8' }}>
@@ -173,4 +121,70 @@ export function SignIn() {
       </FlexRow>
     </FlexRow>
   );
+}
+
+function useSignIn({ saveIdChecked }: { saveIdChecked: boolean }) {
+  const navigate = useNavigate();
+
+  const signInMutation = useSignInMutation();
+  const { updateMainRouteChildren } = useRouterMenuContext();
+
+  return (formData: FormData) => {
+    const { id, password } = getFormValues<PSignIn>(formData, signInFields);
+    const idWithValidated = createValidator(id)
+      .required({ message: '아이디를 입력해 주세요.' })
+      .validate();
+    const passwordWithValidated = createValidator(password)
+      .required({ message: '비밀번호를 입력해 주세요.' })
+      .validate();
+
+    if (idWithValidated.error) {
+      return dialogActions.open({
+        dialogType: DialogType.WARNING,
+        contents: idWithValidated.errorMessage,
+      });
+    }
+
+    if (passwordWithValidated.error) {
+      return dialogActions.open({
+        dialogType: DialogType.WARNING,
+        contents: passwordWithValidated.errorMessage,
+      });
+    }
+
+    signInMutation.mutate(
+      { id: idWithValidated.value, password: passwordWithValidated.value },
+      {
+        onSuccess: (data) => {
+          if (!data.success) {
+            dialogActions.open({
+              dialogType: DialogType.WARNING,
+              title: '로그인 실패',
+              contents: data?.msg ?? '아이디 비밀번호를 다시 확인해 주세요.',
+            });
+
+            return;
+          }
+
+          if (data.data) {
+            setToken({
+              accessToken: data.data.accessToken,
+              refreshToken: data.data.refreshToken,
+              expiresIn: data.data.expiresIn,
+            });
+
+            updateMainRouteChildren(data.data.menuList);
+          }
+
+          if (saveIdChecked) {
+            localStorage.setItem(localStorageKey.ID, id);
+          } else {
+            localStorage.removeItem(localStorageKey.ID);
+          }
+
+          navigate(Router.MAIN, { viewTransition: true, replace: true });
+        },
+      },
+    );
+  };
 }

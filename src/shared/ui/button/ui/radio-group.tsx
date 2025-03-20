@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { RadioGroupContext } from 'shared/ui';
+import { RadioGroupContext } from '@/shared/ui';
 
 export function RadioGroup({
   name,

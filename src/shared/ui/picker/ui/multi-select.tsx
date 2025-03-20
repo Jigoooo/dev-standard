@@ -7,7 +7,7 @@ import { FiSearch } from 'react-icons/fi';
 
 import { colors, zIndex } from '@/shared/constants';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
-import { Checkbox, FlexRow, Input, InputStyle, Typography } from 'shared/ui';
+import { Checkbox, FlexRow, Input, InputStyle, Typography } from '@/shared/ui';
 
 type SelectOption = {
   label: string;

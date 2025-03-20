@@ -1,5 +1,4 @@
 import { RefObject, useEffect, useRef, useState } from 'react';
-
 import {
   motion,
   useMotionValue,
@@ -7,8 +6,9 @@ import {
   useScroll,
   useTransform,
 } from 'framer-motion';
+
 import { useKeepAliveScrollHistoryRef } from '@/shared/hooks';
-import { handleTrackMouseDown } from 'shared/ui';
+import { handleTrackMouseDown } from '@/shared/ui';
 
 type CustomVerticalScrollbarProps = {
   ref: RefObject<HTMLDivElement | null>;

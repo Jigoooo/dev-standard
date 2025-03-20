@@ -7,7 +7,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 
-import { ColumnValueFunction, Typography, UseTableInstanceProps } from 'shared/ui';
+import { ColumnValueFunction, Typography, UseTableInstanceProps } from '@/shared/ui';
 
 export function useTableInstance<TColumnData>({
   data,

@@ -1,7 +1,7 @@
 import { ReactNode, RefObject, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
-import { FlexRow, ModalContext } from 'shared/ui';
+import { FlexRow, ModalContext } from '@/shared/ui';
 import { zIndex } from '@/shared/constants';
 import { TModalRenderProps, TModalItem, TIsPossibleOverlayClose } from '../model/modal-type.ts';
 import { createPortal } from 'react-dom';

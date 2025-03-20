@@ -3,7 +3,7 @@ import { RefObject } from 'react';
 import NorthIcon from '@mui/icons-material/North';
 import SouthIcon from '@mui/icons-material/South';
 
-import { Checkbox, FlexRow, Input, THeader, Typography } from 'shared/ui';
+import { Checkbox, FlexRow, Input, THeader, Typography } from '@/shared/ui';
 import { useTableContext } from '../model/table-context.ts';
 
 // function sortHeadersByGroup<TData>(

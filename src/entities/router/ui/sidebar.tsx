@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 
-import { FlexColumn } from 'shared/ui';
+import { FlexColumn } from '@/shared/ui';
 import { SidebarHeader } from './sidebar-header';
 import { SidebarItems } from './sidebar-items';
 import { SidebarFooter } from './sidebar-footer';

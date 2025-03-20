@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
 import {
   dialogActions,
@@ -21,7 +22,6 @@ import {
 } from '@/entities/router';
 import { useMemberState } from '@/entities/member';
 import { handleAuthError } from '@/entities/auth';
-import { useNavigate } from 'react-router-dom';
 
 export function RoleManagement() {
   const navigate = useNavigate();

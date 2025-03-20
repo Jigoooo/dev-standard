@@ -4,7 +4,7 @@ import { FaCircleCheck } from 'react-icons/fa6';
 import { IoIosWarning } from 'react-icons/io';
 import { MdError } from 'react-icons/md';
 
-import { AlertDialog } from 'shared/ui';
+import { AlertDialog } from '@/shared/ui';
 import { colors } from '@/shared/constants';
 
 export function AlertProvider() {

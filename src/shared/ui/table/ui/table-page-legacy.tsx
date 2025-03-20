@@ -8,7 +8,7 @@ import KeyboardDoubleArrowRightOutlinedIcon from '@mui/icons-material/KeyboardDo
 import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 
 import { colors, zIndex } from '@/shared/constants';
-import { FlexColumn, FlexRow, TTablePagination, Typography } from 'shared/ui';
+import { FlexColumn, FlexRow, TTablePagination, Typography } from '@/shared/ui';
 import { useToggle } from '@/shared/hooks';
 
 const PAGE_SIZE_OPTIONS = [10, 20, 50, 100];

@@ -1,7 +1,7 @@
 import { SyncLoader } from 'react-spinners';
 
 import { loadingStyles } from './loading-styles.ts';
-import { Typography, useLoading } from 'shared/ui';
+import { Typography, useLoading } from '@/shared/ui';
 
 export function SyncLoading() {
   const loadingState = useLoading();

@@ -4,7 +4,7 @@ import { darken, lighten } from 'polished';
 
 import { isLightColor } from '@/shared/lib';
 import { colors } from '@/shared/constants';
-import { Typography } from 'shared/ui';
+import { Typography } from '@/shared/ui';
 import { useWindowsStyle } from '@/shared/hooks';
 import { ButtonStyle, ButtonProps } from '../model/button-type.ts';
 
