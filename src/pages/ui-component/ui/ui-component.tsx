@@ -139,7 +139,7 @@ export function UiComponent() {
               loadingText: 'Loading...',
             });
 
-            await sleep(3000);
+            await sleep(4000);
 
             loadingAction.hideLoading();
           }}
