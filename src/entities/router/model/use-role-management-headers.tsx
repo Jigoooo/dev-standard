@@ -63,6 +63,10 @@ export function useRoleManagementHeaders() {
       label: '',
       width: 60,
       cell: ({ cellData, rowData, handleRowData, setCellData }) => {
+        if (rowData.sub2Cd === 0) {
+          return '';
+        }
+
         const isAllChecked =
           rowData.useYn === 'Y' &&
           rowData.authIns === 'Y' &&
@@ -104,7 +108,7 @@ export function useRoleManagementHeaders() {
       },
     },
     {
-      id: 'menuTitle',
+      id: 'mainTitle',
       pin: 'view',
       dataAlign: 'left',
       label: '메인메뉴',
@@ -118,21 +122,21 @@ export function useRoleManagementHeaders() {
         filterValue: '',
       },
     },
-    // {
-    //   id: 'subTitle',
-    //   pin: 'view',
-    //   dataAlign: 'left',
-    //   label: '서브메뉴',
-    //   width: 150,
-    //   sorter: {
-    //     sortable: true,
-    //     direction: null,
-    //   },
-    //   filter: {
-    //     filterType: 'text',
-    //     filterValue: '',
-    //   },
-    // },
+    {
+      id: 'subTitle',
+      pin: 'view',
+      dataAlign: 'left',
+      label: '서브메뉴',
+      width: 150,
+      sorter: {
+        sortable: true,
+        direction: null,
+      },
+      filter: {
+        filterType: 'text',
+        filterValue: '',
+      },
+    },
     {
       id: 'useYn',
       pin: 'view',
@@ -162,7 +166,11 @@ export function useRoleManagementHeaders() {
       dataAlign: 'center',
       label: '조회',
       width: 80,
-      cell: ({ cellData, setCellData }) => {
+      cell: ({ cellData, rowData, setCellData }) => {
+        if (rowData.sub2Cd === 0) {
+          return '';
+        }
+
         return (
           <Checkbox
             checked={cellData === 'Y'}
@@ -184,7 +192,11 @@ export function useRoleManagementHeaders() {
       dataAlign: 'center',
       label: '생성',
       width: 80,
-      cell: ({ cellData, setCellData }) => {
+      cell: ({ cellData, rowData, setCellData }) => {
+        if (rowData.sub2Cd === 0) {
+          return '';
+        }
+
         return (
           <Checkbox
             checked={cellData === 'Y'}
@@ -206,7 +218,11 @@ export function useRoleManagementHeaders() {
       dataAlign: 'center',
       label: '수정',
       width: 80,
-      cell: ({ cellData, setCellData }) => {
+      cell: ({ cellData, rowData, setCellData }) => {
+        if (rowData.sub2Cd === 0) {
+          return '';
+        }
+
         return (
           <Checkbox
             checked={cellData === 'Y'}
@@ -228,7 +244,11 @@ export function useRoleManagementHeaders() {
       dataAlign: 'center',
       label: '삭제',
       width: 80,
-      cell: ({ cellData, setCellData }) => {
+      cell: ({ cellData, rowData, setCellData }) => {
+        if (rowData.sub2Cd === 0) {
+          return '';
+        }
+
         return (
           <Checkbox
             checked={cellData === 'Y'}
@@ -250,7 +270,11 @@ export function useRoleManagementHeaders() {
       dataAlign: 'center',
       label: '엑셀',
       width: 80,
-      cell: ({ cellData, setCellData }) => {
+      cell: ({ cellData, rowData, setCellData }) => {
+        if (rowData.sub2Cd === 0) {
+          return '';
+        }
+
         return (
           <Checkbox
             checked={cellData === 'Y'}

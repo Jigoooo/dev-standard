@@ -68,6 +68,8 @@ export type PMenuMemberAuth = {
 export type RMenuMemberAuth = {
   menuId: string;
   menuTitle: string;
+  mainTitle: string;
+  subTitle: string;
   mainCd: number;
   sub2Cd: number;
   sub1Cd: number;

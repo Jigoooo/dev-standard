@@ -19,6 +19,7 @@ import {
   useRoleManagementHeaders,
   RMenuMemberAuth,
   RRoleUser,
+  Router,
 } from '@/entities/router';
 import { useMemberState } from '@/entities/member';
 import { handleAuthError } from '@/entities/auth';
@@ -58,33 +59,43 @@ export function RoleManagement() {
 
   useEffect(() => {
     if (getMenuMemberAuthListQuery.data?.data?.menuList) {
+      const isOwnRole = memberState.memberId === memberId;
+
       const menuList = getMenuMemberAuthListQuery.data.data.menuList;
 
-      const dataWithIndex = menuList.map((item, index) => {
-        const isAllChecked =
-          item.useYn === 'Y' &&
-          item.authIns === 'Y' &&
-          item.authDel === 'Y' &&
-          item.authSearch === 'Y' &&
-          item.authMod === 'Y' &&
-          item.excelExport === 'Y';
+      const dataWithIndex = menuList
+        .filter((menuItem) => {
+          if (
+            isOwnRole &&
+            (menuItem.menuId === Router.MANAGER || menuItem.menuId == Router.ROLE_MANAGEMENT)
+          ) {
+            return false;
+          }
 
-        return {
-          ...item,
-          index: index + 1,
-          allChecked: isAllChecked,
-        };
-      });
+          return true;
+        })
+        .map((menuItem, index) => {
+          const isAllChecked =
+            menuItem.useYn === 'Y' &&
+            menuItem.authIns === 'Y' &&
+            menuItem.authDel === 'Y' &&
+            menuItem.authSearch === 'Y' &&
+            menuItem.authMod === 'Y' &&
+            menuItem.excelExport === 'Y';
+
+          return {
+            ...menuItem,
+            index: index + 1,
+            allChecked: isAllChecked,
+          };
+        });
       setMenuAuthList(dataWithIndex);
     }
-  }, [getMenuMemberAuthListQuery.data?.data?.menuList]);
+  }, [memberState.memberId, getMenuMemberAuthListQuery.data?.data?.menuList]);
 
   const updateMenuMemberAuth = useUpdateMenuMemberAuth({
     menuAuthList,
   });
-
-  console.log(memberState);
-  console.log(menuAuthList);
 
   return (
     <FlexColumn
