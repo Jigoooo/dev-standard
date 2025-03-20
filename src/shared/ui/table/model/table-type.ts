@@ -52,7 +52,7 @@ export type THeaderGroup<TData> = {
   headerIds: (keyof TData)[];
 };
 
-export type EditType = 'input' | 'select' | 'none';
+export type EditType = 'input' | 'select' | 'date' | 'datetime' | 'none';
 
 export type TEditCell<TData> = {
   inputRef: RefObject<HTMLInputElement | null>;
