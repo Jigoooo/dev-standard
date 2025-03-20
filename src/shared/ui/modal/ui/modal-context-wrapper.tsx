@@ -1,11 +1,11 @@
-import { ReactNode, RefObject, useEffect, useRef, useState } from 'react';
+import { ReactNode, RefObject, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { FlexRow, ModalContext } from '@/shared/ui';
 import { zIndex } from '@/shared/constants';
 import { TModalRenderProps, TModalItem, TIsPossibleOverlayClose } from '../model/modal-type.ts';
 import { FloatingOverlay, FloatingPortal } from '@floating-ui/react';
-import { useModalClose } from '@/shared/hooks';
+import { useModalController } from '@/shared/hooks';
 
 export function ModalContextWrapper({ children }: { children: ReactNode }) {
   const overlayRefs = useRef<Record<string, RefObject<HTMLDivElement | null>>>({});
@@ -34,38 +34,19 @@ export function ModalContextWrapper({ children }: { children: ReactNode }) {
 
   const modalIds = modalList.map((modal) => ({ id: modal.id }));
 
-  useModalClose(modalList.length > 0, () => {
-    if (modalList.length > 0) {
-      const findLastOrderModal = modalList.find((modal) => modal.order === modalList.length - 1);
+  useModalController({
+    modalRef,
+    isOpen: modalList.length > 0,
+    onClose: () => {
+      if (modalList.length > 0) {
+        const findLastOrderModal = modalList.find((modal) => modal.order === modalList.length - 1);
 
-      if (findLastOrderModal) {
-        close(findLastOrderModal.id);
+        if (findLastOrderModal) {
+          close(findLastOrderModal.id);
+        }
       }
-    }
+    },
   });
-
-  useEffect(() => {
-    if (modalList.length > 0) {
-      setTimeout(() => {
-        modalRef.current?.focus();
-      }, 50);
-
-      const handleKeyDown = (event: KeyboardEvent) => {
-        if (event.key === 'Escape') {
-          event.preventDefault();
-        }
-        if (event.key === 'Tab') {
-          event.preventDefault();
-          modalRef.current?.focus();
-        }
-      };
-
-      document.addEventListener('keydown', handleKeyDown);
-      return () => {
-        document.removeEventListener('keydown', handleKeyDown);
-      };
-    }
-  }, [modalList.length]);
 
   return (
     <ModalContext value={{ modalIds, open, close, handleIsPossibleOverlayClose }}>

@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useRef } from 'react';
+import { ReactNode, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import {
@@ -15,7 +15,7 @@ import {
 import { colors, zIndex } from '@/shared/constants';
 import { DialogInfoStates } from '../model/dialog-type.ts';
 import { FloatingOverlay, FloatingPortal } from '@floating-ui/react';
-import { useModalClose } from '@/shared/hooks';
+import { useModalController } from '@/shared/hooks';
 
 /* todo 모바일버전 만들어야 함 */
 
@@ -31,30 +31,11 @@ export function AlertDialog() {
   const dialogInfos = useDialogInfos();
   const modalRef = useRef<HTMLDivElement | null>(null);
 
-  useModalClose(dialogOpen, dialogActions.close);
-
-  useEffect(() => {
-    if (dialogOpen) {
-      setTimeout(() => {
-        modalRef.current?.focus();
-      }, 50);
-
-      const handleKeyDown = (event: KeyboardEvent) => {
-        if (event.key === 'Escape') {
-          event.preventDefault();
-        }
-        if (event.key === 'Tab') {
-          event.preventDefault();
-          modalRef.current?.focus();
-        }
-      };
-
-      document.addEventListener('keydown', handleKeyDown);
-      return () => {
-        document.removeEventListener('keydown', handleKeyDown);
-      };
-    }
-  }, [dialogOpen]);
+  useModalController({
+    modalRef,
+    isOpen: dialogOpen,
+    onClose: dialogActions.close,
+  });
 
   return (
     <FloatingPortal>
