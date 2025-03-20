@@ -28,8 +28,8 @@ export function useInitLocation() {
   }, [lastLocation, sidebarMainMenus]);
 
   useBeforeUnload(() => {
-    if (location.pathname !== Router.MAIN) {
-      setLastLocation(location.pathname);
+    if (window.location.pathname !== Router.MAIN) {
+      setLastLocation(window.location.pathname);
     }
   });
 }

@@ -2,8 +2,10 @@ import { useEffect } from 'react';
 import ReactGA from 'react-ga4';
 import { gaPageView } from '@/shared/lib';
 import { useRouterMenuContext } from '@/entities/router';
+import { useLocation } from 'react-router-dom';
 
 export function useInitGa() {
+  const location = useLocation();
   const { findCurrentMenu } = useRouterMenuContext();
   const currentMenu = findCurrentMenu(location.pathname);
 

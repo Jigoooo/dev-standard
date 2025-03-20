@@ -280,15 +280,15 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
     }
 
     getMemberMenuListApi().then((data) => {
-      if (location.pathname === Router.SIGN_IN) {
+      if (window.location.pathname === Router.SIGN_IN) {
         return;
       }
 
       if (!data.success) {
         handleAuthError({
           data,
-          onUnauthenticated: () => location.replace('/'),
-          onRefreshSuccess: () => location.reload(),
+          onUnauthenticated: () => window.location.replace('/'),
+          onRefreshSuccess: () => window.location.reload(),
         });
 
         return;
@@ -300,7 +300,7 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
     });
   }, [sidebarMainMenus]);
 
-  if (sidebarMainMenus.length === 0 && location.pathname !== Router.SIGN_IN) {
+  if (sidebarMainMenus.length === 0 && window.location.pathname !== Router.SIGN_IN) {
     return null;
   }
 
