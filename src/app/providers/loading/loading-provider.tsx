@@ -1,6 +1,7 @@
+import { FloatingOverlay, FloatingPortal } from '@floating-ui/react';
+
 import { SyncLoading, useLoading } from '@/shared/ui';
 import { zIndex } from '@/shared/constants';
-import { FloatingOverlay, FloatingPortal } from '@floating-ui/react';
 
 export function LoadingProvider() {
   const loadingState = useLoading();
