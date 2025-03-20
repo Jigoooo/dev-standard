@@ -1,86 +1,90 @@
-import { CSSProperties, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import {
+  flip,
+  FloatingOverlay,
+  FloatingPortal,
+  offset,
+  Placement,
+  size,
+  Strategy,
+  useClick,
+  useFloating,
+  useInteractions,
+} from '@floating-ui/react';
+
 import { zIndex } from '@/shared/constants';
-
-type AnchorPosition =
-  | 'top'
-  | 'topLeft'
-  | 'topRight'
-  | 'bottom'
-  | 'bottomLeft'
-  | 'bottomRight'
-  | 'left'
-  | 'right';
-
-const anchorPositionStyles: Record<AnchorPosition, CSSProperties> = {
-  top: { bottom: '100%', left: '50%', transform: 'translateX(-50%)' },
-  topLeft: { bottom: '100%', right: '100%' },
-  topRight: { bottom: '100%', left: '100%' },
-  bottom: { top: '100%', left: '50%', transform: 'translateX(-50%)' },
-  bottomLeft: { top: '100%', left: 0 },
-  bottomRight: { top: '100%', right: 0 },
-  left: { right: '100%', top: 0, transform: 'translateY(-50%)' },
-  right: { left: '100%', top: 0, transform: 'translateY(-50%)' },
-};
-
 export function AnchorPicker({
-  open,
-  onClose,
-  position,
-  style,
+  strategy = 'absolute',
+  placement = 'bottom',
+  isOpen,
+  setIsOpen,
   contents,
   children,
 }: {
-  open: boolean;
-  onClose: () => void;
-  position: AnchorPosition;
-  style?: CSSProperties;
+  strategy?: Strategy;
+  placement?: Placement;
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
   contents: ReactNode;
   children: ReactNode;
 }) {
+  const { refs, floatingStyles, context } = useFloating({
+    open: isOpen,
+    onOpenChange: setIsOpen,
+    strategy,
+    placement,
+    transform: false,
+    middleware: [
+      offset({
+        mainAxis: 4,
+      }),
+      flip({ padding: 10 }),
+      size({
+        apply({ rects, elements, availableHeight }) {
+          Object.assign(elements.floating.style, {
+            minWidth: `${rects.reference.width}px`,
+            maxHeight: `${availableHeight}px`,
+            // maxWidth: `${rects.reference.width}px`,
+          });
+        },
+        padding: 10,
+      }),
+    ],
+  });
+  const click = useClick(context);
+  const { getReferenceProps, getFloatingProps } = useInteractions([click]);
+
   return (
-    <div style={{ ...{ position: 'relative' }, ...style }}>
-      {children}
+    <>
+      <div ref={refs.setReference} {...getReferenceProps()}>
+        {children}
+      </div>
       <AnimatePresence>
-        {open && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.14, ease: 'easeInOut' }}
-              style={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                zIndex: zIndex.anchorOverlay,
-              }}
-              onClick={(event) => {
-                event.stopPropagation();
-                onClose();
-              }}
+        {isOpen && (
+          <FloatingPortal>
+            <FloatingOverlay
+              lockScroll
+              style={{ zIndex: zIndex.anchorOverlay }}
+              onClick={() => setIsOpen(false)}
             />
             <motion.div
+              ref={refs.setFloating}
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
               transition={{ duration: 0.14, ease: 'easeInOut' }}
               style={{
-                ...{
-                  position: 'absolute',
-                  zIndex: zIndex.anchor,
-                },
-                ...anchorPositionStyles[position],
+                ...{ zIndex: zIndex.anchor },
+                ...floatingStyles,
               }}
+              {...getFloatingProps()}
             >
               {contents}
             </motion.div>
-          </>
+          </FloatingPortal>
         )}
       </AnimatePresence>
-    </div>
+    </>
   );
 }
