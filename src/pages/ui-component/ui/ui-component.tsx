@@ -61,7 +61,9 @@ export function UiComponent() {
     });
   };
 
-  const modal = useModal();
+  const modal = useModal({
+    isPossibleOverlayClose: true,
+  });
   const openModal = () => {
     modal.open(({ overlayRef, close }) => {
       return (

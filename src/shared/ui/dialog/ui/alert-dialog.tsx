@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useRef } from 'react';
+import { ReactNode, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import {
@@ -32,50 +32,34 @@ export function AlertDialog() {
 
   // useModalClose(dialogOpen, dialogActions.close);
 
-  useEffect(() => {
-    if (dialogOpen) {
-      setTimeout(() => {
-        modalRef.current?.focus();
-      }, 50);
-
-      const handleKeyDown = (event: KeyboardEvent) => {
-        if (event.key === 'Escape') {
-          event.preventDefault();
-        }
-        if (event.key === 'Tab') {
-          event.preventDefault();
-          modalRef.current?.focus();
-        }
-      };
-
-      document.addEventListener('keydown', handleKeyDown);
-      return () => {
-        document.removeEventListener('keydown', handleKeyDown);
-      };
-    }
-  }, [dialogOpen]);
+  // useEffect(() => {
+  //   if (dialogOpen) {
+  //     setTimeout(() => {
+  //       modalRef.current?.focus();
+  //     }, 50);
+  //
+  //     const handleKeyDown = (event: KeyboardEvent) => {
+  //       if (event.key === 'Escape') {
+  //         event.preventDefault();
+  //       }
+  //       if (event.key === 'Tab') {
+  //         event.preventDefault();
+  //         modalRef.current?.focus();
+  //       }
+  //     };
+  //
+  //     document.addEventListener('keydown', handleKeyDown);
+  //     return () => {
+  //       document.removeEventListener('keydown', handleKeyDown);
+  //     };
+  //   }
+  // }, [dialogOpen]);
 
   return (
     <FloatingPortal>
       <AnimatePresence initial={false}>
         {dialogOpen && (
           <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.1 }}
-            >
-              <FloatingOverlay
-                lockScroll
-                style={{ zIndex: zIndex.dialogOverlay, backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
-                onClick={() => {
-                  dialogActions.close();
-                  window.history.back();
-                }}
-              />
-            </motion.div>
-
             <FlexColumn
               as={motion.div}
               initial={{ opacity: 0.6, scale: 0.94, x: '-50%', y: '-40%' }}
@@ -104,6 +88,22 @@ export function AlertDialog() {
               <AlertDialogContents contents={dialogInfos.contents} />
               <AlertDialogActions dialogInfos={dialogInfos} />
             </FlexColumn>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.1 }}
+            >
+              <FloatingOverlay
+                lockScroll
+                style={{ zIndex: zIndex.dialogOverlay, backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
+                onClick={() => {
+                  dialogActions.close();
+                  // window.history.back();
+                }}
+              />
+            </motion.div>
           </>
         )}
       </AnimatePresence>
@@ -176,7 +176,7 @@ function AlertDialogActions({ dialogInfos }: { dialogInfos: DialogInfoStates }) 
             borderColor: '#bbbbbb',
           }}
           onClick={() => {
-            window.history.back();
+            // window.history.back();
             dialogInfos?.onCancel?.();
           }}
         >
@@ -193,7 +193,7 @@ function AlertDialogActions({ dialogInfos }: { dialogInfos: DialogInfoStates }) 
           backgroundColor: dialogColor,
         }}
         onClick={() => {
-          window.history.back();
+          // window.history.back();
           setTimeout(() => dialogInfos?.onConfirm?.(), 10);
         }}
       >
