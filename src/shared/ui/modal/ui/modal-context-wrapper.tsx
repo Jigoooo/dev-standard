@@ -63,7 +63,7 @@ export function ModalContextWrapper({ children }: { children: ReactNode }) {
             }
 
             return (
-              <div key={modal.id}>
+              <div key={modal.id} style={{ userSelect: 'none' }}>
                 <FlexRow
                   as={motion.div}
                   initial={{ opacity: 0, y: '5%' }}
@@ -78,6 +78,7 @@ export function ModalContextWrapper({ children }: { children: ReactNode }) {
                     position: 'fixed',
                     top: '35%',
                     left: '35%',
+                    transform: 'translate(-50%, -50%)',
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',

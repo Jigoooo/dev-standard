@@ -62,6 +62,7 @@ export function AlertDialog() {
                 borderRadius: 8,
                 justifyContent: 'space-between',
                 outline: 'none',
+                userSelect: 'none',
               }}
             >
               <AlertDialogHeader title={dialogInfos.title} />
