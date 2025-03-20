@@ -17,8 +17,6 @@ import { DialogInfoStates } from '../model/dialog-type.ts';
 import { FloatingOverlay, FloatingPortal } from '@floating-ui/react';
 import { useModalController } from '@/shared/hooks';
 
-/* todo 모바일버전 만들어야 함 */
-
 const dialogColors: Record<DialogType, string> = {
   [DialogType.INFO]: colors.primary[400],
   [DialogType.SUCCESS]: colors.success[400],

@@ -7,6 +7,8 @@ import { TModalRenderProps, TModalItem, TIsPossibleOverlayClose } from '../model
 import { FloatingOverlay, FloatingPortal } from '@floating-ui/react';
 import { useModalController } from '@/shared/hooks';
 
+/* todo 모바일버전 만들어야 함 */
+
 export function ModalContextWrapper({ children }: { children: ReactNode }) {
   const overlayRefs = useRef<Record<string, RefObject<HTMLDivElement | null>>>({});
   const modalRef = useRef<HTMLDivElement | null>(null);
