@@ -12,6 +12,7 @@ import {
   subDays,
   addDays,
   isValid,
+  parse,
 } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import {
@@ -76,16 +77,18 @@ function useDatePicker({
   dateFormat: string;
 }) {
   const [selectedDate, setSelectedDate] = useState<Date | null>(
-    dateString && isValid(new Date(dateString)) ? new Date(dateString) : null,
+    dateString && isValid(parse(dateString, dateFormat, new Date()))
+      ? parse(dateString, dateFormat, new Date())
+      : null,
   );
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [currentDate, setCurrentDate] = useState(new Date());
 
   useEffect(() => {
-    if (dateString && isValid(new Date(dateString))) {
-      setSelectedDate(new Date(dateString));
+    if (dateString && isValid(parse(dateString, dateFormat, new Date()))) {
+      setSelectedDate(parse(dateString, dateFormat, new Date()));
     }
-  }, [dateString]);
+  }, [dateString, dateFormat]);
 
   useEffect(() => {
     if (!showDatePicker) {

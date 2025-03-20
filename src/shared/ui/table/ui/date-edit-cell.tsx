@@ -7,6 +7,7 @@ export function DateEditCell<TData>({
   setEditType,
   exitEditMode,
 }: TEditCell<TData>) {
+  console.log(cellData);
   return (
     <DatePicker
       width={'100%'}

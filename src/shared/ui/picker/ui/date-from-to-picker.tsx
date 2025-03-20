@@ -87,31 +87,31 @@ function useDateFromToPicker({
 }) {
   const [selectedFromToDate, setSelectedFromToDate] = useState<FromToDates>({
     from:
-      fromToDateString && isValid(new Date(fromToDateString.from))
-        ? new Date(fromToDateString.from)
+      fromToDateString && isValid(parse(fromToDateString.from, dateFormat, new Date()))
+        ? parse(fromToDateString.from, dateFormat, new Date())
         : null,
     to:
-      fromToDateString && isValid(new Date(fromToDateString.to))
-        ? new Date(fromToDateString.to)
+      fromToDateString && isValid(parse(fromToDateString.to, dateFormat, new Date()))
+        ? parse(fromToDateString.to, dateFormat, new Date())
         : null,
   });
 
   const [showFromToDatePicker, setShowFromToDatePicker] = useState(false);
   const [currentFromToDate, setCurrentFromToDate] = useState<FromToCurrentDates>({
     from:
-      fromToDateString && isValid(new Date(fromToDateString.from))
-        ? new Date(fromToDateString.from)
+      fromToDateString && isValid(parse(fromToDateString.from, dateFormat, new Date()))
+        ? parse(fromToDateString.from, dateFormat, new Date())
         : new Date(),
     to:
-      fromToDateString && isValid(new Date(fromToDateString.to))
-        ? new Date(fromToDateString.to)
+      fromToDateString && isValid(parse(fromToDateString.to, dateFormat, new Date()))
+        ? parse(fromToDateString.to, dateFormat, new Date())
         : addMonths(new Date(), 1),
   });
 
   useEffect(() => {
     if (fromToDateString) {
-      const fromDate = new Date(fromToDateString.from);
-      const toDate = new Date(fromToDateString.to);
+      const fromDate = parse(fromToDateString.from, dateFormat, new Date());
+      const toDate = parse(fromToDateString.to, dateFormat, new Date());
 
       if (isValid(fromDate) && isValid(toDate)) {
         setSelectedFromToDate({
@@ -120,7 +120,7 @@ function useDateFromToPicker({
         });
       }
     }
-  }, [fromToDateString]);
+  }, [fromToDateString, dateFormat]);
 
   const handleDateClick = (date: Date) => {
     if (!selectedFromToDate.from || (selectedFromToDate.from && selectedFromToDate.to)) {
