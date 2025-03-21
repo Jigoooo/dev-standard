@@ -16,8 +16,9 @@ import {
   THeader,
   TValidationRuleWithHeaderId,
   useModal,
+  readExcelFile,
 } from '@/shared/ui';
-import { isExtensionAllowed, readExcelFile } from '@/shared/lib';
+import { isExtensionAllowed } from '@/shared/lib';
 import { ExcelEditModal } from './excel-edit-modal.tsx';
 import { RData } from '../model/excel-type.ts';
 

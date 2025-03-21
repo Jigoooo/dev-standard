@@ -64,10 +64,10 @@ const getAnimationBackgroundColor = (
       return {
         hoverBackgroundColor: isLightColor(animationColor)
           ? lighten(0.24, animationColor)
-          : lighten(0.42, animationColor),
+          : lighten(0.54, animationColor),
         tapBackgroundColor: isLightColor(animationColor)
           ? lighten(0.28, animationColor)
-          : lighten(0.4, animationColor),
+          : lighten(0.5, animationColor),
       };
     }
     default: {

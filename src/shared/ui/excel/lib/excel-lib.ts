@@ -1,9 +1,8 @@
 import XLSX, { BookType, Sheet2JSONOpts } from 'xlsx-js-style';
 import { saveAs } from 'file-saver';
+import { toast } from 'sonner';
+import { WriteExcelFileParams } from '../model/excel-type';
 
-import { detectDeviceTypeAndOS } from '@/shared/lib/common';
-import { convertBlobToBase64 } from '@/shared/lib/file';
-import { sendPostMessage } from 'shared/lib/web-view';
 export function createWorkSheet({
   header,
   body,
@@ -17,21 +16,6 @@ export function createWorkSheet({
   workSheet['!cols'] = fitToColumn(body[maxColumnBodyIndex]);
 
   return workSheet;
-}
-
-export function createWorkBook(workSheets: { sheetName: string; sheet: XLSX.WorkSheet }[]) {
-  const sheets: { [key: string]: XLSX.WorkSheet } = {};
-  const sheetNames: string[] = [];
-
-  for (const sheet of workSheets) {
-    sheets[sheet.sheetName] = sheet.sheet;
-    sheetNames.push(sheet.sheetName);
-  }
-
-  return {
-    Sheets: sheets,
-    SheetNames: sheetNames,
-  };
 }
 
 export function downloadExcel({
@@ -49,15 +33,17 @@ export function downloadExcel({
   const excelFile = new Blob([excelBuffer], { type: excelFileType });
   const fileName = `${excelFileName}.${excelFileExtension}`;
 
-  const { isMobile } = detectDeviceTypeAndOS();
+  saveAs(excelFile, fileName);
 
-  if (isMobile) {
-    convertBlobToBase64(excelFile).then((base64String: string) => {
-      sendPostMessage({ type: 'fileDownload', payload: { base64String, fileName: excelFileName } });
-    });
-  } else {
-    saveAs(excelFile, fileName);
-  }
+  // const { isMobile } = detectDeviceTypeAndOS();
+  //
+  // if (isMobile) {
+  //   convertBlobToBase64(excelFile).then((base64String: string) => {
+  //     sendPostMessage({ type: 'fileDownload', payload: { base64String, fileName: excelFileName } });
+  //   });
+  // } else {
+  //   saveAs(excelFile, fileName);
+  // }
 }
 
 export function fitToColumn(targetRow: any[]) {
@@ -103,4 +89,55 @@ export async function readExcelFile({
     sheet,
     rows,
   };
+}
+
+function createWorksheetFromJson<T>(
+  rows: T[],
+  jsonToSheetOptions?: XLSX.JSON2SheetOpts,
+): XLSX.WorkSheet {
+  return XLSX.utils.json_to_sheet(rows, jsonToSheetOptions);
+}
+
+function createWorksheetFromArray<T>(
+  rows: T[],
+  aoaToSheetOptions?: XLSX.AOA2SheetOpts,
+): XLSX.WorkSheet {
+  if (!Array.isArray(rows) || !Array.isArray(rows[0])) {
+    throw new Error('For array type, rows must be an array of arrays.');
+  }
+  return XLSX.utils.aoa_to_sheet(rows as any[][], aoaToSheetOptions);
+}
+
+export async function writeExcelFile<T>({
+  excelFileName,
+  excelFileExtension = 'xlsx',
+  writingOptions = {},
+  sheetName,
+  rows,
+  rowDataType = 'json',
+  jsonToSheetOptions,
+  aoaToSheetOptions,
+}: WriteExcelFileParams<T>) {
+  let worksheet: XLSX.WorkSheet;
+
+  if (rowDataType === 'json' && !Array.isArray(rows[0])) {
+    worksheet = createWorksheetFromJson(rows, jsonToSheetOptions);
+  } else if (rowDataType === 'array') {
+    worksheet = createWorksheetFromArray(rows, aoaToSheetOptions);
+  } else {
+    toast.error('지원하는 데이터 형식이 아닙니다.');
+    throw new Error('Unsupported rowDataType');
+  }
+
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
+
+  console.log('worksheet: ', worksheet);
+  console.log('workbook: ', workbook);
+
+  XLSX.writeFile(workbook, `${excelFileName}.${excelFileExtension}`, {
+    compression: true,
+    bookType: excelFileExtension,
+    ...writingOptions,
+  });
 }
