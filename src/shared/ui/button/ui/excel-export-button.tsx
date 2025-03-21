@@ -3,11 +3,14 @@ import { MdOutlineFileDownload } from 'react-icons/md';
 import { Button, ButtonStyle, FlexRow, Typography } from '@/shared/ui';
 import { ButtonProps } from '../model/button-type.ts';
 
-export function ExcelExportButton({ ...props }: Omit<ButtonProps, 'children'>) {
+export function ExcelExportButton({ style, ...props }: Omit<ButtonProps, 'children'>) {
   return (
     <Button
       buttonStyle={ButtonStyle.OUTLINED}
-      style={{ color: '#666666', borderColor: '#333333' }}
+      style={{
+        ...{ color: '#666666', borderColor: '#333333' },
+        ...style,
+      }}
       {...props}
     >
       <FlexRow style={{ alignItems: 'center', gap: 4 }}>

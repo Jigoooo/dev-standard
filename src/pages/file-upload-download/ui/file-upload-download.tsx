@@ -16,9 +16,8 @@ import {
   FileUploadModal,
   TFileListItem,
   useFileUploadDownloadHeaders,
+  useGetFileList,
 } from '@/entities/file-upload-download';
-import { useGetFileList } from '@/entities/file-upload-download/api';
-import { downloadFileApi } from '@/entities/file-upload-download/api/file-api.ts';
 
 export function FileUploadDownload() {
   const fileDownloadHeaders = useFileUploadDownloadHeaders();
@@ -29,9 +28,9 @@ export function FileUploadDownload() {
   });
 
   useEffect(() => {
-    downloadFileApi({
-      fileIdx: 14,
-    });
+    // downloadFileApi({
+    //   fileIdx: 14,
+    // });
   }, []);
 
   const getFileListQuery = useGetFileList();

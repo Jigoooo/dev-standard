@@ -1,5 +1,5 @@
-import { Button, ButtonStyle, createHeader, THeader } from '@/shared/ui';
-import { TFileListItem } from '@/entities/file-upload-download';
+import { createHeader, FileDownloadButton, THeader } from '@/shared/ui';
+import { downloadFileApi, TFileListItem } from '@/entities/file-upload-download';
 import { thousandSeparator } from '@/shared/lib';
 import { format } from 'date-fns';
 
@@ -20,16 +20,19 @@ export function useFileUploadDownloadHeaders(): THeader<TFileListItem>[] {
       },
     }),
     createHeader('insMember', '등록자', 150),
-    createHeader('button', '', 80, {
+    createHeader('button', '', 100, {
       dataAlign: 'center',
-      cell: () => {
+      cell: ({ rowData }) => {
         return (
-          <Button
-            buttonStyle={ButtonStyle.OUTLINED}
-            style={{ width: '100%', height: 30, fontSize: '0.76rem' }}
-          >
-            상세
-          </Button>
+          <FileDownloadButton
+            style={{ height: 30 }}
+            onClick={() => {
+              //todo 에러, 토큰 처리 추가
+              downloadFileApi({
+                fileIdx: rowData.fileIdx,
+              });
+            }}
+          />
         );
       },
       filter: undefined,
