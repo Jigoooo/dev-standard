@@ -1,12 +1,12 @@
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useState } from 'react';
 
 import { useLogout } from '@/entities/auth';
 import { AnchorPicker, Button, Divider, FlexColumn, FlexRow, Typography } from '@/shared/ui';
 import { Router, useRouterMenuContext } from '@/entities/router';
 import { useSidebarState } from '@/entities/router';
-import { useToggle } from '@/shared/hooks';
 import { useMemberState } from '@/entities/member';
 
 export function SidebarFooter() {
@@ -21,7 +21,7 @@ export function SidebarFooter() {
     navigate(Router.MY_PROFILE);
   };
 
-  const [openFooterMenu, toggleFooterMenu] = useToggle();
+  const [openFooterMenu, setOpenFooterMenu] = useState(false);
 
   if (myProfileMenu === undefined) {
     return null;
@@ -57,7 +57,7 @@ export function SidebarFooter() {
           justifyContent: 'space-between',
           cursor: 'pointer',
         }}
-        onClick={sidebarState.sidebarCollapsed ? toggleFooterMenu : undefined}
+        onClick={sidebarState.sidebarCollapsed ? () => setOpenFooterMenu(true) : undefined}
       >
         <FlexRow
           style={{
@@ -72,9 +72,9 @@ export function SidebarFooter() {
           onClick={!sidebarState.sidebarCollapsed ? goMyProfile : undefined}
         >
           <AnchorPicker
-            open={openFooterMenu}
-            onClose={toggleFooterMenu}
-            position={'topRight'}
+            isOpen={openFooterMenu}
+            setIsOpen={setOpenFooterMenu}
+            placement={'top-end'}
             contents={
               <FlexColumn
                 style={{
@@ -85,7 +85,7 @@ export function SidebarFooter() {
                 }}
                 onClick={(event) => {
                   event.stopPropagation();
-                  toggleFooterMenu();
+                  setOpenFooterMenu(false);
                 }}
               >
                 <motion.span
