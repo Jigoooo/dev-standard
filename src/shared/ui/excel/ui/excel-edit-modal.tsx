@@ -88,16 +88,28 @@ export function ExcelEditModal<TData extends TDataWithIndex>({
   };
 
   const exportExcelFile = () => {
-    const aoaTestRows = [
-      ['주문번호', '상품코드', '상품명', '수량', '단가', '가격', '주문일자', '주문자', '상태'],
-      ['test', 1],
-      ['test2', 2],
-    ];
+    function isValidKey<TData>(key: string): key is Extract<keyof TData, string> {
+      return !['index', 'check', 'button'].includes(key);
+    }
+
+    const filteredHeaders = headers.filter(
+      (header): header is THeader<TData> & { id: Extract<keyof TData, string> } => {
+        return isValidKey<TData>(header.id);
+      },
+    );
+
+    const excelHeaders = filteredHeaders.map((header) => header.label);
+    const excelData = rows.map((row) =>
+      filteredHeaders.map((header) => {
+        const cellValue = row[header.id as keyof TData];
+        return cellValue !== undefined && cellValue !== null ? cellValue.toString() : '';
+      }),
+    );
 
     writeExcelFile({
-      excelFileName: 'test file',
-      sheetName: 'test sheet1',
-      rows: aoaTestRows,
+      excelFileName: name,
+      sheetName: name,
+      rows: [excelHeaders, ...excelData],
       rowDataType: 'array',
     });
   };
