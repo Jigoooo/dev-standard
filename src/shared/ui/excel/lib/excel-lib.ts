@@ -142,9 +142,9 @@ export function applyStylesToWorksheet(
 }
 
 const defaultHeaderStyle: XLSX.CellStyle = {
-  font: { name: 'Calibri', sz: 12, bold: true, color: { rgb: 'FFFFFF' } },
-  fill: { patternType: 'solid', fgColor: { rgb: '666666' } },
-  alignment: { horizontal: 'center', vertical: 'center', wrapText: true },
+  font: { name: '맑은 고딕 (본문)', sz: 11, bold: false, color: { rgb: '000000' } },
+  fill: { patternType: 'solid', fgColor: { rgb: 'FFFF54' } },
+  alignment: { horizontal: 'left', vertical: 'center', wrapText: true },
   border: {
     top: { style: 'thin', color: { rgb: '000000' } },
     bottom: { style: 'thin', color: { rgb: '000000' } },
@@ -154,7 +154,7 @@ const defaultHeaderStyle: XLSX.CellStyle = {
 };
 
 const defaultBodyStyle: XLSX.CellStyle = {
-  font: { name: 'Calibri', sz: 11, bold: false, color: { rgb: '000000' } },
+  font: { name: '맑은 고딕 (본문)', sz: 11, bold: false, color: { rgb: '000000' } },
   alignment: { horizontal: 'left', vertical: 'center', wrapText: true },
   border: {
     top: { style: 'thin', color: { rgb: 'CCCCCC' } },

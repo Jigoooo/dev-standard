@@ -36,8 +36,12 @@ export function ExcelUploadDownload() {
     index: index + 1,
   }));
 
-  const { excelUploadValidationRules, excelUploadDataHeaders, excelUploadListHeaders } =
-    useExcelUploadDownloadHeaders();
+  const {
+    excelHeaderKeyLabels,
+    excelUploadValidationRules,
+    excelUploadDataHeaders,
+    excelUploadListHeaders,
+  } = useExcelUploadDownloadHeaders();
   const { dataList, setDataList, handelDataList, deleteDataList } =
     useTableData<TExcelInfo>(excelInfoListWithIndex);
   useEffect(() => {
@@ -101,6 +105,12 @@ export function ExcelUploadDownload() {
     });
   };
 
+  const downloadExcelTemplate = () => {
+    const excelTemplateHeaders = Array.from(excelHeaderKeyLabels.values());
+
+    console.log(excelTemplateHeaders);
+  };
+
   const excelUploadModal = useModal();
   const excelUploadModalOpen = () => {
     excelUploadModal.open(({ overlayRef, close }) => {
@@ -116,7 +126,7 @@ export function ExcelUploadDownload() {
             validationRules={excelUploadValidationRules}
             close={close}
             registerExcel={registerExcel}
-            excelFormFileLink={'/excel-form/엑셀테스트.xlsx'}
+            downloadExcelTemplate={downloadExcelTemplate}
           />
         </ModalLayout>
       );

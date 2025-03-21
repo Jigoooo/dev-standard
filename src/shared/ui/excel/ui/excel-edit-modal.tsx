@@ -89,7 +89,7 @@ export function ExcelEditModal<TData extends TDataWithIndex>({
 
   const exportExcelFile = () => {
     const aoaTestRows = [
-      ['name', 'age'],
+      ['주문번호', '상품코드', '상품명', '수량', '단가', '가격', '주문일자', '주문자', '상태'],
       ['test', 1],
       ['test2', 2],
     ];

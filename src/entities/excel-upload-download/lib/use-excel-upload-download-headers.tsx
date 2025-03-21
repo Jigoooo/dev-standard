@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 
 import {
   createHeader,
+  createHeaderFromId,
   InputNumberEditCell,
   dialogActions,
   DialogType,
@@ -24,6 +25,18 @@ import { createValidator, formatDateString, thousandSeparator } from '@/shared/l
 import { DateEditCell } from '@/shared/ui/table/ui/date-edit-cell.tsx';
 
 export function useExcelUploadDownloadHeaders() {
+  const excelHeaderKeyLabels = new Map<keyof RExcelData, string>([
+    ['orderNo', '주문번호'],
+    ['productCode', '상품코드'],
+    ['productName', '상품명'],
+    ['quantity', '수량'],
+    ['price', '단가'],
+    ['totalAmount', '가격'],
+    ['orderDate', '주문일자'],
+    ['customerName', '주문자'],
+    ['status', '상태'],
+  ]);
+
   const excelUploadValidationRules: TValidationRuleWithHeaderId<TExcelData>[] = [
     {
       id: 'quantity',
@@ -73,10 +86,10 @@ export function useExcelUploadDownloadHeaders() {
 
   const excelUploadDataHeaders: THeader<TExcelData>[] = [
     createHeader('index', '', 60, { pin: 'left', dataAlign: 'right', filter: undefined }),
-    createHeader('orderNo', '주문번호', 150),
-    createHeader('productCode', '상품코드', 150),
-    createHeader('productName', '상품명', 150),
-    createHeader('quantity', '수량', 80, {
+    createHeaderFromId(excelHeaderKeyLabels, 'orderNo', 150),
+    createHeaderFromId(excelHeaderKeyLabels, 'productCode', 150),
+    createHeaderFromId(excelHeaderKeyLabels, 'productName', 150),
+    createHeaderFromId(excelHeaderKeyLabels, 'quantity', 80, {
       dataAlign: 'right',
       editCell: (editCellOptions) => {
         return <InputNumberEditCell {...editCellOptions} />;
@@ -85,7 +98,7 @@ export function useExcelUploadDownloadHeaders() {
         return thousandSeparator(cellData);
       },
     }),
-    createHeader('price', '단가', 100, {
+    createHeaderFromId(excelHeaderKeyLabels, 'price', 100, {
       dataAlign: 'right',
       editCell: (editCellOptions) => {
         return <InputNumberEditCell {...editCellOptions} />;
@@ -94,7 +107,7 @@ export function useExcelUploadDownloadHeaders() {
         return thousandSeparator(cellData);
       },
     }),
-    createHeader('totalAmount', '가격', 100, {
+    createHeaderFromId(excelHeaderKeyLabels, 'totalAmount', 100, {
       dataAlign: 'right',
       editCell: (editCellOptions) => {
         return <InputNumberEditCell {...editCellOptions} />;
@@ -103,7 +116,7 @@ export function useExcelUploadDownloadHeaders() {
         return thousandSeparator(cellData);
       },
     }),
-    createHeader('orderDate', '주문일자', 120, {
+    createHeaderFromId(excelHeaderKeyLabels, 'orderDate', 120, {
       editCell: (editCellOptions) => {
         return <DateEditCell {...editCellOptions} />;
       },
@@ -111,8 +124,8 @@ export function useExcelUploadDownloadHeaders() {
         return formatDateString(cellData, '-');
       },
     }),
-    createHeader('customerName', '주문자', 100),
-    createHeader('status', '상태', 100, {
+    createHeaderFromId(excelHeaderKeyLabels, 'customerName', 100),
+    createHeaderFromId(excelHeaderKeyLabels, 'status', 100, {
       editCell: (editCellOptions) => {
         return (
           <SelectEditCell
@@ -296,5 +309,10 @@ export function useExcelUploadDownloadHeaders() {
     }),
   ];
 
-  return { excelUploadValidationRules, excelUploadListHeaders, excelUploadDataHeaders };
+  return {
+    excelHeaderKeyLabels,
+    excelUploadValidationRules,
+    excelUploadListHeaders,
+    excelUploadDataHeaders,
+  };
 }
