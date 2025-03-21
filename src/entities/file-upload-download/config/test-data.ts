@@ -1,10 +1,10 @@
 import { faker } from '@faker-js/faker';
 import { format } from 'date-fns';
-import { TFileDownload } from '@/entities/file-upload-download';
+import { TFileListItem } from '@/entities/file-upload-download';
 
 let currentIndex = 1;
 
-const createRandomData = (): TFileDownload => {
+const createRandomData = (): TFileListItem => {
   return {
     index: currentIndex++,
     fileUploadTitle: faker.lorem.word(),

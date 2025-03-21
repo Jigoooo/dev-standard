@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { addMonths, format } from 'date-fns';
 
 import {
@@ -14,21 +14,32 @@ import {
 } from '@/shared/ui';
 import {
   FileUploadModal,
-  TFileDownload,
+  TFileListItem,
   useFileUploadDownloadHeaders,
 } from '@/entities/file-upload-download';
 import { useGetFileList } from '@/entities/file-upload-download/api';
 
 export function FileUploadDownload() {
   const fileDownloadHeaders = useFileUploadDownloadHeaders();
-  const { dataList, handelDataList, deleteDataList } = useTableData<TFileDownload>([]);
+  const { dataList, setDataList, handelDataList, deleteDataList } = useTableData<TFileListItem>([]);
   const [fromToDateString, setFromToDateString] = useState({
     from: format(new Date(), 'yyyy-MM-dd'),
     to: format(addMonths(new Date(), 1), 'yyyy-MM-dd'),
   });
 
   const getFileListQuery = useGetFileList();
-  console.log(getFileListQuery.data?.data);
+  const fileList = getFileListQuery.data?.data?.fileList ?? [];
+
+  useEffect(() => {
+    if (getFileListQuery.data?.data?.fileList) {
+      const fileListWithIndex = fileList.map((item, index) => ({
+        ...item,
+        index: index + 1,
+      }));
+
+      setDataList(fileListWithIndex);
+    }
+  }, [getFileListQuery.data?.data?.fileList]);
 
   const fileUploadModal = useModal();
   const fileUploadModalOpen = () => {

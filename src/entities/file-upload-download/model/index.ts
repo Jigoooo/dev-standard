@@ -1,1 +1,1 @@
-export type { RFileDownload, TFileDownload } from './file-upload-download-type.ts';
+export type { RFileListItem, TFileListItem } from './file-upload-download-type.ts';

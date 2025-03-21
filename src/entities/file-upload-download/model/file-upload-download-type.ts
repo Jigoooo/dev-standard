@@ -4,11 +4,16 @@ export type PFileListItem = {
   fileNm?: string;
 };
 
-export type RFileDownload = {
-  fileUploadTitle: string;
-  note: string;
-  uploadDateTime: string;
-  uploadUser: string;
+export type RFileListItem = {
+  fileIdx: number;
+  fileNm: string;
+  fileSize: number;
+  insDt: string;
+  insMember: string;
 };
 
-export type TFileDownload = TDataWithIndex & RFileDownload;
+export type RFileList = {
+  fileList: RFileListItem[];
+};
+
+export type TFileListItem = TDataWithIndex & RFileListItem;

@@ -1,13 +1,25 @@
 import { Button, ButtonStyle, createHeader, THeader } from '@/shared/ui';
-import { TFileDownload } from '@/entities/file-upload-download';
+import { TFileListItem } from '@/entities/file-upload-download';
+import { thousandSeparator } from '@/shared/lib';
+import { format } from 'date-fns';
 
-export function useFileUploadDownloadHeaders(): THeader<TFileDownload>[] {
+export function useFileUploadDownloadHeaders(): THeader<TFileListItem>[] {
   return [
     createHeader('index', '', 60, { pin: 'left', dataAlign: 'right', filter: undefined }),
-    createHeader('fileUploadTitle', '업로드 제목', 200),
-    createHeader('note', '비고', 400),
-    createHeader('uploadDateTime', '업로드 일자', 150),
-    createHeader('uploadUser', '등록자', 150),
+    createHeader('fileNm', '파일명', 220),
+    createHeader('fileSize', '파일 Size', 140, {
+      dataAlign: 'right',
+      formatter: ({ cellData }) => {
+        return thousandSeparator(cellData) + ' Byte';
+      },
+    }),
+    createHeader('insDt', '업로드 일자', 180, {
+      formatter: ({ cellData }) => {
+        const date = new Date(cellData);
+        return format(date, 'yyyy-MM-dd HH:mm:ss');
+      },
+    }),
+    createHeader('insMember', '등록자', 150),
     createHeader('button', '', 80, {
       dataAlign: 'center',
       cell: () => {
