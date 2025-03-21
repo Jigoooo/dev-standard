@@ -18,7 +18,7 @@ import {
   useFileUploadDownloadHeaders,
 } from '@/entities/file-upload-download';
 import { useGetFileList } from '@/entities/file-upload-download/api';
-import { useFileDownload } from '@/entities/file-upload-download/api/file-service.ts';
+import { downloadFileApi } from '@/entities/file-upload-download/api/file-api.ts';
 
 export function FileUploadDownload() {
   const fileDownloadHeaders = useFileUploadDownloadHeaders();
@@ -28,13 +28,14 @@ export function FileUploadDownload() {
     to: format(addMonths(new Date(), 1), 'yyyy-MM-dd'),
   });
 
-  const getFileListQuery = useGetFileList();
-  const downloadFileQuery = useFileDownload({
-    fileIdx: 14,
-  });
-  const fileList = getFileListQuery.data?.data?.fileList ?? [];
+  useEffect(() => {
+    downloadFileApi({
+      fileIdx: 14,
+    });
+  }, []);
 
-  console.log(downloadFileQuery.data);
+  const getFileListQuery = useGetFileList();
+  const fileList = getFileListQuery.data?.data?.fileList ?? [];
 
   useEffect(() => {
     if (getFileListQuery.data?.data?.fileList) {
