@@ -1,9 +1,9 @@
-import { CSSProperties, ReactNode, RefObject } from 'react';
+import { CSSProperties, ReactNode, RefObject, useLayoutEffect, useState } from 'react';
+import { motion, useDragControls } from 'framer-motion';
 
 import CloseIcon from '@mui/icons-material/Close';
 
 import { Button, FlexColumn, FlexRow, Divider, Typography } from '@/shared/ui';
-import { motion, useDragControls } from 'framer-motion';
 
 const modalContainerDefaultStyle: CSSProperties = {
   backgroundColor: '#ffffff',
@@ -32,6 +32,26 @@ export function ModalLayout({
 }) {
   const dragControls = useDragControls();
 
+  const [constraints, setConstraints] = useState({
+    top: 0,
+    left: 0,
+    right: window.innerWidth,
+    bottom: window.innerHeight,
+  });
+
+  useLayoutEffect(() => {
+    if (overlayRef.current) {
+      const rect = overlayRef.current.getBoundingClientRect();
+
+      setConstraints({
+        top: rect.top - rect.bottom / 4 - 20,
+        left: rect.left - rect.right / 4 + 20,
+        right: rect.right / 4 - 20,
+        bottom: rect.bottom / 4 + 20,
+      });
+    }
+  }, [overlayRef.current]);
+
   return (
     <FlexColumn
       as={motion.div}
@@ -42,7 +62,7 @@ export function ModalLayout({
       drag={drag}
       dragControls={dragControls}
       dragListener={false}
-      dragConstraints={overlayRef}
+      dragConstraints={constraints}
       dragMomentum={false}
       dragElastic={0}
     >

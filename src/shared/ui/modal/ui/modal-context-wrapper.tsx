@@ -1,4 +1,4 @@
-import { ReactNode, RefObject, useRef, useState } from 'react';
+import { ReactNode, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { FlexRow, ModalContext } from '@/shared/ui';
@@ -10,7 +10,7 @@ import { useModalController } from '@/shared/hooks';
 /* todo 모바일버전 만들어야 함 */
 
 export function ModalContextWrapper({ children }: { children: ReactNode }) {
-  const overlayRefs = useRef<Record<string, RefObject<HTMLDivElement | null>>>({});
+  const overlayRef = useRef<HTMLDivElement>(null);
   const modalRef = useRef<HTMLDivElement | null>(null);
 
   const [modalList, setModalList] = useState<TModalItem[]>([]);
@@ -53,15 +53,18 @@ export function ModalContextWrapper({ children }: { children: ReactNode }) {
   return (
     <ModalContext value={{ modalIds, open, close, handleIsPossibleOverlayClose }}>
       {children}
+
       <FloatingPortal>
         <div ref={modalRef} tabIndex={-1} />
+        {modalList.length > 0 && (
+          <div
+            ref={overlayRef}
+            style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%' }}
+          />
+        )}
 
         <AnimatePresence initial={false}>
           {modalList.map((modal, index) => {
-            if (!overlayRefs.current[modal.id]) {
-              overlayRefs.current[modal.id] = { current: null };
-            }
-
             return (
               <div key={modal.id} style={{ userSelect: 'none' }}>
                 <FlexRow
@@ -84,7 +87,7 @@ export function ModalContextWrapper({ children }: { children: ReactNode }) {
                   onClick={(e) => e.stopPropagation()}
                 >
                   {modal.render({
-                    overlayRef: overlayRefs.current[modal.id],
+                    overlayRef: overlayRef,
                     isOpen: true,
                     close: () => {
                       close(modal.id);
@@ -100,11 +103,6 @@ export function ModalContextWrapper({ children }: { children: ReactNode }) {
                   transition={{ duration: 0.1 }}
                 >
                   <FloatingOverlay
-                    ref={(el) => {
-                      if (el) {
-                        overlayRefs.current[modal.id].current = el;
-                      }
-                    }}
                     lockScroll
                     style={{
                       zIndex: zIndex.modalOverlay + index,
