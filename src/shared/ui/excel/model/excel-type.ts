@@ -17,6 +17,8 @@ type WriteExcelFileDefaultParams<TData> = {
   writingOptions?: WritingOptions;
   sheetName: string;
   rows: TData[];
+  headerStyle?: XLSX.CellStyle;
+  bodyStyle?: XLSX.CellStyle;
 };
 
 export type WriteExcelFileParams<TData> =
