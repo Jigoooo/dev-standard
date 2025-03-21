@@ -18,6 +18,7 @@ import {
   useFileUploadDownloadHeaders,
 } from '@/entities/file-upload-download';
 import { useGetFileList } from '@/entities/file-upload-download/api';
+import { useFileDownload } from '@/entities/file-upload-download/api/file-service.ts';
 
 export function FileUploadDownload() {
   const fileDownloadHeaders = useFileUploadDownloadHeaders();
@@ -28,7 +29,12 @@ export function FileUploadDownload() {
   });
 
   const getFileListQuery = useGetFileList();
+  const downloadFileQuery = useFileDownload({
+    fileIdx: 14,
+  });
   const fileList = getFileListQuery.data?.data?.fileList ?? [];
+
+  console.log(downloadFileQuery.data);
 
   useEffect(() => {
     if (getFileListQuery.data?.data?.fileList) {

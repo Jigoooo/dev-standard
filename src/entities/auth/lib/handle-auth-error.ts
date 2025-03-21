@@ -47,8 +47,8 @@ export async function handleAuthError(options: TAuthErrorHandlerOptions): Promis
     } else {
       dialogActions.open({
         dialogType: DialogType.ERROR,
-        title: data.msg || '오류가 발생하였습니다.',
-        contents: '관리자에게 문의해 주세요.',
+        title: '오류가 발생하였습니다.',
+        contents: data.msg || '관리자에게 문의해 주세요.',
         overlayClose: false,
       });
     }

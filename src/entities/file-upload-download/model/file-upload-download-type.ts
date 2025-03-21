@@ -17,3 +17,7 @@ export type RFileList = {
 };
 
 export type TFileListItem = TDataWithIndex & RFileListItem;
+
+export type PFileDownload = {
+  fileIdx: number;
+};
