@@ -17,6 +17,7 @@ import {
   TFileDownload,
   useFileUploadDownloadHeaders,
 } from '@/entities/file-upload-download';
+import { useGetFileList } from '@/entities/file-upload-download/api';
 
 export function FileUploadDownload() {
   const fileDownloadHeaders = useFileUploadDownloadHeaders();
@@ -25,6 +26,9 @@ export function FileUploadDownload() {
     from: format(new Date(), 'yyyy-MM-dd'),
     to: format(addMonths(new Date(), 1), 'yyyy-MM-dd'),
   });
+
+  const getFileListQuery = useGetFileList();
+  console.log(getFileListQuery.data?.data);
 
   const fileUploadModal = useModal();
   const fileUploadModalOpen = () => {
