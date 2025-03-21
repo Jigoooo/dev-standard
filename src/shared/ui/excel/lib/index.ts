@@ -1,1 +1,1 @@
-export { fitToColumn, downloadExcel, readExcelFile, writeExcelFile } from './excel-lib.ts';
+export { readExcelFile, writeExcelFile } from './excel-lib.ts';

@@ -16,6 +16,7 @@ import {
   useModal,
   useTableData,
   ExcelUploadModal,
+  writeExcelFile,
 } from '@/shared/ui';
 import {
   TExcelInfo,
@@ -107,8 +108,24 @@ export function ExcelUploadDownload() {
 
   const downloadExcelTemplate = () => {
     const excelTemplateHeaders = Array.from(excelHeaderKeyLabels.values());
+    const exampleRow = [
+      '2025031400002',
+      'PRODUCT_002',
+      '상품명_002',
+      'a',
+      '1000',
+      '3003',
+      '20250314',
+      '홍주영',
+      '주문 접수',
+    ];
 
-    console.log(excelTemplateHeaders);
+    writeExcelFile({
+      excelFileName: '엑셀 업로드 양식',
+      sheetName: '양식',
+      rows: [excelTemplateHeaders, exampleRow],
+      rowDataType: 'array',
+    });
   };
 
   const excelUploadModal = useModal();

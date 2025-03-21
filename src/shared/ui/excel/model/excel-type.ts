@@ -11,23 +11,24 @@ export type TValidationRuleWithHeaderId<TData = Record<string, any>> = {
   };
 };
 
-type WriteExcelFileDefaultParams<TData> = {
+type WriteExcelFileDefaultParams = {
   excelFileName: string;
   excelFileExtension?: BookType;
   writingOptions?: WritingOptions;
   sheetName: string;
-  rows: TData[];
   headerStyle?: XLSX.CellStyle;
   bodyStyle?: XLSX.CellStyle;
 };
 
 export type WriteExcelFileParams<TData> =
-  | (WriteExcelFileDefaultParams<TData> & {
+  | (WriteExcelFileDefaultParams & {
+      rows: TData[];
       rowDataType: 'json';
       jsonToSheetOptions?: XLSX.JSON2SheetOpts;
       aoaToSheetOptions?: never;
     })
-  | (WriteExcelFileDefaultParams<TData> & {
+  | (WriteExcelFileDefaultParams & {
+      rows: TData[][];
       rowDataType: 'array';
       jsonToSheetOptions?: never;
       aoaToSheetOptions?: XLSX.AOA2SheetOpts;

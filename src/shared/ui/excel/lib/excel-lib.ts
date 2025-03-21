@@ -1,22 +1,8 @@
 import XLSX, { BookType, Sheet2JSONOpts } from 'xlsx-js-style';
 import { saveAs } from 'file-saver';
 import { toast } from 'sonner';
+
 import { WriteExcelFileParams } from '../model/excel-type';
-
-export function createWorkSheet({
-  header,
-  body,
-  maxColumnBodyIndex,
-}: {
-  header: any[];
-  body: any[][];
-  maxColumnBodyIndex: number;
-}) {
-  const workSheet = XLSX.utils.aoa_to_sheet([header, ...body]);
-  workSheet['!cols'] = fitToColumn(body[maxColumnBodyIndex]);
-
-  return workSheet;
-}
 
 export function downloadExcel({
   workBook,
@@ -46,21 +32,33 @@ export function downloadExcel({
   // }
 }
 
-export function fitToColumn(targetRow: any[]) {
-  return targetRow.map((cell: any) => {
-    let width = cell?.width;
+export function fitToColumn<T>(headerRow: T[], bodyRow: T[], minWidth = 0) {
+  const maxCols = Math.max(headerRow.length, bodyRow.length);
+  const columns = [];
 
-    if (!width) {
-      const isKorean = /[ㄱ-ㅎ|ㅏ-ㅣ가-힣]/.test(cell.v);
-      const isSingleDigitNumber = cell.v.length === 1 && /[0-9]/.test(cell.v);
-      const multiplier = isSingleDigitNumber ? 2 : isKorean ? 4 : 2;
-      const cellLength = cell.v.length === 0 ? 100 : cell.v.length;
+  for (let col = 0; col < maxCols; col++) {
+    const headerCell = headerRow[col];
+    const bodyCell = bodyRow[col];
+    const headerWidth = computeCellWidth(headerCell, minWidth);
+    const bodyWidth = computeCellWidth(bodyCell, minWidth);
 
-      width = cellLength * multiplier;
-    }
+    const width = Math.max(headerWidth, bodyWidth, minWidth);
+    columns.push({ width });
+  }
+  return columns;
+}
 
-    return { width };
-  });
+function computeCellWidth<T>(cell: T, minWidth: number): number {
+  if (!cell) return minWidth;
+
+  const text = cell ? cell.toString() : '';
+  const cellLength = text.length;
+
+  const isKorean = /[ㄱ-ㅎ|ㅏ-ㅣ가-힣]/.test(text);
+  const isSingleDigitNumber = text.length === 1 && /[0-9]/.test(text);
+  const multiplier = isSingleDigitNumber ? 2 : isKorean ? 4 : 2;
+  const width = cellLength * multiplier;
+  return Math.max(width, minWidth);
 }
 
 export async function readExcelFile({
@@ -99,13 +97,13 @@ function createWorksheetFromJson<T>(
 }
 
 function createWorksheetFromArray<T>(
-  rows: T[],
+  rows: T[][],
   aoaToSheetOptions?: XLSX.AOA2SheetOpts,
 ): XLSX.WorkSheet {
   if (!Array.isArray(rows) || !Array.isArray(rows[0])) {
     throw new Error('For array type, rows must be an array of arrays.');
   }
-  return XLSX.utils.aoa_to_sheet(rows as any[][], aoaToSheetOptions);
+  return XLSX.utils.aoa_to_sheet(rows, aoaToSheetOptions);
 }
 
 /**
@@ -172,16 +170,19 @@ export async function writeExcelFile<T>({
   rows,
   headerStyle = defaultHeaderStyle,
   bodyStyle = defaultBodyStyle,
-  rowDataType = 'json',
+  rowDataType = 'array',
   jsonToSheetOptions,
   aoaToSheetOptions,
 }: WriteExcelFileParams<T>) {
   let worksheet: XLSX.WorkSheet;
 
   if (rowDataType === 'json' && !Array.isArray(rows[0])) {
-    worksheet = createWorksheetFromJson(rows, jsonToSheetOptions);
+    worksheet = createWorksheetFromJson(rows as T[], jsonToSheetOptions);
   } else if (rowDataType === 'array') {
-    worksheet = createWorksheetFromArray(rows, aoaToSheetOptions);
+    worksheet = createWorksheetFromArray(rows as T[][], aoaToSheetOptions);
+    if (Array.isArray(rows[0]) && Array.isArray(rows[rows.length - 1])) {
+      worksheet['!cols'] = fitToColumn<T>(rows[0], rows[rows.length - 1] as T[]);
+    }
   } else {
     toast.error('지원하는 데이터 형식이 아닙니다.');
     throw new Error('Unsupported rowDataType');
