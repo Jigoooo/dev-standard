@@ -172,7 +172,6 @@ function ReorderItem({ menu }: { menu: TMenu }) {
       }}
     >
       <Typography>{menu.name}</Typography>
-      <Typography>{menu.orderBy}</Typography>
       <FlexRow onPointerDown={(e) => controls.start(e)} style={{ cursor: 'grab' }}>
         <RxDragHandleDots2 />
       </FlexRow>
