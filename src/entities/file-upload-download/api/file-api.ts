@@ -26,7 +26,6 @@ export async function downloadFileApi(params: PFileDownload) {
   let fileName = 'downloaded_file';
   if (disposition && disposition.indexOf('filename') !== -1) {
     const filenameRegex = /filename\*=UTF-8''(.+)/;
-    console.log(filenameRegex);
     const matches = filenameRegex.exec(disposition);
     if (matches != null && matches[1]) {
       fileName = matches[1].replace(/['"]/g, '');
