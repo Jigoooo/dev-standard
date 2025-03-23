@@ -58,7 +58,6 @@ function ReorderItem({ item }: { item: any }) {
 
   return (
     <Reorder.Item
-      key={item}
       value={item}
       dragListener={false}
       dragControls={controls}
