@@ -21,3 +21,7 @@ export type TFileListItem = TDataWithIndex & RFileListItem;
 export type PFileDownload = {
   fileIdx: number;
 };
+
+export type PFileSaveList = {
+  fileList: File[];
+};

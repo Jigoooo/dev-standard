@@ -1,32 +1,86 @@
 import { useState } from 'react';
+import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
-import { FileUploadForm, FlexRow, TFile } from '@/shared/ui';
+import {
+  Button,
+  dialogActions,
+  DialogType,
+  FileUploadForm,
+  FlexColumn,
+  FlexRow,
+  TFile,
+} from '@/shared/ui';
+import { useFileSaveMutation } from '@/entities/file-upload-download';
+import { handleAuthError } from '@/entities/auth';
 
 export function FileUploadModal() {
+  const navigate = useNavigate();
+
   const [files, setFiles] = useState<TFile[]>([]);
   const handleFiles = async (files: TFile[]) => {
-    console.log('file: ', files);
-    // if (isExtensionNotAllowed(file.file.name)) {
-    //   dialogActions.openDialog({
-    //     dialogType: DialogType.ERROR,
-    //     title: '업로드 실패',
-    //     contents: '허용되지 않는 파일이에요',
-    //   });
-    //
-    //   return;
-    // }
-    // const compressedFile = (await resizeImage({ file })) as File;
-
     setFiles((prevState) => [...prevState, ...files]);
   };
+
   const deleteFile = (fileUUID: string) => {
     setFiles((prevState) => {
       return prevState.filter((file) => file.fileUUID !== fileUUID);
     });
   };
 
+  const fileSaveMutation = useFileSaveMutation();
+  const fileSave = () => {
+    const fileList = files.map((file) => {
+      return file.file;
+    });
+
+    fileSaveMutation.mutate(
+      {
+        fileList,
+      },
+      {
+        onSuccess: async (data, variables) => {
+          const isError = await handleAuthError({
+            data,
+            onUnauthenticated: () => navigate('/', { replace: true }),
+            onOtherError: () => {
+              dialogActions.open({
+                title: '파일 업로드 실패',
+                contents: data?.msg ?? '관리자에게 문의해 주세요.',
+                dialogType: DialogType.ERROR,
+              });
+            },
+            onRefreshSuccess: () => {
+              fileSaveMutation.mutate(variables, {
+                onSuccess: (data) => {
+                  if (data.success) {
+                    toast.success('파일 업로드 성공');
+                    close();
+                  }
+                },
+              });
+            },
+          });
+
+          if (!isError) {
+            toast.success('파일 업로드 성공');
+            close();
+          }
+        },
+      },
+    );
+  };
+
+  const showSaveFileConfirmation = () => {
+    dialogActions.open({
+      title: '파일 업로드',
+      contents: '파일을 업로드 하시겠습니까?',
+      onConfirm: fileSave,
+    });
+  };
+
   return (
-    <FlexRow style={{ height: '100%', padding: 12, overflow: 'hidden' }}>
+    <FlexColumn style={{ height: '100%', padding: 12, overflow: 'hidden' }}>
       <FileUploadForm
         multiple={true}
         limitMB={5}
@@ -34,6 +88,15 @@ export function FileUploadModal() {
         handleFiles={handleFiles}
         fileDelete={deleteFile}
       />
-    </FlexRow>
+      <FlexRow style={{ justifyContent: 'flex-end' }}>
+        {files.length > 0 ? (
+          <Button style={{ paddingInline: 18 }} onClick={showSaveFileConfirmation}>
+            업로드
+          </Button>
+        ) : (
+          <div />
+        )}
+      </FlexRow>
+    </FlexColumn>
   );
 }

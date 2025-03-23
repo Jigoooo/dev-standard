@@ -1,7 +1,12 @@
 import { saveAs } from 'file-saver';
 
 import { apiRequest, customedAxios } from '@/shared/api';
-import { PFileDownload, PFileListItem, RFileList } from '../model/file-upload-download-type.ts';
+import {
+  PFileDownload,
+  PFileListItem,
+  PFileSaveList,
+  RFileList,
+} from '../model/file-upload-download-type.ts';
 
 export async function getFileListApi(params: PFileListItem) {
   return await apiRequest<RFileList>(
@@ -31,4 +36,19 @@ export async function downloadFileApi(params: PFileDownload) {
   saveAs(response.data, fileName);
 
   return response;
+}
+
+export async function fileSaveApi(data: PFileSaveList) {
+  const formData = new FormData();
+  data.fileList.forEach((file) => {
+    formData.append('fileList', file);
+  });
+
+  return await apiRequest<null>(
+    customedAxios.post('/file/fileSave', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }),
+  );
 }
