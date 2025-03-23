@@ -111,7 +111,7 @@ export function TimePicker({
               exit={{ opacity: 0, scale: 0.8 }}
               transition={{ duration: 0.1, ease: 'easeInOut' }}
               style={{
-                ...{ zIndex: zIndex.anchor, transformOrigin: 'top center' },
+                ...{ zIndex: zIndex.anchor, transformOrigin: 'top left' },
                 ...floatingStyles,
               }}
               {...getFloatingProps()}
