@@ -214,6 +214,7 @@ function useDateFromToPicker({
     selectedFromToDate,
     showFromToDatePicker,
     setShowFromToDatePicker,
+    setSelectedFromToDate,
     currentFromToDate,
     handleDateClick,
     handleDateInput,
@@ -459,6 +460,7 @@ export function DateFromToPicker({
     selectedFromToDate,
     showFromToDatePicker,
     setShowFromToDatePicker,
+    setSelectedFromToDate,
     currentFromToDate,
     handleDateClick,
     handleDateInput,
@@ -467,11 +469,25 @@ export function DateFromToPicker({
     handleNextFromMonth,
     handleNextToMonth,
   } = useDateFromToPicker({ fromToDateString, onChange, dateFormat });
+
+  const outsideClickAction = () => {
+    if (!selectedFromToDate.to) {
+      setSelectedFromToDate((prevState) => {
+        return {
+          ...prevState,
+          to: selectedFromToDate.from,
+        };
+      });
+    }
+
+    setShowFromToDatePicker(false);
+  };
+
   const datePickerRef = useHandleClickOutsideRef({
     condition: showFromToDatePicker,
     outsideClickAction: () => {
       if (strategy === 'absolute') {
-        setShowFromToDatePicker(false);
+        outsideClickAction();
       }
     },
   });
@@ -567,7 +583,7 @@ export function DateFromToPicker({
             <FloatingOverlay
               lockScroll
               style={{ zIndex: zIndex.anchorOverlay }}
-              onClick={() => setShowFromToDatePicker(false)}
+              onClick={outsideClickAction}
             />
             <FlexRow
               ref={refs.setFloating}
