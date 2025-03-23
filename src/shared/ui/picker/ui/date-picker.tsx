@@ -1,18 +1,18 @@
-import { useState, useEffect, CSSProperties, HTMLProps } from 'react';
+import { CSSProperties, HTMLProps, useEffect, useState } from 'react';
 import {
-  addMonths,
-  subMonths,
-  format,
-  startOfMonth,
-  endOfMonth,
-  eachDayOfInterval,
-  isBefore,
-  isAfter,
-  getDay,
-  subDays,
   addDays,
+  addMonths,
+  eachDayOfInterval,
+  endOfMonth,
+  format,
+  getDay,
+  isAfter,
+  isBefore,
   isValid,
   parse,
+  startOfMonth,
+  subDays,
+  subMonths,
 } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import {
@@ -20,19 +20,19 @@ import {
   FloatingOverlay,
   FloatingPortal,
   offset,
+  Placement,
   size,
   Strategy,
   useClick,
   useFloating,
   useInteractions,
-  Placement,
 } from '@floating-ui/react';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
-import { FlexRow, Input, Button, FlexColumn, Typography } from '@/shared/ui';
+import { Button, ButtonStyle, FlexColumn, FlexRow, Input, Typography } from '@/shared/ui';
 import { colors, zIndex } from '@/shared/constants';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
 import { DateInputField } from './date-input-field';
@@ -201,11 +201,12 @@ function Picker({
       style={{
         ...{
           marginTop: 8,
-          padding: 16,
+          paddingBlock: 12,
+          paddingInline: 10,
           backgroundColor: '#ffffff',
           borderRadius: 10,
           boxShadow: '0 2px 10px rgba(0, 0, 0, 0.2)',
-          width: 300,
+          width: 250,
           zIndex: zIndex.datePicker,
         },
         ...floatingStyles,
@@ -214,21 +215,25 @@ function Picker({
     >
       <FlexRow style={{ justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
         <Button
-          style={{ height: 38, backgroundColor: '#ffffff', paddingInline: 8 }}
+          buttonStyle={ButtonStyle.OUTLINED}
+          style={{ height: 30, paddingInline: 6, color: '#bbbbbb', borderColor: '#e4e4e4' }}
           onClick={handlePrevMonth}
           disabled={disablePrev}
         >
-          <ArrowBackIcon style={{ color: disablePrev ? 'lightgrey' : 'black' }} />
+          <ArrowBackIcon style={{ fontSize: '1rem', color: disablePrev ? '#cccccc' : '#666666' }} />
         </Button>
-        <Typography style={{ fontSize: '1.1rem', fontWeight: 700, lineHeight: 2 }}>
+        <Typography style={{ fontSize: '0.96rem', fontWeight: 600, lineHeight: 2 }}>
           {format(currentDate, 'yyyy년 MMMM', { locale: ko })}
         </Typography>
         <Button
-          style={{ height: 38, backgroundColor: '#ffffff', paddingInline: 8 }}
+          buttonStyle={ButtonStyle.OUTLINED}
+          style={{ height: 30, paddingInline: 6, color: '#bbbbbb', borderColor: '#e4e4e4' }}
           onClick={handleNextMonth}
           disabled={disableNext}
         >
-          <ArrowForwardIcon style={{ color: disableNext ? 'lightgrey' : 'black' }} />
+          <ArrowForwardIcon
+            style={{ fontSize: '1rem', color: disableNext ? 'lightgrey' : '#666666' }}
+          />
         </Button>
       </FlexRow>
       <FlexRow style={{ width: '100%', justifyContent: 'space-around', marginBottom: 8 }}>
@@ -263,11 +268,12 @@ function Picker({
                 style={{
                   textAlign: 'center',
                   cursor: day && !isDisabled ? 'pointer' : undefined,
-                  paddingBlock: 6,
+                  paddingBlock: 4,
                   borderRadius,
                   backgroundColor,
                   color: textColor,
                   position: 'relative',
+                  fontSize: '0.9rem',
                 }}
               >
                 {day ? format(day, 'd') : ''}

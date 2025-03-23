@@ -33,7 +33,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
-import { FlexRow, Input, Button, FlexColumn, Typography } from '@/shared/ui';
+import { FlexRow, Input, Button, FlexColumn, Typography, ButtonStyle } from '@/shared/ui';
 import { colors, zIndex } from '@/shared/constants';
 import { useHandleClickOutsideRef, useWindowsStyle } from '@/shared/hooks';
 import { DateInputField } from './date-input-field.tsx';
@@ -353,30 +353,35 @@ function FromToPicker({
       className={'selection-none'}
       style={{
         marginTop: 8,
-        padding: 16,
+        paddingBlock: 12,
+        paddingInline: 10,
         backgroundColor: '#ffffff',
         borderRadius: 10,
         boxShadow: '0 2px 10px rgba(0, 0, 0, 0.2)',
-        width: 300,
+        width: 250,
       }}
     >
       <FlexRow style={{ justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
         <Button
-          style={{ height: 38, backgroundColor: '#ffffff', paddingInline: 8 }}
+          buttonStyle={ButtonStyle.OUTLINED}
+          style={{ height: 30, paddingInline: 6, color: '#bbbbbb', borderColor: '#e4e4e4' }}
           onClick={handlePrevMonth}
           disabled={disablePrev}
         >
-          <ArrowBackIcon style={{ color: disablePrev ? 'lightgrey' : 'black' }} />
+          <ArrowBackIcon style={{ fontSize: '1rem', color: disablePrev ? '#cccccc' : '#666666' }} />
         </Button>
-        <Typography style={{ fontSize: '1.1rem', fontWeight: 700, lineHeight: 2 }}>
+        <Typography style={{ fontSize: '0.96rem', fontWeight: 600, lineHeight: 2 }}>
           {format(currentDate, 'yyyy년 MMMM', { locale: ko })}
         </Typography>
         <Button
-          style={{ height: 38, backgroundColor: '#ffffff', paddingInline: 8 }}
+          buttonStyle={ButtonStyle.OUTLINED}
+          style={{ height: 30, paddingInline: 6, color: '#bbbbbb', borderColor: '#e4e4e4' }}
           onClick={handleNextMonth}
           disabled={disableNext}
         >
-          <ArrowForwardIcon style={{ color: disableNext ? 'lightgrey' : 'black' }} />
+          <ArrowForwardIcon
+            style={{ fontSize: '1rem', color: disableNext ? 'lightgrey' : '#666666' }}
+          />
         </Button>
       </FlexRow>
       <FlexRow style={{ width: '100%', justifyContent: 'space-around', marginBottom: 8 }}>
@@ -418,11 +423,12 @@ function FromToPicker({
                   ...{
                     textAlign: 'center',
                     cursor: day && !isDisabled ? 'pointer' : undefined,
-                    paddingBlock: 6,
+                    paddingBlock: 4,
                     borderRadius,
                     backgroundColor,
                     color: textColor,
                     position: 'relative',
+                    fontSize: '0.9rem',
                   },
                   ...windowsStyle,
                 }}
