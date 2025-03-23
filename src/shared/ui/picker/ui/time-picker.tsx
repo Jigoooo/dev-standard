@@ -111,7 +111,7 @@ export function TimePicker({
               exit={{ opacity: 0, scale: 0.8 }}
               transition={{ duration: 0.1, ease: 'easeInOut' }}
               style={{
-                ...{ zIndex: zIndex.anchor },
+                ...{ zIndex: zIndex.anchor, transformOrigin: 'top center' },
                 ...floatingStyles,
               }}
               {...getFloatingProps()}
@@ -179,6 +179,7 @@ function TimeList({
   return (
     <FlexColumn
       style={{
+        userSelect: 'none',
         width: 100,
         height: '100%',
         overflowY: 'auto',
