@@ -123,30 +123,35 @@ export function TimePicker({
                   backgroundColor: '#ffffff',
                   border: '1px solid #d9d9d9',
                   borderRadius: 4,
-                  padding: 8,
                 }}
               >
-                <TimeList
-                  timeValue={innerTimeValue}
-                  handlePartChange={handlePartChange}
-                  part={'hours'}
-                  formatStr={'HH'}
-                  max={24}
-                />
-                <TimeList
-                  timeValue={innerTimeValue}
-                  handlePartChange={handlePartChange}
-                  part={'minutes'}
-                  formatStr={'mm'}
-                  max={60}
-                />
-                <TimeList
-                  timeValue={innerTimeValue}
-                  handlePartChange={handlePartChange}
-                  part={'seconds'}
-                  formatStr={'ss'}
-                  max={60}
-                />
+                {displayParts.includes('hours') && (
+                  <TimeList
+                    timeValue={innerTimeValue}
+                    handlePartChange={handlePartChange}
+                    part={'hours'}
+                    formatStr={'HH'}
+                    max={24}
+                  />
+                )}
+                {displayParts.includes('minutes') && (
+                  <TimeList
+                    timeValue={innerTimeValue}
+                    handlePartChange={handlePartChange}
+                    part={'minutes'}
+                    formatStr={'mm'}
+                    max={60}
+                  />
+                )}
+                {displayParts.includes('seconds') && (
+                  <TimeList
+                    timeValue={innerTimeValue}
+                    handlePartChange={handlePartChange}
+                    part={'seconds'}
+                    formatStr={'ss'}
+                    max={60}
+                  />
+                )}
               </FlexRow>
             </motion.div>
           </FloatingPortal>
@@ -177,7 +182,8 @@ function TimeList({
         width: 100,
         height: '100%',
         overflowY: 'auto',
-        marginRight: 8,
+        paddingInline: 8,
+        paddingBlock: 2,
       }}
     >
       {Array.from({ length: max }, (_, i) => i).map((num) => {
