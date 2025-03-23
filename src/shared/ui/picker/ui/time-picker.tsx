@@ -12,12 +12,12 @@ import {
   useFloating,
   useInteractions,
 } from '@floating-ui/react';
+import { format, parse, setHours, setMinutes, setSeconds } from 'date-fns';
 
 import { MdOutlineAccessTime } from 'react-icons/md';
 
 import { zIndex } from '@/shared/constants';
 import { FlexColumn, FlexRow, Input } from '@/shared/ui';
-import { format, parse, setHours, setMinutes, setSeconds } from 'date-fns';
 import { TimePart } from '../model/picker-type.ts';
 
 export function TimePicker({
@@ -30,7 +30,7 @@ export function TimePicker({
   timeFormat = 'HH:mm',
 }: {
   timeString?: string;
-  onChange?: (timeValue: string) => void;
+  onChange?: (timeString: string) => void;
   strategy?: Strategy;
   placement?: Placement;
   width?: string | number;
@@ -182,8 +182,6 @@ function TimeList({
         width: 100,
         height: '100%',
         overflowY: 'auto',
-        paddingInline: 8,
-        paddingBlock: 2,
       }}
     >
       {Array.from({ length: max }, (_, i) => i).map((num) => {
@@ -191,17 +189,25 @@ function TimeList({
         const currentValue = format(timeValue, formatStr);
         const isSelected = currentValue === formatted;
         return (
-          <div
+          <FlexRow
+            as={motion.div}
             key={num}
             onClick={() => handlePartChange(part, num)}
             style={{
-              padding: '4px 8px',
-              backgroundColor: isSelected ? '#d0eaff' : 'transparent',
+              paddingInline: 8,
+              paddingBlock: 4,
+              backgroundColor: isSelected ? '#eaeaea' : '#ffffff',
               cursor: 'pointer',
             }}
+            variants={{
+              hover: { backgroundColor: '#f4f4f4' },
+              none: {},
+            }}
+            whileHover={isSelected ? 'none' : 'hover'}
+            transition={{ duration: 0.1 }}
           >
             {formatted}
-          </div>
+          </FlexRow>
         );
       })}
     </FlexColumn>

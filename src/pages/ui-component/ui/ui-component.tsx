@@ -202,7 +202,13 @@ export function UiComponent() {
       </FlexRow>
       <FlexRow style={{ alignItems: 'center' }}>
         <Typography style={{ width: 200, fontWeight: 500 }}>Time Picker: </Typography>
-        <TimePicker timeFormat={'HH:mm:ss'} displayParts={['hours', 'minutes', 'seconds']} />
+        <TimePicker
+          timeFormat={'HH:mm:ss'}
+          displayParts={['hours', 'minutes', 'seconds']}
+          onChange={(timeString) => {
+            console.log(timeString);
+          }}
+        />
       </FlexRow>
 
       <DashedDivider strokeColor={'#666666'} style={{ marginBlock: 16 }} />
