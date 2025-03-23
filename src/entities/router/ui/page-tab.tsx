@@ -172,6 +172,9 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
                         borderRadius: 2,
                         backgroundColor: '#ffffff',
                       }}
+                      onClickCapture={(e) => {
+                        e.stopPropagation();
+                      }}
                       onClick={(event) => {
                         event.stopPropagation();
                         destroyCacheNode(cacheNode.cacheKey);
