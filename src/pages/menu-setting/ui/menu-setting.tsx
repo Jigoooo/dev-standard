@@ -1,8 +1,9 @@
 import { Reorder, useDragControls } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
 import { RxDragHandleDots2 } from 'react-icons/rx';
-
 import {
   dialogActions,
   DialogType,
@@ -12,15 +13,24 @@ import {
   Typography,
 } from '@/shared/ui';
 import { useGetMenuListQuery, useUpdateMenuMutation } from '@/entities/menu-setting';
-import { RMenu } from '@/entities/router';
+import { TMenu, useRouterMenuContext } from '@/entities/router';
 import { handleAuthError } from '@/entities/auth';
-import { toast } from 'sonner';
-import { useNavigate } from 'react-router-dom';
 
 export function MenuSetting() {
   const navigate = useNavigate();
+  const { makeGroupMenus } = useRouterMenuContext();
 
-  const [menuList, setMenuList] = useState<RMenu[]>([]);
+  const [menuList, setMenuList] = useState<TMenu[]>([]);
+  const reorderMenuList = (mainMenu: TMenu, newChildren: TMenu[]) => {
+    setMenuList((prevMenuList) => {
+      const updatedList = [...prevMenuList];
+      updatedList[mainMenu.menuIndex] = {
+        ...updatedList[mainMenu.menuIndex],
+        children: newChildren,
+      };
+      return updatedList;
+    });
+  };
 
   const getMenuListQuery = useGetMenuListQuery();
   const updateMenuMutation = useUpdateMenuMutation();
@@ -28,7 +38,7 @@ export function MenuSetting() {
   useEffect(() => {
     if (getMenuListQuery.data?.data?.menuList) {
       const newMenuList = getMenuListQuery.data?.data?.menuList ?? [];
-      setMenuList(newMenuList);
+      setMenuList(makeGroupMenus(newMenuList));
     }
   }, [getMenuListQuery.data?.data?.menuList]);
 
@@ -100,11 +110,7 @@ export function MenuSetting() {
         <SaveButton onClick={updateMenuConfirmation} />
       </FlexRow>
 
-      <Reorder.Group
-        axis='y'
-        values={menuList}
-        onReorder={setMenuList}
-        layoutScroll
+      <div
         style={{
           userSelect: 'none',
           overflowY: 'auto',
@@ -114,15 +120,29 @@ export function MenuSetting() {
           width: '50%',
         }}
       >
-        {menuList.map((menu) => (
-          <ReorderItem key={menu.menuId} menu={menu} />
-        ))}
-      </Reorder.Group>
+        {menuList.map((mainMenu) => {
+          return (
+            <FlexColumn key={mainMenu.menuIndex}>
+              <Typography>{mainMenu.name}</Typography>
+              {mainMenu.children && (
+                <Reorder.Group
+                  values={mainMenu.children}
+                  onReorder={(newChildren) => reorderMenuList(mainMenu, newChildren)}
+                >
+                  {mainMenu.children.map((submenu) => {
+                    return <ReorderItem key={submenu.menuIndex} menu={submenu} />;
+                  })}
+                </Reorder.Group>
+              )}
+            </FlexColumn>
+          );
+        })}
+      </div>
     </FlexColumn>
   );
 }
 
-function ReorderItem({ menu }: { menu: RMenu }) {
+function ReorderItem({ menu }: { menu: TMenu }) {
   const controls = useDragControls();
 
   return (
@@ -139,7 +159,8 @@ function ReorderItem({ menu }: { menu: RMenu }) {
         gap: 4,
       }}
     >
-      <Typography>{menu.menuTitle}</Typography>
+      <Typography>{menu.name}</Typography>
+      <Typography>{menu.orderBy + 1}</Typography>
       <FlexRow onPointerDown={(e) => controls.start(e)} style={{ cursor: 'grab' }}>
         <RxDragHandleDots2 />
       </FlexRow>

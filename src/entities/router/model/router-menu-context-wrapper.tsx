@@ -51,6 +51,10 @@ const defaultMenus: TMenu[] = [
     router: Router.MY_PROFILE,
     fullRouterPath: `${Router.MAIN}/${Router.MY_PROFILE}`,
     display: true,
+    orderBy: 0,
+    mainCd: 9999,
+    sub1Cd: 0,
+    sub2Cd: 0,
   },
 ];
 
@@ -90,6 +94,10 @@ function makeGroupMenus(responseMenus: RMenu[]): TMenu[] {
           display: menu.displayYn === 'Y',
           router: routerPath,
           fullRouterPath: menu.menuLink,
+          orderBy: menu.orderBy,
+          mainCd: menu.mainCd,
+          sub1Cd: menu.sub1Cd,
+          sub2Cd: menu.sub2Cd,
         };
       } else {
         subGroups.get(menu.sub1Cd)!.push(menu);
@@ -113,6 +121,10 @@ function makeGroupMenus(responseMenus: RMenu[]): TMenu[] {
           router: routerPath,
           fullRouterPath: menu.menuLink,
           display: menu.displayYn === 'Y',
+          orderBy: menu.orderBy,
+          mainCd: menu.mainCd,
+          sub1Cd: menu.sub1Cd,
+          sub2Cd: menu.sub2Cd,
         };
       });
     }
@@ -325,6 +337,7 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
           updateMainRouteChildren,
           updateRoutes,
           updateRouteName,
+          makeGroupMenus,
         } as TRouterMenuContext
       }
     >

@@ -26,7 +26,11 @@ export type TMenu = {
   router: Router;
   fullRouterPath: string;
   display: boolean;
+  orderBy: number;
   children?: TMenu[];
+  mainCd: number;
+  sub1Cd: number;
+  sub2Cd: number;
 };
 
 export type TCacheNode = {
@@ -125,6 +129,7 @@ export type TRouterMenuContext = {
   updateMainRouteChildren: (responseMenus: RMenu[]) => void;
   updateRoutes: (updater: (prevRoutes: RouteObject[]) => RouteObject[]) => void;
   updateRouteName: (router: Router, newName: string) => void;
+  makeGroupMenus: (menus: RMenu[]) => TMenu[];
 };
 
 export type PMenuMemberAuthList = {
