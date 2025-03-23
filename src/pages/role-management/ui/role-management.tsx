@@ -157,8 +157,10 @@ function useUpdateMenuMemberAuth({ menuAuthList }: { menuAuthList: RMenuMemberAu
   return () => {
     dialogActions.open({
       title: '권한을 수정하시겠습니까?',
-      withCancel: true,
       overlayClose: true,
+      withCancel: true,
+      cancelText: '아니요',
+      confirmText: '수정',
       onConfirm: () => {
         updateMenuMemberAuthMutation.mutate(menuAuthList, {
           onSuccess: async (data, variables) => {

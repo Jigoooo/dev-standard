@@ -1,1 +1,1 @@
-export { useGetMenuListQuery } from './menu-setting-service.ts';
+export { useGetMenuListQuery, useUpdateMenuMutation } from './menu-setting-service.ts';

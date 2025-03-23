@@ -58,8 +58,10 @@ export function ExcelUploadDownload() {
   const registerExcel = (excelNm: string, excelDataList: TExcelData[], close: () => void) => {
     dialogActions.open({
       title: '등록하시겠습니까?',
-      withCancel: true,
       overlayClose: true,
+      withCancel: true,
+      cancelText: '아니요',
+      confirmText: '등록',
       onConfirm: () => {
         const excelDataListWithoutIndex = excelDataList.map((row) => {
           const { index: _index, ...rest } = row;

@@ -272,6 +272,8 @@ export function useExcelUploadDownloadHeaders() {
                 title: '수정하시겠습니까?',
                 withCancel: true,
                 overlayClose: true,
+                cancelText: '아니요',
+                confirmText: '수정',
                 onConfirm: () => {
                   updateExcel({ excelNm, rowData, excelDataList, dataList, close });
                 },

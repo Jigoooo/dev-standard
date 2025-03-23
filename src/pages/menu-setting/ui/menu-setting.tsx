@@ -3,14 +3,27 @@ import { useEffect, useState } from 'react';
 
 import { RxDragHandleDots2 } from 'react-icons/rx';
 
-import { FlexColumn, FlexRow, SaveButton, Typography } from '@/shared/ui';
-import { useGetMenuListQuery } from '@/entities/menu-setting';
+import {
+  dialogActions,
+  DialogType,
+  FlexColumn,
+  FlexRow,
+  SaveButton,
+  Typography,
+} from '@/shared/ui';
+import { useGetMenuListQuery, useUpdateMenuMutation } from '@/entities/menu-setting';
 import { RMenu } from '@/entities/router';
+import { handleAuthError } from '@/entities/auth';
+import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
 export function MenuSetting() {
+  const navigate = useNavigate();
+
   const [menuList, setMenuList] = useState<RMenu[]>([]);
 
   const getMenuListQuery = useGetMenuListQuery();
+  const updateMenuMutation = useUpdateMenuMutation();
 
   useEffect(() => {
     if (getMenuListQuery.data?.data?.menuList) {
@@ -18,6 +31,51 @@ export function MenuSetting() {
       setMenuList(newMenuList);
     }
   }, [getMenuListQuery.data?.data?.menuList]);
+
+  const updateMenu = () => {
+    updateMenuMutation.mutate(menuList, {
+      onSuccess: async (data, variables) => {
+        const isError = await handleAuthError({
+          data,
+          onUnauthenticated: () => navigate('/', { replace: true }),
+          onOtherError: () => {
+            dialogActions.open({
+              title: '메뉴 수정 실패',
+              contents: data?.msg ?? '관리자에게 문의해 주세요.',
+              dialogType: DialogType.ERROR,
+            });
+          },
+          onRefreshSuccess: () => {
+            updateMenuMutation.mutate(variables, {
+              onSuccess: (data) => {
+                if (data.success) {
+                  toast.success('메뉴 수정 성공');
+                  close();
+                }
+              },
+            });
+          },
+        });
+
+        if (!isError) {
+          toast.success('메뉴 수정 성공');
+          close();
+        }
+      },
+    });
+  };
+
+  const updateMenuConfirmation = () => {
+    dialogActions.open({
+      title: '메뉴 수정',
+      contents: '메뉴를 수정하시겠습니까?',
+      overlayClose: true,
+      withCancel: true,
+      cancelText: '아니요',
+      confirmText: '수정',
+      onConfirm: updateMenu,
+    });
+  };
 
   return (
     <FlexColumn
@@ -39,7 +97,7 @@ export function MenuSetting() {
           height: 65,
         }}
       >
-        <SaveButton onClick={() => {}} />
+        <SaveButton onClick={updateMenuConfirmation} />
       </FlexRow>
 
       <Reorder.Group

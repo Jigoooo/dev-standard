@@ -75,6 +75,10 @@ export function FileUploadModal() {
     dialogActions.open({
       title: '파일 업로드',
       contents: '파일을 업로드 하시겠습니까?',
+      overlayClose: true,
+      withCancel: true,
+      cancelText: '아니요',
+      confirmText: '업로드',
       onConfirm: fileSave,
     });
   };
