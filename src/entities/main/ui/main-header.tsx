@@ -1,13 +1,12 @@
-import { Typography } from '@/shared/ui';
+import { FlexRow, Typography } from '@/shared/ui';
 
 export function MainHeader({ title }: { title: string }) {
   return (
-    <div
+    <FlexRow
       style={{
         position: 'sticky',
         top: 0,
         left: 0,
-        display: 'flex',
         width: '100%',
         height: 60,
         minHeight: 60,
@@ -17,6 +16,6 @@ export function MainHeader({ title }: { title: string }) {
       <Typography style={{ color: '#000000', fontSize: '1.6rem', fontWeight: 700 }}>
         {title}
       </Typography>
-    </div>
+    </FlexRow>
   );
 }

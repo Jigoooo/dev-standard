@@ -15,6 +15,7 @@ export enum Router {
   EXCEL_UPLOAD_DOWNLOAD = 'excel-upload-download',
   MANAGER = 'manager',
   ROLE_MANAGEMENT = 'role-management',
+  MENU_SETTING = 'menu-setting',
 }
 
 export type TMenu = {

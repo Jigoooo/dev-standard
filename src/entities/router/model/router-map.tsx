@@ -10,6 +10,7 @@ import { MdOutlineManageAccounts } from 'react-icons/md';
 import { IoPersonCircleOutline } from 'react-icons/io5';
 import { FaUikit } from 'react-icons/fa';
 import { IoSettingsSharp } from 'react-icons/io5';
+import { RiListSettingsFill } from 'react-icons/ri';
 
 import { Router } from './router-type.ts';
 
@@ -27,8 +28,11 @@ const ExcelUploadDownload = lazy(() =>
     default: module.ExcelUploadDownload,
   })),
 );
-const RoleManagement = lazy(() =>
-  import('@/pages/role-management').then((module) => ({ default: module.RoleManagement })),
+// const RoleManagement = lazy(() =>
+//   import('@/pages/role-management').then((module) => ({ default: module.RoleManagement })),
+// );
+const MenuSetting = lazy(() =>
+  import('@/pages/menu-setting').then((module) => ({ default: module.MenuSetting })),
 );
 
 export function getRouterComponent(
@@ -39,7 +43,8 @@ export function getRouterComponent(
     [Router.GRID_EXAMPLE]: GridExample,
     [Router.FILE_UPLOAD_DOWNLOAD]: FileUploadDownload,
     [Router.EXCEL_UPLOAD_DOWNLOAD]: ExcelUploadDownload,
-    [Router.ROLE_MANAGEMENT]: RoleManagement,
+    [Router.ROLE_MANAGEMENT]: MenuSetting,
+    [Router.MENU_SETTING]: MenuSetting,
   };
 
   return mapping[router];
@@ -55,6 +60,7 @@ export function getRouterMappedIcon(router: Router): IconType | undefined {
     [Router.EXCEL_UPLOAD_DOWNLOAD]: RiFileExcel2Line,
     [Router.MANAGER]: IoSettingsSharp,
     [Router.ROLE_MANAGEMENT]: MdOutlineManageAccounts,
+    [Router.MENU_SETTING]: RiListSettingsFill,
     [Router.MY_PROFILE]: IoPersonCircleOutline,
   };
 

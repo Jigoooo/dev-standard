@@ -81,19 +81,14 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
             layoutId='current-tab'
             style={{
               height: 45,
-              justifyContent: 'center',
               alignItems: 'center',
-              minWidth: 260,
-              width: 260,
-              paddingInline: 8,
+              minWidth: 220,
+              width: 220,
+              paddingLeft: 16,
+              paddingRight: 4,
               paddingBlock: 4,
               backgroundColor: '#ffffff',
-              maxWidth: 260,
-              // borderTop: '1px solid #cccccc',
-              // borderLeft: '1px solid #cccccc',
-              // borderRight: '1px solid #cccccc',
-              // borderTopLeftRadius: 4,
-              // borderTopRightRadius: 4,
+              maxWidth: 220,
             }}
           >
             <Typography
@@ -115,9 +110,9 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
               gap: 8,
               height: 32,
               overflowY: 'auto',
-              minWidth: 'calc(100% - 340px)',
-              width: 'calc(100vw - 340px)',
-              maxWidth: 'calc(100% - 340px)',
+              minWidth: 'calc(100% - 300px)',
+              width: 'calc(100vw - 300px)',
+              maxWidth: 'calc(100% - 300px)',
               borderLeft: remainingCacheNodes.length > 0 ? '1px solid #cccccc' : undefined,
               borderRight: remainingCacheNodes.length > 0 ? '1px solid #cccccc' : undefined,
               paddingInline: 8,

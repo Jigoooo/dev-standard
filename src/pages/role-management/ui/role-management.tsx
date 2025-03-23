@@ -184,7 +184,7 @@ function useUpdateMenuMemberAuth({ menuAuthList }: { menuAuthList: RMenuMemberAu
             });
 
             if (!isError) {
-              toast.success('엑셀 등록 성공');
+              toast.success('권한 수정 성공');
             }
           },
         });
