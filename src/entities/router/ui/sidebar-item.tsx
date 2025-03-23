@@ -109,8 +109,8 @@ export function SidebarItem({
             style={{
               color: '#ffffff',
               fontSize: '1.2rem',
-              transition: 'transform 0.3s ease',
-              transform: depthOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+              transition: 'transform 0.2s ease',
+              transform: depthOpen ? 'rotate(0deg)' : 'rotate(-90deg)',
             }}
           />
         )}
