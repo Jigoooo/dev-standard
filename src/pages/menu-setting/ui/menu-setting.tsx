@@ -18,15 +18,25 @@ import { handleAuthError } from '@/entities/auth';
 
 export function MenuSetting() {
   const navigate = useNavigate();
-  const { makeGroupMenus } = useRouterMenuContext();
+  const { makeGroupMenus, flattenGroupMenus } = useRouterMenuContext();
 
   const [menuList, setMenuList] = useState<TMenu[]>([]);
+
+  const updateOrderBy = (items: TMenu[]): TMenu[] => {
+    return items.map((item, index) => ({
+      ...item,
+      orderBy: index + 1,
+    }));
+  };
+
   const reorderMenuList = (mainMenu: TMenu, newChildren: TMenu[]) => {
+    const updatedChildren = updateOrderBy(newChildren);
+
     setMenuList((prevMenuList) => {
       const updatedList = [...prevMenuList];
       updatedList[mainMenu.menuIndex] = {
         ...updatedList[mainMenu.menuIndex],
-        children: newChildren,
+        children: updatedChildren,
       };
       return updatedList;
     });
@@ -43,7 +53,7 @@ export function MenuSetting() {
   }, [getMenuListQuery.data?.data?.menuList]);
 
   const updateMenu = () => {
-    updateMenuMutation.mutate(menuList, {
+    updateMenuMutation.mutate(flattenGroupMenus(menuList), {
       onSuccess: async (data, variables) => {
         const isError = await handleAuthError({
           data,
@@ -127,7 +137,9 @@ export function MenuSetting() {
               {mainMenu.children && (
                 <Reorder.Group
                   values={mainMenu.children}
-                  onReorder={(newChildren) => reorderMenuList(mainMenu, newChildren)}
+                  onReorder={(newChildren) => {
+                    reorderMenuList(mainMenu, newChildren);
+                  }}
                 >
                   {mainMenu.children.map((submenu) => {
                     return <ReorderItem key={submenu.menuIndex} menu={submenu} />;
@@ -160,7 +172,7 @@ function ReorderItem({ menu }: { menu: TMenu }) {
       }}
     >
       <Typography>{menu.name}</Typography>
-      <Typography>{menu.orderBy + 1}</Typography>
+      <Typography>{menu.orderBy}</Typography>
       <FlexRow onPointerDown={(e) => controls.start(e)} style={{ cursor: 'grab' }}>
         <RxDragHandleDots2 />
       </FlexRow>

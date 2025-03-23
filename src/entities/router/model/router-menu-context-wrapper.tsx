@@ -55,6 +55,9 @@ const defaultMenus: TMenu[] = [
     mainCd: 9999,
     sub1Cd: 0,
     sub2Cd: 0,
+    menuId: Router.MY_PROFILE,
+    menuLink: `${Router.MAIN}/${Router.MY_PROFILE}`,
+    menuLinkDev: '',
   },
 ];
 
@@ -98,6 +101,9 @@ function makeGroupMenus(responseMenus: RMenu[]): TMenu[] {
           mainCd: menu.mainCd,
           sub1Cd: menu.sub1Cd,
           sub2Cd: menu.sub2Cd,
+          menuId: menu.menuId,
+          menuLink: menu.menuLink,
+          menuLinkDev: menu.menuLinkDev,
         };
       } else {
         subGroups.get(menu.sub1Cd)!.push(menu);
@@ -125,6 +131,9 @@ function makeGroupMenus(responseMenus: RMenu[]): TMenu[] {
           mainCd: menu.mainCd,
           sub1Cd: menu.sub1Cd,
           sub2Cd: menu.sub2Cd,
+          menuId: menu.menuId,
+          menuLink: menu.menuLink,
+          menuLinkDev: menu.menuLinkDev,
         };
       });
     }
@@ -136,6 +145,27 @@ function makeGroupMenus(responseMenus: RMenu[]): TMenu[] {
   }
 
   return mainMenus;
+}
+
+function flattenGroupMenus(menuList: TMenu[]): RMenu[] {
+  return menuList.reduce<RMenu[]>((acc, menu) => {
+    const { children, ...menuWithoutChildren } = menu;
+    acc.push({
+      mainCd: menuWithoutChildren.mainCd,
+      sub1Cd: menuWithoutChildren.sub1Cd,
+      sub2Cd: menuWithoutChildren.sub2Cd,
+      orderBy: menuWithoutChildren.orderBy,
+      menuId: menuWithoutChildren.menuId,
+      menuTitle: menuWithoutChildren.name,
+      menuLink: menuWithoutChildren.menuLink,
+      menuLinkDev: menuWithoutChildren.menuLinkDev,
+      displayYn: menuWithoutChildren.display ? 'Y' : 'N',
+    });
+    if (children && children.length > 0) {
+      acc.push(...flattenGroupMenus(children));
+    }
+    return acc;
+  }, []);
 }
 
 function generateRoutesFromMenus(menus: TMenu[]): RouteObject[] {
@@ -338,6 +368,7 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
           updateRoutes,
           updateRouteName,
           makeGroupMenus,
+          flattenGroupMenus,
         } as TRouterMenuContext
       }
     >

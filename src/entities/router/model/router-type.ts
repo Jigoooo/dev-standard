@@ -31,6 +31,9 @@ export type TMenu = {
   mainCd: number;
   sub1Cd: number;
   sub2Cd: number;
+  menuId: string;
+  menuLink: string;
+  menuLinkDev: string;
 };
 
 export type TCacheNode = {
@@ -94,8 +97,8 @@ export type RMenu = {
   sub1Cd: number;
   sub2Cd: number;
   orderBy: number;
-  menuId: string;
   menuTitle: string;
+  menuId: string;
   menuLink: string;
   menuLinkDev: string;
   displayYn: YesNoType;
@@ -130,6 +133,7 @@ export type TRouterMenuContext = {
   updateRoutes: (updater: (prevRoutes: RouteObject[]) => RouteObject[]) => void;
   updateRouteName: (router: Router, newName: string) => void;
   makeGroupMenus: (menus: RMenu[]) => TMenu[];
+  flattenGroupMenus: (menus: TMenu[]) => RMenu[];
 };
 
 export type PMenuMemberAuthList = {
