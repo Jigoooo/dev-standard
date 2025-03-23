@@ -27,12 +27,6 @@ export function FileUploadDownload() {
     to: format(addMonths(new Date(), 1), 'yyyy-MM-dd'),
   });
 
-  useEffect(() => {
-    // downloadFileApi({
-    //   fileIdx: 14,
-    // });
-  }, []);
-
   const getFileListQuery = useGetFileList();
   const fileList = getFileListQuery.data?.data?.fileList ?? [];
 
