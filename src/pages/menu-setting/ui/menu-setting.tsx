@@ -1,12 +1,23 @@
 import { Reorder, useDragControls } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { RxDragHandleDots2 } from 'react-icons/rx';
 
 import { FlexColumn, FlexRow, SaveButton, Typography } from '@/shared/ui';
+import { useGetMenuListQuery } from '@/entities/menu-setting';
+import { RMenu } from '@/entities/router';
 
 export function MenuSetting() {
-  const [items, setItems] = useState([0, 1, 2, 3]);
+  const [menuList, setMenuList] = useState<RMenu[]>([]);
+
+  const getMenuListQuery = useGetMenuListQuery();
+
+  useEffect(() => {
+    if (getMenuListQuery.data?.data?.menuList) {
+      const newMenuList = getMenuListQuery.data?.data?.menuList ?? [];
+      setMenuList(newMenuList);
+    }
+  }, [getMenuListQuery.data?.data?.menuList]);
 
   return (
     <FlexColumn
@@ -33,8 +44,8 @@ export function MenuSetting() {
 
       <Reorder.Group
         axis='y'
-        values={items}
-        onReorder={setItems}
+        values={menuList}
+        onReorder={setMenuList}
         layoutScroll
         style={{
           userSelect: 'none',
@@ -45,20 +56,20 @@ export function MenuSetting() {
           width: '50%',
         }}
       >
-        {items.map((item) => (
-          <ReorderItem key={item} item={item} />
+        {menuList.map((menu) => (
+          <ReorderItem key={menu.menuId} menu={menu} />
         ))}
       </Reorder.Group>
     </FlexColumn>
   );
 }
 
-function ReorderItem({ item }: { item: any }) {
+function ReorderItem({ menu }: { menu: RMenu }) {
   const controls = useDragControls();
 
   return (
     <Reorder.Item
-      value={item}
+      value={menu}
       dragListener={false}
       dragControls={controls}
       style={{
@@ -70,7 +81,7 @@ function ReorderItem({ item }: { item: any }) {
         gap: 4,
       }}
     >
-      <Typography>{item}</Typography>
+      <Typography>{menu.menuTitle}</Typography>
       <FlexRow onPointerDown={(e) => controls.start(e)} style={{ cursor: 'grab' }}>
         <RxDragHandleDots2 />
       </FlexRow>

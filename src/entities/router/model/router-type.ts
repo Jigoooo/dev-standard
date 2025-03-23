@@ -93,6 +93,7 @@ export type RMenu = {
   menuId: string;
   menuTitle: string;
   menuLink: string;
+  menuLinkDev: string;
   displayYn: YesNoType;
 };
 
