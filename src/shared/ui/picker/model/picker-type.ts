@@ -7,3 +7,5 @@ export type MultiSelectOption = {
   label: string;
   value: string | number;
 };
+
+export type TimePart = 'hours' | 'minutes' | 'seconds';

@@ -20,6 +20,7 @@ import {
   Select,
   Switch,
   Textarea,
+  TimePicker,
   Tooltip,
   Typography,
   useModal,
@@ -198,6 +199,10 @@ export function UiComponent() {
       <FlexRow style={{ alignItems: 'center' }}>
         <Typography style={{ width: 200, fontWeight: 500 }}>Date Range Picker: </Typography>
         <DateFromToPicker minDate={new Date('2025-02-01')} maxDate={new Date('2025-05-30')} />
+      </FlexRow>
+      <FlexRow style={{ alignItems: 'center' }}>
+        <Typography style={{ width: 200, fontWeight: 500 }}>Time Picker: </Typography>
+        <TimePicker />
       </FlexRow>
 
       <DashedDivider strokeColor={'#666666'} style={{ marginBlock: 16 }} />
