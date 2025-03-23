@@ -1,5 +1,5 @@
 import { Reorder, useDragControls } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { createRef, RefObject, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 
@@ -85,6 +85,8 @@ export function MenuSetting() {
     });
   };
 
+  const groupRefs = useRef<Record<number, RefObject<HTMLDivElement | null>>>({});
+
   const updateMenuConfirmation = () => {
     dialogActions.open({
       title: '메뉴 수정',
@@ -132,18 +134,29 @@ export function MenuSetting() {
         }}
       >
         {menuList.map((mainMenu) => {
+          if (!groupRefs.current[mainMenu.menuIndex]) {
+            groupRefs.current[mainMenu.menuIndex] = createRef<HTMLDivElement>();
+          }
+
           return (
             <FlexColumn key={mainMenu.menuIndex} style={{ paddingInline: 20 }}>
               <Typography>{mainMenu.name}</Typography>
               {mainMenu.children && (
                 <Reorder.Group
+                  ref={groupRefs.current[mainMenu.menuIndex]}
                   values={mainMenu.children}
                   onReorder={(newChildren) => {
                     reorderMenuList(mainMenu, newChildren);
                   }}
                 >
                   {mainMenu.children.map((submenu) => {
-                    return <ReorderItem key={submenu.menuIndex} menu={submenu} />;
+                    return (
+                      <ReorderItem
+                        key={submenu.menuIndex}
+                        groupRef={groupRefs.current[mainMenu.menuIndex]}
+                        menu={submenu}
+                      />
+                    );
                   })}
                 </Reorder.Group>
               )}
@@ -155,7 +168,13 @@ export function MenuSetting() {
   );
 }
 
-function ReorderItem({ menu }: { menu: TMenu }) {
+function ReorderItem({
+  menu,
+  groupRef,
+}: {
+  menu: TMenu;
+  groupRef: RefObject<HTMLDivElement | null>;
+}) {
   const controls = useDragControls();
 
   return (
@@ -163,6 +182,7 @@ function ReorderItem({ menu }: { menu: TMenu }) {
       value={menu}
       dragListener={false}
       dragControls={controls}
+      dragConstraints={groupRef}
       style={{
         display: 'flex',
         alignItems: 'center',
