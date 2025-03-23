@@ -128,11 +128,12 @@ export function MenuSetting() {
           borderRadius: 8,
           maxHeight: 'calc(100vh - 300px)',
           width: '50%',
+          paddingBlock: 24,
         }}
       >
         {menuList.map((mainMenu) => {
           return (
-            <FlexColumn key={mainMenu.menuIndex}>
+            <FlexColumn key={mainMenu.menuIndex} style={{ paddingInline: 20 }}>
               <Typography>{mainMenu.name}</Typography>
               {mainMenu.children && (
                 <Reorder.Group
@@ -166,7 +167,7 @@ function ReorderItem({ menu }: { menu: TMenu }) {
         display: 'flex',
         alignItems: 'center',
         width: '100%',
-        paddingInline: 12,
+        paddingInline: 20,
         paddingBlock: 12,
         gap: 4,
       }}
