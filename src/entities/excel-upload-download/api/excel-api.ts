@@ -1,6 +1,7 @@
 import { apiRequest, customedAxios } from '@/shared/api';
 import {
   PExcelDataList,
+  PExcelDeleteList,
   PExcelInfoList,
   PExcelSaveData,
   RExcelDataList,
@@ -29,4 +30,16 @@ export async function excelSaveApi(data: PExcelSaveData) {
 
 export async function excelUpdateApi(data: PExcelSaveData) {
   return await apiRequest<null>(customedAxios.post('/excel/excelUpdate', data));
+}
+
+export async function excelDeleteApi(params: PExcelDeleteList) {
+  return await apiRequest<null>(
+    customedAxios.post(
+      '/excel/excelDelete',
+      {},
+      {
+        params,
+      },
+    ),
+  );
 }

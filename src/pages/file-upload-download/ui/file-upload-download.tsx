@@ -46,6 +46,8 @@ export function FileUploadDownload() {
     setDeleteFileIdxList(convertedDeleteIdxList);
   };
 
+  console.log(deleteFileIdxList);
+
   const [fromToDateString, setFromToDateString] = useState({
     from: format(new Date(), 'yyyy-MM-dd'),
     to: format(addMonths(new Date(), 1), 'yyyy-MM-dd'),
@@ -110,7 +112,7 @@ export function FileUploadDownload() {
           });
 
           if (!isError) {
-            toast.success('권한 수정 성공');
+            toast.success('파일이 삭제되었습니다.');
           }
         },
       },

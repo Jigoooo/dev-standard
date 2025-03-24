@@ -57,3 +57,7 @@ export type PExcelSaveData = {
   excelDataList: RExcelData[];
   deleteDataList?: number[];
 };
+
+export type PExcelDeleteList = {
+  deleteExcelList: number[];
+};

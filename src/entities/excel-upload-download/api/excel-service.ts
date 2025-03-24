@@ -1,7 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { excelSaveApi, excelUpdateApi, getExcelInfoListApi } from './excel-api.ts';
-import { PExcelInfoList, PExcelSaveData } from '../model/excel-upload-download-type.ts';
+import { excelDeleteApi, excelSaveApi, excelUpdateApi, getExcelInfoListApi } from './excel-api.ts';
+import {
+  PExcelDeleteList,
+  PExcelInfoList,
+  PExcelSaveData,
+} from '../model/excel-upload-download-type.ts';
 import { useQueryWrapper } from '@/entities/query';
 
 const EXCEL_INFO_LIST_QUERY_KEY = 'excelInfoListQueryKey';
@@ -42,5 +46,18 @@ export function useUpdateExcelMutation() {
     },
     onError: () => {},
     onSettled: () => {},
+  });
+}
+
+export function useExcelDeleteMutation() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (params: PExcelDeleteList) => excelDeleteApi(params),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [EXCEL_INFO_LIST_QUERY_KEY],
+      });
+    },
   });
 }

@@ -17,6 +17,7 @@ import {
   useTableData,
   ExcelUploadModal,
   writeExcelFile,
+  ButtonStyle,
 } from '@/shared/ui';
 import {
   TExcelInfo,
@@ -24,8 +25,11 @@ import {
   useExcelInfoListQuery,
   useExcelUploadDownloadHeaders,
   useSaveExcelMutation,
+  useExcelDeleteMutation,
 } from '@/entities/excel-upload-download';
 import { handleAuthError } from '@/entities/auth';
+import { AnimatePresence, motion } from 'framer-motion';
+import { colors } from '@/shared/constants';
 
 export function ExcelUploadDownload() {
   const navigate = useNavigate();
@@ -36,6 +40,19 @@ export function ExcelUploadDownload() {
     ...item,
     index: index + 1,
   }));
+
+  const [deleteExcelIdxList, setDeleteExcelIdxList] = useState<number[]>([]);
+  const handleDeleteExcelIdxList = (checkedList: string[]) => {
+    const convertedDeleteIdxList = checkedList
+      .map((checkIdx) => {
+        const findExcelIdx = dataList.find((data) => data.index === Number(checkIdx));
+
+        return findExcelIdx?.idx ?? -1;
+      })
+      .filter((excelIdx) => excelIdx !== -1);
+
+    setDeleteExcelIdxList(convertedDeleteIdxList);
+  };
 
   const {
     excelHeaderKeyLabels,
@@ -53,6 +70,8 @@ export function ExcelUploadDownload() {
     from: format(new Date(), 'yyyy-MM-dd'),
     to: format(addMonths(new Date(), 1), 'yyyy-MM-dd'),
   });
+
+  const excelDeleteMutation = useExcelDeleteMutation();
 
   const registerExcelMutation = useSaveExcelMutation();
   const registerExcel = (excelNm: string, excelDataList: TExcelData[], close: () => void) => {
@@ -152,6 +171,53 @@ export function ExcelUploadDownload() {
     });
   };
 
+  const deleteExcelList = () => {
+    excelDeleteMutation.mutate(
+      { deleteExcelList: deleteExcelIdxList },
+      {
+        onSuccess: async (data, variables) => {
+          const isError = await handleAuthError({
+            data,
+            onUnauthenticated: () => navigate('/', { replace: true }),
+            onOtherError: () => {
+              dialogActions.open({
+                dialogType: DialogType.ERROR,
+                title: '엑셀데이터 삭제에 실패하였습니다.',
+                contents: data.msg ?? '관리자에게 문의해 주세요.',
+              });
+            },
+            onRefreshSuccess: () => {
+              excelDeleteMutation.mutate(variables, {
+                onSuccess: (data) => {
+                  if (data.success) {
+                    toast.success('엑셀데이터가 삭제되었습니다.');
+                  }
+                },
+              });
+            },
+          });
+
+          if (!isError) {
+            toast.success('엑셀데이터가 삭제되었습니다.');
+          }
+        },
+      },
+    );
+  };
+
+  const deleteExcelListConfirmation = () => {
+    dialogActions.open({
+      title: '엑셀데이터를 삭제하시겠습니까?',
+      overlayClose: true,
+      withCancel: true,
+      cancelText: '아니요',
+      confirmText: '삭제',
+      onConfirm: () => {
+        deleteExcelList();
+      },
+    });
+  };
+
   return (
     <FlexColumn
       style={{
@@ -178,7 +244,22 @@ export function ExcelUploadDownload() {
             }}
           />
         </FlexRow>
-        <Button onClick={excelUploadModalOpen}>엑셀 업로드</Button>
+        <FlexRow style={{ flexGrow: 1, alignItems: 'center', justifyContent: 'flex-end', gap: 6 }}>
+          <AnimatePresence>
+            {deleteExcelIdxList.length > 0 && (
+              <motion.div>
+                <Button
+                  buttonStyle={ButtonStyle.OUTLINED}
+                  style={{ borderColor: colors.error[500], color: colors.error[500] }}
+                  onClick={deleteExcelListConfirmation}
+                >
+                  삭제
+                </Button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+          <Button onClick={excelUploadModalOpen}>엑셀 업로드</Button>
+        </FlexRow>
       </FlexRow>
       <Table
         tableStyle={{
@@ -189,6 +270,7 @@ export function ExcelUploadDownload() {
         tableDataList={dataList}
         handelDataList={handelDataList}
         deleteDataList={deleteDataList}
+        handleSyncCheckList={handleDeleteExcelIdxList}
       />
     </FlexColumn>
   );

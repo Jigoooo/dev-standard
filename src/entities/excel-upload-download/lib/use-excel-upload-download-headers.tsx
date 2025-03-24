@@ -287,6 +287,7 @@ export function useExcelUploadDownloadHeaders() {
 
   const excelUploadListHeaders: THeader<TExcelInfo>[] = [
     createHeader('index', '', 60, { pin: 'left', dataAlign: 'right', filter: undefined }),
+    createHeader('check', '', 60, { pin: 'left', dataAlign: 'center', filter: undefined }),
     createHeader('excelNm', '업로드 제목', 200),
     createHeader('insDt', '업로드 일자', 180, {
       formatter: ({ cellData }) => {
