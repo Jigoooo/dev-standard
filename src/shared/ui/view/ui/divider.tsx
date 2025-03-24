@@ -11,8 +11,8 @@ export function Divider({
     <div
       style={{
         ...(direction === 'vertical'
-          ? { width: 1.2, height: '100%', backgroundColor: '#aaaaaa' }
-          : { height: 1.2, width: '100%', backgroundColor: '#aaaaaa' }),
+          ? { width: 1, height: '100%', backgroundColor: '#cccccc' }
+          : { height: 1, width: '100%', backgroundColor: '#cccccc' }),
         ...style,
       }}
     />

@@ -3,10 +3,12 @@ import { createRef, RefObject, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 
-import { RxDragHandleDots2 } from 'react-icons/rx';
+import { RxDragHandleHorizontal } from 'react-icons/rx';
+
 import {
   dialogActions,
   DialogType,
+  Divider,
   FlexColumn,
   FlexRow,
   SaveButton,
@@ -121,15 +123,16 @@ export function MenuSetting() {
         <SaveButton onClick={updateMenuConfirmation} />
       </FlexRow>
 
-      <div
+      <FlexColumn
         style={{
           userSelect: 'none',
           overflowY: 'auto',
-          border: '1px solid #ccc',
+          border: '1px solid #dedede',
           borderRadius: 8,
           maxHeight: 'calc(100vh - 300px)',
           width: '50%',
           paddingBlock: 24,
+          gap: 16,
         }}
       >
         {menuList.map((mainMenu) => {
@@ -138,8 +141,9 @@ export function MenuSetting() {
           }
 
           return (
-            <FlexColumn key={mainMenu.menuIndex} style={{ paddingInline: 20 }}>
-              <Typography>{mainMenu.name}</Typography>
+            <FlexColumn key={mainMenu.menuIndex} style={{ paddingInline: 20, gap: 6 }}>
+              <Typography style={{ fontWeight: 600 }}>{mainMenu.name}</Typography>
+              <Divider />
               {mainMenu.children && (
                 <Reorder.Group
                   ref={groupRefs.current[mainMenu.menuIndex]}
@@ -162,7 +166,7 @@ export function MenuSetting() {
             </FlexColumn>
           );
         })}
-      </div>
+      </FlexColumn>
     </FlexColumn>
   );
 }
@@ -185,15 +189,15 @@ function ReorderItem({
       style={{
         display: 'flex',
         alignItems: 'center',
+        justifyContent: 'space-between',
         width: '100%',
-        paddingInline: 20,
-        paddingBlock: 12,
-        gap: 4,
+        paddingInline: 16,
+        paddingBlock: 8,
       }}
     >
-      <Typography>{menu.name}</Typography>
+      <Typography style={{ fontWeight: 500, fontSize: '0.9rem' }}>{menu.name}</Typography>
       <FlexRow onPointerDown={(e) => controls.start(e)} style={{ cursor: 'grab' }}>
-        <RxDragHandleDots2 />
+        <RxDragHandleHorizontal style={{ fontSize: '1.4rem' }} />
       </FlexRow>
     </Reorder.Item>
   );
