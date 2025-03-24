@@ -17,7 +17,7 @@ export function VerticalTable({
       }}
     >
       <tbody>
-        {data.map((row, index) => (
+        {data.map((_, index) => (
           <tr key={index} style={{ borderBottom: '1px solid #ddd' }}>
             <th
               style={{
@@ -27,9 +27,9 @@ export function VerticalTable({
                 verticalAlign: 'top',
               }}
             >
-              {row.label}
+              {index}
             </th>
-            <td style={{ padding: '8px' }}>{row.value}</td>
+            <td style={{ padding: '8px' }}>{index}</td>
           </tr>
         ))}
       </tbody>

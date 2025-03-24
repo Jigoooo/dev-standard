@@ -1,3 +1,3 @@
 export type PMemberInfo = {
-  memberId?: string;
+  memberId: string;
 };
