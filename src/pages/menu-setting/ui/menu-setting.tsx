@@ -20,12 +20,14 @@ import { useGetMenuListQuery, useUpdateMenuMutation } from '@/entities/menu-sett
 import { TMenu, useRouterMenuContext } from '@/entities/router';
 import { handleAuthError } from '@/entities/auth';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
+import { colors } from '@/shared/constants';
 
 export function MenuSetting() {
   const navigate = useNavigate();
   const { makeGroupMenus, flattenGroupMenus } = useRouterMenuContext();
 
   const [menuList, setMenuList] = useState<TMenu[]>([]);
+  const originalMenuListRef = useRef<TMenu[]>([]);
   const [hoverMenuId, setHoverMenuId] = useState<string | null>(null);
   const [editId, setEditId] = useState<string | null>(null);
   const editRef = useHandleClickOutsideRef<HTMLInputElement>({
@@ -58,8 +60,6 @@ export function MenuSetting() {
   const handleMenuNameChange = (targetMenuId: string, newName: string) => {
     const updateMenuNameInList = (menus: TMenu[]): TMenu[] => {
       return menus.map((menu) => {
-        console.log(menu.menuIndex);
-        console.log(targetMenuId);
         if (menu.menuId === targetMenuId) {
           return { ...menu, name: newName };
         }
@@ -80,7 +80,10 @@ export function MenuSetting() {
   useEffect(() => {
     if (getMenuListQuery.data?.data?.menuList) {
       const newMenuList = getMenuListQuery.data?.data?.menuList ?? [];
-      setMenuList(makeGroupMenus(newMenuList));
+      const grouped = makeGroupMenus(newMenuList);
+      setMenuList(grouped);
+
+      originalMenuListRef.current = grouped;
     }
   }, [getMenuListQuery.data?.data?.menuList]);
 
@@ -172,6 +175,16 @@ export function MenuSetting() {
             groupRefs.current[mainMenu.menuIndex] = createRef<HTMLDivElement>();
           }
 
+          const originalValue = findOriginalNameAndOrderBy(
+            mainMenu.menuId,
+            originalMenuListRef.current,
+          );
+          let isModified = false;
+          if (originalValue) {
+            const { name: originalName } = originalValue;
+            isModified = originalName !== mainMenu.name;
+          }
+
           return (
             <FlexColumn key={mainMenu.menuId} style={{ paddingInline: 20, gap: 8 }}>
               <div style={{ height: 26 }}>
@@ -194,7 +207,14 @@ export function MenuSetting() {
                     onMouseEnter={() => setHoverMenuId(mainMenu.menuId)}
                     onMouseLeave={() => setHoverMenuId(null)}
                   >
-                    <Typography style={{ fontWeight: 600 }}>{mainMenu.name}</Typography>
+                    <Typography
+                      style={{
+                        fontWeight: 600,
+                        color: isModified ? colors.error[400] : 'inherit',
+                      }}
+                    >
+                      {mainMenu.name}
+                    </Typography>
                     <AnimatePresence initial={false}>
                       {hoverMenuId === mainMenu.menuId && (
                         <motion.div
@@ -237,6 +257,7 @@ export function MenuSetting() {
                         groupRef={groupRefs.current[mainMenu.menuIndex]}
                         menu={submenu}
                         handleMenuNameChange={handleMenuNameChange}
+                        originalMenuList={originalMenuListRef.current}
                       />
                     );
                   })}
@@ -254,10 +275,12 @@ function ReorderItem({
   menu,
   groupRef,
   handleMenuNameChange,
+  originalMenuList,
 }: {
   menu: TMenu;
   groupRef: RefObject<HTMLDivElement | null>;
   handleMenuNameChange: (menuId: string, newName: string) => void;
+  originalMenuList: TMenu[];
 }) {
   const controls = useDragControls();
   const [isHover, setIsHover] = useState(false);
@@ -267,8 +290,16 @@ function ReorderItem({
     condition: isEdit,
     outsideClickAction: () => {
       setIsEdit(false);
+      setIsHover(false);
     },
   });
+
+  const findValue = findOriginalNameAndOrderBy(menu.menuId, originalMenuList);
+  const originalName = findValue?.name;
+  const originalOrderBy = findValue?.orderBy;
+  const isModified =
+    (originalName !== undefined && originalName !== menu.name) ||
+    (originalOrderBy !== undefined && originalOrderBy !== menu.orderBy);
 
   return (
     <Reorder.Item
@@ -296,6 +327,7 @@ function ReorderItem({
           onKeyDown={(event) => {
             if (event.key === 'Enter') {
               setIsEdit(false);
+              setIsHover(false);
             }
           }}
         />
@@ -305,7 +337,15 @@ function ReorderItem({
           onMouseEnter={() => setIsHover(true)}
           onMouseLeave={() => setIsHover(false)}
         >
-          <Typography style={{ fontWeight: 500, fontSize: '0.9rem' }}>{menu.name}</Typography>
+          <Typography
+            style={{
+              fontWeight: 500,
+              fontSize: '0.9rem',
+              color: isModified ? colors.error[400] : 'inherit',
+            }}
+          >
+            {menu.name}
+          </Typography>
           <AnimatePresence initial={false}>
             {isHover && (
               <motion.div
@@ -335,4 +375,28 @@ function ReorderItem({
       </FlexRow>
     </Reorder.Item>
   );
+}
+
+function findOriginalNameAndOrderBy(
+  targetMenuId: string,
+  menus: TMenu[],
+): { name: string; orderBy: number } | undefined {
+  for (const menu of menus) {
+    if (menu.menuId === targetMenuId) {
+      return {
+        name: menu.name,
+        orderBy: menu.orderBy,
+      };
+    }
+    if (menu.children) {
+      const found = findOriginalNameAndOrderBy(targetMenuId, menu.children);
+      if (found !== undefined) {
+        return {
+          name: found.name,
+          orderBy: found.orderBy,
+        };
+      }
+    }
+  }
+  return undefined;
 }
