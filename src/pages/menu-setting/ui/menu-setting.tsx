@@ -1,8 +1,9 @@
-import { Reorder, useDragControls } from 'framer-motion';
+import { AnimatePresence, motion, Reorder, useDragControls } from 'framer-motion';
 import { createRef, RefObject, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 
+import { MdOutlineEdit } from 'react-icons/md';
 import { RxDragHandleHorizontal } from 'react-icons/rx';
 
 import {
@@ -23,6 +24,7 @@ export function MenuSetting() {
   const { makeGroupMenus, flattenGroupMenus } = useRouterMenuContext();
 
   const [menuList, setMenuList] = useState<TMenu[]>([]);
+  const [hoverMenuIndex, setHoverMenuIndex] = useState<number | null>(null);
 
   const updateOrderBy = (items: TMenu[]): TMenu[] => {
     return items.map((item, index) => ({
@@ -109,19 +111,21 @@ export function MenuSetting() {
         gap: 6,
       }}
     >
-      <FlexRow
-        style={{
-          width: '50%',
-          paddingTop: 24,
-          paddingBottom: 6,
-          alignItems: 'center',
-          justifyContent: 'flex-end',
-          gap: 6,
-          height: 65,
-        }}
-      >
-        <SaveButton onClick={updateMenuConfirmation} />
-      </FlexRow>
+      {menuList.length > 0 && (
+        <FlexRow
+          style={{
+            width: '50%',
+            paddingTop: 24,
+            paddingBottom: 6,
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+            gap: 6,
+            height: 65,
+          }}
+        >
+          <SaveButton onClick={updateMenuConfirmation} />
+        </FlexRow>
+      )}
 
       <FlexColumn
         style={{
@@ -142,7 +146,26 @@ export function MenuSetting() {
 
           return (
             <FlexColumn key={mainMenu.menuIndex} style={{ paddingInline: 20, gap: 6 }}>
-              <Typography style={{ fontWeight: 600 }}>{mainMenu.name}</Typography>
+              <FlexRow
+                style={{ alignItems: 'center', gap: 6 }}
+                onMouseEnter={() => setHoverMenuIndex(mainMenu.menuIndex)}
+                onMouseLeave={() => setHoverMenuIndex(null)}
+              >
+                <Typography style={{ fontWeight: 600 }}>{mainMenu.name}</Typography>
+                <AnimatePresence initial={false}>
+                  {hoverMenuIndex === mainMenu.menuIndex && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.1 }}
+                    >
+                      <MdOutlineEdit style={{ cursor: 'pointer' }} onClick={() => {}} />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </FlexRow>
+
               <Divider />
               {mainMenu.children && (
                 <Reorder.Group
@@ -179,6 +202,7 @@ function ReorderItem({
   groupRef: RefObject<HTMLDivElement | null>;
 }) {
   const controls = useDragControls();
+  const [hover, setHover] = useState(false);
 
   return (
     <Reorder.Item
@@ -192,10 +216,29 @@ function ReorderItem({
         justifyContent: 'space-between',
         width: '100%',
         paddingInline: 16,
-        paddingBlock: 8,
+        paddingBlock: 4,
+        height: 40,
       }}
     >
-      <Typography style={{ fontWeight: 500, fontSize: '0.9rem' }}>{menu.name}</Typography>
+      <FlexRow
+        style={{ alignItems: 'center', gap: 6 }}
+        onMouseEnter={() => setHover(true)}
+        onMouseLeave={() => setHover(false)}
+      >
+        <Typography style={{ fontWeight: 500, fontSize: '0.9rem' }}>{menu.name}</Typography>
+        <AnimatePresence initial={false}>
+          {hover && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.1 }}
+            >
+              <MdOutlineEdit style={{ cursor: 'pointer' }} onClick={() => {}} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </FlexRow>
       <FlexRow onPointerDown={(e) => controls.start(e)} style={{ cursor: 'grab' }}>
         <RxDragHandleHorizontal style={{ fontSize: '1.4rem' }} />
       </FlexRow>
