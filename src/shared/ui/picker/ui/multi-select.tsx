@@ -59,7 +59,7 @@ export function MultiSelect<ValuesType extends (string | number)[]>({
     }
   }, [isOpen]);
 
-  const ref = useHandleClickOutsideRef({
+  const ref = useHandleClickOutsideRef<HTMLDivElement>({
     condition: isOpen,
     outsideClickAction: () => {
       if (strategy === 'absolute') {
