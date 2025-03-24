@@ -12,8 +12,8 @@ export function UserManagementEditModal({ memberInfo }: { memberInfo: RMember })
         }}
       >
         <tbody>
-          {[].map((_, index) => (
-            <tr key={index} style={{ borderBottom: '1px solid #ddd' }}>
+          {Object.entries(memberInfo).map(([key, value], index) => (
+            <tr key={key} style={{ borderBottom: '1px solid #ddd' }}>
               <th
                 style={{
                   textAlign: 'left',
@@ -22,9 +22,9 @@ export function UserManagementEditModal({ memberInfo }: { memberInfo: RMember })
                   verticalAlign: 'top',
                 }}
               >
-                {index}
+                {key}
               </th>
-              <td style={{ padding: '8px' }}>{index}</td>
+              <td style={{ padding: '8px' }}>{value}</td>
             </tr>
           ))}
         </tbody>

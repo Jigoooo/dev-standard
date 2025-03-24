@@ -32,7 +32,12 @@ export function useUserManagementHeaders() {
 
     userManagementEditModal.open(({ overlayRef, close }) => {
       return (
-        <ModalLayout overlayRef={overlayRef} title={'사용자 수정'} close={close}>
+        <ModalLayout
+          overlayRef={overlayRef}
+          title={'사용자 수정'}
+          close={close}
+          containerStyle={{ width: 800, height: 600 }}
+        >
           <UserManagementEditModal memberInfo={memberInfo} />
         </ModalLayout>
       );
