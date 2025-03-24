@@ -6,6 +6,7 @@ import { format } from 'date-fns';
 export function useFileUploadDownloadHeaders(): THeader<TFileListItem>[] {
   return [
     createHeader('index', '', 60, { pin: 'left', dataAlign: 'right', filter: undefined }),
+    createHeader('check', '', 60, { pin: 'left', dataAlign: 'center', filter: undefined }),
     createHeader('fileNm', '파일명', 220),
     createHeader('fileSize', '파일 Size', 140, {
       dataAlign: 'right',

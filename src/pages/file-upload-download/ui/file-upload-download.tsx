@@ -3,7 +3,10 @@ import { addMonths, format } from 'date-fns';
 
 import {
   Button,
+  ButtonStyle,
   DateFromToPicker,
+  dialogActions,
+  DialogType,
   FlexColumn,
   FlexRow,
   ModalLayout,
@@ -15,17 +18,40 @@ import {
 import {
   FileUploadModal,
   TFileListItem,
+  useDeleteFileMutation,
   useFileUploadDownloadHeaders,
   useGetFileList,
 } from '@/entities/file-upload-download';
+import { colors } from '@/shared/constants';
+import { AnimatePresence, motion } from 'framer-motion';
+import { handleAuthError } from '@/entities/auth';
+import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
 export function FileUploadDownload() {
+  const navigate = useNavigate();
+
   const fileDownloadHeaders = useFileUploadDownloadHeaders();
   const { dataList, setDataList, handelDataList, deleteDataList } = useTableData<TFileListItem>([]);
+  const [deleteFileIdxList, setDeleteFileIdxList] = useState<number[]>([]);
+  const handleDeleteFileIdxList = (checkedList: string[]) => {
+    const convertedDeleteIdxList = checkedList
+      .map((checkIdx) => {
+        const findFileIdx = dataList.find((data) => data.index === Number(checkIdx));
+
+        return findFileIdx?.fileIdx ?? -1;
+      })
+      .filter((fileIdx) => fileIdx !== -1);
+
+    setDeleteFileIdxList(convertedDeleteIdxList);
+  };
+
   const [fromToDateString, setFromToDateString] = useState({
     from: format(new Date(), 'yyyy-MM-dd'),
     to: format(addMonths(new Date(), 1), 'yyyy-MM-dd'),
   });
+
+  const deleteFileMutation = useDeleteFileMutation();
 
   const getFileListQuery = useGetFileList();
   const fileList = getFileListQuery.data?.data?.fileList ?? [];
@@ -57,6 +83,53 @@ export function FileUploadDownload() {
     });
   };
 
+  const deleteFileList = () => {
+    deleteFileMutation.mutate(
+      { deleteFileList: deleteFileIdxList },
+      {
+        onSuccess: async (data, variables) => {
+          const isError = await handleAuthError({
+            data,
+            onUnauthenticated: () => navigate('/', { replace: true }),
+            onOtherError: () => {
+              dialogActions.open({
+                dialogType: DialogType.ERROR,
+                title: '파일 삭제에 실패하였습니다.',
+                contents: data.msg ?? '관리자에게 문의해 주세요.',
+              });
+            },
+            onRefreshSuccess: () => {
+              deleteFileMutation.mutate(variables, {
+                onSuccess: (data) => {
+                  if (data.success) {
+                    toast.success('파일이 삭제되었습니다.');
+                  }
+                },
+              });
+            },
+          });
+
+          if (!isError) {
+            toast.success('권한 수정 성공');
+          }
+        },
+      },
+    );
+  };
+
+  const deleteFileListConfirmation = () => {
+    dialogActions.open({
+      title: '파일을 삭제하시겠습니까?',
+      overlayClose: true,
+      withCancel: true,
+      cancelText: '아니요',
+      confirmText: '삭제',
+      onConfirm: () => {
+        deleteFileList();
+      },
+    });
+  };
+
   return (
     <FlexColumn
       style={{
@@ -83,7 +156,22 @@ export function FileUploadDownload() {
             }}
           />
         </FlexRow>
-        <Button onClick={fileUploadModalOpen}>파일 업로드</Button>
+        <FlexRow style={{ flexGrow: 1, alignItems: 'center', justifyContent: 'flex-end', gap: 6 }}>
+          <AnimatePresence>
+            {deleteFileIdxList.length > 0 && (
+              <motion.div>
+                <Button
+                  buttonStyle={ButtonStyle.OUTLINED}
+                  style={{ borderColor: colors.error[500], color: colors.error[500] }}
+                  onClick={deleteFileListConfirmation}
+                >
+                  삭제
+                </Button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+          <Button onClick={fileUploadModalOpen}>파일 업로드</Button>
+        </FlexRow>
       </FlexRow>
       <Table
         tableStyle={{
@@ -94,9 +182,7 @@ export function FileUploadDownload() {
         tableDataList={dataList}
         handelDataList={handelDataList}
         deleteDataList={deleteDataList}
-        handleSyncCheckList={(checkedList) => {
-          console.log(checkedList);
-        }}
+        handleSyncCheckList={handleDeleteFileIdxList}
       />
     </FlexColumn>
   );

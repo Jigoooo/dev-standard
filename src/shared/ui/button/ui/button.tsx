@@ -20,6 +20,7 @@ const defaultButtonStyle: CSSProperties = {
   fontWeight: 500,
   height: 32,
   lineHeight: 0,
+  width: 'auto',
 } as const;
 
 const buttonStyles: Record<ButtonStyle, CSSProperties> = {

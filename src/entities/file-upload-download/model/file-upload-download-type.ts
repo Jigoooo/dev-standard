@@ -25,3 +25,7 @@ export type PFileDownload = {
 export type PFileSaveList = {
   fileList: File[];
 };
+
+export type PDeleteFileList = {
+  deleteFileList: number[];
+};

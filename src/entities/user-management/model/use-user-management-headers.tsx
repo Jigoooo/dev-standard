@@ -6,7 +6,7 @@ export function useUserManagementHeaders() {
     createHeader('index', '', 60, { pin: 'left', dataAlign: 'right', filter: undefined }),
     createHeader('memberId', '아이디', 150),
     createHeader('memberNm', '이름', 150),
-    createHeader('button', '', 150, {
+    createHeader('button', '', 80, {
       filter: undefined,
       cell: () => {
         return <ModifyButton />;

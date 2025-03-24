@@ -2,6 +2,7 @@ import { saveAs } from 'file-saver';
 
 import { apiRequest, customedAxios } from '@/shared/api';
 import {
+  PDeleteFileList,
   PFileDownload,
   PFileListItem,
   PFileSaveList,
@@ -50,4 +51,8 @@ export async function fileSaveApi(data: PFileSaveList) {
       },
     }),
   );
+}
+
+export async function deleteFileApi(data: PDeleteFileList) {
+  return await apiRequest<null>(customedAxios.post('/file/deleteFile', data));
 }
