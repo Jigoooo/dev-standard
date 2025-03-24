@@ -9,14 +9,30 @@ import {
 } from '@/shared/ui';
 import { RRoleUser } from '@/entities/router';
 import { UserManagementEditModal } from '@/entities/user-management';
-import { getMemberInfoApi } from '@/entities/user-management/api/user-management-api.ts';
+import { getMemberInfoApi } from '../api/user-management-api.ts';
+import { handleAuthError } from '@/entities/auth';
+import { useNavigate } from 'react-router-dom';
 
 export function useUserManagementHeaders() {
+  const navigate = useNavigate();
+
   const userManagementEditModal = useModal();
   const openUserManagementEditModal = async (memberId: string) => {
-    const responseMemberInfo = await getMemberInfoApi({
+    let responseMemberInfo = await getMemberInfoApi({
       memberId,
     });
+
+    const isError = await handleAuthError({
+      data: responseMemberInfo,
+      onUnauthenticated: () => navigate('/', { replace: true }),
+      onRefreshSuccess: () => {},
+    });
+
+    if (isError) {
+      responseMemberInfo = await getMemberInfoApi({
+        memberId,
+      });
+    }
 
     const memberInfo = responseMemberInfo.data?.memberInfo;
 

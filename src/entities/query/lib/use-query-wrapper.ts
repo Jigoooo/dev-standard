@@ -22,6 +22,7 @@ export function useQueryWrapper<
     AdapterResponseType<TData>,
     TQueryKey
   >,
+  onOtherError?: () => void,
 ): UseQueryResult<AdapterResponseType<TData>, TError> {
   const navigate = useNavigate();
   const query = useQuery(options);
@@ -31,6 +32,7 @@ export function useQueryWrapper<
       handleAuthError({
         data: query.data,
         onUnauthenticated: () => navigate('/', { replace: true }),
+        onOtherError,
         onRefreshSuccess: () => query.refetch(),
       });
     }
