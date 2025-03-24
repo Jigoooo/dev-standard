@@ -137,9 +137,8 @@ export function CustomHorizontalScrollbar({
           height: 14,
           width: containerWidth + 2,
           backgroundColor,
-          opacity: isScrollbarNeeded && showScrollbar ? 1 : 0,
+          display: isScrollbarNeeded && showScrollbar ? 'initial' : 'none',
           pointerEvents: isScrollbarNeeded && showScrollbar ? 'auto' : 'none',
-          transition: 'opacity 0.16s',
           borderLeft: border,
           borderTop: border,
         }}

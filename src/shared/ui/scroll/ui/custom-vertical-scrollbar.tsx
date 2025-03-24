@@ -147,9 +147,8 @@ export function CustomVerticalScrollbar({
         width: 14,
         height: containerHeight,
         backgroundColor,
-        opacity: isScrollbarNeeded && showScrollbar ? 1 : 0,
+        display: isScrollbarNeeded && showScrollbar ? 'initial' : 'none',
         pointerEvents: isScrollbarNeeded && showScrollbar ? 'auto' : 'none',
-        transition: 'opacity 0.16s',
         borderLeft: border,
       }}
       onMouseDown={(event) => {

@@ -5,6 +5,7 @@ import { FiSearch } from 'react-icons/fi';
 import {
   FlexRow,
   Input,
+  loadingAction,
   SearchButton,
   Table,
   TDataWithIndexCheck,
@@ -42,6 +43,10 @@ export function GridExample() {
   useEffect(() => {
     let isMounted = true;
     const fetchUsers = async () => {
+      loadingAction.show({
+        loadingText: '데이터를 가져오는중 입니다.',
+      });
+
       const allUsers = [];
 
       for await (const batch of generateUsers({
@@ -53,6 +58,8 @@ export function GridExample() {
           setDataList((prev) => [...prev, ...batch]);
         }
       }
+
+      loadingAction.hide();
     };
     fetchUsers();
     return () => {
@@ -90,9 +97,6 @@ export function GridExample() {
         tableDataList={dataList}
         handelDataList={handelDataList}
         deleteDataList={deleteDataList}
-        handleSyncCheckList={(checkedList) => {
-          console.log(checkedList);
-        }}
       />
     </div>
   );

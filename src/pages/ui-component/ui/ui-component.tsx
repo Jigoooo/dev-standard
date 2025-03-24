@@ -136,13 +136,13 @@ export function UiComponent() {
         <Typography style={{ width: 200, fontWeight: 500 }}>Show loading: </Typography>
         <Button
           onClick={async () => {
-            loadingAction.showLoading({
+            loadingAction.show({
               loadingText: 'Loading...',
             });
 
             await sleep(4000);
 
-            loadingAction.hideLoading();
+            loadingAction.hide();
           }}
           style={{ backgroundColor: '#6f9e28' }}
         >

@@ -14,6 +14,7 @@ export function LoadingProvider() {
       <AnimatePresence initial={false}>
         {loadingState.isLoading && loadingState.isActiveOverlay && (
           <motion.div
+            key='overlay'
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -31,6 +32,7 @@ export function LoadingProvider() {
 
         {loadingState.isLoading && (
           <motion.div
+            key='loader'
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -50,7 +52,7 @@ export function LoadingProvider() {
           >
             <span className={'loader'} />
             <Typography style={{ fontSize: '1.2rem', color: '#f1f1f1', fontWeight: 600 }}>
-              Loading...
+              {loadingState.loadingText}
             </Typography>
           </motion.div>
         )}

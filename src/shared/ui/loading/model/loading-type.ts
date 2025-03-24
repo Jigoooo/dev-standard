@@ -5,8 +5,8 @@ export type LoadingStates = {
 };
 
 type LoadingActions = {
-  showLoading: (options?: { loadingText?: string; isActiveOverlay?: boolean }) => void;
-  hideLoading: () => void;
+  show: (options?: { loadingText?: string; isActiveOverlay?: boolean }) => void;
+  hide: () => void;
 };
 
 export type LoadingStoreInterface = LoadingStates & {

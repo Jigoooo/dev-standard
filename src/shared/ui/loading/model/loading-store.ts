@@ -13,7 +13,7 @@ const useLoadingStore = create<LoadingStoreInterface>()((setState) => {
   return {
     ...loadingInitialState,
     actions: {
-      showLoading: ({ loadingText = '', isActiveOverlay = true } = {}) => {
+      show: ({ loadingText = '', isActiveOverlay = true } = {}) => {
         setState((state) => ({
           ...state,
           isLoading: true,
@@ -21,7 +21,7 @@ const useLoadingStore = create<LoadingStoreInterface>()((setState) => {
           loadingText,
         }));
       },
-      hideLoading: () => {
+      hide: () => {
         setState((state) => ({
           ...state,
           isLoading: false,

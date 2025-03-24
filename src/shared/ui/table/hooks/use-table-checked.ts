@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export function useTableChecked<T extends Record<string, any>, K extends keyof T>({
   dataList,
@@ -8,6 +8,10 @@ export function useTableChecked<T extends Record<string, any>, K extends keyof T
   dataKey: K;
 }) {
   const [checkList, setCheckList] = useState<T[K][]>([]);
+
+  useEffect(() => {
+    setCheckList([]);
+  }, [dataList.length]);
 
   const isChecked = (data: T) => checkList.includes(data[dataKey]);
 
