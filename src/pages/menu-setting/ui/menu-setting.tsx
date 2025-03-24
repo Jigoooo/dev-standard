@@ -26,12 +26,12 @@ export function MenuSetting() {
   const { makeGroupMenus, flattenGroupMenus } = useRouterMenuContext();
 
   const [menuList, setMenuList] = useState<TMenu[]>([]);
-  const [hoverMenuIndex, setHoverMenuIndex] = useState<number | null>(null);
-  const [editIndex, setEditIndex] = useState<number | null>(null);
+  const [hoverMenuId, setHoverMenuId] = useState<string | null>(null);
+  const [editId, setEditId] = useState<string | null>(null);
   const editRef = useHandleClickOutsideRef<HTMLInputElement>({
-    condition: editIndex !== null,
+    condition: editId !== null,
     outsideClickAction: () => {
-      setEditIndex(null);
+      setEditId(null);
     },
   });
 
@@ -55,15 +55,23 @@ export function MenuSetting() {
     });
   };
 
-  const handleMainMenuNameChange = (menuIndex: number, newName: string) => {
-    setMenuList((prevMenuList) => {
-      const updatedList = [...prevMenuList];
-      updatedList[menuIndex] = {
-        ...updatedList[menuIndex],
-        name: newName,
-      };
-      return updatedList;
-    });
+  const handleMenuNameChange = (targetMenuId: string, newName: string) => {
+    const updateMenuNameInList = (menus: TMenu[]): TMenu[] => {
+      return menus.map((menu) => {
+        console.log(menu.menuIndex);
+        console.log(targetMenuId);
+        if (menu.menuId === targetMenuId) {
+          return { ...menu, name: newName };
+        }
+
+        if (menu.children) {
+          return { ...menu, children: updateMenuNameInList(menu.children) };
+        }
+        return menu;
+      });
+    };
+
+    setMenuList((prevMenuList) => updateMenuNameInList(prevMenuList));
   };
 
   const getMenuListQuery = useGetMenuListQuery();
@@ -165,30 +173,30 @@ export function MenuSetting() {
           }
 
           return (
-            <FlexColumn key={mainMenu.menuIndex} style={{ paddingInline: 20, gap: 8 }}>
+            <FlexColumn key={mainMenu.menuId} style={{ paddingInline: 20, gap: 8 }}>
               <div style={{ height: 26 }}>
-                {editIndex === mainMenu.menuIndex ? (
+                {editId === mainMenu.menuId ? (
                   <Input
                     ref={editRef}
                     value={mainMenu.name}
                     onChange={(event) => {
-                      handleMainMenuNameChange(mainMenu.menuIndex, event.target.value);
+                      handleMenuNameChange(mainMenu.menuId, event.target.value);
                     }}
                     onKeyDown={(event) => {
                       if (event.key === 'Enter') {
-                        setEditIndex(null);
+                        setEditId(null);
                       }
                     }}
                   />
                 ) : (
                   <FlexRow
                     style={{ alignItems: 'center', gap: 6 }}
-                    onMouseEnter={() => setHoverMenuIndex(mainMenu.menuIndex)}
-                    onMouseLeave={() => setHoverMenuIndex(null)}
+                    onMouseEnter={() => setHoverMenuId(mainMenu.menuId)}
+                    onMouseLeave={() => setHoverMenuId(null)}
                   >
                     <Typography style={{ fontWeight: 600 }}>{mainMenu.name}</Typography>
                     <AnimatePresence initial={false}>
-                      {hoverMenuIndex === mainMenu.menuIndex && (
+                      {hoverMenuId === mainMenu.menuId && (
                         <motion.div
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
@@ -198,7 +206,7 @@ export function MenuSetting() {
                           <MdOutlineEdit
                             style={{ cursor: 'pointer' }}
                             onClick={() => {
-                              setEditIndex(mainMenu.menuIndex);
+                              setEditId(mainMenu.menuId);
                               setTimeout(() => {
                                 if (editRef.current) {
                                   editRef.current.focus();
@@ -225,9 +233,10 @@ export function MenuSetting() {
                   {mainMenu.children.map((submenu) => {
                     return (
                       <ReorderItem
-                        key={submenu.menuIndex}
+                        key={submenu.menuId}
                         groupRef={groupRefs.current[mainMenu.menuIndex]}
                         menu={submenu}
+                        handleMenuNameChange={handleMenuNameChange}
                       />
                     );
                   })}
@@ -244,12 +253,22 @@ export function MenuSetting() {
 function ReorderItem({
   menu,
   groupRef,
+  handleMenuNameChange,
 }: {
   menu: TMenu;
   groupRef: RefObject<HTMLDivElement | null>;
+  handleMenuNameChange: (menuId: string, newName: string) => void;
 }) {
   const controls = useDragControls();
-  const [hover, setHover] = useState(false);
+  const [isHover, setIsHover] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+
+  const editRef = useHandleClickOutsideRef<HTMLInputElement>({
+    condition: isEdit,
+    outsideClickAction: () => {
+      setIsEdit(false);
+    },
+  });
 
   return (
     <Reorder.Item
@@ -267,25 +286,50 @@ function ReorderItem({
         height: 40,
       }}
     >
-      <FlexRow
-        style={{ alignItems: 'center', gap: 6 }}
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setHover(false)}
-      >
-        <Typography style={{ fontWeight: 500, fontSize: '0.9rem' }}>{menu.name}</Typography>
-        <AnimatePresence initial={false}>
-          {hover && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.1 }}
-            >
-              <MdOutlineEdit style={{ cursor: 'pointer' }} onClick={() => {}} />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </FlexRow>
+      {isEdit ? (
+        <Input
+          ref={editRef}
+          value={menu.name}
+          onChange={(event) => {
+            handleMenuNameChange(menu.menuId, event.target.value);
+          }}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter') {
+              setIsEdit(false);
+            }
+          }}
+        />
+      ) : (
+        <FlexRow
+          style={{ alignItems: 'center', gap: 6 }}
+          onMouseEnter={() => setIsHover(true)}
+          onMouseLeave={() => setIsHover(false)}
+        >
+          <Typography style={{ fontWeight: 500, fontSize: '0.9rem' }}>{menu.name}</Typography>
+          <AnimatePresence initial={false}>
+            {isHover && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.1 }}
+              >
+                <MdOutlineEdit
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    setIsEdit(true);
+                    setTimeout(() => {
+                      if (editRef.current) {
+                        editRef.current.focus();
+                      }
+                    }, 0);
+                  }}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </FlexRow>
+      )}
       <FlexRow onPointerDown={(e) => controls.start(e)} style={{ cursor: 'grab' }}>
         <RxDragHandleHorizontal style={{ fontSize: '1.4rem' }} />
       </FlexRow>
