@@ -32,14 +32,6 @@ export async function excelUpdateApi(data: PExcelSaveData) {
   return await apiRequest<null>(customedAxios.post('/excel/excelUpdate', data));
 }
 
-export async function excelDeleteApi(params: PExcelDeleteList) {
-  return await apiRequest<null>(
-    customedAxios.post(
-      '/excel/excelDelete',
-      {},
-      {
-        params,
-      },
-    ),
-  );
+export async function excelDeleteApi(data: PExcelDeleteList) {
+  return await apiRequest<null>(customedAxios.post('/excel/excelDelete', data));
 }

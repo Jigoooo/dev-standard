@@ -34,7 +34,7 @@ export function useDeleteFileMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (params: PDeleteFileList) => deleteFileApi(params),
+    mutationFn: (data: PDeleteFileList) => deleteFileApi(data),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [GET_FILE_LIST_QUERY_KEY],
