@@ -247,7 +247,19 @@ export function ExcelUploadDownload() {
         <FlexRow style={{ flexGrow: 1, alignItems: 'center', justifyContent: 'flex-end', gap: 6 }}>
           <AnimatePresence>
             {deleteExcelIdxList.length > 0 && (
-              <motion.div>
+              <motion.div
+                initial={{
+                  opacity: 0,
+                  scale: 0.8,
+                }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{
+                  type: 'spring',
+                  stiffness: 300,
+                  damping: 18,
+                }}
+              >
                 <Button
                   buttonStyle={ButtonStyle.OUTLINED}
                   style={{ borderColor: colors.error[500], color: colors.error[500] }}
