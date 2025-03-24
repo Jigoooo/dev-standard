@@ -1,34 +1,27 @@
 import { RMember } from '@/entities/member';
-import { FlexRow } from '@/shared/ui';
+import { FlexRow, FlexColumn, Typography } from '@/shared/ui';
 
 export function UserManagementEditModal({ memberInfo }: { memberInfo: RMember }) {
   console.log(memberInfo);
   return (
     <FlexRow>
-      <table
-        style={{
-          borderCollapse: 'collapse',
-          width: '100%',
-        }}
-      >
-        <tbody>
-          {Object.entries(memberInfo).map(([key, value]) => (
-            <tr key={key} style={{ borderBottom: '1px solid #ddd' }}>
-              <th
-                style={{
-                  textAlign: 'left',
-                  padding: '8px',
-                  backgroundColor: '#f2f2f2',
-                  verticalAlign: 'top',
-                }}
-              >
-                {key}
-              </th>
-              <td style={{ padding: '8px' }}>{value}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <FlexColumn style={{ width: '100%', padding: '16px' }}>
+        {Object.entries(memberInfo).map(([key, value]) => (
+          <FlexRow
+            key={key}
+            style={{
+              padding: '8px',
+              backgroundColor: '#f9f9f9',
+              borderRadius: 4,
+              boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+              alignItems: 'center',
+            }}
+          >
+            <Typography style={{ fontWeight: 600, width: '30%' }}>{key}</Typography>
+            <Typography style={{ width: '70%' }}>{String(value)}</Typography>
+          </FlexRow>
+        ))}
+      </FlexColumn>
     </FlexRow>
   );
 }

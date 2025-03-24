@@ -478,6 +478,10 @@ export function DateFromToPicker({
           to: selectedFromToDate.from,
         };
       });
+      onChange?.({
+        from: selectedFromToDate.from ? format(selectedFromToDate.from, dateFormat) : '',
+        to: selectedFromToDate.from ? format(selectedFromToDate.from, dateFormat) : '',
+      });
     }
 
     setShowFromToDatePicker(false);
