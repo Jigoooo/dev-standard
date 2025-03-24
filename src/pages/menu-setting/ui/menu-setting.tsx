@@ -109,10 +109,9 @@ export function MenuSetting() {
     >
       <FlexRow
         style={{
-          width: '100%',
+          width: '50%',
           paddingTop: 24,
           paddingBottom: 6,
-          paddingRight: 14,
           alignItems: 'center',
           justifyContent: 'flex-end',
           gap: 6,

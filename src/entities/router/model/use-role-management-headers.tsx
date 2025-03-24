@@ -1,67 +1,18 @@
-import { Checkbox, THeader } from '@/shared/ui';
+import { Checkbox, createHeader, THeader } from '@/shared/ui';
 import { RRoleUser, RMenuMemberAuth } from './router-type.ts';
 export function useRoleManagementHeaders() {
   const roleUserHeaders: THeader<RRoleUser>[] = [
-    {
-      id: 'index',
-      pin: 'left',
-      dataAlign: 'right',
-      label: '',
-      width: 60,
-      sorter: {
-        sortable: false,
-      },
-    },
-    {
-      id: 'memberId',
-      pin: 'view',
-      dataAlign: 'left',
-      label: '아이디',
-      width: 150,
-      sorter: {
-        sortable: true,
-        direction: null,
-      },
-      filter: {
-        filterType: 'text',
-        filterValue: '',
-      },
-    },
-    {
-      id: 'memberNm',
-      pin: 'view',
-      dataAlign: 'left',
-      label: '이름',
-      width: 150,
-      sorter: {
-        sortable: true,
-        direction: null,
-      },
-      filter: {
-        filterType: 'text',
-        filterValue: '',
-      },
-    },
+    createHeader('index', '', 60, { pin: 'left', dataAlign: 'right', filter: undefined }),
+    createHeader('memberId', '아이디', 150),
+    createHeader('memberNm', '이름', 150),
   ];
 
   const roleManagementHeaders: THeader<RMenuMemberAuth>[] = [
-    {
-      id: 'index',
-      pin: 'left',
-      dataAlign: 'right',
-      label: '',
-      width: 60,
-      sorter: {
-        sortable: false,
-      },
-    },
-    {
-      id: 'allChecked',
-      pin: 'view',
+    createHeader('index', '', 60, { pin: 'left', dataAlign: 'right', filter: undefined }),
+    createHeader('allChecked', '', 60, {
       headerAlign: 'center',
       dataAlign: 'center',
-      label: '',
-      width: 60,
+      filter: undefined,
       cell: ({ cellData, rowData, handleRowData, setCellData }) => {
         if (rowData.sub2Cd === 0) {
           return '';
@@ -103,47 +54,13 @@ export function useRoleManagementHeaders() {
           />
         );
       },
-      sorter: {
-        sortable: false,
-      },
-    },
-    {
-      id: 'mainTitle',
-      pin: 'view',
-      dataAlign: 'left',
-      label: '메인메뉴',
-      width: 150,
-      sorter: {
-        sortable: true,
-        direction: null,
-      },
-      filter: {
-        filterType: 'text',
-        filterValue: '',
-      },
-    },
-    {
-      id: 'subTitle',
-      pin: 'view',
-      dataAlign: 'left',
-      label: '서브메뉴',
-      width: 150,
-      sorter: {
-        sortable: true,
-        direction: null,
-      },
-      filter: {
-        filterType: 'text',
-        filterValue: '',
-      },
-    },
-    {
-      id: 'useYn',
-      pin: 'view',
+    }),
+    createHeader('mainTitle', '메인메뉴', 150),
+    createHeader('subTitle', '서브메뉴', 150),
+    createHeader('useYn', '사용', 80, {
       headerAlign: 'center',
       dataAlign: 'center',
-      label: '사용',
-      width: 80,
+      filter: undefined,
       cell: ({ cellData, setCellData }) => {
         return (
           <Checkbox
@@ -154,18 +71,11 @@ export function useRoleManagementHeaders() {
           />
         );
       },
-      sorter: {
-        sortable: true,
-        direction: null,
-      },
-    },
-    {
-      id: 'authSearch',
-      pin: 'view',
+    }),
+    createHeader('authSearch', '조회', 80, {
       headerAlign: 'center',
       dataAlign: 'center',
-      label: '조회',
-      width: 80,
+      filter: undefined,
       cell: ({ cellData, rowData, setCellData }) => {
         if (rowData.sub2Cd === 0) {
           return '';
@@ -180,18 +90,11 @@ export function useRoleManagementHeaders() {
           />
         );
       },
-      sorter: {
-        sortable: true,
-        direction: null,
-      },
-    },
-    {
-      id: 'authIns',
-      pin: 'view',
+    }),
+    createHeader('authIns', '생성', 80, {
       headerAlign: 'center',
       dataAlign: 'center',
-      label: '생성',
-      width: 80,
+      filter: undefined,
       cell: ({ cellData, rowData, setCellData }) => {
         if (rowData.sub2Cd === 0) {
           return '';
@@ -206,18 +109,11 @@ export function useRoleManagementHeaders() {
           />
         );
       },
-      sorter: {
-        sortable: true,
-        direction: null,
-      },
-    },
-    {
-      id: 'authMod',
-      pin: 'view',
+    }),
+    createHeader('authMod', '수정', 80, {
       headerAlign: 'center',
       dataAlign: 'center',
-      label: '수정',
-      width: 80,
+      filter: undefined,
       cell: ({ cellData, rowData, setCellData }) => {
         if (rowData.sub2Cd === 0) {
           return '';
@@ -232,18 +128,11 @@ export function useRoleManagementHeaders() {
           />
         );
       },
-      sorter: {
-        sortable: true,
-        direction: null,
-      },
-    },
-    {
-      id: 'authDel',
-      pin: 'view',
+    }),
+    createHeader('authDel', '삭제', 80, {
       headerAlign: 'center',
       dataAlign: 'center',
-      label: '삭제',
-      width: 80,
+      filter: undefined,
       cell: ({ cellData, rowData, setCellData }) => {
         if (rowData.sub2Cd === 0) {
           return '';
@@ -258,18 +147,11 @@ export function useRoleManagementHeaders() {
           />
         );
       },
-      sorter: {
-        sortable: true,
-        direction: null,
-      },
-    },
-    {
-      id: 'excelExport',
-      pin: 'view',
+    }),
+    createHeader('excelExport', '엑셀', 80, {
       headerAlign: 'center',
       dataAlign: 'center',
-      label: '엑셀',
-      width: 80,
+      filter: undefined,
       cell: ({ cellData, rowData, setCellData }) => {
         if (rowData.sub2Cd === 0) {
           return '';
@@ -284,11 +166,7 @@ export function useRoleManagementHeaders() {
           />
         );
       },
-      sorter: {
-        sortable: true,
-        direction: null,
-      },
-    },
+    }),
   ];
 
   return {

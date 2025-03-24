@@ -11,6 +11,7 @@ import { IoPersonCircleOutline } from 'react-icons/io5';
 import { FaUikit } from 'react-icons/fa';
 import { IoSettingsSharp } from 'react-icons/io5';
 import { RiListSettingsFill } from 'react-icons/ri';
+import { MdOutlineAdminPanelSettings } from 'react-icons/md';
 
 import { Router } from './router-type.ts';
 
@@ -35,6 +36,10 @@ const MenuSetting = lazy(() =>
   import('@/pages/menu-setting').then((module) => ({ default: module.MenuSetting })),
 );
 
+const UserManagement = lazy(() =>
+  import('@/pages/user-management').then((module) => ({ default: module.UserManagement })),
+);
+
 export function getRouterComponent(
   router: Router,
 ): LazyExoticComponent<ComponentType<any>> | undefined {
@@ -45,6 +50,7 @@ export function getRouterComponent(
     [Router.EXCEL_UPLOAD_DOWNLOAD]: ExcelUploadDownload,
     [Router.ROLE_MANAGEMENT]: RoleManagement,
     [Router.MENU_SETTING]: MenuSetting,
+    [Router.USER_MANAGEMENT]: UserManagement,
   };
 
   return mapping[router];
@@ -59,9 +65,10 @@ export function getRouterMappedIcon(router: Router): IconType | undefined {
     [Router.FILE_UPLOAD_DOWNLOAD]: FaRegFile,
     [Router.EXCEL_UPLOAD_DOWNLOAD]: RiFileExcel2Line,
     [Router.MANAGER]: IoSettingsSharp,
-    [Router.ROLE_MANAGEMENT]: MdOutlineManageAccounts,
+    [Router.ROLE_MANAGEMENT]: MdOutlineAdminPanelSettings,
     [Router.MENU_SETTING]: RiListSettingsFill,
     [Router.MY_PROFILE]: IoPersonCircleOutline,
+    [Router.USER_MANAGEMENT]: MdOutlineManageAccounts,
   };
 
   return mapping[router];

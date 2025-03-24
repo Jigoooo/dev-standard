@@ -46,8 +46,8 @@ export function RoleManagement() {
   });
 
   useEffect(() => {
-    if (getMemberListQuery.data?.data?.menuList) {
-      const dataWithIndex = getMemberListQuery.data.data.menuList.map((item, index) => {
+    if (getMemberListQuery.data?.data?.memberList) {
+      const dataWithIndex = getMemberListQuery.data.data.memberList.map((item, index) => {
         return {
           ...item,
           index: index + 1,
@@ -55,7 +55,7 @@ export function RoleManagement() {
       });
       setDataList(dataWithIndex);
     }
-  }, [getMemberListQuery.data?.data?.menuList]);
+  }, [getMemberListQuery.data?.data?.memberList]);
 
   useEffect(() => {
     if (getMenuMemberAuthListQuery.data?.data?.menuList) {

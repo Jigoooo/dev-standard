@@ -16,6 +16,7 @@ export enum Router {
   MANAGER = 'manager',
   ROLE_MANAGEMENT = 'role-management',
   MENU_SETTING = 'menu-setting',
+  USER_MANAGEMENT = 'user-management',
 }
 
 export type TMenu = {
@@ -146,7 +147,7 @@ export type RRoleUser = {
 };
 
 export type RMemberList = {
-  menuList: RRoleUser[];
+  memberList: RRoleUser[];
 };
 
 export type RMenuMemberAuthList = {
