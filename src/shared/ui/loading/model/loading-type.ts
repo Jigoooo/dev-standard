@@ -6,6 +6,11 @@ export type LoadingStates = {
 
 type LoadingActions = {
   show: (options?: { loadingText?: string; isActiveOverlay?: boolean }) => void;
+  debounceShow: (options?: {
+    delay?: number;
+    loadingText?: string;
+    isActiveOverlay?: boolean;
+  }) => void;
   hide: () => void;
 };
 

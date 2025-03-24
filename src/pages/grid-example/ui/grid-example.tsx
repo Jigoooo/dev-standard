@@ -42,11 +42,9 @@ export function GridExample() {
 
   useEffect(() => {
     let isMounted = true;
-    const fetchUsers = async () => {
-      loadingAction.show({
-        loadingText: '데이터를 가져오는중 입니다.',
-      });
+    loadingAction.debounceShow({ loadingText: '데이터를 가져오는중 입니다.' });
 
+    const fetchUsers = async () => {
       const allUsers = [];
 
       for await (const batch of generateUsers({

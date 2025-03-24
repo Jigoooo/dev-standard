@@ -9,7 +9,7 @@ const loadingInitialState: LoadingStates = {
   loadingText: '',
 };
 
-const useLoadingStore = create<LoadingStoreInterface>()((setState) => {
+const useLoadingStore = create<LoadingStoreInterface>()((setState, getState) => {
   return {
     ...loadingInitialState,
     actions: {
@@ -20,6 +20,11 @@ const useLoadingStore = create<LoadingStoreInterface>()((setState) => {
           isActiveOverlay,
           loadingText,
         }));
+      },
+      debounceShow: ({ delay = 300, ...rest } = {}) => {
+        setTimeout(() => {
+          getState().actions.show(rest);
+        }, delay);
       },
       hide: () => {
         setState((state) => ({
