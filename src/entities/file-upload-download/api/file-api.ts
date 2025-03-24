@@ -28,7 +28,7 @@ export async function downloadFileApi(params: PFileDownload) {
     const filenameRegex = /filename\*=UTF-8''(.+)/;
     const matches = filenameRegex.exec(disposition);
     if (matches != null && matches[1]) {
-      fileName = matches[1].replace(/['"]/g, '');
+      fileName = decodeURIComponent(matches[1].replace(/['"]/g, ''));
     }
   }
 

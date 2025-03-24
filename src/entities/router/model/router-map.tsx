@@ -28,9 +28,9 @@ const ExcelUploadDownload = lazy(() =>
     default: module.ExcelUploadDownload,
   })),
 );
-// const RoleManagement = lazy(() =>
-//   import('@/pages/role-management').then((module) => ({ default: module.RoleManagement })),
-// );
+const RoleManagement = lazy(() =>
+  import('@/pages/role-management').then((module) => ({ default: module.RoleManagement })),
+);
 const MenuSetting = lazy(() =>
   import('@/pages/menu-setting').then((module) => ({ default: module.MenuSetting })),
 );
@@ -43,7 +43,7 @@ export function getRouterComponent(
     [Router.GRID_EXAMPLE]: GridExample,
     [Router.FILE_UPLOAD_DOWNLOAD]: FileUploadDownload,
     [Router.EXCEL_UPLOAD_DOWNLOAD]: ExcelUploadDownload,
-    [Router.ROLE_MANAGEMENT]: MenuSetting,
+    [Router.ROLE_MANAGEMENT]: RoleManagement,
     [Router.MENU_SETTING]: MenuSetting,
   };
 
