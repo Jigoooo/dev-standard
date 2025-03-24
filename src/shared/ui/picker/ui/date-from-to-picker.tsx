@@ -126,14 +126,14 @@ function useDateFromToPicker({
     if (!selectedFromToDate.from || (selectedFromToDate.from && selectedFromToDate.to)) {
       setSelectedFromToDate({ from: date, to: null });
       onChange?.({
-        from: selectedFromToDate.from ? format(selectedFromToDate.from, dateFormat) : '',
+        from: date ? format(date, dateFormat) : '',
         to: '',
       });
     } else {
       if (isBefore(date, selectedFromToDate.from)) {
         setSelectedFromToDate({ from: date, to: null });
         onChange?.({
-          from: selectedFromToDate.from ? format(selectedFromToDate.from, dateFormat) : '',
+          from: date ? format(date, dateFormat) : '',
           to: fromToDateString?.to ?? '',
         });
       } else {
@@ -142,7 +142,7 @@ function useDateFromToPicker({
         setSelectedFromToDate((prevState) => ({ ...prevState, to: date }));
         onChange?.({
           from: fromToDateString?.from ?? '',
-          to: selectedFromToDate?.to ? format(selectedFromToDate.to, dateFormat) : '',
+          to: date ? format(date, dateFormat) : '',
         });
       }
     }

@@ -299,7 +299,7 @@ export function useExcelUploadDownloadHeaders() {
     createHeader('updDt', '수정 일자', 180, {
       formatter: ({ cellData }) => {
         const date = new Date(cellData);
-        return format(date, 'yyyy-MM-dd HH:mm:ss');
+        return cellData ? format(date, 'yyyy-MM-dd HH:mm:ss') : '';
       },
     }),
     createHeader('updMember', '수정자', 150),

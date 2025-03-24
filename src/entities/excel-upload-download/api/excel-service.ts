@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { excelDeleteApi, excelSaveApi, excelUpdateApi, getExcelInfoListApi } from './excel-api.ts';
 import {
@@ -10,10 +10,12 @@ import { useQueryWrapper } from '@/entities/query';
 
 const EXCEL_INFO_LIST_QUERY_KEY = 'excelInfoListQueryKey';
 
-export function useExcelInfoListQuery(params: PExcelInfoList = {}) {
+export function useExcelInfoListQuery(params: PExcelInfoList) {
   return useQueryWrapper({
     queryKey: [EXCEL_INFO_LIST_QUERY_KEY, params],
     queryFn: () => getExcelInfoListApi(params),
+    enabled: false,
+    placeholderData: keepPreviousData,
   });
 }
 

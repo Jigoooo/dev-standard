@@ -30,16 +30,29 @@ import {
 import { handleAuthError } from '@/entities/auth';
 import { AnimatePresence, motion } from 'framer-motion';
 import { colors } from '@/shared/constants';
+import { PExcelInfoList } from '@/entities/excel-upload-download/model/excel-upload-download-type.ts';
 
 export function ExcelUploadDownload() {
   const navigate = useNavigate();
 
-  const excelInfoListQuery = useExcelInfoListQuery();
+  const [excelInfoListParams, setExcelInfoListParams] = useState<PExcelInfoList>({
+    fromDate: format(new Date(), 'yyyy-MM-dd'),
+    toDate: format(addMonths(new Date(), 1), 'yyyy-MM-dd'),
+  });
+
+  const excelInfoListQuery = useExcelInfoListQuery({
+    fromDate: excelInfoListParams.fromDate.replaceAll('-', ''),
+    toDate: excelInfoListParams.toDate.replaceAll('-', ''),
+  });
   const excelInfoList = excelInfoListQuery.data?.data?.excelInfoList ?? [];
   const excelInfoListWithIndex = excelInfoList.map((item, index) => ({
     ...item,
     index: index + 1,
   }));
+
+  const search = () => {
+    excelInfoListQuery.refetch();
+  };
 
   const [deleteExcelIdxList, setDeleteExcelIdxList] = useState<number[]>([]);
   const handleDeleteExcelIdxList = (checkedList: string[]) => {
@@ -65,11 +78,6 @@ export function ExcelUploadDownload() {
   useEffect(() => {
     setDataList(excelInfoListWithIndex);
   }, [excelInfoListWithIndex]);
-
-  const [fromToDateString, setFromToDateString] = useState({
-    from: format(new Date(), 'yyyy-MM-dd'),
-    to: format(addMonths(new Date(), 1), 'yyyy-MM-dd'),
-  });
 
   const excelDeleteMutation = useExcelDeleteMutation();
 
@@ -237,12 +245,22 @@ export function ExcelUploadDownload() {
         }}
       >
         <FlexRow style={{ gap: 6 }}>
-          <DateFromToPicker fromToDateString={fromToDateString} onChange={setFromToDateString} />
-          <SearchButton
-            onClick={() => {
-              console.log('검색');
+          <DateFromToPicker
+            fromToDateString={{
+              from: excelInfoListParams.fromDate,
+              to: excelInfoListParams.toDate,
+            }}
+            onChange={(fromToDateString) => {
+              setExcelInfoListParams((prevState) => {
+                return {
+                  ...prevState,
+                  fromDate: fromToDateString.from,
+                  toDate: fromToDateString.to,
+                };
+              });
             }}
           />
+          <SearchButton onClick={search} />
         </FlexRow>
         <FlexRow style={{ flexGrow: 1, alignItems: 'center', justifyContent: 'flex-end', gap: 6 }}>
           <AnimatePresence>

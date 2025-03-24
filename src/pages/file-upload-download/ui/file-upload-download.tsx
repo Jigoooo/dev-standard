@@ -21,6 +21,7 @@ import {
   useDeleteFileMutation,
   useFileUploadDownloadHeaders,
   useGetFileList,
+  PFileListItem,
 } from '@/entities/file-upload-download';
 import { colors } from '@/shared/constants';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -30,6 +31,11 @@ import { useNavigate } from 'react-router-dom';
 
 export function FileUploadDownload() {
   const navigate = useNavigate();
+
+  const [fileListParams, setFileListParams] = useState<PFileListItem>({
+    fromDate: format(new Date(), 'yyyy-MM-dd'),
+    toDate: format(addMonths(new Date(), 1), 'yyyy-MM-dd'),
+  });
 
   const fileDownloadHeaders = useFileUploadDownloadHeaders();
   const { dataList, setDataList, handelDataList, deleteDataList } = useTableData<TFileListItem>([]);
@@ -46,17 +52,17 @@ export function FileUploadDownload() {
     setDeleteFileIdxList(convertedDeleteIdxList);
   };
 
-  console.log(deleteFileIdxList);
-
-  const [fromToDateString, setFromToDateString] = useState({
-    from: format(new Date(), 'yyyy-MM-dd'),
-    to: format(addMonths(new Date(), 1), 'yyyy-MM-dd'),
-  });
-
   const deleteFileMutation = useDeleteFileMutation();
 
-  const getFileListQuery = useGetFileList();
+  const getFileListQuery = useGetFileList({
+    fromDate: fileListParams.fromDate.replaceAll('-', ''),
+    toDate: fileListParams.toDate.replaceAll('-', ''),
+  });
   const fileList = getFileListQuery.data?.data?.fileList ?? [];
+
+  const search = () => {
+    getFileListQuery.refetch();
+  };
 
   useEffect(() => {
     if (getFileListQuery.data?.data?.fileList) {
@@ -151,12 +157,22 @@ export function FileUploadDownload() {
         }}
       >
         <FlexRow style={{ gap: 6 }}>
-          <DateFromToPicker fromToDateString={fromToDateString} onChange={setFromToDateString} />
-          <SearchButton
-            onClick={() => {
-              console.log('검색');
+          <DateFromToPicker
+            fromToDateString={{
+              from: fileListParams.fromDate,
+              to: fileListParams.toDate,
+            }}
+            onChange={(fromToDateString) => {
+              setFileListParams((prevState) => {
+                return {
+                  ...prevState,
+                  fromDate: fromToDateString.from,
+                  toDate: fromToDateString.to,
+                };
+              });
             }}
           />
+          <SearchButton onClick={search} />
         </FlexRow>
         <FlexRow style={{ flexGrow: 1, alignItems: 'center', justifyContent: 'flex-end', gap: 6 }}>
           <AnimatePresence>

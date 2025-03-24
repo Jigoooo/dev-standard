@@ -1,5 +1,6 @@
 import { ReactNode, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { isMobile } from 'react-device-detect';
 
 import {
   Button,
@@ -81,7 +82,10 @@ export function AlertDialog() {
                 style={{ zIndex: zIndex.dialogOverlay, backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
                 onClick={() => {
                   dialogActions.close();
-                  window.history.back();
+
+                  if (isMobile) {
+                    window.history.back();
+                  }
                 }}
               />
             </motion.div>
@@ -157,8 +161,11 @@ function AlertDialogActions({ dialogInfos }: { dialogInfos: DialogInfoStates }) 
             borderColor: '#bbbbbb',
           }}
           onClick={() => {
-            window.history.back();
             dialogInfos?.onCancel?.();
+
+            if (isMobile) {
+              window.history.back();
+            }
           }}
         >
           <Typography style={{ color: '#555555', fontSize: '0.9rem', fontWeight: 500 }}>
@@ -174,7 +181,10 @@ function AlertDialogActions({ dialogInfos }: { dialogInfos: DialogInfoStates }) 
           backgroundColor: dialogColor,
         }}
         onClick={() => {
-          window.history.back();
+          if (isMobile) {
+            window.history.back();
+          }
+
           setTimeout(() => dialogInfos?.onConfirm?.(), 10);
         }}
       >

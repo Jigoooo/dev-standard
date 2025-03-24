@@ -2,6 +2,8 @@ import { TDataWithIndex } from '@/shared/ui';
 
 export type PFileListItem = {
   fileNm?: string;
+  fromDate: string;
+  toDate: string;
 };
 
 export type RFileListItem = {

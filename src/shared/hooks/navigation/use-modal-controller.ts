@@ -1,4 +1,5 @@
 import { RefObject, useEffect } from 'react';
+import { isMobile } from 'react-device-detect';
 
 export function useModalController({
   modalRef,
@@ -10,6 +11,10 @@ export function useModalController({
   onClose: () => void;
 }) {
   useEffect(() => {
+    if (!isMobile) {
+      return;
+    }
+
     const addQueryParam = (key: string, value: string) => {
       const searchParams = new URLSearchParams(window.location.search);
       searchParams.set(key, value);

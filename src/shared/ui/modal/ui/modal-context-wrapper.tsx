@@ -1,5 +1,6 @@
 import { ReactNode, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { isMobile } from 'react-device-detect';
 
 import { FlexRow, ModalContext } from '@/shared/ui';
 import { zIndex } from '@/shared/constants';
@@ -91,7 +92,10 @@ export function ModalContextWrapper({ children }: { children: ReactNode }) {
                     isOpen: true,
                     close: () => {
                       close(modal.id);
-                      window.history.back();
+
+                      if (isMobile) {
+                        window.history.back();
+                      }
                     },
                   })}
                 </FlexRow>
@@ -111,7 +115,10 @@ export function ModalContextWrapper({ children }: { children: ReactNode }) {
                     onClick={() => {
                       if (isPossibleOverlayClose !== null && isPossibleOverlayClose[modal.id]) {
                         close(modal.id);
-                        window.history.back();
+
+                        if (isMobile) {
+                          window.history.back();
+                        }
                       }
                     }}
                   />

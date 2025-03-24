@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { useQueryWrapper } from '@/entities/query';
 import { deleteFileApi, fileSaveApi, getFileListApi } from './file-api.ts';
@@ -10,10 +10,12 @@ import {
 
 const GET_FILE_LIST_QUERY_KEY = 'getFileListQueryKey';
 
-export function useGetFileList(params: PFileListItem = {}) {
+export function useGetFileList(params: PFileListItem) {
   return useQueryWrapper({
     queryKey: [GET_FILE_LIST_QUERY_KEY, params],
     queryFn: () => getFileListApi(params),
+    placeholderData: keepPreviousData,
+    enabled: false,
   });
 }
 

@@ -26,6 +26,8 @@ export type TExcelData = TDataWithIndex & RExcelData;
 
 export type PExcelInfoList = {
   excelNm?: string;
+  fromDate: string;
+  toDate: string;
 };
 
 export type RExcelInfo = {
