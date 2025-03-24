@@ -53,6 +53,7 @@ const inputDisabledStyles: Record<InputStyle, CSSProperties> = {
 } as const;
 
 export function Input({
+  ref,
   style,
   type = 'text',
   inputStyle = InputStyle.OUTLINED,
@@ -86,6 +87,7 @@ export function Input({
         </div>
       )}
       <motion.input
+        ref={ref}
         className='selection-none'
         type={type}
         variants={{

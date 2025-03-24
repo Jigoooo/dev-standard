@@ -113,7 +113,7 @@ export function RoleManagement() {
           paddingRight: 14,
           alignItems: 'center',
           justifyContent: 'flex-end',
-          gap: 6,
+          gap: 4,
           height: 65,
         }}
       >
