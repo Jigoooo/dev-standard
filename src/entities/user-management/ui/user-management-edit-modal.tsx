@@ -12,7 +12,7 @@ export function UserManagementEditModal({ memberInfo }: { memberInfo: RMember })
         }}
       >
         <tbody>
-          {Object.entries(memberInfo).map(([key, value], index) => (
+          {Object.entries(memberInfo).map(([key, value]) => (
             <tr key={key} style={{ borderBottom: '1px solid #ddd' }}>
               <th
                 style={{
