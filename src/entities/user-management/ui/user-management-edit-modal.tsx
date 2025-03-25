@@ -3,14 +3,16 @@ import { FlexRow, FlexColumn, Typography } from '@/shared/ui';
 import { useUserManagementHeaders } from '@/entities/user-management';
 
 export function UserManagementEditModal({ memberInfo }: { memberInfo: RMember }) {
-  const entries = Object.entries(memberInfo);
-
   const { memberInfoColumnLabelsMapping } = useUserManagementHeaders();
+  const filteredData = Object.fromEntries(
+    Object.entries(memberInfo).filter(([key]) => key in memberInfoColumnLabelsMapping),
+  );
+  const filteredDataEntries = Object.entries(filteredData);
 
   return (
     <FlexRow>
       <FlexColumn style={{ width: '100%', border: '1px solid #ddd' }}>
-        {entries.map(([key, value], index) => {
+        {filteredDataEntries.map(([key, value], index) => {
           const headerLabel = memberInfoColumnLabelsMapping[key as keyof RMember];
 
           if (!headerLabel) {
@@ -23,7 +25,7 @@ export function UserManagementEditModal({ memberInfo }: { memberInfo: RMember })
               style={{
                 borderRadius: 4,
                 alignItems: 'center',
-                borderBottom: index !== entries.length - 1 ? '1px solid #ddd' : 'none',
+                borderBottom: index !== filteredDataEntries.length - 1 ? '1px solid #ddd' : 'none',
               }}
             >
               <FlexRow style={{ width: '20%', borderRight: '1px solid #ddd', padding: 6 }}>
