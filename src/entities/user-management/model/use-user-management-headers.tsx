@@ -20,7 +20,7 @@ export function useUserManagementHeaders() {
   const navigate = useNavigate();
 
   const updateMemberMutation = useUpdateMemberMutation();
-  const updateMember = (memberInfo: RMember) => {
+  const updateMember = (memberInfo: RMember, closeModal: () => void) => {
     updateMemberMutation.mutate(memberInfo, {
       onSuccess: async (data, variables) => {
         const isError = await handleAuthError({
@@ -38,7 +38,7 @@ export function useUserManagementHeaders() {
               onSuccess: (data) => {
                 if (data.success) {
                   toast.success('사용자 수정 성공');
-                  close();
+                  closeModal();
                 }
               },
             });
@@ -47,19 +47,19 @@ export function useUserManagementHeaders() {
 
         if (!isError) {
           toast.success('사용자 수정 성공');
-          close();
+          closeModal();
         }
       },
     });
   };
 
-  const updateMemberConfirmation = (memberInfo: RMember) => {
+  const updateMemberConfirmation = (memberInfo: RMember, closeModal: () => void) => {
     dialogActions.open({
       title: '사용자 수정',
       contents: '사용자 정보를 수정하시겠습니까?',
       withCancel: true,
       overlayClose: true,
-      onConfirm: () => updateMember(memberInfo),
+      onConfirm: () => updateMember(memberInfo, closeModal),
     });
   };
 
@@ -101,7 +101,10 @@ export function useUserManagementHeaders() {
           close={close}
           containerStyle={{ width: 600, height: 300 }}
         >
-          <UserManagementEditModal memberInfo={memberInfo} onSave={updateMemberConfirmation} />
+          <UserManagementEditModal
+            memberInfo={memberInfo}
+            onSave={(memberInfo) => updateMemberConfirmation(memberInfo, close)}
+          />
         </ModalLayout>
       );
     });
