@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { handleAuthError } from '@/entities/auth';
 import { AdapterResponseType } from '@/shared/api';
+import { loading } from '@/shared/ui';
 
 export function useQueryWrapper<
   TData,
@@ -22,7 +23,15 @@ export function useQueryWrapper<
     AdapterResponseType<TData>,
     TQueryKey
   >,
-  onOtherError?: () => void,
+  {
+    withLoading,
+    loadingText,
+    onOtherError,
+  }: {
+    withLoading?: boolean;
+    loadingText?: string;
+    onOtherError?: () => void;
+  } = {},
 ): UseQueryResult<AdapterResponseType<TData>, TError> {
   const navigate = useNavigate();
   const query = useQuery(options);
@@ -37,6 +46,18 @@ export function useQueryWrapper<
       });
     }
   }, [query.data]);
+
+  useEffect(() => {
+    if (withLoading) {
+      if (query.isLoading) {
+        loading.debounceShow({
+          loadingText,
+        });
+      } else {
+        loading.hide();
+      }
+    }
+  }, [query.isFetching]);
 
   return query;
 }

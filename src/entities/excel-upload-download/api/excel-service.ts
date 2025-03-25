@@ -12,12 +12,17 @@ import { loading } from '@/shared/ui';
 const EXCEL_INFO_LIST_QUERY_KEY = 'excelInfoListQueryKey';
 
 export function useExcelInfoListQuery(params: PExcelInfoList) {
-  return useQueryWrapper({
-    queryKey: [EXCEL_INFO_LIST_QUERY_KEY, params],
-    queryFn: () => getExcelInfoListApi(params),
-    enabled: false,
-    placeholderData: keepPreviousData,
-  });
+  return useQueryWrapper(
+    {
+      queryKey: [EXCEL_INFO_LIST_QUERY_KEY, params],
+      queryFn: () => getExcelInfoListApi(params),
+      enabled: false,
+      placeholderData: keepPreviousData,
+    },
+    {
+      withLoading: true,
+    },
+  );
 }
 
 export function useSaveExcelMutation() {

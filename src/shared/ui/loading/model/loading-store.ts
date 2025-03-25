@@ -7,6 +7,7 @@ const loadingInitialState: LoadingStates = {
   isLoading: false,
   isActiveOverlay: false,
   loadingText: '',
+  timer: null,
 };
 
 const useLoadingStore = create<LoadingStoreInterface>()((setState, getState) => {
@@ -22,11 +23,35 @@ const useLoadingStore = create<LoadingStoreInterface>()((setState, getState) => 
         }));
       },
       debounceShow: ({ delay = 300, ...rest } = {}) => {
-        setTimeout(() => {
+        const timer = setTimeout(() => {
           getState().actions.show(rest);
+          setState((prevState) => {
+            return {
+              ...prevState,
+              timer: null,
+            };
+          });
         }, delay);
+
+        setState((prevState) => {
+          return {
+            ...prevState,
+            timer,
+          };
+        });
       },
       hide: () => {
+        const { timer } = getState();
+        if (timer) {
+          clearTimeout(timer);
+          setState((prevState) => {
+            return {
+              ...prevState,
+              timer: null,
+            };
+          });
+        }
+
         setState((state) => ({
           ...state,
           isLoading: false,

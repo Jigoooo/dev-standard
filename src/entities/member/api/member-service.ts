@@ -8,10 +8,15 @@ import { loading } from '@/shared/ui';
 const GET_MEMBER_INFO_QUERY_KEY = 'getMemberInfoQueryKey';
 
 export function useGetMemberInfoQuery() {
-  return useQueryWrapper({
-    queryKey: [GET_MEMBER_INFO_QUERY_KEY],
-    queryFn: () => getMemberInfoApi(),
-  });
+  return useQueryWrapper(
+    {
+      queryKey: [GET_MEMBER_INFO_QUERY_KEY],
+      queryFn: () => getMemberInfoApi(),
+    },
+    {
+      withLoading: true,
+    },
+  );
 }
 
 export function useUpdateMemberMutation() {

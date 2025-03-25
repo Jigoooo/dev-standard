@@ -2,6 +2,7 @@ export type LoadingStates = {
   isLoading: boolean;
   isActiveOverlay: boolean;
   loadingText: string;
+  timer: NodeJS.Timeout | null;
 };
 
 type LoadingActions = {
