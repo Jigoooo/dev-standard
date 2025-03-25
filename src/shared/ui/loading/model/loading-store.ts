@@ -13,7 +13,7 @@ const useLoadingStore = create<LoadingStoreInterface>()((setState, getState) => 
   return {
     ...loadingInitialState,
     actions: {
-      show: ({ loadingText = '', isActiveOverlay = true } = {}) => {
+      show: ({ loadingText = 'Loading...', isActiveOverlay = true } = {}) => {
         setState((state) => ({
           ...state,
           isLoading: true,
@@ -38,4 +38,4 @@ const useLoadingStore = create<LoadingStoreInterface>()((setState, getState) => 
 });
 
 export const useLoading = () => useLoadingStore(useShallow((state) => state));
-export const loadingAction = useLoadingStore.getState().actions;
+export const loading = useLoadingStore.getState().actions;

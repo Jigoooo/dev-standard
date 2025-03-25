@@ -6,6 +6,7 @@ import { Router } from '@/entities/router';
 import { signInApi, tokenCheckApi } from './auth-api.ts';
 import { PSignIn } from '../model';
 import { getToken } from '../lib';
+import { loading } from '@/shared/ui';
 
 const TOKEN_SIGN_IN_QUERY_KEY = 'tokenSignInQueryKey';
 const TOKEN_CHECK_QUERY_KEY = 'tokenCheckQueryKey';
@@ -61,9 +62,8 @@ export function useTokenCheckQuery() {
 export function useSignInMutation() {
   return useMutation({
     mutationFn: (params: PSignIn) => signInApi(params),
-    onMutate: () => {},
     onSuccess: () => {},
-    onError: () => {},
-    onSettled: () => {},
+    onMutate: () => loading.debounceShow(),
+    onSettled: () => loading.hide(),
   });
 }

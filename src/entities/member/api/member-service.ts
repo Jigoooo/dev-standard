@@ -1,7 +1,9 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+
 import { useQueryWrapper } from '@/entities/query';
 import { getMemberInfoApi, updateMemberApi } from './member-api.ts';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { RMember } from '@/entities/member';
+import { loading } from '@/shared/ui';
 
 const GET_MEMBER_INFO_QUERY_KEY = 'getMemberInfoQueryKey';
 
@@ -22,5 +24,7 @@ export function useUpdateMemberMutation() {
         queryKey: [GET_MEMBER_INFO_QUERY_KEY],
       });
     },
+    onMutate: () => loading.debounceShow(),
+    onSettled: () => loading.hide(),
   });
 }

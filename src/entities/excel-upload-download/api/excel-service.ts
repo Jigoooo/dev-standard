@@ -7,6 +7,7 @@ import {
   PExcelSaveData,
 } from '../model/excel-upload-download-type.ts';
 import { useQueryWrapper } from '@/entities/query';
+import { loading } from '@/shared/ui';
 
 const EXCEL_INFO_LIST_QUERY_KEY = 'excelInfoListQueryKey';
 
@@ -24,14 +25,13 @@ export function useSaveExcelMutation() {
 
   return useMutation({
     mutationFn: (data: PExcelSaveData) => excelSaveApi(data),
-    onMutate: () => {},
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [EXCEL_INFO_LIST_QUERY_KEY],
       });
     },
-    onError: () => {},
-    onSettled: () => {},
+    onMutate: () => loading.debounceShow(),
+    onSettled: () => loading.hide(),
   });
 }
 
@@ -40,14 +40,13 @@ export function useUpdateExcelMutation() {
 
   return useMutation({
     mutationFn: (data: PExcelSaveData) => excelUpdateApi(data),
-    onMutate: () => {},
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [EXCEL_INFO_LIST_QUERY_KEY],
       });
     },
-    onError: () => {},
-    onSettled: () => {},
+    onMutate: () => loading.debounceShow(),
+    onSettled: () => loading.hide(),
   });
 }
 
@@ -61,5 +60,7 @@ export function useExcelDeleteMutation() {
         queryKey: [EXCEL_INFO_LIST_QUERY_KEY],
       });
     },
+    onMutate: () => loading.debounceShow(),
+    onSettled: () => loading.hide(),
   });
 }

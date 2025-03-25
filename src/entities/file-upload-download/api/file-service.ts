@@ -7,6 +7,7 @@ import {
   PFileListItem,
   PFileSaveList,
 } from '../model/file-upload-download-type.ts';
+import { loading } from '@/shared/ui';
 
 const GET_FILE_LIST_QUERY_KEY = 'getFileListQueryKey';
 
@@ -29,6 +30,8 @@ export function useFileSaveMutation() {
         queryKey: [GET_FILE_LIST_QUERY_KEY],
       });
     },
+    onMutate: () => loading.debounceShow(),
+    onSettled: () => loading.hide(),
   });
 }
 
@@ -42,5 +45,7 @@ export function useDeleteFileMutation() {
         queryKey: [GET_FILE_LIST_QUERY_KEY],
       });
     },
+    onMutate: () => loading.debounceShow(),
+    onSettled: () => loading.hide(),
   });
 }

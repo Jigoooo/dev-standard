@@ -14,7 +14,7 @@ import {
   Input,
   InputStyle,
   Link,
-  loadingAction,
+  loading,
   ModalLayout,
   MultiSelect,
   Select,
@@ -136,13 +136,13 @@ export function UiComponent() {
         <Typography style={{ width: 200, fontWeight: 500 }}>Show loading: </Typography>
         <Button
           onClick={async () => {
-            loadingAction.show({
+            loading.show({
               loadingText: 'Loading...',
             });
 
             await sleep(4000);
 
-            loadingAction.hide();
+            loading.hide();
           }}
           style={{ backgroundColor: '#6f9e28' }}
         >

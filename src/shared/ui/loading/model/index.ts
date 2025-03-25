@@ -1,1 +1,1 @@
-export { loadingAction, useLoading } from './loading-store.ts';
+export { loading, useLoading } from './loading-store.ts';

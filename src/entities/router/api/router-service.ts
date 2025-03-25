@@ -13,6 +13,7 @@ import {
   PMenuMemberAuthList,
   RMenuMemberAuth,
 } from '../model/router-type.ts';
+import { loading } from '@/shared/ui';
 
 export const GET_MENU_MEMBER_AUTH_QUERY_KEY = 'getMenuMemberAuthQueryKey';
 export const GET_MEMBER_LIST_QUERY_KEY = 'getMemberListQueryKey';
@@ -53,9 +54,8 @@ export function useGetMenuMemberAuthListQuery(params: PMenuMemberAuthList) {
 export function useUpdateMenuMemberAuthMutation() {
   return useMutation({
     mutationFn: (data: RMenuMemberAuth[]) => updateMenuMemberAuthApi(data),
-    onMutate: () => {},
     onSuccess: () => {},
-    onError: () => {},
-    onSettled: () => {},
+    onMutate: () => loading.debounceShow(),
+    onSettled: () => loading.hide(),
   });
 }
