@@ -5,7 +5,7 @@ import { isMobile } from 'react-device-detect';
 import {
   Button,
   ButtonStyle,
-  dialogActions,
+  dialog,
   DialogType,
   useDialogInfos,
   useDialogOpen,
@@ -33,7 +33,7 @@ export function AlertDialog() {
   useModalController({
     modalRef,
     isOpen: dialogOpen,
-    onClose: dialogActions.close,
+    onClose: dialog.close,
   });
 
   return (
@@ -81,7 +81,7 @@ export function AlertDialog() {
                 lockScroll
                 style={{ zIndex: zIndex.dialogOverlay, backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
                 onClick={() => {
-                  dialogActions.close();
+                  dialog.close();
 
                   if (isMobile) {
                     window.history.back();

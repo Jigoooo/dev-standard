@@ -64,10 +64,22 @@ const useDialog = create<DialogStoreInterface>()((setState, getState) => {
       close: () => {
         setState(() => ({ ...dialogInitialState.dialogInfos, dialogOpen: false }));
       },
+      success: (dialogInfos) => {
+        getState().actions.open({ ...dialogInfos, dialogType: DialogType.SUCCESS });
+      },
+      error: (dialogInfos) => {
+        getState().actions.open({ ...dialogInfos, dialogType: DialogType.ERROR });
+      },
+      warning: (dialogInfos) => {
+        getState().actions.open({ ...dialogInfos, dialogType: DialogType.WARNING });
+      },
+      info: (dialogInfos) => {
+        getState().actions.open({ ...dialogInfos, dialogType: DialogType.INFO });
+      },
     },
   };
 });
 
 export const useDialogOpen = () => useDialog((state) => state.dialogOpen);
 export const useDialogInfos = () => useDialog(useShallow((state) => state.dialogInfos));
-export const dialogActions = useDialog.getState().actions;
+export const dialog = useDialog.getState().actions;

@@ -8,7 +8,7 @@ import {
   DashedDivider,
   DateFromToPicker,
   DatePicker,
-  dialogActions,
+  dialog,
   FlexColumn,
   FlexRow,
   Input,
@@ -120,7 +120,7 @@ export function UiComponent() {
         <Typography style={{ width: 200, fontWeight: 500 }}>Open dialog: </Typography>
         <Button
           onClick={() => {
-            dialogActions.open({
+            dialog.info({
               title: 'Dialog Title',
               contents: 'Dialog Contents',
               withCancel: true,

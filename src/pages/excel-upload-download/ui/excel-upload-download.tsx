@@ -6,8 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   Button,
   DateFromToPicker,
-  dialogActions,
-  DialogType,
+  dialog,
   FlexColumn,
   FlexRow,
   ModalLayout,
@@ -83,7 +82,7 @@ export function ExcelUploadDownload() {
 
   const registerExcelMutation = useSaveExcelMutation();
   const registerExcel = (excelNm: string, excelDataList: TExcelData[], close: () => void) => {
-    dialogActions.open({
+    dialog.info({
       title: '등록하시겠습니까?',
       overlayClose: true,
       withCancel: true,
@@ -106,10 +105,9 @@ export function ExcelUploadDownload() {
                 data,
                 onUnauthenticated: () => navigate('/', { replace: true }),
                 onOtherError: () => {
-                  dialogActions.open({
+                  dialog.error({
                     title: '엑셀 등록 실패',
                     contents: data?.msg ?? '관리자에게 문의해 주세요.',
-                    dialogType: DialogType.ERROR,
                   });
                 },
                 onRefreshSuccess: () => {
@@ -188,8 +186,7 @@ export function ExcelUploadDownload() {
             data,
             onUnauthenticated: () => navigate('/', { replace: true }),
             onOtherError: () => {
-              dialogActions.open({
-                dialogType: DialogType.ERROR,
+              dialog.error({
                 title: '엑셀데이터 삭제에 실패하였습니다.',
                 contents: data.msg ?? '관리자에게 문의해 주세요.',
               });
@@ -214,7 +211,7 @@ export function ExcelUploadDownload() {
   };
 
   const deleteExcelListConfirmation = () => {
-    dialogActions.open({
+    dialog.info({
       title: '엑셀데이터를 삭제하시겠습니까?',
       overlayClose: true,
       withCancel: true,

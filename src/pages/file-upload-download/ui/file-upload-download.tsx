@@ -5,8 +5,7 @@ import {
   Button,
   ButtonStyle,
   DateFromToPicker,
-  dialogActions,
-  DialogType,
+  dialog,
   FlexColumn,
   FlexRow,
   ModalLayout,
@@ -100,8 +99,7 @@ export function FileUploadDownload() {
             data,
             onUnauthenticated: () => navigate('/', { replace: true }),
             onOtherError: () => {
-              dialogActions.open({
-                dialogType: DialogType.ERROR,
+              dialog.error({
                 title: '파일 삭제에 실패하였습니다.',
                 contents: data.msg ?? '관리자에게 문의해 주세요.',
               });
@@ -126,7 +124,7 @@ export function FileUploadDownload() {
   };
 
   const deleteFileListConfirmation = () => {
-    dialogActions.open({
+    dialog.info({
       title: '파일을 삭제하시겠습니까?',
       overlayClose: true,
       withCancel: true,

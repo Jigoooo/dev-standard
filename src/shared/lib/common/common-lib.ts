@@ -1,6 +1,6 @@
 import { endOfYear, format, subYears } from 'date-fns';
 
-import { dialogActions, DialogType } from '@/shared/ui';
+import { dialog } from '@/shared/ui';
 
 export function sleep(time: number) {
   return new Promise((resolve) => setTimeout(resolve, time));
@@ -122,9 +122,8 @@ export function openTMap({
   if (isMobile) {
     window.location.href = `tmap://search?name=${encodeURIComponent(placeName)}&lon=${longitude}&lat=${latitude}`;
   } else {
-    dialogActions.open({
+    dialog.warning({
       contents: '모바일에서만 지원됩니다.',
-      dialogType: DialogType.WARNING,
     });
   }
 }

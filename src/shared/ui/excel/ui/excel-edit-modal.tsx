@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import {
-  dialogActions,
+  dialog,
   ExcelExportButton,
   FlexColumn,
   FlexRow,
@@ -67,7 +67,7 @@ export function ExcelEditModal<TData extends TDataWithIndex>({
       const errorMessages = problematicResults.map(
         (result) => `${result.headerLabel} (${result.rowIndex}행): ${result.errorMessage}\n`,
       );
-      dialogActions.open({
+      dialog.info({
         title: '엑셀 유효성 검사 결과',
         contents: (
           <Typography

@@ -3,8 +3,7 @@ import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 
 import {
-  dialogActions,
-  DialogType,
+  dialog,
   FlexColumn,
   FlexRow,
   SaveButton,
@@ -155,7 +154,7 @@ function useUpdateMenuMemberAuth({ menuAuthList }: { menuAuthList: RMenuMemberAu
   const updateMenuMemberAuthMutation = useUpdateMenuMemberAuthMutation();
 
   return () => {
-    dialogActions.open({
+    dialog.info({
       title: '권한을 수정하시겠습니까?',
       overlayClose: true,
       withCancel: true,
@@ -168,8 +167,7 @@ function useUpdateMenuMemberAuth({ menuAuthList }: { menuAuthList: RMenuMemberAu
               data,
               onUnauthenticated: () => navigate('/', { replace: true }),
               onOtherError: () => {
-                dialogActions.open({
-                  dialogType: DialogType.ERROR,
+                dialog.error({
                   title: '권한 저장에 실패하였습니다.',
                   contents: data.msg ?? '관리자에게 문의해 주세요.',
                 });

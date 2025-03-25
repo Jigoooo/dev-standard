@@ -6,8 +6,7 @@ import {
   createHeader,
   createHeaderFromId,
   InputNumberEditCell,
-  dialogActions,
-  DialogType,
+  dialog,
   ModalLayout,
   THeader,
   useModal,
@@ -201,10 +200,9 @@ export function useExcelUploadDownloadHeaders() {
             data,
             onUnauthenticated: () => navigate('/', { replace: true }),
             onOtherError: () => {
-              dialogActions.open({
+              dialog.error({
                 title: '엑셀 수정 실패',
                 contents: data?.msg ?? '관리자에게 문의해 주세요.',
-                dialogType: DialogType.ERROR,
               });
             },
             onRefreshSuccess: () => {
@@ -268,7 +266,7 @@ export function useExcelUploadDownloadHeaders() {
             rows={excelDataWithIndex}
             maxWidth={1200}
             close={({ excelNm, dataList }) => {
-              dialogActions.open({
+              dialog.info({
                 title: '수정하시겠습니까?',
                 withCancel: true,
                 overlayClose: true,

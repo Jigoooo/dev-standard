@@ -50,15 +50,7 @@ import { BiLogoTypescript } from 'react-icons/bi';
 
 import { DropZone } from './drop-zone.tsx';
 import { fileSizeFormatter } from '@/shared/lib';
-import {
-  FlexColumn,
-  FlexRow,
-  Typography,
-  LinearProgress,
-  dialogActions,
-  DialogType,
-  Button,
-} from '@/shared/ui';
+import { FlexColumn, FlexRow, Typography, LinearProgress, dialog, Button } from '@/shared/ui';
 import { TFile } from '../model';
 
 export function FileUploadForm({
@@ -102,8 +94,7 @@ export function FileUploadForm({
     if (limitMB === 0 || (totalSize / (1024 * 1024) <= limitMB && limitMB > 0)) {
       handleFiles(newFiles);
     } else {
-      dialogActions.open({
-        dialogType: DialogType.WARNING,
+      dialog.warning({
         title: '업로드 용량이 초과되었습니다.',
         contents: `업로드 가능한 최대 용량은 ${limitMB}MB 입니다.`,
       });

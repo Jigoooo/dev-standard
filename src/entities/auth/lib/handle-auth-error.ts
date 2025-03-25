@@ -1,7 +1,7 @@
 import { getToken, setToken } from '../lib';
 import { tokenRefreshApi } from '../api';
 import { TAuthErrorHandlerOptions } from '../model/auth-type.ts';
-import { dialogActions, DialogType } from '@/shared/ui';
+import { dialog } from '@/shared/ui';
 
 export async function handleAuthError(options: TAuthErrorHandlerOptions): Promise<boolean> {
   const { data, onUnauthenticated, onOtherError, onRefreshSuccess } = options;
@@ -10,8 +10,7 @@ export async function handleAuthError(options: TAuthErrorHandlerOptions): Promis
   if (data.code === 401 || data.code === 403) {
     const token = getToken();
     if (token === null) {
-      dialogActions.open({
-        dialogType: DialogType.ERROR,
+      dialog.error({
         title: data.msg || '세션이 만료되었습니다.',
         contents: '로그인을 다시 진행해 주세요.',
         onConfirm: onUnauthenticated,
@@ -25,8 +24,7 @@ export async function handleAuthError(options: TAuthErrorHandlerOptions): Promis
         !refreshData?.data?.refreshToken ||
         !refreshData?.data?.expiresIn
       ) {
-        dialogActions.open({
-          dialogType: DialogType.ERROR,
+        dialog.error({
           title: data.msg || '세션이 만료되었습니다.',
           contents: '로그인을 다시 진행해 주세요.',
           onConfirm: onUnauthenticated,
@@ -45,8 +43,7 @@ export async function handleAuthError(options: TAuthErrorHandlerOptions): Promis
     if (onOtherError) {
       onOtherError();
     } else {
-      dialogActions.open({
-        dialogType: DialogType.ERROR,
+      dialog.error({
         title: '오류가 발생하였습니다.',
         contents: data.msg || '관리자에게 문의해 주세요.',
         overlayClose: false,

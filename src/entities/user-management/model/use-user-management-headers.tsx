@@ -1,14 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-import {
-  createHeader,
-  dialogActions,
-  DialogType,
-  ModalLayout,
-  ModifyButton,
-  THeader,
-  useModal,
-} from '@/shared/ui';
+import { createHeader, dialog, ModalLayout, ModifyButton, THeader, useModal } from '@/shared/ui';
 import { RRoleUser } from '@/entities/router';
 import { UserManagementEditModal } from '@/entities/user-management';
 import { getMemberInfoApi } from '../api/user-management-api.ts';
@@ -27,10 +19,9 @@ export function useUserManagementHeaders() {
           data,
           onUnauthenticated: () => navigate('/', { replace: true }),
           onOtherError: () => {
-            dialogActions.open({
+            dialog.error({
               title: '사용자 수정 실패',
               contents: data?.msg ?? '관리자에게 문의해 주세요.',
-              dialogType: DialogType.ERROR,
             });
           },
           onRefreshSuccess: () => {
@@ -54,7 +45,7 @@ export function useUserManagementHeaders() {
   };
 
   const updateMemberConfirmation = (memberInfo: RMember, closeModal: () => void) => {
-    dialogActions.open({
+    dialog.info({
       title: '사용자 수정',
       contents: '사용자 정보를 수정하시겠습니까?',
       withCancel: true,
@@ -84,8 +75,7 @@ export function useUserManagementHeaders() {
     const memberInfo = responseMemberInfo.data?.memberInfo;
 
     if (!memberInfo) {
-      dialogActions.open({
-        dialogType: DialogType.ERROR,
+      dialog.error({
         overlayClose: true,
         title: '사용자 정보 조회 실패',
         contents: '사용자 정보를 조회할 수 없습니다.',

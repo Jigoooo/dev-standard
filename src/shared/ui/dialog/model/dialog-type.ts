@@ -20,6 +20,10 @@ type DialogActions = {
   open: (openDialog: DialogInfoStates) => void;
   openAsync: (openDialog: DialogInfoStates) => Promise<boolean>;
   close: () => void;
+  success: (openDialog: DialogInfoStates) => void;
+  error: (openDialog: DialogInfoStates) => void;
+  warning: (openDialog: DialogInfoStates) => void;
+  info: (openDialog: DialogInfoStates) => void;
 };
 
 export type DialogStoreInterface = DialogStates & {

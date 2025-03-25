@@ -2,15 +2,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 
-import {
-  Button,
-  dialogActions,
-  DialogType,
-  FileUploadForm,
-  FlexColumn,
-  FlexRow,
-  TFile,
-} from '@/shared/ui';
+import { Button, dialog, FileUploadForm, FlexColumn, FlexRow, TFile } from '@/shared/ui';
 import { useFileSaveMutation } from '@/entities/file-upload-download';
 import { handleAuthError } from '@/entities/auth';
 
@@ -44,10 +36,9 @@ export function FileUploadModal() {
             data,
             onUnauthenticated: () => navigate('/', { replace: true }),
             onOtherError: () => {
-              dialogActions.open({
+              dialog.error({
                 title: '파일 업로드 실패',
                 contents: data?.msg ?? '관리자에게 문의해 주세요.',
-                dialogType: DialogType.ERROR,
               });
             },
             onRefreshSuccess: () => {
@@ -72,7 +63,7 @@ export function FileUploadModal() {
   };
 
   const showSaveFileConfirmation = () => {
-    dialogActions.open({
+    dialog.info({
       title: '파일 업로드',
       contents: '파일을 업로드 하시겠습니까?',
       overlayClose: true,

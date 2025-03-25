@@ -10,8 +10,7 @@ import {
   Input,
   Checkbox,
   Button,
-  dialogActions,
-  DialogType,
+  dialog,
   Typography,
 } from '@/shared/ui';
 import { useToggle } from '@/shared/hooks';
@@ -159,15 +158,13 @@ function useSignIn({ saveIdChecked }: { saveIdChecked: boolean }) {
       .validate();
 
     if (idWithValidated.error) {
-      return dialogActions.open({
-        dialogType: DialogType.WARNING,
+      return dialog.warning({
         contents: idWithValidated.errorMessage,
       });
     }
 
     if (passwordWithValidated.error) {
-      return dialogActions.open({
-        dialogType: DialogType.WARNING,
+      return dialog.warning({
         contents: passwordWithValidated.errorMessage,
       });
     }
@@ -177,8 +174,7 @@ function useSignIn({ saveIdChecked }: { saveIdChecked: boolean }) {
       {
         onSuccess: (data) => {
           if (!data.success) {
-            dialogActions.open({
-              dialogType: DialogType.WARNING,
+            dialog.warning({
               title: '로그인 실패',
               contents: data?.msg ?? '아이디 비밀번호를 다시 확인해 주세요.',
             });

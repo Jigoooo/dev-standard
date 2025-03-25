@@ -6,16 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { MdOutlineEdit } from 'react-icons/md';
 import { RxDragHandleHorizontal } from 'react-icons/rx';
 
-import {
-  dialogActions,
-  DialogType,
-  Divider,
-  FlexColumn,
-  FlexRow,
-  Input,
-  SaveButton,
-  Typography,
-} from '@/shared/ui';
+import { dialog, Divider, FlexColumn, FlexRow, Input, SaveButton, Typography } from '@/shared/ui';
 import { useGetMenuListQuery, useUpdateMenuMutation } from '@/entities/menu-setting';
 import { TMenu, useRouterMenuContext } from '@/entities/router';
 import { handleAuthError } from '@/entities/auth';
@@ -94,10 +85,9 @@ export function MenuSetting() {
           data,
           onUnauthenticated: () => navigate('/', { replace: true }),
           onOtherError: () => {
-            dialogActions.open({
+            dialog.error({
               title: '메뉴 수정 실패',
               contents: data?.msg ?? '관리자에게 문의해 주세요.',
-              dialogType: DialogType.ERROR,
             });
           },
           onRefreshSuccess: () => {
@@ -123,7 +113,7 @@ export function MenuSetting() {
   const groupRefs = useRef<Record<number, RefObject<HTMLDivElement | null>>>({});
 
   const updateMenuConfirmation = () => {
-    dialogActions.open({
+    dialog.info({
       title: '메뉴 수정',
       contents: '메뉴를 수정하시겠습니까?',
       overlayClose: true,

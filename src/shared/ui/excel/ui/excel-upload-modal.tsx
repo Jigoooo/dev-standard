@@ -4,8 +4,7 @@ import { RiFileExcel2Line } from 'react-icons/ri';
 
 import {
   Button,
-  dialogActions,
-  DialogType,
+  dialog,
   FileUploadForm,
   FlexColumn,
   FlexRow,
@@ -45,8 +44,7 @@ export function ExcelUploadModal<TData extends TDataWithIndex>({
         fileName: files[0].file.name,
       })
     ) {
-      dialogActions.open({
-        dialogType: DialogType.ERROR,
+      dialog.error({
         title: '업로드 실패',
         contents: '허용되지 않는 파일이에요',
       });
@@ -91,8 +89,7 @@ export function ExcelUploadModal<TData extends TDataWithIndex>({
 
   const editExcelFile = async () => {
     if (files.length === 0) {
-      dialogActions.open({
-        dialogType: DialogType.ERROR,
+      dialog.error({
         title: '편집 대상 파일이 없습니다.',
         overlayClose: true,
       });
@@ -109,8 +106,7 @@ export function ExcelUploadModal<TData extends TDataWithIndex>({
       });
 
       if (readData.rows.length === 0) {
-        dialogActions.open({
-          dialogType: DialogType.ERROR,
+        dialog.error({
           title: '파일을 읽을 수 없습니다.',
           overlayClose: true,
         });
@@ -137,8 +133,7 @@ export function ExcelUploadModal<TData extends TDataWithIndex>({
       }) as TData[];
 
       if (rows.length === 0) {
-        dialogActions.open({
-          dialogType: DialogType.ERROR,
+        dialog.error({
           title: '엑셀 데이터가 없습니다.',
           overlayClose: true,
         });
@@ -152,8 +147,7 @@ export function ExcelUploadModal<TData extends TDataWithIndex>({
         rows: excelDataList.length > 0 ? excelDataList : rows,
       });
     } catch {
-      dialogActions.open({
-        dialogType: DialogType.ERROR,
+      dialog.error({
         title: '읽을 수 없는 파일입니다.',
         contents: '파일 손상여부를 확인해 주세요.',
         overlayClose: true,
