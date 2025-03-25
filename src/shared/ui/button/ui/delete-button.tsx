@@ -10,7 +10,6 @@ export function DeleteButton({ style, ...props }: Omit<ButtonProps, 'children'>)
         ...{
           width: '100%',
           height: 30,
-          fontSize: '0.76rem',
           borderColor: colors.error[500],
           color: colors.error[500],
         },

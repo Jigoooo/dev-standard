@@ -6,7 +6,7 @@ export function ModifyButton({ style, ...props }: Omit<ButtonProps, 'children'>)
     <Button
       buttonStyle={ButtonStyle.OUTLINED}
       style={{
-        ...{ width: '100%', height: 30, fontSize: '0.76rem' },
+        ...{ width: '100%', height: 30 },
         ...style,
       }}
       {...props}
