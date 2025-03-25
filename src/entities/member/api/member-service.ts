@@ -23,9 +23,6 @@ export function useUpdateMemberMutation() {
     mutationFn: (data: RMember) => updateMemberApi(data),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [GET_MEMBER_INFO_QUERY_KEY],
-      });
-      queryClient.invalidateQueries({
         queryKey: [GET_MEMBER_LIST_QUERY_KEY],
       });
     },
