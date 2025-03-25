@@ -2,11 +2,9 @@ import { apiRequest, customedAxios } from '@/shared/api';
 import { PMemberInfo, RMember, RMemberInfo } from '../model/member-type.ts';
 
 export async function getMemberInfoApi(params: PMemberInfo) {
-  return await apiRequest<RMemberInfo>(
-    customedAxios.get('/member/getMemberInfo', {
-      params,
-    }),
-  );
+  const path = params.memberId ? `/${params.memberId}` : '';
+
+  return await apiRequest<RMemberInfo>(customedAxios.get(`/v1/member/info${path}`));
 }
 
 export async function updateSelfApi(data: RMember) {

@@ -10,14 +10,14 @@ import {
 
 export async function getMenuMemberAuthApi(params: PMenuMemberAuth) {
   return await apiRequest<{ menuMemberAuth: RMenuMemberAuth }>(
-    customedAxios.get('/member/getMenuMemberAuth', {
+    customedAxios.get(`/v1/member/menuAuth/${params.menuId}`, {
       params,
     }),
   );
 }
 
 export async function getMemberMenuListApi() {
-  return await apiRequest<RMenuList>(customedAxios.get('/member/getMemberMenuList'));
+  return await apiRequest<RMenuList>(customedAxios.get('/v1/member/menuList'));
 }
 
 export async function getMemberListApi() {
@@ -25,11 +25,9 @@ export async function getMemberListApi() {
 }
 
 export async function getMenuMemberAuthListApi(params: PMenuMemberAuthList) {
-  return await apiRequest<RMenuMemberAuthList>(
-    customedAxios.get('/member/getMenuMemberAuthList', {
-      params,
-    }),
-  );
+  const path = params?.memberId ? `/${params.memberId}` : '';
+
+  return await apiRequest<RMenuMemberAuthList>(customedAxios.get(`/v1/member${path}/menuAuth`));
 }
 
 export async function updateMenuMemberAuthApi(data: RMenuMemberAuth[]) {
