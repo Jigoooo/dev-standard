@@ -23,7 +23,7 @@ export function useUpdateMenuMutation() {
         queryKey: [GET_MENU_LIST_QUERY_KEY],
       });
     },
-    onMutate: () => loading.debounceShow(),
+    onMutate: () => loading.show(),
     onSettled: () => loading.hide(),
   });
 }

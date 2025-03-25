@@ -21,7 +21,7 @@ export async function getMemberMenuListApi() {
 }
 
 export async function getMemberListApi() {
-  return await apiRequest<RMemberList>(customedAxios.get('/member/getMemberList'));
+  return await apiRequest<RMemberList>(customedAxios.get('/v1/member/list'));
 }
 
 export async function getMenuMemberAuthListApi(params: PMenuMemberAuthList) {
@@ -33,5 +33,5 @@ export async function getMenuMemberAuthListApi(params: PMenuMemberAuthList) {
 }
 
 export async function updateMenuMemberAuthApi(data: RMenuMemberAuth[]) {
-  return await apiRequest<null>(customedAxios.post('/member/updateMenuMemberAuth', data));
+  return await apiRequest<null>(customedAxios.put('/v1/member/menuAuth', data));
 }

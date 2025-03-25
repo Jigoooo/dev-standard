@@ -35,7 +35,7 @@ export function useFileSaveMutation() {
         queryKey: [GET_FILE_LIST_QUERY_KEY],
       });
     },
-    onMutate: () => loading.debounceShow(),
+    onMutate: () => loading.show(),
     onSettled: () => loading.hide(),
   });
 }
@@ -50,7 +50,7 @@ export function useDeleteFileMutation() {
         queryKey: [GET_FILE_LIST_QUERY_KEY],
       });
     },
-    onMutate: () => loading.debounceShow(),
+    onMutate: () => loading.show(),
     onSettled: () => loading.hide(),
   });
 }

@@ -4,13 +4,14 @@ import { useQueryWrapper } from '@/entities/query';
 import { getMemberInfoApi, updateMemberApi } from './member-api.ts';
 import { RMember } from '@/entities/member';
 import { loading } from '@/shared/ui';
+import { PMemberInfo } from '@/entities/member/model/member-type.ts';
 
 const GET_MEMBER_INFO_QUERY_KEY = 'getMemberInfoQueryKey';
 
-export function useGetMemberInfoQuery() {
+export function useGetMemberInfoQuery(params: PMemberInfo = {}) {
   return useQueryWrapper({
-    queryKey: [GET_MEMBER_INFO_QUERY_KEY],
-    queryFn: () => getMemberInfoApi(),
+    queryKey: [GET_MEMBER_INFO_QUERY_KEY, params],
+    queryFn: () => getMemberInfoApi(params),
   });
 }
 
@@ -24,7 +25,7 @@ export function useUpdateMemberMutation() {
         queryKey: [GET_MEMBER_INFO_QUERY_KEY],
       });
     },
-    onMutate: () => loading.debounceShow(),
+    onMutate: () => loading.show(),
     onSettled: () => loading.hide(),
   });
 }

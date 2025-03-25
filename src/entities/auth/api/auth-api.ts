@@ -2,7 +2,7 @@ import { apiRequest, customedAxios } from '@/shared/api';
 import { PSignIn, RSignIn, RToken } from '../model';
 
 export async function tokenCheckApi() {
-  return await apiRequest<null>(customedAxios.get('/member/tokenCheck'));
+  return await apiRequest<null>(customedAxios.get('/v1/member/token'));
 }
 
 export async function tokenRefreshApi(refreshToken: string) {

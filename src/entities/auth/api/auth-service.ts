@@ -63,7 +63,7 @@ export function useSignInMutation() {
   return useMutation({
     mutationFn: (params: PSignIn) => signInApi(params),
     onSuccess: () => {},
-    onMutate: () => loading.debounceShow(),
+    onMutate: () => loading.show(),
     onSettled: () => loading.hide(),
   });
 }

@@ -1,5 +1,9 @@
 import { YesNoType } from '@/shared/type';
 
+export type PMemberInfo = {
+  memberId?: string;
+};
+
 export type RMember = {
   memberId: string;
   memberNm: string;

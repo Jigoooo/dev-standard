@@ -35,7 +35,7 @@ export function useSaveExcelMutation() {
         queryKey: [EXCEL_INFO_LIST_QUERY_KEY],
       });
     },
-    onMutate: () => loading.debounceShow(),
+    onMutate: () => loading.show(),
     onSettled: () => loading.hide(),
   });
 }
@@ -50,7 +50,7 @@ export function useUpdateExcelMutation() {
         queryKey: [EXCEL_INFO_LIST_QUERY_KEY],
       });
     },
-    onMutate: () => loading.debounceShow(),
+    onMutate: () => loading.show(),
     onSettled: () => loading.hide(),
   });
 }
@@ -65,7 +65,7 @@ export function useExcelDeleteMutation() {
         queryKey: [EXCEL_INFO_LIST_QUERY_KEY],
       });
     },
-    onMutate: () => loading.debounceShow(),
+    onMutate: () => loading.show(),
     onSettled: () => loading.hide(),
   });
 }

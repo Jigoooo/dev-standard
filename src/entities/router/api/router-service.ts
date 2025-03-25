@@ -55,7 +55,7 @@ export function useUpdateMenuMemberAuthMutation() {
   return useMutation({
     mutationFn: (data: RMenuMemberAuth[]) => updateMenuMemberAuthApi(data),
     onSuccess: () => {},
-    onMutate: () => loading.debounceShow(),
+    onMutate: () => loading.show(),
     onSettled: () => loading.hide(),
   });
 }
