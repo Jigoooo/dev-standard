@@ -3,7 +3,13 @@ import { FlexRow, FlexColumn, Typography, Input, SaveButton } from '@/shared/ui'
 import { useUserManagementHeaders } from '@/entities/user-management';
 import { Fragment, useState } from 'react';
 
-export function UserManagementEditModal({ memberInfo }: { memberInfo: RMember }) {
+export function UserManagementEditModal({
+  memberInfo,
+  onSave,
+}: {
+  memberInfo: RMember;
+  onSave: (memberInfo: RMember) => void;
+}) {
   const { memberInfoColumnLabelsMapping } = useUserManagementHeaders();
   const [filteredData, setFilteredData] = useState(() =>
     Object.fromEntries(
@@ -82,7 +88,15 @@ export function UserManagementEditModal({ memberInfo }: { memberInfo: RMember })
       </FlexColumn>
 
       <FlexRow style={{ alignItems: 'center', justifyContent: 'flex-end', gap: 6 }}>
-        <SaveButton style={{ paddingInline: 18 }} onClick={() => {}} />
+        <SaveButton
+          style={{ paddingInline: 18 }}
+          onClick={() =>
+            onSave({
+              ...memberInfo,
+              ...filteredData,
+            })
+          }
+        />
       </FlexRow>
     </FlexColumn>
   );

@@ -1,1 +1,1 @@
-export { useGetMemberInfoQuery } from './member-service.ts';
+export { useGetMemberInfoQuery, useUpdateMemberMutation } from './member-service.ts';
