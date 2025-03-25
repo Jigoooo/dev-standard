@@ -1,17 +1,36 @@
 import { RMember } from '@/entities/member';
-import { FlexRow, FlexColumn, Typography } from '@/shared/ui';
+import { FlexRow, FlexColumn, Typography, Input, SaveButton } from '@/shared/ui';
 import { useUserManagementHeaders } from '@/entities/user-management';
+import { Fragment, useState } from 'react';
 
 export function UserManagementEditModal({ memberInfo }: { memberInfo: RMember }) {
   const { memberInfoColumnLabelsMapping } = useUserManagementHeaders();
-  const filteredData = Object.fromEntries(
-    Object.entries(memberInfo).filter(([key]) => key in memberInfoColumnLabelsMapping),
+  const [filteredData, setFilteredData] = useState(() =>
+    Object.fromEntries(
+      Object.entries(memberInfo).filter(([key]) => key in memberInfoColumnLabelsMapping),
+    ),
   );
+
+  const handleFilteredData = (key: string, value: any) => {
+    setFilteredData((prevState) => ({
+      ...prevState,
+      [key]: value,
+    }));
+  };
+
   const filteredDataEntries = Object.entries(filteredData);
 
   return (
-    <FlexRow>
-      <FlexColumn style={{ width: '100%', border: '1px solid #ddd' }}>
+    <FlexColumn style={{ justifyContent: 'space-between', height: '100%' }}>
+      <FlexColumn
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'minmax(100px, auto) 1fr',
+          gridAutoRows: 38,
+          border: '1px solid #ddd',
+          width: '100%',
+        }}
+      >
         {filteredDataEntries.map(([key, value], index) => {
           const headerLabel = memberInfoColumnLabelsMapping[key as keyof RMember];
 
@@ -20,37 +39,51 @@ export function UserManagementEditModal({ memberInfo }: { memberInfo: RMember })
           }
 
           return (
-            <FlexRow
-              key={key}
-              style={{
-                borderRadius: 4,
-                alignItems: 'center',
-                borderBottom: index !== filteredDataEntries.length - 1 ? '1px solid #ddd' : 'none',
-              }}
-            >
-              <FlexRow style={{ width: '20%', borderRight: '1px solid #ddd', padding: 6 }}>
+            <Fragment key={key}>
+              <FlexRow
+                style={{
+                  borderRight: '1px solid #ddd',
+                  paddingLeft: 8,
+                  paddingRight: 6,
+                  backgroundColor: '#efefef',
+                  alignItems: 'center',
+                  borderBottom:
+                    index !== filteredDataEntries.length - 1 ? '1px solid #ddd' : 'none',
+                }}
+              >
                 <Typography
                   style={{
-                    fontWeight: 600,
-                    fontSize: '0.86rem',
+                    fontWeight: 500,
+                    fontSize: '0.82rem',
                   }}
                 >
                   {headerLabel}
                 </Typography>
               </FlexRow>
-              <FlexRow style={{ width: '80%', padding: 6 }}>
-                <Typography
-                  style={{
-                    fontSize: '0.82rem',
+              <FlexRow
+                style={{
+                  alignItems: 'center',
+                  paddingInline: 4,
+                  borderBottom:
+                    index !== filteredDataEntries.length - 1 ? '1px solid #ddd' : 'none',
+                }}
+              >
+                <Input
+                  style={{ width: '100%', fontSize: '0.82rem' }}
+                  value={String(value)}
+                  onChange={(event) => {
+                    handleFilteredData(key, event.target.value);
                   }}
-                >
-                  {String(value)}
-                </Typography>
+                />
               </FlexRow>
-            </FlexRow>
+            </Fragment>
           );
         })}
       </FlexColumn>
-    </FlexRow>
+
+      <FlexRow style={{ alignItems: 'center', justifyContent: 'flex-end', gap: 6 }}>
+        <SaveButton style={{ paddingInline: 18 }} onClick={() => {}} />
+      </FlexRow>
+    </FlexColumn>
   );
 }

@@ -54,7 +54,7 @@ export function useUserManagementHeaders() {
           overlayRef={overlayRef}
           title={'사용자 수정'}
           close={close}
-          containerStyle={{ width: 800, height: 600 }}
+          containerStyle={{ width: 600, height: 300 }}
         >
           <UserManagementEditModal memberInfo={memberInfo} />
         </ModalLayout>
