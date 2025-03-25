@@ -1,7 +1,7 @@
 import { ReactNode, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { useGetMenuMemberAuthApiQuery } from '../api';
+import { useGetMenuMemberAuthQuery } from '../api';
 import { useRouterMenuContext } from './';
 
 export function MenuAuthProvider({ children }: { children: ReactNode }) {
@@ -10,7 +10,7 @@ export function MenuAuthProvider({ children }: { children: ReactNode }) {
 
   const { setCurrentMenuMemberAuth } = useRouterMenuContext();
 
-  const menuAuthResponse = useGetMenuMemberAuthApiQuery({
+  const menuAuthResponse = useGetMenuMemberAuthQuery({
     menuId: menuId ?? '',
   });
 

@@ -1,6 +1,6 @@
 export { getMemberMenuListApi } from './router-api.ts';
 export {
-  useGetMenuMemberAuthApiQuery,
+  useGetMenuMemberAuthQuery,
   useGetMemberListQuery,
   useGetMenuMemberAuthListQuery,
   useUpdateMenuMemberAuthMutation,

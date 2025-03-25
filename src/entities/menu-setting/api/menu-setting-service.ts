@@ -7,15 +7,10 @@ import { loading } from '@/shared/ui';
 const GET_MENU_LIST_QUERY_KEY = 'getMenuListQueryKey';
 
 export function useGetMenuListQuery() {
-  return useQueryWrapper(
-    {
-      queryKey: [GET_MENU_LIST_QUERY_KEY],
-      queryFn: () => getMenuListApi(),
-    },
-    {
-      withLoading: true,
-    },
-  );
+  return useQueryWrapper({
+    queryKey: [GET_MENU_LIST_QUERY_KEY],
+    queryFn: () => getMenuListApi(),
+  });
 }
 
 export function useUpdateMenuMutation() {

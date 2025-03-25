@@ -302,6 +302,7 @@ export function useExcelUploadDownloadHeaders() {
     }),
     createHeader('updMember', '수정자', 150),
     createHeader('button', '', 80, {
+      pin: 'right',
       dataAlign: 'center',
       cell: ({ rowData }) => {
         return <ModifyButton onClick={() => excelEditModalOpen(rowData)} />;

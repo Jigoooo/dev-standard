@@ -15,6 +15,8 @@ import { useTableContext } from '../model/table-context.ts';
 import { validateTableDataList } from '../lib/validate-table-data-list.ts';
 import { useTableScrollToFn, useVirtualRow } from '../hooks';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
+import { NoData } from '@/entities/main';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export const TableBody = memo(function TableBody<TData extends TDataWithIndex>({
   bodyXRef,
@@ -96,11 +98,25 @@ export const TableBody = memo(function TableBody<TData extends TDataWithIndex>({
           backgroundColor: tableStyle.tableBodyBackgroundColor,
           overflowY: 'auto',
           overflowX: 'hidden',
-          height: rowTotalSize + 15,
+          height: memoizedItems.length === 0 ? bodyMaxHeight : rowTotalSize + 15,
+          width: memoizedItems.length === 0 ? '100%' : 'auto',
           maxHeight: bodyMaxHeight,
         }}
       >
-        {/* 왼쪽 고정 영역 */}
+        <AnimatePresence initial={false}>
+          {memoizedItems.length === 0 && (
+            <FlexRow
+              as={motion.div}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+            >
+              <NoData emptyMessage={'데이터가 없습니다.'} />
+            </FlexRow>
+          )}
+        </AnimatePresence>
+
         <TableBodyPin
           position={'left'}
           headers={leftPinHeaders}
@@ -137,15 +153,20 @@ export const TableBody = memo(function TableBody<TData extends TDataWithIndex>({
         />
       </FlexRow>
 
-      <CustomVerticalScrollbar ref={bodyYRef} totalContentHeight={viewHeight} />
-
-      <CustomHorizontalScrollbar
-        ref={bodyXRef}
-        totalContentWidth={viewWidth}
-        leftOffset={scrollLeftOffset}
-        rightOffset={scrollRightOffset}
-        border={tableStyle.tableBorder}
-      />
+      <AnimatePresence initial={false}>
+        {memoizedItems.length > 0 && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <CustomVerticalScrollbar ref={bodyYRef} totalContentHeight={viewHeight} />
+            <CustomHorizontalScrollbar
+              ref={bodyXRef}
+              totalContentWidth={viewWidth}
+              leftOffset={scrollLeftOffset}
+              rightOffset={scrollRightOffset}
+              border={tableStyle.tableBorder}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </FlexRow>
   );
 });

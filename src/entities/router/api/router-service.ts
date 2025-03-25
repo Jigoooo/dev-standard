@@ -19,7 +19,7 @@ export const GET_MENU_MEMBER_AUTH_QUERY_KEY = 'getMenuMemberAuthQueryKey';
 export const GET_MEMBER_LIST_QUERY_KEY = 'getMemberListQueryKey';
 export const GET_MENU_LIST_QUERY_KEY = 'getMemberAuthListQueryKey';
 
-export function useGetMenuMemberAuthApiQuery(params: PMenuMemberAuth) {
+export function useGetMenuMemberAuthQuery(params: PMenuMemberAuth) {
   return useQueryWrapper({
     queryKey: [GET_MENU_MEMBER_AUTH_QUERY_KEY, params],
     queryFn: () => getMenuMemberAuthApi(params),
@@ -33,32 +33,22 @@ export function useGetMenuMemberAuthApiQuery(params: PMenuMemberAuth) {
 }
 
 export function useGetMemberListQuery() {
-  return useQueryWrapper(
-    {
-      queryKey: [GET_MEMBER_LIST_QUERY_KEY],
-      queryFn: () => getMemberListApi(),
-      refetchOnMount: true,
-      refetchOnReconnect: false,
-    },
-    {
-      withLoading: true,
-    },
-  );
+  return useQueryWrapper({
+    queryKey: [GET_MEMBER_LIST_QUERY_KEY],
+    queryFn: () => getMemberListApi(),
+    refetchOnMount: true,
+    refetchOnReconnect: false,
+  });
 }
 
 export function useGetMenuMemberAuthListQuery(params: PMenuMemberAuthList) {
-  return useQueryWrapper(
-    {
-      queryKey: [GET_MENU_LIST_QUERY_KEY, params],
-      queryFn: () => getMenuMemberAuthListApi(params),
-      refetchOnMount: true,
-      refetchOnReconnect: false,
-      enabled: params.memberId !== '',
-    },
-    {
-      withLoading: true,
-    },
-  );
+  return useQueryWrapper({
+    queryKey: [GET_MENU_LIST_QUERY_KEY, params],
+    queryFn: () => getMenuMemberAuthListApi(params),
+    refetchOnMount: true,
+    refetchOnReconnect: false,
+    enabled: params.memberId !== '',
+  });
 }
 
 export function useUpdateMenuMemberAuthMutation() {
