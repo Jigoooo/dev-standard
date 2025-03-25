@@ -4,7 +4,8 @@ import { useQueryWrapper } from '@/entities/query';
 import { getMemberInfoApi, updateMemberApi } from './member-api.ts';
 import { RMember } from '@/entities/member';
 import { loading } from '@/shared/ui';
-import { PMemberInfo } from '@/entities/member/model/member-type.ts';
+import { PMemberInfo } from '../model/member-type.ts';
+import { GET_MEMBER_LIST_QUERY_KEY } from '@/entities/router';
 
 const GET_MEMBER_INFO_QUERY_KEY = 'getMemberInfoQueryKey';
 
@@ -23,6 +24,9 @@ export function useUpdateMemberMutation() {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [GET_MEMBER_INFO_QUERY_KEY],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [GET_MEMBER_LIST_QUERY_KEY],
       });
     },
     onMutate: () => loading.show(),
