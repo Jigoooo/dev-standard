@@ -1,5 +1,9 @@
-import { apiRequest, customedAxios } from '@/shared/api';
+import { apiRequest, customedAxios } from '@/shared/api/config';
 import { PMemberInfo, RMember, RMemberInfo } from '../model/member-type.ts';
+
+export async function tokenCheckApi() {
+  return await apiRequest<null>(customedAxios.get('/v1/member/token'));
+}
 
 export async function getMemberInfoApi(params: PMemberInfo) {
   const path = params.memberId ? `/${params.memberId}` : '';

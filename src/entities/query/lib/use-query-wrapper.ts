@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { handleAuthError } from '@/entities/auth';
-import { AdapterResponseType } from '@/shared/api';
+import { AdapterResponseType } from '@/shared/api/config';
 import { loading } from '@/shared/ui';
 
 export function useQueryWrapper<

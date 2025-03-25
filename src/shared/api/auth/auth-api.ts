@@ -1,9 +1,5 @@
-import { apiRequest, customedAxios } from '@/shared/api';
-import { PSignIn, RSignIn, RToken } from '../model';
-
-export async function tokenCheckApi() {
-  return await apiRequest<null>(customedAxios.get('/v1/member/token'));
-}
+import { apiRequest, customedAxios } from '../config';
+import { PSignIn, RSignIn, RToken } from './auth-type.ts';
 
 export async function tokenRefreshApi(refreshToken: string) {
   return await apiRequest<RToken>(

@@ -2,7 +2,7 @@ import React, { lazy, ReactNode, useEffect, useState } from 'react';
 import { QueryClientProvider } from '@tanstack/react-query';
 // import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
-import { getQueryClient } from '@/shared/api';
+import { getQueryClient } from '@/shared/api/config';
 
 const queryClient = getQueryClient();
 

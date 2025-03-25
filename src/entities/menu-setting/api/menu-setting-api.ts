@@ -1,4 +1,4 @@
-import { apiRequest, customedAxios } from '@/shared/api';
+import { apiRequest, customedAxios } from '@/shared/api/config';
 import { RMenu, RMenuList } from '@/entities/router';
 
 export async function getMenuListApi() {

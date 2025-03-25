@@ -1,6 +1,6 @@
 import secureLocalStorage from 'react-secure-storage';
 import { secureStorageKey } from '@/shared/constants';
-import { RToken } from '../model';
+import { RToken } from '@/shared/api';
 
 // RToken 타입 가드 함수
 function isToken(token: any): token is RToken {

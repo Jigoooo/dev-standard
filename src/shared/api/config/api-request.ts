@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios';
 
-import { Adapter } from './adapter';
+import { Adapter } from './adapter.ts';
 import { AdapterResponseType, ApiResponseType, ResponseAdapter } from './response-adapter.ts';
 
 export async function apiRequest<T>(

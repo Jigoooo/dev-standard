@@ -1,7 +1,7 @@
-import { getToken, setToken } from '../lib';
-import { tokenRefreshApi } from '../api';
-import { TAuthErrorHandlerOptions } from '../model/auth-type.ts';
+import { getToken, setToken } from '../';
+import { TAuthErrorHandlerOptions } from './auth-type.ts';
 import { dialog } from '@/shared/ui';
+import { tokenRefreshApi } from '@/shared/api';
 
 export async function handleAuthError(options: TAuthErrorHandlerOptions): Promise<boolean> {
   const { data, onUnauthenticated, onOtherError, onRefreshSuccess } = options;
