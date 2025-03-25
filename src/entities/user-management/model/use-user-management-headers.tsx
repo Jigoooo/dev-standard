@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+
 import {
   createHeader,
   dialogActions,
@@ -11,7 +13,7 @@ import { RRoleUser } from '@/entities/router';
 import { UserManagementEditModal } from '@/entities/user-management';
 import { getMemberInfoApi } from '../api/user-management-api.ts';
 import { handleAuthError } from '@/entities/auth';
-import { useNavigate } from 'react-router-dom';
+import { RMember } from '@/entities/member';
 
 export function useUserManagementHeaders() {
   const navigate = useNavigate();
@@ -72,5 +74,12 @@ export function useUserManagementHeaders() {
     }),
   ];
 
-  return userManagementHeaders;
+  const memberInfoColumnLabelsMapping: Partial<RMember> = {
+    memberId: '아이디',
+    memberNm: '이름',
+    email: '이메일',
+    phone: '전화번호',
+  };
+
+  return { userManagementHeaders, memberInfoColumnLabelsMapping };
 }

@@ -5,7 +5,7 @@ import { RRoleUser, useGetMemberListQuery } from '@/entities/router';
 import { useUserManagementHeaders } from '@/entities/user-management';
 
 export function UserManagement() {
-  const userManagementHeaders = useUserManagementHeaders();
+  const { userManagementHeaders } = useUserManagementHeaders();
 
   const { dataList, setDataList, handelDataList, deleteDataList } = useTableData<
     TDataWithIndex & RRoleUser
