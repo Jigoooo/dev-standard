@@ -11,7 +11,7 @@ import {
   TDataWithIndex,
   useTableData,
 } from '@/shared/ui';
-import { useRoleManagementHeaders, Router } from '@/entities/router';
+import { useRoleManagementHeaders } from '@/entities/router';
 import { useMemberState } from '@/entities/member';
 import {
   handleAuthError,
@@ -21,6 +21,7 @@ import {
   useGetMenuMemberAuthListQuery,
   useUpdateMenuMemberAuthMutation,
 } from '@/shared/api';
+import { Router } from '@/shared/router';
 
 export function RoleManagement() {
   const memberState = useMemberState();

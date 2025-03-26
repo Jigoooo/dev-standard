@@ -19,7 +19,7 @@ import {
   RMenuMemberAuth,
   PMenuMemberAuthList,
 } from './member-type.ts';
-import { Router } from '@/entities/router';
+import { Router } from '@/shared/router';
 import { loading } from '@/shared/ui';
 
 const TOKEN_SIGN_IN_QUERY_KEY = 'tokenSignInQueryKey';

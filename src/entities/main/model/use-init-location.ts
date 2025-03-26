@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import { useBeforeUnload, useNavigate } from 'react-router-dom';
 
-import { Router, useRouterMenuContext } from '@/entities/router';
+import { useRouterMenuContext } from '@/entities/router';
+import { Router } from '@/shared/router';
 
 export function useInitLocation() {
   const navigate = useNavigate();

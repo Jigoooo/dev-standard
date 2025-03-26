@@ -1,0 +1,15 @@
+export enum Router {
+  SIGN_IN = '/',
+  MAIN = '/main',
+  MY_PROFILE = 'my-profile',
+  COMPONENT = 'component',
+  UI = 'ui',
+  GRID_EXAMPLE = 'grid-example',
+  FILE = 'file',
+  FILE_UPLOAD_DOWNLOAD = 'file-upload-download',
+  EXCEL_UPLOAD_DOWNLOAD = 'excel-upload-download',
+  MANAGER = 'manager',
+  ROLE_MANAGEMENT = 'role-management',
+  MENU_SETTING = 'menu-setting',
+  USER_MANAGEMENT = 'user-management',
+}

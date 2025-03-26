@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 import TriphosLogo from '@/shared/assets/images/triphos_logo.png';
 
-import { Router, useRouterMenuContext } from '@/entities/router';
+import { useRouterMenuContext } from '@/entities/router';
 import {
   FlexColumn,
   FlexRow,
@@ -17,6 +17,7 @@ import { useToggle } from '@/shared/hooks';
 import { createValidator, getFormValues } from '@/shared/lib';
 import { localStorageKey } from '@/shared/constants';
 import { setToken, PSignIn, useSignInMutation } from '@/shared/api';
+import { Router } from '@/shared/router';
 
 const signInFields: Record<
   keyof {

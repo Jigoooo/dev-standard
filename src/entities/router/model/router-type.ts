@@ -1,23 +1,9 @@
 import { IconType } from 'react-icons';
 import { JSX, ReactElement, ReactNode } from 'react';
 import { RouteObject } from 'react-router-dom';
-import { YesNoType } from '@/shared/type';
 
-export enum Router {
-  SIGN_IN = '/',
-  MAIN = '/main',
-  MY_PROFILE = 'my-profile',
-  COMPONENT = 'component',
-  UI = 'ui',
-  GRID_EXAMPLE = 'grid-example',
-  FILE = 'file',
-  FILE_UPLOAD_DOWNLOAD = 'file-upload-download',
-  EXCEL_UPLOAD_DOWNLOAD = 'excel-upload-download',
-  MANAGER = 'manager',
-  ROLE_MANAGEMENT = 'role-management',
-  MENU_SETTING = 'menu-setting',
-  USER_MANAGEMENT = 'user-management',
-}
+import { RMenu, RMenuMemberAuth } from '@/shared/api';
+import { Router } from '@/shared/router';
 
 export type TMenu = {
   isHeader: boolean;
@@ -59,52 +45,6 @@ export type TSidebarStore = {
   };
 };
 
-export type PMenuMemberAuth = {
-  menuId: string;
-};
-
-// export type RMenuMemberAuth = {
-//   authIns: string;
-//   authDel: string;
-//   menuId: string;
-//   useYn: string;
-//   authSearch: string;
-//   authMod: string;
-//   memberId: string;
-//   excelExport: string;
-// };
-
-export type RMenuMemberAuth = {
-  menuId: string;
-  menuTitle: string;
-  mainTitle: string;
-  subTitle: string;
-  mainCd: number;
-  sub2Cd: number;
-  sub1Cd: number;
-  orderBy: number;
-  memberId: string;
-  allChecked: boolean;
-  useYn: YesNoType;
-  authIns: YesNoType;
-  authDel: YesNoType;
-  authSearch: YesNoType;
-  authMod: YesNoType;
-  excelExport: YesNoType;
-};
-
-export type RMenu = {
-  mainCd: number;
-  sub1Cd: number;
-  sub2Cd: number;
-  orderBy: number;
-  menuTitle: string;
-  menuId: string;
-  menuLink: string;
-  menuLinkDev: string;
-  displayYn: YesNoType;
-};
-
 export type TRouterMenuContext = {
   routes: RouteObject[];
   menus: TMenu[];
@@ -125,8 +65,4 @@ export type TRouterMenuContext = {
   updateRouteName: (router: Router, newName: string) => void;
   makeGroupMenus: (menus: RMenu[]) => TMenu[];
   flattenGroupMenus: (menus: TMenu[]) => RMenu[];
-};
-
-export type RMenuMemberAuthList = {
-  menuList: RMenuMemberAuth[];
 };

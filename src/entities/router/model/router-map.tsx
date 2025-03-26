@@ -13,7 +13,7 @@ import { IoSettingsSharp } from 'react-icons/io5';
 import { RiListSettingsFill } from 'react-icons/ri';
 import { MdOutlineAdminPanelSettings } from 'react-icons/md';
 
-import { Router } from './router-type.ts';
+import { Router } from '@/shared/router';
 
 const UiComponent = lazy(() =>
   import('@/pages/ui-component').then((module) => ({ default: module.UiComponent })),

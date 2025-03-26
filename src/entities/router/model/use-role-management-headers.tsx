@@ -1,6 +1,5 @@
 import { Checkbox, createHeader, THeader } from '@/shared/ui';
-import { RRoleUser } from '@/shared/api';
-import { RMenuMemberAuth } from './router-type.ts';
+import { RRoleUser, RMenuMemberAuth } from '@/shared/api';
 export function useRoleManagementHeaders() {
   const roleUserHeaders: THeader<RRoleUser>[] = [
     createHeader('index', '', 60, { pin: 'left', dataAlign: 'right', filter: undefined }),

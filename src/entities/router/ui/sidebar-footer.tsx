@@ -5,8 +5,9 @@ import { useState } from 'react';
 
 import { useLogout } from '@/entities/auth';
 import { AnchorPicker, Button, Divider, FlexColumn, FlexRow, Typography } from '@/shared/ui';
-import { Router, useRouterMenuContext } from '@/entities/router';
+import { useRouterMenuContext } from '@/entities/router';
 import { useSidebarState } from '@/entities/router';
+import { Router } from '@/shared/router';
 import { useMemberState } from '@/entities/member';
 
 export function SidebarFooter() {
