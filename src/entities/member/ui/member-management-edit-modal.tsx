@@ -2,9 +2,9 @@ import { Fragment, useState } from 'react';
 
 import { RMember } from '@/shared/api';
 import { FlexRow, FlexColumn, Typography, Input, SaveButton } from '@/shared/ui';
-import { useUserManagementHeaders } from '@/entities/user-management';
+import { useUserManagementHeaders } from '../model';
 
-export function UserManagementEditModal({
+export function MemberManagementEditModal({
   memberInfo,
   onSave,
 }: {

@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
 import { createHeader, dialog, ModalLayout, ModifyButton, THeader, useModal } from '@/shared/ui';
-import { UserManagementEditModal } from '@/entities/user-management';
+import { MemberManagementEditModal } from '../ui';
 import {
   handleAuthError,
   RMember,
@@ -94,7 +94,7 @@ export function useUserManagementHeaders() {
           close={close}
           containerStyle={{ width: 600, height: 300 }}
         >
-          <UserManagementEditModal
+          <MemberManagementEditModal
             memberInfo={memberInfo}
             onSave={(memberInfo) => updateMemberConfirmation(memberInfo, close)}
           />
