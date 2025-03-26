@@ -1,5 +1,6 @@
 import { memo, RefObject, useCallback, useMemo, useRef, useState } from 'react';
 import { VirtualItem } from '@tanstack/react-virtual';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import {
   Checkbox,
@@ -16,7 +17,6 @@ import { validateTableDataList } from '../model/validate-table-data-list.ts';
 import { useTableScrollToFn, useVirtualRow } from '../model';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
 import { NoData } from '@/entities/main';
-import { AnimatePresence, motion } from 'framer-motion';
 
 export const TableBody = memo(function TableBody<TData extends TDataWithIndex>({
   bodyXRef,
