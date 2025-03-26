@@ -163,8 +163,54 @@ export function useExcelUploadDownloadHeaders(search: () => void) {
     }),
   ];
 
+  const excelEditModalOpen = useExcelEditModal({
+    search,
+    excelUploadDataHeaders,
+    excelUploadValidationRules,
+  });
+
+  const excelUploadListHeaders: THeader<TExcelInfo>[] = [
+    createHeader('index', '', 60, { pin: 'left', dataAlign: 'right', filter: undefined }),
+    createHeader('check', '', 60, { pin: 'left', dataAlign: 'center', filter: undefined }),
+    createHeader('excelNm', '업로드 제목', 200),
+    createHeader('insDt', '업로드 일자', 180, {
+      formatter: ({ cellData }) => {
+        const date = new Date(cellData);
+        return format(date, 'yyyy-MM-dd HH:mm:ss');
+      },
+    }),
+    createHeader('insMember', '등록자', 150),
+    createHeader('updDt', '수정 일자', 180, {
+      formatter: ({ cellData }) => {
+        const date = new Date(cellData);
+        return cellData ? format(date, 'yyyy-MM-dd HH:mm:ss') : '';
+      },
+    }),
+    createHeader('updMember', '수정자', 150),
+    createHeader('button', '', 80, {
+      pin: 'right',
+      dataAlign: 'center',
+      cell: ({ rowData }) => {
+        return <ModifyButton onClick={() => excelEditModalOpen(rowData)} />;
+      },
+      filter: undefined,
+    }),
+  ];
+
+  return {
+    excelHeaderKeyLabels,
+    excelUploadValidationRules,
+    excelUploadListHeaders,
+    excelUploadDataHeaders,
+  };
+}
+
+function useUpdateExcel(search: () => void) {
+  const navigate = useNavigate();
+
   const updateExcelMutation = useUpdateExcelMutation();
-  const updateExcel = ({
+
+  return ({
     excelNm,
     rowData,
     excelDataList,
@@ -230,10 +276,23 @@ export function useExcelUploadDownloadHeaders(search: () => void) {
       },
     );
   };
+}
 
+function useExcelEditModal({
+  search,
+  excelUploadDataHeaders,
+  excelUploadValidationRules,
+}: {
+  search: () => void;
+  excelUploadDataHeaders: THeader<TExcelData>[];
+  excelUploadValidationRules: TValidationRuleWithHeaderId<TExcelData>[];
+}) {
   const navigate = useNavigate();
+  const updateExcel = useUpdateExcel(search);
+
   const excelEditModal = useModal();
-  const excelEditModalOpen = async (rowData: TExcelInfo) => {
+
+  return async (rowData: TExcelInfo) => {
     let response = await getExcelDataListApi({
       idx: rowData.idx,
     });
@@ -286,40 +345,5 @@ export function useExcelUploadDownloadHeaders(search: () => void) {
         </ModalLayout>
       );
     });
-  };
-
-  const excelUploadListHeaders: THeader<TExcelInfo>[] = [
-    createHeader('index', '', 60, { pin: 'left', dataAlign: 'right', filter: undefined }),
-    createHeader('check', '', 60, { pin: 'left', dataAlign: 'center', filter: undefined }),
-    createHeader('excelNm', '업로드 제목', 200),
-    createHeader('insDt', '업로드 일자', 180, {
-      formatter: ({ cellData }) => {
-        const date = new Date(cellData);
-        return format(date, 'yyyy-MM-dd HH:mm:ss');
-      },
-    }),
-    createHeader('insMember', '등록자', 150),
-    createHeader('updDt', '수정 일자', 180, {
-      formatter: ({ cellData }) => {
-        const date = new Date(cellData);
-        return cellData ? format(date, 'yyyy-MM-dd HH:mm:ss') : '';
-      },
-    }),
-    createHeader('updMember', '수정자', 150),
-    createHeader('button', '', 80, {
-      pin: 'right',
-      dataAlign: 'center',
-      cell: ({ rowData }) => {
-        return <ModifyButton onClick={() => excelEditModalOpen(rowData)} />;
-      },
-      filter: undefined,
-    }),
-  ];
-
-  return {
-    excelHeaderKeyLabels,
-    excelUploadValidationRules,
-    excelUploadListHeaders,
-    excelUploadDataHeaders,
   };
 }

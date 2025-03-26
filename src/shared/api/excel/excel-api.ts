@@ -10,27 +10,27 @@ import {
 
 export async function getExcelInfoListApi(params: PExcelInfoList) {
   return await apiRequest<RExcelInfoList>(
-    customedAxios.get('/v1/excel', {
+    customedAxios.get('/v1/excels', {
       params,
     }),
   );
 }
 
 export async function getExcelDataListApi(params: PExcelDataList) {
-  return await apiRequest<RExcelDataList>(customedAxios.get(`/v1/excel/${params.idx}/data`));
+  return await apiRequest<RExcelDataList>(customedAxios.get(`/v1/excels/${params.idx}/data`));
 }
 
 export async function excelSaveApi(data: PExcelSaveData) {
-  return await apiRequest<null>(customedAxios.post('/v1/excel', data));
+  return await apiRequest<null>(customedAxios.post('/v1/excels', data));
 }
 
 export async function excelUpdateApi(data: PExcelSaveData) {
-  return await apiRequest<null>(customedAxios.put('/v1/excel', data));
+  return await apiRequest<null>(customedAxios.put('/v1/excels', data));
 }
 
 export async function excelDeleteApi(params: PExcelDeleteList) {
   return await apiRequest<null>(
-    customedAxios.delete('/v1/excel', {
+    customedAxios.delete('/v1/excels', {
       params,
     }),
   );

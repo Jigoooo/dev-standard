@@ -1,9 +1,9 @@
 import { apiRequest, customedAxios, RMenu, RMenuList } from '@/shared/api';
 
 export async function getMenuListApi() {
-  return await apiRequest<RMenuList>(customedAxios.get('/v1/menu/info'));
+  return await apiRequest<RMenuList>(customedAxios.get('/v1/menus/info'));
 }
 
 export async function updateMenuApi(data: RMenu[]) {
-  return await apiRequest<null>(customedAxios.put('/v1/menu/info', data));
+  return await apiRequest<null>(customedAxios.put('/v1/menus/info', data));
 }
