@@ -73,6 +73,14 @@ export function useMemberManagementHeaders() {
       responseMemberInfo = await getMemberInfoApi({
         memberId,
       });
+
+      if (!responseMemberInfo.success) {
+        dialog.error({
+          title: '사용자 조회 실패',
+          contents: responseMemberInfo.msg ?? '관리자에게 문의해 주세요.',
+        });
+        return;
+      }
     }
 
     const memberInfo = responseMemberInfo.data?.memberInfo;

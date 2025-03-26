@@ -307,6 +307,14 @@ function useExcelEditModal({
       response = await getExcelDataListApi({
         idx: rowData.idx,
       });
+
+      if (!response.success) {
+        dialog.error({
+          title: '엑셀 데이터 조회 실패',
+          contents: response.msg ?? '관리자에게 문의해 주세요.',
+        });
+        return;
+      }
     }
 
     const excelDataList = response.data?.excelDataList ?? [];
