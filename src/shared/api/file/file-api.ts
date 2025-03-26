@@ -52,6 +52,6 @@ export async function fileSaveApi(data: PFileSaveList) {
   );
 }
 
-export async function deleteFileApi(data: PDeleteFileList) {
-  return await apiRequest<null>(customedAxios.post('/v1/file/info', data));
+export async function deleteFileApi(params: PDeleteFileList) {
+  return await apiRequest<null>(customedAxios.delete('/v1/file/info', { params }));
 }

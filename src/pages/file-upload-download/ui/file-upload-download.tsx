@@ -165,6 +165,7 @@ export function FileUploadDownload() {
                 onSuccess: (data) => {
                   if (data.success) {
                     toast.success('파일이 삭제되었습니다.');
+                    search();
                   }
                 },
               });
@@ -173,6 +174,7 @@ export function FileUploadDownload() {
 
           if (!isError) {
             toast.success('파일이 삭제되었습니다.');
+            search();
           }
         },
       },

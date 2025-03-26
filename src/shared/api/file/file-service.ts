@@ -32,7 +32,7 @@ export function useFileSaveMutation() {
 
 export function useDeleteFileMutation() {
   return useMutation({
-    mutationFn: (data: PDeleteFileList) => deleteFileApi(data),
+    mutationFn: (params: PDeleteFileList) => deleteFileApi(params),
     onSuccess: () => {},
     onMutate: () => loading.show(),
     onSettled: () => loading.hide(),
