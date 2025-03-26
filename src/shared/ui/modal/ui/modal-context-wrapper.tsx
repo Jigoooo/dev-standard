@@ -1,12 +1,11 @@
 import { ReactNode, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { isMobile } from 'react-device-detect';
+import { FloatingOverlay, FloatingPortal } from '@floating-ui/react';
 
-import { FlexRow, ModalContext } from '@/shared/ui';
+import { FlexRow, ModalContext, useModalController } from '@/shared/ui';
 import { zIndex } from '@/shared/constants';
 import { TModalRenderProps, TModalItem, TIsPossibleOverlayClose } from '../model/modal-type.ts';
-import { FloatingOverlay, FloatingPortal } from '@floating-ui/react';
-import { useModalController } from '@/shared/hooks';
 
 /* todo 모바일버전 만들어야 함 */
 

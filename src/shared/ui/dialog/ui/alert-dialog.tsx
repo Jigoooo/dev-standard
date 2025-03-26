@@ -1,6 +1,7 @@
 import { ReactNode, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { isMobile } from 'react-device-detect';
+import { FloatingOverlay, FloatingPortal } from '@floating-ui/react';
 
 import {
   Button,
@@ -12,11 +13,10 @@ import {
   FlexColumn,
   FlexRow,
   Typography,
+  useModalController,
 } from '@/shared/ui';
 import { colors, zIndex } from '@/shared/constants';
 import { DialogInfoStates } from '../model/dialog-type.ts';
-import { FloatingOverlay, FloatingPortal } from '@floating-ui/react';
-import { useModalController } from '@/shared/hooks';
 
 const dialogColors: Record<DialogType, string> = {
   [DialogType.INFO]: colors.primary[400],
