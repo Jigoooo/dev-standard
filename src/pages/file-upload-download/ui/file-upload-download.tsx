@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { addMonths, format } from 'date-fns';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import {
   Button,
@@ -22,12 +23,12 @@ import {
   useFileUploadDownloadHeaders,
 } from '@/entities/file-upload-download';
 import { colors } from '@/shared/constants';
-import { AnimatePresence, motion } from 'framer-motion';
 import {
   PFileListItem,
   handleAuthError,
   useDeleteFileMutation,
   useGetFileListQuery,
+  useFileSaveMutation,
 } from '@/shared/api';
 
 export function FileUploadDownload() {
@@ -76,9 +77,60 @@ export function FileUploadDownload() {
     }
   }, [getFileListQuery.data?.data?.fileList]);
 
+  const fileSaveMutation = useFileSaveMutation();
+
   const fileUploadModal = useModal();
   const fileUploadModalOpen = () => {
     fileUploadModal.open(({ overlayRef, close }) => {
+      const fileSave = (saveFiles: File[]) => {
+        fileSaveMutation.mutate(
+          {
+            fileList: saveFiles,
+          },
+          {
+            onSuccess: async (data, variables) => {
+              const isError = await handleAuthError({
+                data,
+                onUnauthenticated: () => navigate('/', { replace: true }),
+                onOtherError: () => {
+                  dialog.error({
+                    title: '파일 업로드 실패',
+                    contents: data?.msg ?? '관리자에게 문의해 주세요.',
+                  });
+                },
+                onRefreshSuccess: () => {
+                  fileSaveMutation.mutate(variables, {
+                    onSuccess: (data) => {
+                      if (data.success) {
+                        toast.success('파일 업로드 성공');
+                        close();
+                      }
+                    },
+                  });
+                },
+              });
+
+              if (!isError) {
+                toast.success('파일 업로드 성공');
+                close();
+              }
+            },
+          },
+        );
+      };
+
+      const showSaveFileConfirmation = (saveFiles: File[]) => {
+        dialog.info({
+          title: '파일 업로드',
+          contents: '파일을 업로드 하시겠습니까?',
+          overlayClose: true,
+          withCancel: true,
+          cancelText: '아니요',
+          confirmText: '업로드',
+          onConfirm: () => fileSave(saveFiles),
+        });
+      };
+
       return (
         <ModalLayout
           overlayRef={overlayRef}
@@ -86,7 +138,7 @@ export function FileUploadDownload() {
           title={'파일 업로드'}
           close={close}
         >
-          <FileUploadModal />
+          <FileUploadModal onSave={showSaveFileConfirmation} />
         </ModalLayout>
       );
     });

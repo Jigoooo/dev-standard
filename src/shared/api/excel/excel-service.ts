@@ -1,4 +1,4 @@
-import { keepPreviousData, useMutation, useQueryClient } from '@tanstack/react-query';
+import { keepPreviousData, useMutation } from '@tanstack/react-query';
 
 import { excelDeleteApi, excelSaveApi, excelUpdateApi, getExcelInfoListApi } from './excel-api.ts';
 import { PExcelDeleteList, PExcelInfoList, PExcelSaveData } from './excel-upload-download-type.ts';
@@ -22,45 +22,27 @@ export function useExcelInfoListQuery(params: PExcelInfoList) {
 }
 
 export function useSaveExcelMutation() {
-  const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: (data: PExcelSaveData) => excelSaveApi(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [EXCEL_INFO_LIST_QUERY_KEY],
-      });
-    },
+    onSuccess: () => {},
     onMutate: () => loading.show(),
     onSettled: () => loading.hide(),
   });
 }
 
 export function useUpdateExcelMutation() {
-  const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: (data: PExcelSaveData) => excelUpdateApi(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [EXCEL_INFO_LIST_QUERY_KEY],
-      });
-    },
+    onSuccess: () => {},
     onMutate: () => loading.show(),
     onSettled: () => loading.hide(),
   });
 }
 
 export function useExcelDeleteMutation() {
-  const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: (params: PExcelDeleteList) => excelDeleteApi(params),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [EXCEL_INFO_LIST_QUERY_KEY],
-      });
-    },
+    onSuccess: () => {},
     onMutate: () => loading.show(),
     onSettled: () => loading.hide(),
   });

@@ -1,4 +1,4 @@
-import { keepPreviousData, useMutation, useQueryClient } from '@tanstack/react-query';
+import { keepPreviousData, useMutation } from '@tanstack/react-query';
 
 import { useQueryWrapper } from '../config/use-query-wrapper.ts';
 import { deleteFileApi, fileSaveApi, getFileListApi } from './file-api.ts';
@@ -22,30 +22,18 @@ export function useGetFileListQuery(params: PFileListItem) {
 }
 
 export function useFileSaveMutation() {
-  const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: (data: PFileSaveList) => fileSaveApi(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [GET_FILE_LIST_QUERY_KEY],
-      });
-    },
+    onSuccess: () => {},
     onMutate: () => loading.show(),
     onSettled: () => loading.hide(),
   });
 }
 
 export function useDeleteFileMutation() {
-  const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: (data: PDeleteFileList) => deleteFileApi(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [GET_FILE_LIST_QUERY_KEY],
-      });
-    },
+    onSuccess: () => {},
     onMutate: () => loading.show(),
     onSettled: () => loading.hide(),
   });

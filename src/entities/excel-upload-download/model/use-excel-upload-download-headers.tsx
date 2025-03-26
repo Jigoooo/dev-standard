@@ -26,7 +26,7 @@ import {
   useUpdateExcelMutation,
 } from '@/shared/api';
 
-export function useExcelUploadDownloadHeaders() {
+export function useExcelUploadDownloadHeaders(search: () => void) {
   const excelHeaderKeyLabels = new Map<keyof RExcelData, string>([
     ['orderNo', '주문번호'],
     ['productCode', '상품코드'],
@@ -214,6 +214,7 @@ export function useExcelUploadDownloadHeaders() {
                   if (data.success) {
                     toast.success('엑셀 수정 성공');
                     close();
+                    search();
                   }
                 },
               });
@@ -223,6 +224,7 @@ export function useExcelUploadDownloadHeaders() {
           if (!isError) {
             toast.success('엑셀 수정 성공');
             close();
+            search();
           }
         },
       },

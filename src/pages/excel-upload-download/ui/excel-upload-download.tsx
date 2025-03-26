@@ -73,7 +73,7 @@ export function ExcelUploadDownload() {
     excelUploadValidationRules,
     excelUploadDataHeaders,
     excelUploadListHeaders,
-  } = useExcelUploadDownloadHeaders();
+  } = useExcelUploadDownloadHeaders(search);
   const { dataList, setDataList, handelDataList, deleteDataList } =
     useTableData<TExcelInfo>(excelInfoListWithIndex);
   useEffect(() => {
@@ -118,6 +118,7 @@ export function ExcelUploadDownload() {
                       if (data.success) {
                         toast.success('엑셀 수정 성공');
                         close();
+                        search();
                       }
                     },
                   });
@@ -127,6 +128,7 @@ export function ExcelUploadDownload() {
               if (!isError) {
                 toast.success('엑셀 등록 성공');
                 close();
+                search();
               }
             },
           },
@@ -198,6 +200,7 @@ export function ExcelUploadDownload() {
                 onSuccess: (data) => {
                   if (data.success) {
                     toast.success('엑셀데이터가 삭제되었습니다.');
+                    search();
                   }
                 },
               });
@@ -206,6 +209,7 @@ export function ExcelUploadDownload() {
 
           if (!isError) {
             toast.success('엑셀데이터가 삭제되었습니다.');
+            search();
           }
         },
       },
