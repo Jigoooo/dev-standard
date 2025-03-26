@@ -104,6 +104,7 @@ export function FileUploadDownload() {
                       if (data.success) {
                         toast.success('파일 업로드 성공');
                         close();
+                        search();
                       }
                     },
                   });
@@ -113,6 +114,7 @@ export function FileUploadDownload() {
               if (!isError) {
                 toast.success('파일 업로드 성공');
                 close();
+                search();
               }
             },
           },
