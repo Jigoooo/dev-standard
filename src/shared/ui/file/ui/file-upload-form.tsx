@@ -49,9 +49,8 @@ import { MdDeleteOutline } from 'react-icons/md';
 import { BiLogoTypescript } from 'react-icons/bi';
 
 import { DropZone } from './drop-zone.tsx';
-import { fileSizeFormatter } from '@/shared/lib';
 import { FlexColumn, FlexRow, Typography, LinearProgress, dialog, Button } from '@/shared/ui';
-import { TFile } from '../model';
+import { TFile, fileSizeFormatter } from '../model';
 
 export function FileUploadForm({
   accept,

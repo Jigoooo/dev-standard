@@ -3,14 +3,13 @@ import { Outlet, RouteObject } from 'react-router-dom';
 
 import { RMenu, RMenuMemberAuth, Router, TMenu, TRouterMenuContext } from './router-type.ts';
 import { getRouterComponent, getRouterMappedIcon, RouterMenuContext } from './';
-import { getMemberMenuListApi } from '../api/router-api.ts';
 import { SignIn } from '@/pages/sign-in';
 import { Main } from '@/pages/main';
 import { MyProfile } from '@/pages/my-profile';
 import { ModalContextWrapper, RouteErrorPage } from '@/shared/ui';
 import { localStorageKey } from '@/shared/constants';
 import { AuthGuard, MainAuthGuard } from '@/entities/auth';
-import { handleAuthError } from '@/shared/api';
+import { handleAuthError, getMemberMenuListApi } from '@/shared/api';
 
 const defaultRoutes: RouteObject[] = [
   {

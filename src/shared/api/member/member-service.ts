@@ -3,14 +3,31 @@ import { useLocation, useSearchParams } from 'react-router-dom';
 
 import { getToken } from '../config';
 import { useQueryWrapper } from '../config/use-query-wrapper.ts';
-import { tokenCheckApi, getMemberInfoApi, updateMemberApi } from './member-api.ts';
+import {
+  tokenCheckApi,
+  getMemberInfoApi,
+  updateMemberApi,
+  getMemberListApi,
+  getMenuMemberAuthApi,
+  getMenuMemberAuthListApi,
+  updateMenuMemberAuthApi,
+} from './member-api.ts';
+import {
+  RMember,
+  PMemberInfo,
+  PMenuMemberAuth,
+  RMenuMemberAuth,
+  PMenuMemberAuthList,
+} from './member-type.ts';
+import { Router } from '@/entities/router';
 import { loading } from '@/shared/ui';
-import { RMember, PMemberInfo } from './member-type.ts';
-import { GET_MEMBER_LIST_QUERY_KEY, Router } from '@/entities/router';
 
 const TOKEN_SIGN_IN_QUERY_KEY = 'tokenSignInQueryKey';
 const TOKEN_CHECK_QUERY_KEY = 'tokenCheckQueryKey';
 const GET_MEMBER_INFO_QUERY_KEY = 'getMemberInfoQueryKey';
+const GET_MENU_MEMBER_AUTH_QUERY_KEY = 'getMenuMemberAuthQueryKey';
+const GET_MEMBER_LIST_QUERY_KEY = 'getMemberListQueryKey';
+const GET_MENU_LIST_QUERY_KEY = 'getMemberAuthListQueryKey';
 
 export function useTokenSignInQuery() {
   const location = useLocation();
@@ -77,6 +94,47 @@ export function useUpdateMemberMutation() {
         queryKey: [GET_MEMBER_LIST_QUERY_KEY],
       });
     },
+    onMutate: () => loading.show(),
+    onSettled: () => loading.hide(),
+  });
+}
+
+export function useGetMenuMemberAuthQuery(params: PMenuMemberAuth) {
+  return useQueryWrapper({
+    queryKey: [GET_MENU_MEMBER_AUTH_QUERY_KEY, params],
+    queryFn: () => getMenuMemberAuthApi(params),
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    enabled:
+      params.menuId !== '' &&
+      params.menuId !== Router.MAIN.slice(1) &&
+      params.menuId !== Router.MY_PROFILE,
+  });
+}
+
+export function useGetMemberListQuery() {
+  return useQueryWrapper({
+    queryKey: [GET_MEMBER_LIST_QUERY_KEY],
+    queryFn: () => getMemberListApi(),
+    refetchOnMount: true,
+    refetchOnReconnect: false,
+  });
+}
+
+export function useGetMenuMemberAuthListQuery(params: PMenuMemberAuthList) {
+  return useQueryWrapper({
+    queryKey: [GET_MENU_LIST_QUERY_KEY, params],
+    queryFn: () => getMenuMemberAuthListApi(params),
+    refetchOnMount: true,
+    refetchOnReconnect: false,
+    enabled: params.memberId !== '',
+  });
+}
+
+export function useUpdateMenuMemberAuthMutation() {
+  return useMutation({
+    mutationFn: (data: RMenuMemberAuth[]) => updateMenuMemberAuthApi(data),
+    onSuccess: () => {},
     onMutate: () => loading.show(),
     onSettled: () => loading.hide(),
   });

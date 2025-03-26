@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 import { FlexColumn, FlexRow, Table, TDataWithIndex, useTableData } from '@/shared/ui';
-import { RRoleUser, useGetMemberListQuery } from '@/entities/router';
+import { RRoleUser, useGetMemberListQuery } from '@/shared/api';
 import { useUserManagementHeaders } from '@/entities/user-management';
 
 export function UserManagement() {

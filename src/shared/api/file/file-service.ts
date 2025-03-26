@@ -1,6 +1,6 @@
 import { keepPreviousData, useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { useQueryWrapper } from '@/entities/query';
+import { useQueryWrapper } from '../config/use-query-wrapper.ts';
 import { deleteFileApi, fileSaveApi, getFileListApi } from './file-api.ts';
 import { PDeleteFileList, PFileListItem, PFileSaveList } from './file-upload-download-type.ts';
 import { loading } from '@/shared/ui';

@@ -2,9 +2,14 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
 import { createHeader, dialog, ModalLayout, ModifyButton, THeader, useModal } from '@/shared/ui';
-import { RRoleUser } from '@/entities/router';
 import { UserManagementEditModal } from '@/entities/user-management';
-import { handleAuthError, RMember, useUpdateMemberMutation, getMemberInfoApi } from '@/shared/api';
+import {
+  handleAuthError,
+  RMember,
+  useUpdateMemberMutation,
+  getMemberInfoApi,
+  RRoleUser,
+} from '@/shared/api';
 
 export function useUserManagementHeaders() {
   const navigate = useNavigate();

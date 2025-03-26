@@ -1,7 +1,8 @@
-import { useQueryWrapper } from '@/entities/query';
-import { getMenuListApi, updateMenuApi } from './menu-setting-api.ts';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { RMenu } from '@/entities/router';
+
+import { useQueryWrapper } from '../config/use-query-wrapper.ts';
+import { getMenuListApi, updateMenuApi } from './menu-api.ts';
+import { RMenu } from '@/shared/api';
 import { loading } from '@/shared/ui';
 
 const GET_MENU_LIST_QUERY_KEY = 'getMenuListQueryKey';

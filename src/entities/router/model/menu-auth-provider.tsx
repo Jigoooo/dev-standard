@@ -1,7 +1,7 @@
 import { ReactNode, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { useGetMenuMemberAuthQuery } from '../api';
+import { useGetMenuMemberAuthQuery } from '@/shared/api';
 import { useRouterMenuContext } from './';
 
 export function MenuAuthProvider({ children }: { children: ReactNode }) {

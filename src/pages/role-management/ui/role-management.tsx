@@ -11,17 +11,16 @@ import {
   TDataWithIndex,
   useTableData,
 } from '@/shared/ui';
+import { useRoleManagementHeaders, Router } from '@/entities/router';
+import { useMemberState } from '@/entities/member';
 import {
+  handleAuthError,
+  RMenuMemberAuth,
+  RRoleUser,
   useGetMemberListQuery,
   useGetMenuMemberAuthListQuery,
   useUpdateMenuMemberAuthMutation,
-  useRoleManagementHeaders,
-  RMenuMemberAuth,
-  RRoleUser,
-  Router,
-} from '@/entities/router';
-import { useMemberState } from '@/entities/member';
-import { handleAuthError } from '@/shared/api';
+} from '@/shared/api';
 
 export function RoleManagement() {
   const memberState = useMemberState();

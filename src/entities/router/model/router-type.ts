@@ -105,16 +105,6 @@ export type RMenu = {
   displayYn: YesNoType;
 };
 
-export type RMenuList = {
-  menuList: RMenu[];
-};
-
-export type SerializableRoute = {
-  path: string;
-  componentKey?: string;
-  children?: SerializableRoute[];
-};
-
 export type TRouterMenuContext = {
   routes: RouteObject[];
   menus: TMenu[];
@@ -135,19 +125,6 @@ export type TRouterMenuContext = {
   updateRouteName: (router: Router, newName: string) => void;
   makeGroupMenus: (menus: RMenu[]) => TMenu[];
   flattenGroupMenus: (menus: TMenu[]) => RMenu[];
-};
-
-export type PMenuMemberAuthList = {
-  memberId: string;
-};
-
-export type RRoleUser = {
-  memberId: string;
-  memberNm: string;
-};
-
-export type RMemberList = {
-  memberList: RRoleUser[];
 };
 
 export type RMenuMemberAuthList = {

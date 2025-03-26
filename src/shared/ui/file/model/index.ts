@@ -1,3 +1,4 @@
+export type { TFile } from './file-type.ts';
 export {
   convertBlobToBase64,
   base64ToFile,
