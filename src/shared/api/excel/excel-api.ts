@@ -1,4 +1,4 @@
-import { apiRequest, customedAxios } from '@/shared/api/config';
+import { apiRequest, customedAxios } from '../config';
 import {
   PExcelDataList,
   PExcelDeleteList,
@@ -6,7 +6,7 @@ import {
   PExcelSaveData,
   RExcelDataList,
   RExcelInfoList,
-} from '../model/excel-upload-download-type.ts';
+} from './excel-upload-download-type.ts';
 
 export async function getExcelInfoListApi(params: PExcelInfoList) {
   return await apiRequest<RExcelInfoList>(

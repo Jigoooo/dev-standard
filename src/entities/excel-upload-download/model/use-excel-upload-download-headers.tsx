@@ -15,13 +15,12 @@ import {
   DeleteButton,
   ModifyButton,
   SelectEditCell,
+  DateEditCell,
 } from '@/shared/ui';
-import { getExcelDataListApi } from '../api/excel-api.ts';
-import { TExcelInfo, TExcelData, RExcelData } from '../model/excel-upload-download-type.ts';
-import { useUpdateExcelMutation } from '@/entities/excel-upload-download';
+import { TExcelInfo, TExcelData } from './excel-upload-download-type.ts';
 import { handleAuthError } from '@/entities/auth';
 import { createValidator, formatDateString, thousandSeparator } from '@/shared/lib';
-import { DateEditCell } from '@/shared/ui/table/ui/date-edit-cell.tsx';
+import { getExcelDataListApi, RExcelData, useUpdateExcelMutation } from '@/shared/api';
 
 export function useExcelUploadDownloadHeaders() {
   const excelHeaderKeyLabels = new Map<keyof RExcelData, string>([

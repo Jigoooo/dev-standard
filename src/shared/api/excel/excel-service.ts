@@ -1,13 +1,9 @@
 import { keepPreviousData, useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { excelDeleteApi, excelSaveApi, excelUpdateApi, getExcelInfoListApi } from './excel-api.ts';
-import {
-  PExcelDeleteList,
-  PExcelInfoList,
-  PExcelSaveData,
-} from '../model/excel-upload-download-type.ts';
-import { useQueryWrapper } from '@/entities/query';
+import { PExcelDeleteList, PExcelInfoList, PExcelSaveData } from './excel-upload-download-type.ts';
 import { loading } from '@/shared/ui';
+import { useQueryWrapper } from '../config/use-query-wrapper.ts';
 
 const EXCEL_INFO_LIST_QUERY_KEY = 'excelInfoListQueryKey';
 

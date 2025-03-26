@@ -21,15 +21,17 @@ import {
 import {
   TExcelInfo,
   TExcelData,
-  useExcelInfoListQuery,
   useExcelUploadDownloadHeaders,
-  useSaveExcelMutation,
-  useExcelDeleteMutation,
 } from '@/entities/excel-upload-download';
-import { handleAuthError } from '@/entities/auth';
 import { AnimatePresence, motion } from 'framer-motion';
 import { colors } from '@/shared/constants';
-import { PExcelInfoList } from '@/entities/excel-upload-download/model/excel-upload-download-type.ts';
+import {
+  handleAuthError,
+  useExcelDeleteMutation,
+  useExcelInfoListQuery,
+  useSaveExcelMutation,
+  PExcelInfoList,
+} from '@/shared/api';
 
 export function ExcelUploadDownload() {
   const navigate = useNavigate();
