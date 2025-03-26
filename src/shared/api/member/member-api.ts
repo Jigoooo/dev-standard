@@ -46,9 +46,9 @@ export async function getMemberListApi() {
 export async function getMenuMemberAuthListApi(params: PMenuMemberAuthList) {
   const path = params?.memberId ? `/${params.memberId}` : '';
 
-  return await apiRequest<RMenuMemberAuthList>(customedAxios.get(`/v1/members${path}/menuAuth`));
+  return await apiRequest<RMenuMemberAuthList>(customedAxios.get(`/v1/members${path}/menu-auth`));
 }
 
 export async function updateMenuMemberAuthApi(data: RMenuMemberAuth[]) {
-  return await apiRequest<null>(customedAxios.put('/v1/members/menuAuth', data));
+  return await apiRequest<null>(customedAxios.put('/v1/members/menu-auth', data));
 }
