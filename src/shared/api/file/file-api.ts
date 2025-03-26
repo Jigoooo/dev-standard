@@ -1,6 +1,6 @@
 import { saveAs } from 'file-saver';
 
-import { apiRequest, customedAxios } from '../config';
+import { apiRequest, customedAxios, handleAuthError } from '../config';
 import {
   PDeleteFileList,
   PFileDownload,
@@ -21,6 +21,15 @@ export async function downloadFileApi(params: PFileDownload) {
   const response = await customedAxios.get(`/v1/files/${params.fileIdx}/download`, {
     responseType: 'blob',
   });
+
+  const isError = await handleAuthError({
+    data: response,
+    onUnauthenticated: () => window.location.replace('/'),
+    onRefreshSuccess: () => {},
+  });
+
+  if (isError) {
+  }
 
   const disposition = response.headers['content-disposition'];
   let fileName = 'downloaded_file';
