@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 
-import { createHeader, FileDownloadButton, THeader } from '@/shared/ui';
+import { createHeader, dialog, FileDownloadButton, THeader } from '@/shared/ui';
 import { TFileListItem } from '@/entities/file-upload-download';
 import { thousandSeparator } from '@/shared/lib';
 import { apiRequest, downloadFileApi, handleAuthError } from '@/shared/api';
@@ -33,7 +33,6 @@ export function useFileUploadDownloadHeaders(): THeader<TFileListItem>[] {
           <FileDownloadButton
             style={{ height: 30 }}
             onClick={async () => {
-              //todo 에러, 토큰 처리 추가
               const response = await apiRequest(
                 downloadFileApi({
                   fileIdx: rowData.fileIdx,
@@ -47,11 +46,19 @@ export function useFileUploadDownloadHeaders(): THeader<TFileListItem>[] {
               });
 
               if (isError) {
-                await apiRequest(
+                const response = await apiRequest(
                   downloadFileApi({
                     fileIdx: rowData.fileIdx,
                   }),
                 );
+
+                if (!response.success) {
+                  dialog.error({
+                    title: '다운로드 실패',
+                    contents: response.msg ?? '관리자에게 문의해 주세요.',
+                  });
+                  return;
+                }
               }
             }}
           />
