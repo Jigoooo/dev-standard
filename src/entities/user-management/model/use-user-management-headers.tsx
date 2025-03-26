@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 import { createHeader, dialog, ModalLayout, ModifyButton, THeader, useModal } from '@/shared/ui';
 import { RRoleUser } from '@/entities/router';
 import { UserManagementEditModal } from '@/entities/user-management';
-import { handleAuthError } from '@/entities/auth';
+import { handleAuthError } from '@/shared/api';
 import { RMember, useUpdateMemberMutation, getMemberInfoApi } from '@/entities/member';
 
 export function useUserManagementHeaders() {

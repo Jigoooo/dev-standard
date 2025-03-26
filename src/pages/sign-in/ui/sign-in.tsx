@@ -16,8 +16,7 @@ import {
 import { useToggle } from '@/shared/hooks';
 import { createValidator, getFormValues } from '@/shared/lib';
 import { localStorageKey } from '@/shared/constants';
-import { setToken } from '@/entities/auth';
-import { PSignIn, useSignInMutation } from '@/shared/api';
+import { setToken, PSignIn, useSignInMutation } from '@/shared/api';
 
 const signInFields: Record<
   keyof {

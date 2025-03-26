@@ -11,7 +11,7 @@ import {
   TDataWithIndexCheck,
   useTableData,
 } from '@/shared/ui';
-import { generateUsers } from '@/entities/grid-example/config/test-data.ts';
+import { generateUsers } from '@/entities/grid-example/model/test-data.ts';
 import { RGridExample, useGridExampleHeaders } from '@/entities/grid-example';
 
 export function GridExample() {

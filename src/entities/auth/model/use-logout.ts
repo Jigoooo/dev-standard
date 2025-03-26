@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { Router, useRouterMenuContext } from '@/entities/router';
 import { dialog } from '@/shared/ui';
-import { removeToken } from '@/entities/auth';
+import { removeToken } from '@/shared/api';
 
 export function useLogout() {
   const { removeLastLocation } = useRouterMenuContext();

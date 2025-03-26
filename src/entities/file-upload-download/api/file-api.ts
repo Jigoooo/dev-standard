@@ -1,6 +1,6 @@
 import { saveAs } from 'file-saver';
 
-import { apiRequest, customedAxios } from '@/shared/api/config';
+import { apiRequest, customedAxios } from '@/shared/api';
 import {
   PDeleteFileList,
   PFileDownload,

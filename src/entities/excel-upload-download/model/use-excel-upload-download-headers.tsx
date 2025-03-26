@@ -18,9 +18,13 @@ import {
   DateEditCell,
 } from '@/shared/ui';
 import { TExcelInfo, TExcelData } from './excel-upload-download-type.ts';
-import { handleAuthError } from '@/entities/auth';
 import { createValidator, formatDateString, thousandSeparator } from '@/shared/lib';
-import { getExcelDataListApi, RExcelData, useUpdateExcelMutation } from '@/shared/api';
+import {
+  handleAuthError,
+  getExcelDataListApi,
+  RExcelData,
+  useUpdateExcelMutation,
+} from '@/shared/api';
 
 export function useExcelUploadDownloadHeaders() {
   const excelHeaderKeyLabels = new Map<keyof RExcelData, string>([

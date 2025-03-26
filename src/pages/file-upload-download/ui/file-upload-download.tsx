@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { addMonths, format } from 'date-fns';
+import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
 import {
   Button,
@@ -24,9 +26,7 @@ import {
 } from '@/entities/file-upload-download';
 import { colors } from '@/shared/constants';
 import { AnimatePresence, motion } from 'framer-motion';
-import { handleAuthError } from '@/entities/auth';
-import { toast } from 'sonner';
-import { useNavigate } from 'react-router-dom';
+import { handleAuthError } from '@/shared/api';
 
 export function FileUploadDownload() {
   const navigate = useNavigate();

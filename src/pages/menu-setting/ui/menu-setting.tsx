@@ -9,7 +9,7 @@ import { RxDragHandleHorizontal } from 'react-icons/rx';
 import { dialog, Divider, FlexColumn, FlexRow, Input, SaveButton, Typography } from '@/shared/ui';
 import { useGetMenuListQuery, useUpdateMenuMutation } from '@/entities/menu-setting';
 import { TMenu, useRouterMenuContext } from '@/entities/router';
-import { handleAuthError } from '@/entities/auth';
+import { handleAuthError } from '@/shared/api';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
 import { colors } from '@/shared/constants';
 

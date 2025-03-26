@@ -1,4 +1,4 @@
-import { apiRequest, customedAxios } from '@/shared/api/config';
+import { apiRequest, customedAxios } from '@/shared/api';
 import {
   PMenuMemberAuth,
   RMenuList,

@@ -21,7 +21,7 @@ import {
   Router,
 } from '@/entities/router';
 import { useMemberState } from '@/entities/member';
-import { handleAuthError } from '@/entities/auth';
+import { handleAuthError } from '@/shared/api';
 
 export function RoleManagement() {
   const memberState = useMemberState();

@@ -1,4 +1,4 @@
-import { apiRequest, customedAxios } from '@/shared/api/config';
+import { apiRequest, customedAxios } from '@/shared/api';
 import { PMemberInfo, RMember, RMemberInfo } from '../model/member-type.ts';
 
 export async function tokenCheckApi() {

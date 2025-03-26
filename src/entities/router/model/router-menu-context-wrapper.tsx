@@ -9,7 +9,8 @@ import { Main } from '@/pages/main';
 import { MyProfile } from '@/pages/my-profile';
 import { ModalContextWrapper, RouteErrorPage } from '@/shared/ui';
 import { localStorageKey } from '@/shared/constants';
-import { AuthGuard, handleAuthError, MainAuthGuard } from '@/entities/auth';
+import { AuthGuard, MainAuthGuard } from '@/entities/auth';
+import { handleAuthError } from '@/shared/api';
 
 const defaultRoutes: RouteObject[] = [
   {

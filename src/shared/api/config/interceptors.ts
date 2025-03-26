@@ -7,7 +7,7 @@ import axios, {
 } from 'axios';
 
 import { logOnDev } from '@/shared/lib';
-import { getToken } from '@/entities/auth';
+import { getToken } from './token-lib';
 
 const onRequest = (config: AxiosRequestConfig): Promise<InternalAxiosRequestConfig> => {
   const { method, url, headers } = config;
