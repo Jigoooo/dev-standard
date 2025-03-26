@@ -99,5 +99,17 @@ export default defineConfig(({ mode }) => {
       }),
     ],
     assetsInclude: ['**/*.ttf', '**/*.woff', '**/*.woff2', '**/*.eot', '**/*.otf'],
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes('src/shared/ui')) {
+              return 'shared-ui';
+            }
+            return null;
+          },
+        },
+      },
+    },
   };
 });
