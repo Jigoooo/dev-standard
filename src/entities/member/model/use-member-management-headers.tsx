@@ -11,7 +11,7 @@ import {
   RRoleUser,
 } from '@/shared/api';
 
-export function useUserManagementHeaders() {
+export function useMemberManagementHeaders() {
   const navigate = useNavigate();
 
   const updateMemberMutation = useUpdateMemberMutation();

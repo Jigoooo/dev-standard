@@ -2,7 +2,7 @@ import { Fragment, useState } from 'react';
 
 import { RMember } from '@/shared/api';
 import { FlexRow, FlexColumn, Typography, Input, SaveButton } from '@/shared/ui';
-import { useUserManagementHeaders } from '../model';
+import { useMemberManagementHeaders } from '../model';
 
 export function MemberManagementEditModal({
   memberInfo,
@@ -11,7 +11,7 @@ export function MemberManagementEditModal({
   memberInfo: RMember;
   onSave: (memberInfo: RMember) => void;
 }) {
-  const { memberInfoColumnLabelsMapping } = useUserManagementHeaders();
+  const { memberInfoColumnLabelsMapping } = useMemberManagementHeaders();
   const [filteredData, setFilteredData] = useState(() =>
     Object.fromEntries(
       Object.entries(memberInfo).filter(([key]) => key in memberInfoColumnLabelsMapping),

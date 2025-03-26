@@ -1,4 +1,4 @@
-import { THeader } from '../model';
+import { THeader } from './index.ts';
 
 export const createHeader = <TData>(
   id: 'index' | 'check' | 'button' | Extract<keyof TData, string>,

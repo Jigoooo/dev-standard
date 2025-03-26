@@ -6,7 +6,7 @@ import { TableBody } from './table-body.tsx';
 import { useElementSize } from '@/shared/hooks';
 import { THeaderGroup, THeader, TTableContext, TTableStyle } from '../model/table-type.ts';
 import { TableContext } from '../model/table-context.ts';
-import { useTableChecked, useTableSorting } from '../hooks';
+import { useTableChecked, useTableSorting } from '../model';
 
 /*
  * todo

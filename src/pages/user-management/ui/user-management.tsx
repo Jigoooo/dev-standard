@@ -2,10 +2,10 @@ import { useEffect } from 'react';
 
 import { FlexColumn, FlexRow, Table, TDataWithIndex, useTableData } from '@/shared/ui';
 import { RRoleUser, useGetMemberListQuery } from '@/shared/api';
-import { useUserManagementHeaders } from '@/entities/user-management';
+import { useMemberManagementHeaders } from '@/entities/member';
 
 export function UserManagement() {
-  const { userManagementHeaders } = useUserManagementHeaders();
+  const { userManagementHeaders } = useMemberManagementHeaders();
 
   const { dataList, setDataList, handelDataList, deleteDataList } = useTableData<
     TDataWithIndex & RRoleUser

@@ -1,2 +1,2 @@
 export { memberActions, useMemberState } from './member-store.ts';
-export { useUserManagementHeaders } from './use-user-management-headers.tsx';
+export { useMemberManagementHeaders } from './use-member-management-headers.tsx';

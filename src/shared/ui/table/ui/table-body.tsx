@@ -12,8 +12,8 @@ import {
 import { colors } from '@/shared/constants';
 import { EditType, TableBodyRowProps, TDataWithIndex, THeader } from '../model/table-type.ts';
 import { useTableContext } from '../model/table-context.ts';
-import { validateTableDataList } from '../lib/validate-table-data-list.ts';
-import { useTableScrollToFn, useVirtualRow } from '../hooks';
+import { validateTableDataList } from '../model/validate-table-data-list.ts';
+import { useTableScrollToFn, useVirtualRow } from '../model';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
 import { NoData } from '@/entities/main';
 import { AnimatePresence, motion } from 'framer-motion';

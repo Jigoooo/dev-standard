@@ -1,4 +1,4 @@
-import { RMenu } from '@/entities/router';
+import { RMenu } from '@/shared/api';
 
 export type PSignIn = {
   id: string;

@@ -2,7 +2,7 @@ import XLSX, { BookType, Sheet2JSONOpts } from 'xlsx-js-style';
 import { saveAs } from 'file-saver';
 import { toast } from 'sonner';
 
-import { WriteExcelFileParams } from '../model/excel-type';
+import { WriteExcelFileParams } from './excel-type.ts';
 
 export function downloadExcel({
   workBook,
