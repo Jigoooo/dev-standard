@@ -188,7 +188,7 @@ export function useExcelUploadDownloadHeaders(search: () => void) {
     }),
     createHeader('updMember', '수정자', 150),
     createHeader('button', '', 80, {
-      pin: 'right',
+      pin: 'view',
       dataAlign: 'center',
       cell: ({ rowData }) => {
         return <ModifyButton onClick={() => excelEditModalOpen(rowData)} />;
