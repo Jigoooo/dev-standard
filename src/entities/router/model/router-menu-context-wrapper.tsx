@@ -2,65 +2,16 @@ import { ReactNode, useEffect, useState } from 'react';
 import { Outlet, RouteObject } from 'react-router-dom';
 
 import { TMenu, TRouterMenuContext } from './router-type.ts';
-import { getRouterComponent, getRouterMappedIcon, RouterMenuContext } from './';
-import { SignIn } from '@/pages/sign-in';
-import { Main } from '@/pages/main';
-import { MyProfile } from '@/pages/my-profile';
-import { ModalContextWrapper, RouteErrorPage } from '@/shared/ui';
-import { localStorageKey } from '@/shared/constants';
-import { AuthGuard, MainAuthGuard } from '@/entities/auth';
+import {
+  getLastLocation,
+  getRouterComponent,
+  getRouterMappedIcon,
+  removeLastLocation,
+  RouterMenuContext,
+  setLastLocation,
+} from './';
 import { handleAuthError, getMemberMenuListApi, RMenu, RMenuMemberAuth } from '@/shared/api';
 import { Router } from '@/shared/router';
-
-const defaultRoutes: RouteObject[] = [
-  {
-    path: Router.SIGN_IN,
-    element: (
-      <AuthGuard>
-        <ModalContextWrapper>
-          <SignIn />
-        </ModalContextWrapper>
-      </AuthGuard>
-    ),
-    errorElement: <RouteErrorPage />,
-  },
-  {
-    path: Router.MAIN,
-    element: (
-      <MainAuthGuard>
-        <ModalContextWrapper>
-          <Main />
-        </ModalContextWrapper>
-      </MainAuthGuard>
-    ),
-    errorElement: <RouteErrorPage />,
-    children: [
-      {
-        path: Router.MY_PROFILE,
-        element: <MyProfile />,
-      },
-    ],
-  },
-];
-
-const defaultMenus: TMenu[] = [
-  {
-    menuIndex: 9999,
-    isHeader: false,
-    name: '내정보',
-    icon: getRouterMappedIcon(Router.MY_PROFILE),
-    router: Router.MY_PROFILE,
-    fullRouterPath: `${Router.MAIN}/${Router.MY_PROFILE}`,
-    display: true,
-    orderBy: 0,
-    mainCd: 9999,
-    sub1Cd: 0,
-    sub2Cd: 0,
-    menuId: Router.MY_PROFILE,
-    menuLink: `${Router.MAIN}/${Router.MY_PROFILE}`,
-    menuLinkDev: '',
-  },
-];
 
 function isNonIndexRoute(route: RouteObject): route is Exclude<RouteObject, { index: true }> {
   return !('index' in route);
@@ -180,7 +131,15 @@ function generateRoutesFromMenus(menus: TMenu[]): RouteObject[] {
   });
 }
 
-export function RouterMenuContextWrapper({ children }: { children: ReactNode }) {
+export function RouterMenuContextWrapper({
+  defaultRoutes,
+  defaultMenus,
+  children,
+}: {
+  defaultRoutes: RouteObject[];
+  defaultMenus: TMenu[];
+  children: ReactNode;
+}) {
   const [routes, setRoutes] = useState(defaultRoutes);
   const [menus, setMenus] = useState<TMenu[]>(defaultMenus);
   const [currentMenuMemberAuth, setCurrentMenuMemberAuth] = useState<RMenuMemberAuth | null>(null);
@@ -192,15 +151,7 @@ export function RouterMenuContextWrapper({ children }: { children: ReactNode }) 
     `${Router.MAIN}/${Router.FILE}`,
     `${Router.MAIN}/${Router.MY_PROFILE}`,
   ];
-  const lastLocation = localStorage.getItem(localStorageKey.LAST_LOCATION);
-
-  const setLastLocation = (lastLocation: string) => {
-    localStorage.setItem(localStorageKey.LAST_LOCATION, lastLocation);
-  };
-
-  const removeLastLocation = () => {
-    localStorage.removeItem(localStorageKey.LAST_LOCATION);
-  };
+  const lastLocation = getLastLocation();
 
   const updateRouteChildren = (parentPath: string, newChildren: RouteObject[], merge?: boolean) => {
     setRoutes((prevState) => {

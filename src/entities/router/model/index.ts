@@ -5,3 +5,4 @@ export { getRouterComponent, getRouterMappedIcon } from './router-map.tsx';
 export { RouterMenuContext, useRouterMenuContext } from './router-menu-context.ts';
 export { MenuAuthProvider } from './menu-auth-provider.tsx';
 export { useRoleManagementHeaders } from './use-role-management-headers.tsx';
+export { setLastLocation, getLastLocation, removeLastLocation } from './last-location-storage.ts';

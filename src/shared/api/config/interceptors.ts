@@ -7,7 +7,7 @@ import axios, {
 } from 'axios';
 
 import { logOnDev } from '@/shared/lib';
-import { getToken } from './token-lib';
+import { getToken } from './token-storage.ts';
 
 const onRequest = (config: AxiosRequestConfig): Promise<InternalAxiosRequestConfig> => {
   const { method, url, headers } = config;

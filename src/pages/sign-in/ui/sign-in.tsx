@@ -15,9 +15,9 @@ import {
 } from '@/shared/ui';
 import { useToggle } from '@/shared/hooks';
 import { createValidator, getFormValues } from '@/shared/lib';
-import { localStorageKey } from '@/shared/constants';
 import { setToken, PSignIn, useSignInMutation } from '@/shared/api';
 import { Router } from '@/shared/router';
+import { getId, removeId, setId } from '@/entities/auth';
 
 const signInFields: Record<
   keyof {
@@ -31,7 +31,7 @@ const signInFields: Record<
 };
 
 export function SignIn() {
-  const saveId = localStorage.getItem(localStorageKey.ID) ?? '';
+  const saveId = getId();
   const [saveIdChecked, toggleSaveIdChecked] = useToggle(!!saveId);
 
   const signIn = useSignIn({
@@ -194,9 +194,9 @@ function useSignIn({ saveIdChecked }: { saveIdChecked: boolean }) {
           }
 
           if (saveIdChecked) {
-            localStorage.setItem(localStorageKey.ID, id);
+            setId(id);
           } else {
-            localStorage.removeItem(localStorageKey.ID);
+            removeId();
           }
 
           navigate(Router.MAIN, { viewTransition: true, replace: true });

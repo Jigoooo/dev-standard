@@ -5,4 +5,4 @@ export { Adapter } from './adapter.ts';
 export { ResponseAdapter } from './response-adapter.ts';
 export type { ApiResponseType, AdapterResponseType } from './response-adapter.ts';
 export { handleAuthError } from './handle-auth-error.ts';
-export { getToken, setToken, removeToken } from './token-lib.ts';
+export { getToken, setToken, removeToken } from './token-storage.ts';

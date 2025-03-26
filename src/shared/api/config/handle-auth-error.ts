@@ -1,4 +1,4 @@
-import { getToken, setToken } from './token-lib.ts';
+import { getToken, setToken } from './token-storage.ts';
 import { dialog } from '@/shared/ui';
 import { tokenRefreshApi } from '@/shared/api';
 

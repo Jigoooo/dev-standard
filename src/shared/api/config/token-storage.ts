@@ -1,9 +1,9 @@
 import secureLocalStorage from 'react-secure-storage';
 
-import { secureStorageKey } from '@/shared/constants';
 import { RToken } from '@/shared/api';
 
-// RToken 타입 가드 함수
+const TOKEN_KEY = 'token';
+
 function isToken(token: any): token is RToken {
   return (
     token !== null &&
@@ -13,11 +13,11 @@ function isToken(token: any): token is RToken {
   );
 }
 
-export const setToken = (token: RToken) => {
-  secureLocalStorage.setItem(secureStorageKey.TOKEN, JSON.stringify(token));
-};
-export const getToken = () => {
-  const tokenString = secureLocalStorage.getItem(secureStorageKey.TOKEN);
+export function setToken(token: RToken) {
+  secureLocalStorage.setItem(TOKEN_KEY, JSON.stringify(token));
+}
+export function getToken() {
+  const tokenString = secureLocalStorage.getItem(TOKEN_KEY);
 
   if (typeof tokenString === 'string') {
     try {
@@ -31,8 +31,8 @@ export const getToken = () => {
     }
   }
   return null;
-};
+}
 
-export const removeToken = () => {
-  secureLocalStorage.removeItem(secureStorageKey.TOKEN);
-};
+export function removeToken() {
+  secureLocalStorage.removeItem(TOKEN_KEY);
+}
