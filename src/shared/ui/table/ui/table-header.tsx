@@ -6,21 +6,6 @@ import SouthIcon from '@mui/icons-material/South';
 import { Checkbox, FlexRow, Input, THeader, Typography } from '@/shared/ui';
 import { useTableContext } from '../model/table-context.ts';
 
-// function sortHeadersByGroup<TData>(
-//   headers: THeader<TData>[],
-//   headerGroups?: THeaderGroup<TData>[],
-// ): THeader[] {
-//   if (!headerGroups || headerGroups.length === 0) {
-//     return headers;
-//   }
-//
-//   return [...headers].sort((a, b) => {
-//     const groupIndexA = headerGroups.findIndex((group) => group.headerIds.includes(a.id));
-//     const groupIndexB = headerGroups.findIndex((group) => group.headerIds.includes(b.id));
-//     return groupIndexA - groupIndexB;
-//   });
-// }
-
 export function TableHeader({ ref }: { ref: RefObject<HTMLDivElement | null> }) {
   const { tableStyle, headerHeight, sortedHeaders: headers } = useTableContext();
 
@@ -115,11 +100,12 @@ function TableHeaderView({
             height: tableStyle.tableHeaderHeight,
           }}
         >
-          {headers.map((header, index) => {
+          {headers.map((header, index, array) => {
             return (
               <TableHeaderCell
                 key={header.id + index}
                 header={header}
+                headers={array}
                 isVisibleHandler={index !== headers.length - 1}
                 position={'left'}
               />
@@ -138,11 +124,12 @@ function TableHeaderView({
               borderTop: tableStyle.tableBorder,
             }}
           >
-            {headers.map((header, index) => {
+            {headers.map((header, index, array) => {
               return (
                 <TableHeaderFilterCell
                   key={header.id + index}
                   header={header}
+                  headers={array}
                   isVisibleHandler={index !== headers.length - 1}
                   position={'left'}
                 />
@@ -221,6 +208,7 @@ function TableHeaderPin({ position, headers }: { position: 'left' | 'right'; hea
             <TableHeaderCell
               key={header.id + index}
               header={header}
+              headers={array}
               isVisibleHandler={isVisibleHandler}
               position={position}
             />
@@ -247,6 +235,7 @@ function TableHeaderPin({ position, headers }: { position: 'left' | 'right'; hea
               <TableHeaderFilterCell
                 key={header.id + index}
                 header={header}
+                headers={array}
                 isVisibleHandler={isVisibleHandler}
                 position={position}
               />
@@ -265,7 +254,7 @@ function TableGroupHeaders({
   mappingHeaderGroups: { header: THeader; groupLabel: string }[];
   position: 'left' | 'right';
 }) {
-  const { tableStyle } = useTableContext();
+  const { headers, tableStyle, verticalScrollWidth } = useTableContext();
 
   return (
     <>
@@ -291,6 +280,9 @@ function TableGroupHeaders({
           return null;
         }
 
+        const lastRightPinnedHeader = headers.filter((header) => header.pin === 'right').pop();
+        const isLastCell = lastRightPinnedHeader?.id === header.id;
+
         return (
           <FlexRow
             key={header.id + index}
@@ -303,6 +295,7 @@ function TableGroupHeaders({
                 paddingInline: 12,
                 width: totalWidth,
                 height: tableStyle.tableHeaderHeight,
+                marginRight: position === 'right' && isLastCell ? verticalScrollWidth / 2 : 0,
                 contain: 'paint',
               },
               // ...(position === 'left' &&
@@ -357,13 +350,15 @@ function TableGroupHeaders({
 function TableHeaderCell({
   isVisibleHandler,
   header,
+  headers,
   position,
 }: {
   header: THeader;
+  headers: THeader[];
   isVisibleHandler: boolean;
   position: 'left' | 'right';
 }) {
-  const { headers, tableStyle, verticalScrollWidth, checkedState, handleCheckAll, handleSort } =
+  const { tableStyle, verticalScrollWidth, checkedState, handleCheckAll, handleSort } =
     useTableContext();
 
   if (header.id === 'check' && checkedState === undefined) {
@@ -387,7 +382,7 @@ function TableHeaderCell({
           boxSizing: 'border-box',
           justifyContent: header.id === 'check' ? 'center' : justifyContent,
           alignItems: 'center',
-          marginRight: isLastCell ? verticalScrollWidth : 0,
+          marginRight: position === 'right' && isLastCell ? verticalScrollWidth : 0,
           paddingInline: 12,
           width: header.width,
           height: tableStyle.tableHeaderHeight,
@@ -440,14 +435,16 @@ function TableHeaderCell({
 
 function TableHeaderFilterCell({
   header,
+  headers,
   isVisibleHandler,
   position,
 }: {
   header: THeader;
+  headers: THeader[];
   isVisibleHandler: boolean;
   position: 'left' | 'right';
 }) {
-  const { headers, tableStyle, verticalScrollWidth, onChangeFilterValue } = useTableContext();
+  const { tableStyle, verticalScrollWidth, onChangeFilterValue } = useTableContext();
   const isLastCell = headers[headers.length - 1].id === header.id;
 
   return (
@@ -456,7 +453,7 @@ function TableHeaderFilterCell({
       style={{
         ...{
           alignItems: 'center',
-          marginRight: isLastCell ? verticalScrollWidth : 0,
+          marginRight: position === 'right' && isLastCell ? verticalScrollWidth : 0,
           paddingInline: 12,
           width: header.width,
           height: '100%',
