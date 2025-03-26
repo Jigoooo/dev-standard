@@ -462,7 +462,8 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
   };
 
   const isCheckedAvailableHeader = headers.find((header) => header.id === 'check');
-  const isLastCell = headers[headers.length - 1].id === header.id;
+  const lastRightPinnedHeader = headers.filter((header) => header.pin === 'right').pop();
+  const isLastCell = lastRightPinnedHeader?.id === header.id;
 
   return (
     <FlexRow
@@ -473,8 +474,8 @@ const TableBodyCell = memo(function TableBodyCell<TData extends Record<string, a
         justifyContent,
         alignItems: 'center',
         paddingInline: isEdit ? 0 : 12,
-        marginRight: isLastCell ? verticalScrollWidth : 0,
-        width: header.id === 'check' ? header.width + 1 : header.width,
+        marginRight: isLastCell ? verticalScrollWidth - 2 : 0,
+        width: header.width,
         height: '100%',
         backgroundColor: getBackgroundColor(),
         contain: 'paint',

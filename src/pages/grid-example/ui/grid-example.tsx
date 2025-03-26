@@ -90,6 +90,9 @@ export function GridExample() {
         <SearchButton />
       </FlexRow>
       <Table
+        tableStyle={{
+          showVerticalLines: true,
+        }}
         tableHeaderGroups={gridExampleHeaderGroups}
         tableHeaders={gridExampleHeaders}
         tableDataList={dataList}
