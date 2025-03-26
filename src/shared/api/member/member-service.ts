@@ -1,13 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useLocation, useSearchParams } from 'react-router-dom';
 
-import { useQueryWrapper } from '@/entities/query';
+import { getToken } from '../config';
+import { useQueryWrapper } from '../config/use-query-wrapper.ts';
 import { tokenCheckApi, getMemberInfoApi, updateMemberApi } from './member-api.ts';
-import { RMember } from '@/entities/member';
 import { loading } from '@/shared/ui';
-import { PMemberInfo } from '../model/member-type.ts';
+import { RMember, PMemberInfo } from './member-type.ts';
 import { GET_MEMBER_LIST_QUERY_KEY, Router } from '@/entities/router';
-import { getToken } from '@/shared/api';
 
 const TOKEN_SIGN_IN_QUERY_KEY = 'tokenSignInQueryKey';
 const TOKEN_CHECK_QUERY_KEY = 'tokenCheckQueryKey';

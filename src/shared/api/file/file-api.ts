@@ -1,13 +1,13 @@
 import { saveAs } from 'file-saver';
 
-import { apiRequest, customedAxios } from '@/shared/api';
+import { apiRequest, customedAxios } from '../config';
 import {
   PDeleteFileList,
   PFileDownload,
   PFileListItem,
   PFileSaveList,
   RFileList,
-} from '../model/file-upload-download-type.ts';
+} from './file-upload-download-type.ts';
 
 export async function getFileListApi(params: PFileListItem) {
   return await apiRequest<RFileList>(

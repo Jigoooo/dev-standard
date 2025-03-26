@@ -1,7 +1,9 @@
-import { createHeader, FileDownloadButton, THeader } from '@/shared/ui';
-import { downloadFileApi, TFileListItem } from '@/entities/file-upload-download';
-import { thousandSeparator } from '@/shared/lib';
 import { format } from 'date-fns';
+
+import { createHeader, FileDownloadButton, THeader } from '@/shared/ui';
+import { TFileListItem } from '@/entities/file-upload-download';
+import { thousandSeparator } from '@/shared/lib';
+import { downloadFileApi } from '@/shared/api';
 
 export function useFileUploadDownloadHeaders(): THeader<TFileListItem>[] {
   return [

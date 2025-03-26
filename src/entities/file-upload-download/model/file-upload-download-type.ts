@@ -1,33 +1,4 @@
 import { TDataWithIndex } from '@/shared/ui';
-
-export type PFileListItem = {
-  fileNm?: string;
-  fromDate: string;
-  toDate: string;
-};
-
-export type RFileListItem = {
-  fileIdx: number;
-  fileNm: string;
-  fileSize: number;
-  insDt: string;
-  insMember: string;
-};
-
-export type RFileList = {
-  fileList: RFileListItem[];
-};
+import { RFileListItem } from '@/shared/api';
 
 export type TFileListItem = TDataWithIndex & RFileListItem;
-
-export type PFileDownload = {
-  fileIdx: number;
-};
-
-export type PFileSaveList = {
-  fileList: File[];
-};
-
-export type PDeleteFileList = {
-  deleteFileList: number[];
-};

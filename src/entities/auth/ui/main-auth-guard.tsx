@@ -1,6 +1,7 @@
 import { ReactNode, useEffect } from 'react';
 
-import { memberActions, useTokenCheckQuery, useGetMemberInfoQuery } from '@/entities/member';
+import { memberActions } from '@/entities/member';
+import { useTokenCheckQuery, useGetMemberInfoQuery } from '@/shared/api';
 import { useInitGa, useInitLocation } from '@/entities/main';
 
 export function MainAuthGuard({ children }: { children: ReactNode }) {

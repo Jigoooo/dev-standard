@@ -3,8 +3,7 @@ import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 
 import { Button, dialog, FileUploadForm, FlexColumn, FlexRow, TFile } from '@/shared/ui';
-import { useFileSaveMutation } from '@/entities/file-upload-download';
-import { handleAuthError } from '@/shared/api';
+import { useFileSaveMutation, handleAuthError } from '@/shared/api';
 
 export function FileUploadModal() {
   const navigate = useNavigate();

@@ -5,3 +5,4 @@ export {
   useGetMemberInfoQuery,
   useUpdateMemberMutation,
 } from './member-service.ts';
+export type { RMember, RMemberInfo } from './member-type.ts';

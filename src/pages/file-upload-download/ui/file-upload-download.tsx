@@ -19,14 +19,16 @@ import {
 import {
   FileUploadModal,
   TFileListItem,
-  useDeleteFileMutation,
   useFileUploadDownloadHeaders,
-  useGetFileList,
-  PFileListItem,
 } from '@/entities/file-upload-download';
 import { colors } from '@/shared/constants';
 import { AnimatePresence, motion } from 'framer-motion';
-import { handleAuthError } from '@/shared/api';
+import {
+  PFileListItem,
+  handleAuthError,
+  useDeleteFileMutation,
+  useGetFileListQuery,
+} from '@/shared/api';
 
 export function FileUploadDownload() {
   const navigate = useNavigate();
@@ -53,7 +55,7 @@ export function FileUploadDownload() {
 
   const deleteFileMutation = useDeleteFileMutation();
 
-  const getFileListQuery = useGetFileList({
+  const getFileListQuery = useGetFileListQuery({
     fromDate: fileListParams.fromDate.replaceAll('-', ''),
     toDate: fileListParams.toDate.replaceAll('-', ''),
   });

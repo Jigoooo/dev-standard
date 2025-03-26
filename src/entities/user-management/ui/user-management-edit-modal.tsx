@@ -1,7 +1,8 @@
-import { RMember } from '@/entities/member';
+import { Fragment, useState } from 'react';
+
+import { RMember } from '@/shared/api';
 import { FlexRow, FlexColumn, Typography, Input, SaveButton } from '@/shared/ui';
 import { useUserManagementHeaders } from '@/entities/user-management';
-import { Fragment, useState } from 'react';
 
 export function UserManagementEditModal({
   memberInfo,

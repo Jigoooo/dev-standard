@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { Navigate, useSearchParams } from 'react-router-dom';
 
 import { Router } from '@/entities/router';
-import { useTokenSignInQuery } from '@/entities/member';
+import { useTokenSignInQuery } from '@/shared/api';
 
 export function AuthGuard({ children }: { children: ReactNode }) {
   const [searchParams] = useSearchParams();
