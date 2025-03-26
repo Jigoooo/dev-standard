@@ -11,14 +11,14 @@ import {
 
 export async function getFileListApi(params: PFileListItem) {
   return await apiRequest<RFileList>(
-    customedAxios.get('/v1/file/info', {
+    customedAxios.get('/v1/file', {
       params,
     }),
   );
 }
 
 export async function downloadFileApi(params: PFileDownload) {
-  const response = await customedAxios.get(`/v1/file/info/${params.fileIdx}/download`, {
+  const response = await customedAxios.get(`/v1/file/${params.fileIdx}/download`, {
     responseType: 'blob',
   });
 
@@ -44,7 +44,7 @@ export async function fileSaveApi(data: PFileSaveList) {
   });
 
   return await apiRequest<null>(
-    customedAxios.post('/v1/file/info', formData, {
+    customedAxios.post('/v1/file', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
