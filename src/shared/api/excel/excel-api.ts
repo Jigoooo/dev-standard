@@ -1,4 +1,4 @@
-import { apiRequest, customedAxios, handleAuthError } from '../config';
+import { apiRequest, customedAxios } from '../config';
 import {
   PExcelDataList,
   PExcelDeleteList,
@@ -17,23 +17,7 @@ export async function getExcelInfoListApi(params: PExcelInfoList) {
 }
 
 export async function getExcelDataListApi(params: PExcelDataList) {
-  let response = await apiRequest<RExcelDataList>(
-    customedAxios.get(`/v1/excels/${params.idx}/data`),
-  );
-
-  const isError = await handleAuthError({
-    data: response,
-    onUnauthenticated: () => window.location.replace('/'),
-    onRefreshSuccess: () => {},
-  });
-
-  if (isError) {
-    response = await getExcelDataListApi({
-      idx: params.idx,
-    });
-  }
-
-  return response;
+  return await apiRequest<RExcelDataList>(customedAxios.get(`/v1/excels/${params.idx}/data`));
 }
 
 export async function excelSaveApi(data: PExcelSaveData) {

@@ -287,14 +287,27 @@ function useExcelEditModal({
   excelUploadDataHeaders: THeader<TExcelData>[];
   excelUploadValidationRules: TValidationRuleWithHeaderId<TExcelData>[];
 }) {
+  const navigate = useNavigate();
   const updateExcel = useUpdateExcel(search);
 
   const excelEditModal = useModal();
 
   return async (rowData: TExcelInfo) => {
-    const response = await getExcelDataListApi({
+    let response = await getExcelDataListApi({
       idx: rowData.idx,
     });
+
+    const isError = await handleAuthError({
+      data: response,
+      onUnauthenticated: () => navigate('/', { replace: true }),
+      onRefreshSuccess: () => {},
+    });
+
+    if (isError) {
+      response = await getExcelDataListApi({
+        idx: rowData.idx,
+      });
+    }
 
     const excelDataList = response.data?.excelDataList ?? [];
     const excelDataWithIndex: TExcelData[] = excelDataList.map((item, index) => ({
