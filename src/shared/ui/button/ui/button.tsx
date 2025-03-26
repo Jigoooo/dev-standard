@@ -159,6 +159,7 @@ export function Button({
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseLeave}
+      onClickCapture={(event) => event.stopPropagation()}
       {...props}
     >
       {isValidElement(children) ? children : <Typography>{children}</Typography>}

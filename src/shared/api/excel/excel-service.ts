@@ -55,7 +55,7 @@ export function useExcelDeleteMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: PExcelDeleteList) => excelDeleteApi(data),
+    mutationFn: (params: PExcelDeleteList) => excelDeleteApi(params),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [EXCEL_INFO_LIST_QUERY_KEY],
