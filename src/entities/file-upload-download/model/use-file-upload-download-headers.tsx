@@ -3,9 +3,12 @@ import { format } from 'date-fns';
 import { createHeader, FileDownloadButton, THeader } from '@/shared/ui';
 import { TFileListItem } from '@/entities/file-upload-download';
 import { thousandSeparator } from '@/shared/lib';
-import { downloadFileApi } from '@/shared/api';
+import { apiRequest, downloadFileApi, handleAuthError } from '@/shared/api';
+import { useNavigate } from 'react-router-dom';
 
 export function useFileUploadDownloadHeaders(): THeader<TFileListItem>[] {
+  const navigate = useNavigate();
+
   return [
     createHeader('index', '', 60, { pin: 'left', dataAlign: 'right', filter: undefined }),
     createHeader('check', '', 60, { pin: 'left', dataAlign: 'center', filter: undefined }),
@@ -29,11 +32,27 @@ export function useFileUploadDownloadHeaders(): THeader<TFileListItem>[] {
         return (
           <FileDownloadButton
             style={{ height: 30 }}
-            onClick={() => {
+            onClick={async () => {
               //todo 에러, 토큰 처리 추가
-              downloadFileApi({
-                fileIdx: rowData.fileIdx,
+              const response = await apiRequest(
+                downloadFileApi({
+                  fileIdx: rowData.fileIdx,
+                }),
+              );
+
+              const isError = await handleAuthError({
+                data: response,
+                onUnauthenticated: () => navigate('/', { replace: true }),
+                onRefreshSuccess: () => {},
               });
+
+              if (isError) {
+                await apiRequest(
+                  downloadFileApi({
+                    fileIdx: rowData.fileIdx,
+                  }),
+                );
+              }
             }}
           />
         );
