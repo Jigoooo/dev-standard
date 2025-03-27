@@ -12,7 +12,8 @@ export function MainAuthGuard({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (getMemberInfoQuery.data?.data?.memberInfo) {
-      memberActions.setMemberInfo(getMemberInfoQuery.data?.data?.memberInfo);
+      const memberInfo = getMemberInfoQuery.data?.data?.memberInfo;
+      memberActions.setMemberInfo(memberInfo);
     }
   }, [getMemberInfoQuery.data?.data?.memberInfo]);
 

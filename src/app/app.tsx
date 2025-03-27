@@ -12,13 +12,13 @@ function App() {
   preconnect(import.meta.env.VITE_DEV_API_TARGET_URL);
 
   useEffect(() => {
-    if (!window.location.href.includes('localhost')) {
-      ReactGA.initialize([
-        {
-          trackingId: import.meta.env.VITE_GOOGLE_ANALYTICS_ID,
-        },
-      ]);
-    }
+    // if (!window.location.href.includes('localhost')) {
+    ReactGA.initialize([
+      {
+        trackingId: import.meta.env.VITE_GOOGLE_ANALYTICS_ID,
+      },
+    ]);
+    // }
   }, []);
 
   const { routes } = useRouterMenuContext();
