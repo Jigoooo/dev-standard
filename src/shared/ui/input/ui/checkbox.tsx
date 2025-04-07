@@ -6,8 +6,8 @@ import CheckSolid from '@/shared/assets/images/check-solid.svg?react';
 import { colors } from '@/shared/constants';
 import { FlexRow, Typography } from '@/shared/ui';
 
-const checkboxSize = 18;
-const checkIconSize = 12;
+const checkboxSize = '1.125rem';
+const checkIconSize = '0.75rem';
 
 export function Checkbox({
   label = '',
@@ -46,7 +46,7 @@ export function Checkbox({
             width: checkboxSize,
             height: checkboxSize,
             border: `1px solid ${!disabled && checked ? color : '#cccccc'}`,
-            borderRadius: 4,
+            borderRadius: '0.25rem',
             backgroundColor: disabled ? '#f5f5f5' : checked ? color : '#ffffff',
           }}
           variants={{
@@ -105,7 +105,7 @@ export function Checkbox({
                   alignItems: 'center',
                 }}
               >
-                <div style={{ width: 10, height: 10, backgroundColor: color }} />
+                <div style={{ width: '0.625rem', height: '0.625rem', backgroundColor: color }} />
               </FlexRow>
             )}
           </AnimatePresence>
@@ -147,7 +147,7 @@ export function Checkbox({
                 alignItems: 'center',
               }}
             >
-              <div style={{ width: 10, height: 10, backgroundColor: color }} />
+              <div style={{ width: '0.625rem', height: '0.625rem', backgroundColor: color }} />
             </FlexRow>
           )}
         </FlexRow>

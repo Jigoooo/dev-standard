@@ -7,7 +7,7 @@ export function SearchButton({ style, ...props }: Omit<ButtonProps, 'children'>)
   return (
     <Button
       style={{
-        ...{ width: 34, padding: 0, backgroundColor: '#555555' },
+        ...{ width: '2.125rem', padding: 0, backgroundColor: '#555555' },
         ...style,
       }}
       {...props}

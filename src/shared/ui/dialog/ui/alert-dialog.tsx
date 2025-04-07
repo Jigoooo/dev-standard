@@ -54,13 +54,13 @@ export function AlertDialog() {
                 top: '50%',
                 left: '50%',
                 zIndex: zIndex.dialog,
-                minWidth: 350,
-                maxWidth: 600,
-                maxHeight: 400,
+                minWidth: '21.875rem',
+                maxWidth: '37.5rem',
+                maxHeight: '25rem',
                 background: '#ffffff',
-                paddingInline: 21,
-                paddingBlock: 18,
-                borderRadius: 8,
+                paddingInline: '1.32rem',
+                paddingBlock: '1.125rem',
+                borderRadius: '0.5rem',
                 justifyContent: 'space-between',
                 outline: 'none',
                 userSelect: 'none',
@@ -156,7 +156,7 @@ function AlertDialogActions({ dialogInfos }: { dialogInfos: DialogInfoStates }) 
         <Button
           buttonStyle={ButtonStyle.OUTLINED}
           style={{
-            minWidth: 80,
+            minWidth: '5rem',
             color: '#bbbbbb',
             borderColor: '#bbbbbb',
           }}
@@ -175,7 +175,7 @@ function AlertDialogActions({ dialogInfos }: { dialogInfos: DialogInfoStates }) 
       )}
       <Button
         style={{
-          minWidth: 80,
+          minWidth: '5rem',
           fontSize: '0.9rem',
           fontWeight: 500,
           backgroundColor: dialogColor,

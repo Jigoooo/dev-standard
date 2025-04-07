@@ -7,6 +7,8 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 *:focus {
@@ -22,13 +24,11 @@ div {
 }
 
 html {
-  font-size: 16px;
+  font-size: clamp(10px, 1.2vw, 16px);
 }
 
 html, body {
   overscroll-behavior: none;
-  margin: 0;
-  padding: 0;
   -webkit-font-smoothing: subpixel-antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;

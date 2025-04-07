@@ -7,12 +7,12 @@ import { Button, FlexColumn, FlexRow, Divider, Typography } from '@/shared/ui';
 
 const modalContainerDefaultStyle: CSSProperties = {
   backgroundColor: '#ffffff',
-  paddingInline: 16,
-  paddingBlock: 12,
-  width: 600,
-  height: 300,
-  borderRadius: 6,
-  gap: 6,
+  paddingInline: '1rem',
+  paddingBlock: '0.75rem',
+  width: '37.5rem',
+  height: '18.75rem',
+  borderRadius: '0.375rem',
+  gap: '0.375rem',
 };
 
 export function ModalLayout({

@@ -49,8 +49,8 @@ export function Radio({
       />
       <motion.div
         style={{
-          width: 22,
-          height: 22,
+          width: '1.4rem',
+          height: '1.4rem',
           borderRadius: '50%',
           border: '2px solid #ccc',
           display: 'flex',
@@ -69,8 +69,8 @@ export function Radio({
         {selectedRadio === value && (
           <motion.div
             style={{
-              width: 11,
-              height: 11,
+              width: '0.7rem',
+              height: '0.7rem',
               borderRadius: '50%',
               backgroundColor: disabledValue ? '#cccccc' : colors.primary[400],
             }}

@@ -35,7 +35,7 @@ export function Accordion({
           cursor: 'pointer',
           alignItems: 'center',
           justifyContent: 'space-between',
-          paddingBlock: 16,
+          paddingBlock: '2rem',
           ...style,
         }}
         onClick={toggleAccordion}

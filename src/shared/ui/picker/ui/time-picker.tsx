@@ -180,7 +180,7 @@ function TimeList({
     <FlexColumn
       style={{
         userSelect: 'none',
-        width: 100,
+        width: '6.25rem',
         height: '100%',
         overflowY: 'auto',
       }}

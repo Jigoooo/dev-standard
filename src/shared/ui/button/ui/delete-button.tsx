@@ -9,7 +9,7 @@ export function DeleteButton({ style, ...props }: Omit<ButtonProps, 'children'>)
       style={{
         ...{
           width: '100%',
-          height: 30,
+          height: '1.9rem',
           borderColor: colors.error[500],
           color: colors.error[500],
         },

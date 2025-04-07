@@ -542,7 +542,7 @@ export function DateFromToPicker({
         {!isInputMode ? (
           <FlexRow style={{ gap: 6 }}>
             <Input
-              style={{ width: 160, cursor: 'pointer' }}
+              style={{ width: '10rem', cursor: 'pointer' }}
               value={inputSelectedFromDateString}
               onClick={handleInputClick}
               readOnly
@@ -550,7 +550,7 @@ export function DateFromToPicker({
               isFocusEffect={false}
             />
             <Input
-              style={{ width: 160, cursor: 'pointer' }}
+              style={{ width: '10rem', cursor: 'pointer' }}
               value={inputSelectedToDateString}
               onClick={handleInputClick}
               readOnly

@@ -5,7 +5,7 @@ export function SaveButton({ style, ...props }: Omit<ButtonProps, 'children'>) {
   return (
     <Button
       style={{
-        ...{ width: 80 },
+        ...{ width: '5rem' },
         ...style,
       }}
       {...props}

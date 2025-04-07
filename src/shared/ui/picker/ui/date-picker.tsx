@@ -356,7 +356,7 @@ export function DatePicker({
       <div ref={refs.setReference} {...getReferenceProps()}>
         {!isInputMode ? (
           <Input
-            style={{ width: width !== 'auto' ? width : 160, cursor: 'pointer' }}
+            style={{ width: width !== 'auto' ? width : '10rem', cursor: 'pointer' }}
             value={inputSelectedDateString}
             onClick={handleInputClick}
             readOnly

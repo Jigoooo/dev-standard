@@ -32,8 +32,8 @@ export function Select<ValueType extends string | number>({
   onChange,
   options,
   containerWidth,
-  containerMinWidth = 160,
-  containerHeight = 32,
+  containerMinWidth = '10rem',
+  containerHeight = '2rem',
   isAutocomplete = false,
   openListener,
 }: {

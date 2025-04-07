@@ -7,12 +7,12 @@ import { InputStyle, ExtendedInputProps } from '../model/input-type.ts';
 
 const defaultInputStyle: CSSProperties = {
   width: 'auto',
-  paddingInline: 8,
-  paddingBlock: 10,
-  borderRadius: 4,
+  paddingInline: '0.5rem',
+  paddingBlock: '0.625rem',
+  borderRadius: '0.25rem',
   fontSize: '0.9rem',
   fontWeight: 500,
-  height: 32,
+  height: '2rem',
   outline: 'none',
 } as const;
 
@@ -65,7 +65,7 @@ export function Input({
 }: ExtendedInputProps) {
   const windowsStyle = useWindowsStyle();
 
-  const extraPadding = 30;
+  const extraPadding = '1.875rem';
   return (
     <div
       style={{

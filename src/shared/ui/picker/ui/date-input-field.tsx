@@ -91,19 +91,19 @@ export function DateInputField({
     <FlexRow
       style={{
         alignItems: 'center',
-        width: 140,
-        borderRadius: 4,
-        height: 38,
+        width: '8.75rem',
+        borderRadius: '0.25rem',
+        height: '2.375rem',
         border: '1px solid #d9d9d9',
-        paddingLeft: 4,
-        paddingRight: 8,
+        paddingLeft: '0.25rem',
+        paddingRight: '0.5rem',
         justifyContent: 'space-between',
       }}
     >
       <Input
         style={{
           boxShadow: 'none',
-          width: 40,
+          width: '2.5rem',
           textAlign: 'center',
           padding: 0,
         }}
@@ -118,7 +118,7 @@ export function DateInputField({
       <Input
         style={{
           boxShadow: 'none',
-          width: 20,
+          width: '1.25rem',
           textAlign: 'center',
           padding: 0,
         }}
@@ -133,7 +133,7 @@ export function DateInputField({
       <Input
         style={{
           boxShadow: 'none',
-          width: 20,
+          width: '1.25rem',
           textAlign: 'center',
           padding: 0,
         }}
