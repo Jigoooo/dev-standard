@@ -1,7 +1,7 @@
 import { IoSearchSharp } from 'react-icons/io5';
 
 import { Button } from './button.tsx';
-import { ButtonProps } from '../model/button-type.ts';
+import type { ButtonProps } from '../model/button-type.ts';
 
 export function SearchButton({ style, ...props }: Omit<ButtonProps, 'children'>) {
   return (

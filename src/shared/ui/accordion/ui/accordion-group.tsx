@@ -1,8 +1,8 @@
-import { CSSProperties, ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 
 import { FlexColumn } from '@/shared/ui';
 import { AccordionGroupContext } from '../model/accordion-group-context.ts';
-import { TAccordionType } from '../model/accordion-type.ts';
+import type { TAccordionType } from '../model/accordion-type.ts';
 
 export function AccordionGroup({
   type = 'single',

@@ -1,7 +1,8 @@
-import { createContext, ReactNode, useContext, useEffect, useMemo } from 'react';
+import type { ReactNode } from 'react';
+import { createContext, useContext, useEffect, useMemo } from 'react';
 import { v4 as uuidV4 } from 'uuid';
 
-import { TModalContext, TModalRenderProps } from './modal-type';
+import type { TModalContext, TModalRenderProps } from './modal-type';
 
 export const ModalContext = createContext<TModalContext | null>(null);
 

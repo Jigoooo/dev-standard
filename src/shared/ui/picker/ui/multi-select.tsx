@@ -1,18 +1,16 @@
-import { CSSProperties, HTMLProps, KeyboardEvent, useEffect, useRef, useState } from 'react';
+import type { CSSProperties, HTMLProps, KeyboardEvent } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import type { ReferenceType, Strategy, VirtualElement, Placement } from '@floating-ui/react';
 import {
   flip,
   FloatingOverlay,
   FloatingPortal,
   offset,
-  ReferenceType,
   size,
-  Strategy,
   useClick,
   useFloating,
   useInteractions,
-  VirtualElement,
-  Placement,
 } from '@floating-ui/react';
 
 import { HiChevronUpDown } from 'react-icons/hi2';
@@ -22,7 +20,7 @@ import { FiSearch } from 'react-icons/fi';
 import { colors, zIndex } from '@/shared/constants';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
 import { Checkbox, FlexRow, Input, InputStyle, Typography } from '@/shared/ui';
-import { MultiSelectOption } from '../model';
+import type { MultiSelectOption } from '../model';
 
 export function MultiSelect<ValuesType extends (string | number)[]>({
   strategy = 'absolute',

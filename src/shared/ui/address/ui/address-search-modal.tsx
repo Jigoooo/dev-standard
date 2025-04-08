@@ -1,4 +1,4 @@
-import { Address } from 'react-daum-postcode/lib/loadPostcode';
+import type { Address } from 'react-daum-postcode/lib/loadPostcode';
 
 interface FuturAddressSearchModalProps {
   setAddressData: (addressData: Address) => void;

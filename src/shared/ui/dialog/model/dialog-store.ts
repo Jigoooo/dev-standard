@@ -1,7 +1,8 @@
 import { create } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 
-import { DialogStates, DialogStoreInterface, DialogType } from './dialog-type.ts';
+import type { DialogStates, DialogStoreInterface } from './dialog-type.ts';
+import { DialogType } from './dialog-type.ts';
 
 const dialogInitialState: DialogStates = {
   dialogOpen: false,

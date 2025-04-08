@@ -1,18 +1,16 @@
-import { useState, KeyboardEvent, CSSProperties, HTMLProps, useEffect } from 'react';
+import type { KeyboardEvent, CSSProperties, HTMLProps } from 'react';
+import { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import type { ReferenceType, Strategy, VirtualElement, Placement } from '@floating-ui/react';
 import {
   flip,
   FloatingOverlay,
   FloatingPortal,
   offset,
-  ReferenceType,
   size,
-  Strategy,
   useClick,
   useFloating,
   useInteractions,
-  VirtualElement,
-  Placement,
 } from '@floating-ui/react';
 
 import { HiChevronUpDown } from 'react-icons/hi2';
@@ -22,7 +20,7 @@ import { FiSearch } from 'react-icons/fi';
 import { zIndex } from '@/shared/constants';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
 import { FlexRow, Input, InputStyle, Typography } from '@/shared/ui';
-import { SelectOption } from '../model';
+import type { SelectOption } from '../model';
 
 export function Select<ValueType extends string | number>({
   strategy = 'absolute',

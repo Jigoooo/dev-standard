@@ -1,12 +1,14 @@
 import { motion } from 'framer-motion';
-import { CSSProperties, isValidElement, MouseEvent, useRef, useState } from 'react';
+import type { CSSProperties, MouseEvent } from 'react';
+import { isValidElement, useRef, useState } from 'react';
 import { darken, lighten } from 'polished';
 
 import { isLightColor } from '@/shared/lib';
 import { colors } from '@/shared/constants';
 import { Typography } from '@/shared/ui';
 import { useWindowsStyle } from '@/shared/hooks';
-import { ButtonStyle, ButtonProps } from '../model/button-type.ts';
+import type { ButtonProps } from '../model/button-type.ts';
+import { ButtonStyle } from '../model/button-type.ts';
 
 const defaultButtonStyle: CSSProperties = {
   display: 'flex',

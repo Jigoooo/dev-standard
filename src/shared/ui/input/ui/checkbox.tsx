@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { MouseEventHandler } from 'react';
+import type { MouseEventHandler } from 'react';
 
 import CheckSolid from '@/shared/assets/images/check-solid.svg?react';
 

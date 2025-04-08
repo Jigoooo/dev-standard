@@ -1,13 +1,12 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import type { Placement, Strategy } from '@floating-ui/react';
 import {
   flip,
   FloatingOverlay,
   FloatingPortal,
   offset,
-  Placement,
   size,
-  Strategy,
   useClick,
   useFloating,
   useInteractions,

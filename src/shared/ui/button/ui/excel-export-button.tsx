@@ -1,7 +1,7 @@
 import { MdOutlineFileDownload } from 'react-icons/md';
 
 import { Button, ButtonStyle, FlexRow, Typography } from '@/shared/ui';
-import { ButtonProps } from '../model/button-type.ts';
+import type { ButtonProps } from '../model/button-type.ts';
 
 export function ExcelExportButton({ style, ...props }: Omit<ButtonProps, 'children'>) {
   return (

@@ -16,9 +16,8 @@ import {
   subMonths,
 } from 'date-fns';
 import { ko } from 'date-fns/locale';
+import type { Strategy, Placement } from '@floating-ui/react';
 import {
-  Strategy,
-  Placement,
   useFloating,
   offset,
   flip,

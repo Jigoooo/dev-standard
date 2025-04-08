@@ -1,5 +1,6 @@
 import { Button } from './button.tsx';
-import { ButtonProps, ButtonStyle } from '../model/button-type.ts';
+import type { ButtonProps } from '../model/button-type.ts';
+import { ButtonStyle } from '../model/button-type.ts';
 import { colors } from '@/shared/constants';
 
 export function DeleteButton({ style, ...props }: Omit<ButtonProps, 'children'>) {

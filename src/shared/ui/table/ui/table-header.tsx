@@ -1,9 +1,10 @@
-import { RefObject } from 'react';
+import type { RefObject } from 'react';
 
 import NorthIcon from '@mui/icons-material/North';
 import SouthIcon from '@mui/icons-material/South';
 
-import { Checkbox, FlexRow, Input, THeader, Typography } from '@/shared/ui';
+import type { THeader } from '@/shared/ui';
+import { Checkbox, FlexRow, Input, Typography } from '@/shared/ui';
 import { useTableContext } from '../model/table-context.ts';
 
 export function TableHeader({ ref }: { ref: RefObject<HTMLDivElement | null> }) {

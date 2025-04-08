@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import { RiFileExcel2Line } from 'react-icons/ri';
 
+import type { TDataWithIndex, TFile, THeader, TValidationRuleWithHeaderId } from '@/shared/ui';
 import {
   Button,
   dialog,
@@ -10,16 +11,12 @@ import {
   FlexRow,
   Link,
   ModalLayout,
-  TDataWithIndex,
-  TFile,
-  THeader,
-  TValidationRuleWithHeaderId,
   useModal,
   readExcelFile,
   isExtensionAllowed,
 } from '@/shared/ui';
 import { ExcelEditModal } from './excel-edit-modal.tsx';
-import { RData } from '../model/excel-type.ts';
+import type { RData } from '../model/excel-type.ts';
 
 export function ExcelUploadModal<TData extends TDataWithIndex>({
   headers,

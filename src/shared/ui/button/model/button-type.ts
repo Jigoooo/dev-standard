@@ -1,6 +1,6 @@
-import { ButtonHTMLAttributes, ReactNode } from 'react';
-import { MotionProps } from 'framer-motion';
-import { LinkProps } from 'react-router-dom';
+import type { ButtonHTMLAttributes, ReactNode } from 'react';
+import type { MotionProps } from 'framer-motion';
+import type { LinkProps } from 'react-router-dom';
 
 export enum ButtonStyle {
   SOLID = 'solid',

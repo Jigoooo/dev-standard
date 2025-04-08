@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
-import { CSSProperties } from 'react';
+import type { CSSProperties } from 'react';
 
-import { ExtendedTextareaProps } from '../model/input-type.ts';
+import type { ExtendedTextareaProps } from '../model/input-type.ts';
 import { colors } from '@/shared/constants';
 import { useWindowsStyle } from '@/shared/hooks';
 

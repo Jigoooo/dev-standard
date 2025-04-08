@@ -1,4 +1,4 @@
-import { JSX, ReactNode, RefObject } from 'react';
+import type { JSX, ReactNode, RefObject } from 'react';
 
 export type TTableContext<TData> = {
   cacheCellRef: RefObject<Map<string, { data: any; element: JSX.Element }>>;

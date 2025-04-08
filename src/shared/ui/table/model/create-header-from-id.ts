@@ -1,4 +1,4 @@
-import { THeader } from '@/shared/ui';
+import type { THeader } from '@/shared/ui';
 import { createHeader } from './create-header.ts';
 
 export function createHeaderFromId<TData, K extends Extract<keyof TData, string>>(

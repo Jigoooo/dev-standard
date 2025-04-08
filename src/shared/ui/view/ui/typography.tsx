@@ -1,5 +1,5 @@
 import { useWindowsStyle } from '@/shared/hooks';
-import { HTMLAttributes, ReactNode, RefObject } from 'react';
+import type { HTMLAttributes, ReactNode, RefObject } from 'react';
 
 export function Typography({
   ref,

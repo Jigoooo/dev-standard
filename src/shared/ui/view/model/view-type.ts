@@ -1,6 +1,6 @@
-import { CSSProperties, ElementType, HTMLAttributes, ReactNode, Ref } from 'react';
-import { ForwardRefComponent, MotionProps } from 'framer-motion';
-import { Placement } from '@floating-ui/react';
+import type { CSSProperties, ElementType, HTMLAttributes, ReactNode, Ref } from 'react';
+import type { ForwardRefComponent, MotionProps } from 'framer-motion';
+import type { Placement } from '@floating-ui/react';
 
 export type FlexRowProps<E extends ElementType> =
   E extends ForwardRefComponent<any, any>

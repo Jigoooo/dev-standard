@@ -1,4 +1,5 @@
-import { CSSProperties, HTMLProps, useEffect, useState } from 'react';
+import type { CSSProperties, HTMLProps } from 'react';
+import { useEffect, useState } from 'react';
 import {
   addDays,
   addMonths,
@@ -15,14 +16,13 @@ import {
   subMonths,
 } from 'date-fns';
 import { ko } from 'date-fns/locale';
+import type { Placement, Strategy } from '@floating-ui/react';
 import {
   flip,
   FloatingOverlay,
   FloatingPortal,
   offset,
-  Placement,
   size,
-  Strategy,
   useClick,
   useFloating,
   useInteractions,

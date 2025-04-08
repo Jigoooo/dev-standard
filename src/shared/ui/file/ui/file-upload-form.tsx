@@ -1,7 +1,8 @@
-import { useMemo, JSX } from 'react';
+import type { JSX } from 'react';
+import { useMemo } from 'react';
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
 import { v4 as uuidV4 } from 'uuid';
-import { IconType } from 'react-icons';
+import type { IconType } from 'react-icons';
 
 import {
   FaFilePdf,
@@ -50,7 +51,8 @@ import { BiLogoTypescript } from 'react-icons/bi';
 
 import { DropZone } from './drop-zone.tsx';
 import { FlexColumn, FlexRow, Typography, LinearProgress, dialog, Button } from '@/shared/ui';
-import { TFile, fileSizeFormatter } from '../model';
+import type { TFile } from '../model';
+import { fileSizeFormatter } from '../model';
 
 export function FileUploadForm({
   accept,

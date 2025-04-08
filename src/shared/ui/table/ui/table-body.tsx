@@ -1,5 +1,6 @@
-import { memo, RefObject, useCallback, useMemo, useRef, useState } from 'react';
-import { VirtualItem } from '@tanstack/react-virtual';
+import type { RefObject } from 'react';
+import { memo, useCallback, useMemo, useRef, useState } from 'react';
+import type { VirtualItem } from '@tanstack/react-virtual';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import {
@@ -11,7 +12,7 @@ import {
   Typography,
 } from '@/shared/ui';
 import { colors } from '@/shared/constants';
-import { EditType, TableBodyRowProps, TDataWithIndex, THeader } from '../model/table-type.ts';
+import type { EditType, TableBodyRowProps, TDataWithIndex, THeader } from '../model/table-type.ts';
 import { useTableContext } from '../model/table-context.ts';
 import { validateTableDataList } from '../model/validate-table-data-list.ts';
 import { useTableScrollToFn, useVirtualRow } from '../model';

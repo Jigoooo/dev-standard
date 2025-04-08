@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import type { TDataWithIndex, THeader, TValidationRuleWithHeaderId } from '@/shared/ui';
 import {
   dialog,
   ExcelExportButton,
@@ -8,9 +9,6 @@ import {
   Input,
   SaveButton,
   Table,
-  TDataWithIndex,
-  THeader,
-  TValidationRuleWithHeaderId,
   Typography,
   useTableData,
   writeExcelFile,

@@ -1,4 +1,4 @@
-import { MouseEvent, RefObject } from 'react';
+import type { MouseEvent, RefObject } from 'react';
 
 export const handleTrackMouseDown = ({
   event,

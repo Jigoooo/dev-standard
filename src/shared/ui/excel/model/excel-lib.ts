@@ -1,8 +1,9 @@
-import XLSX, { BookType, Sheet2JSONOpts } from 'xlsx-js-style';
+import type { BookType, Sheet2JSONOpts } from 'xlsx-js-style';
+import XLSX from 'xlsx-js-style';
 import { saveAs } from 'file-saver';
 import { toast } from 'sonner';
 
-import { WriteExcelFileParams } from './excel-type.ts';
+import type { WriteExcelFileParams } from './excel-type.ts';
 
 export function downloadExcel({
   workBook,

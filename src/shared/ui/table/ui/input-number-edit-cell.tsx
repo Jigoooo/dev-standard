@@ -1,6 +1,6 @@
 import { toast } from 'sonner';
 
-import { TEditCell } from '../model/table-type.ts';
+import type { TEditCell } from '../model/table-type.ts';
 import { createValidator } from '@/shared/lib';
 import { Input } from '@/shared/ui';
 

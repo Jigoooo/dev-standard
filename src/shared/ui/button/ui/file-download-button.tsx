@@ -1,7 +1,7 @@
 import { FaRegSave } from 'react-icons/fa';
 
 import { Button, ButtonStyle, FlexRow, Typography } from '@/shared/ui';
-import { ButtonProps } from '../model/button-type.ts';
+import type { ButtonProps } from '../model/button-type.ts';
 
 export function FileDownloadButton({ style, ...props }: Omit<ButtonProps, 'children'>) {
   return (

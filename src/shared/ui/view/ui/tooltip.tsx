@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { offset, useFloating, useHover, useInteractions } from '@floating-ui/react';
 
 import { zIndex } from '@/shared/constants';
-import { TooltipProps } from '../model/view-type.ts';
+import type { TooltipProps } from '../model/view-type.ts';
 
 export function Tooltip({ style, placement, children, content, disabled = false }: TooltipProps) {
   const [isOpen, setIsOpen] = useState(false);

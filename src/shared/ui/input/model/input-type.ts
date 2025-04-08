@@ -1,5 +1,5 @@
-import { MotionProps } from 'framer-motion';
-import { InputHTMLAttributes, ReactNode, Ref, TextareaHTMLAttributes } from 'react';
+import type { MotionProps } from 'framer-motion';
+import type { InputHTMLAttributes, ReactNode, Ref, TextareaHTMLAttributes } from 'react';
 
 export enum InputStyle {
   SOFT = 'soft',

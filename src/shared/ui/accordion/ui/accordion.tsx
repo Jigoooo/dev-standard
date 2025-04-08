@@ -1,4 +1,5 @@
-import { CSSProperties, ReactNode, useEffect, useRef, useState } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
 import { AnimatePresence, motion } from 'framer-motion';
 

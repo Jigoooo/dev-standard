@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 
-import { LoadingStates, LoadingStoreInterface } from './loading-type.ts';
+import type { LoadingStates, LoadingStoreInterface } from './loading-type.ts';
 
 const loadingInitialState: LoadingStates = {
   isLoading: false,

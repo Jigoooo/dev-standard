@@ -1,4 +1,5 @@
-import { AnchorHTMLAttributes, useState } from 'react';
+import type { AnchorHTMLAttributes } from 'react';
+import { useState } from 'react';
 
 import { useWindowsStyle } from '@/shared/hooks';
 

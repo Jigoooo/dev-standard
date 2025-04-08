@@ -1,6 +1,7 @@
-import { createContext, Usable, use } from 'react';
+import type { Usable } from 'react';
+import { createContext, use } from 'react';
 
-import { TTableContext } from './table-type.ts';
+import type { TTableContext } from './table-type.ts';
 
 export const TableContext = createContext<TTableContext<any> | null>(null);
 export const useTableContext = <TData extends Record<string, any>>() => {

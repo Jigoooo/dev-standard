@@ -2,7 +2,7 @@ import { LayoutGroup, motion } from 'framer-motion';
 
 import { colors } from '@/shared/constants';
 import { Typography } from '@/shared/ui';
-import { SwitchProps } from '../model/toggle-type.ts';
+import type { SwitchProps } from '../model/toggle-type.ts';
 
 export function Switch({
   containerStyle,

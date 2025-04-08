@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import type { Placement, Strategy } from '@floating-ui/react';
 import {
   flip,
   FloatingOverlay,
   FloatingPortal,
   offset,
-  Placement,
   size,
-  Strategy,
   useClick,
   useFloating,
   useInteractions,
@@ -18,7 +17,7 @@ import { MdOutlineAccessTime } from 'react-icons/md';
 
 import { zIndex } from '@/shared/constants';
 import { FlexColumn, FlexRow, Input } from '@/shared/ui';
-import { TimePart } from '../model/picker-type.ts';
+import type { TimePart } from '../model/picker-type.ts';
 
 export function TimePicker({
   timeString,
