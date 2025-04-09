@@ -308,7 +308,6 @@ function SelectContainer({
             <Typography
               style={{
                 fontSize: '0.8rem',
-                fontWeight: 400,
                 color: '#333333',
                 whiteSpace: 'nowrap',
               }}

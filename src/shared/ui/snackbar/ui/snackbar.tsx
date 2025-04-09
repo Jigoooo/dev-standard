@@ -9,7 +9,7 @@ import {
   useSnackbarInfos,
 } from '@/shared/ui';
 import { zIndex } from '@/shared/constants';
-import { SnackBarInfo } from '../model/snackbar-type.ts';
+import type { SnackBarInfo } from '../model/snackbar-type.ts';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 
@@ -149,7 +149,6 @@ function SnackbarItem({
               whiteSpace: 'nowrap',
               textOverflow: 'ellipsis',
               fontSize: '0.84rem',
-              fontWeight: 400,
               color: '#999999',
             }}
           >

@@ -29,9 +29,10 @@ html {
 
 html, body {
   overscroll-behavior: none;
-  -webkit-font-smoothing: subpixel-antialiased;
+  -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  font-weight: 500;
 }
 
 body {

@@ -127,9 +127,7 @@ function AlertDialogContents({ contents }: { contents?: ReactNode }) {
           }}
         >
           {typeof contents === 'string' ? (
-            <Typography style={{ fontSize: '0.9rem', fontWeight: 400, paddingRight: 12 }}>
-              {contents}
-            </Typography>
+            <Typography style={{ fontSize: '0.9rem', paddingRight: 12 }}>{contents}</Typography>
           ) : (
             contents
           )}

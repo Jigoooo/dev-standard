@@ -264,9 +264,7 @@ function SelectContainer({
       <FlexRow style={{ alignItems: 'center', gap: 8, overflow: 'hidden' }}>
         {label && (
           <>
-            <Typography style={{ fontSize: '0.8rem', fontWeight: 400, color: '#333333' }}>
-              {label}
-            </Typography>
+            <Typography style={{ fontSize: '0.8rem', color: '#333333' }}>{label}</Typography>
             <div
               style={{ height: 20, width: 1, alignSelf: 'center', backgroundColor: '#cccccc' }}
             ></div>

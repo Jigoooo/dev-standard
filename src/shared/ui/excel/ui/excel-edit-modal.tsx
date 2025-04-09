@@ -68,9 +68,7 @@ export function ExcelEditModal<TData extends TDataWithIndex>({
       dialog.info({
         title: '엑셀 유효성 검사 결과',
         contents: (
-          <Typography
-            style={{ fontSize: '0.9rem', fontWeight: 400, paddingRight: 12, lineHeight: 2 }}
-          >
+          <Typography style={{ fontSize: '0.9rem', paddingRight: 12, lineHeight: 2 }}>
             {errorMessages}
           </Typography>
         ),
