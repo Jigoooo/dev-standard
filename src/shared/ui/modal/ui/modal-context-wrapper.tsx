@@ -1,11 +1,16 @@
-import { ReactNode, useRef, useState } from 'react';
+import type { ReactNode } from 'react';
+import { useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { isMobile } from 'react-device-detect';
 import { FloatingOverlay, FloatingPortal } from '@floating-ui/react';
 
 import { FlexRow, ModalContext, useModalController } from '@/shared/ui';
 import { zIndex } from '@/shared/constants';
-import { TModalRenderProps, TModalItem, TIsPossibleOverlayClose } from '../model/modal-type.ts';
+import type {
+  TModalRenderProps,
+  TModalItem,
+  TIsPossibleOverlayClose,
+} from '../model/modal-type.ts';
 
 /* todo 모바일버전 만들어야 함 */
 
@@ -103,12 +108,19 @@ export function ModalContextWrapper({ children }: { children: ReactNode }) {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ duration: 0.1 }}
+                  transition={{ duration: 0.2 }}
+                  style={{
+                    zIndex: zIndex.modalOverlay + index,
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                  }}
                 >
                   <FloatingOverlay
                     lockScroll
                     style={{
-                      zIndex: zIndex.modalOverlay + index,
                       backgroundColor: 'rgba(0, 0, 0, 0.5)',
                     }}
                     onClick={() => {

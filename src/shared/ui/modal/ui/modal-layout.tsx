@@ -1,9 +1,10 @@
-import { CSSProperties, ReactNode, RefObject, useLayoutEffect, useState } from 'react';
+import type { CSSProperties, ReactNode, RefObject } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { motion, useDragControls } from 'framer-motion';
 
 import CloseIcon from '@mui/icons-material/Close';
 
-import { Button, FlexColumn, FlexRow, Divider, Typography } from '@/shared/ui';
+import { Button, FlexColumn, FlexRow, Typography } from '@/shared/ui';
 
 const modalContainerDefaultStyle: CSSProperties = {
   backgroundColor: '#ffffff',
@@ -28,6 +29,7 @@ export function ModalLayout({
   drag?: boolean;
   title?: string;
   containerStyle?: CSSProperties;
+  withHeader?: boolean;
   children: ReactNode;
 }) {
   const dragControls = useDragControls();
@@ -76,7 +78,7 @@ export function ModalLayout({
         as={motion.div}
         onPointerDown={(e) => dragControls.start(e)}
       >
-        <Typography style={{ fontSize: '1.1rem', fontWeight: 600 }}>{title}</Typography>
+        <Typography style={{ fontSize: '1.2rem', fontWeight: 700 }}>{title}</Typography>
         <Button
           onPointerDown={(event) => {
             event.stopPropagation();
@@ -85,12 +87,13 @@ export function ModalLayout({
             event.stopPropagation();
             close();
           }}
-          style={{ backgroundColor: '#ffffff', width: 36 }}
+          style={{ backgroundColor: '#ffffff', width: '2rem' }}
+          transition={{ duration: 0.1 }}
         >
           <CloseIcon style={{ fontSize: '1.4rem', color: '#212121' }} />
         </Button>
       </FlexRow>
-      <Divider />
+      {/*<Divider />*/}
       <FlexColumn style={{ height: '100%', overflow: 'auto' }}>{children}</FlexColumn>
     </FlexColumn>
   );
