@@ -236,3 +236,30 @@ export function deepEqual(a: any, b: any, seen = new Map<any, any>()): boolean {
   }
   return true;
 }
+
+export function openPopup({
+  url,
+  width = 500,
+  height = 600,
+}: {
+  url: string;
+  width?: number;
+  height?: number;
+}) {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  const left = window.screenX + (window.innerWidth - width) / 2;
+  const top = window.screenY + (window.innerHeight - height) / 2;
+
+  const popup = window.open(
+    url,
+    'PopupWindow',
+    `width=${width},height=${height},left=${left},top=${top},toolbar=no,menubar=no,scrollbars=no,resizable=no`,
+  );
+
+  if (popup) {
+    popup.focus();
+  }
+}

@@ -18,4 +18,5 @@ export {
   isLightColor,
   getFormValues,
   deepEqual,
+  openPopup,
 } from './common-lib.ts';
