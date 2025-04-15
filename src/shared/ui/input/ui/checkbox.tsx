@@ -1,24 +1,28 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import type { MouseEventHandler } from 'react';
+import type { CSSProperties, InputHTMLAttributes, MouseEventHandler } from 'react';
 
 import CheckSolid from '@/shared/assets/images/check-solid.svg?react';
 
 import { colors } from '@/shared/constants';
 import { FlexRow, Typography } from '@/shared/ui';
 
-const checkboxSize = '1.125rem';
-const checkIconSize = '0.75rem';
-
 export function Checkbox({
+  checkboxSize = '1.125rem',
+  checkIconSize = '0.75rem',
   label = '',
+  labelStyle,
   checked,
   color = colors.primary[400],
   isPartial = false,
   onClick,
   disabled = false,
   isActiveAnimation = true,
-}: {
+  ...checkboxProps
+}: InputHTMLAttributes<HTMLInputElement> & {
+  checkboxSize?: string | number;
+  checkIconSize?: string | number;
   label?: string;
+  labelStyle?: CSSProperties;
   checked: boolean;
   color?: string;
   isPartial?: boolean;
@@ -36,7 +40,13 @@ export function Checkbox({
       }}
       onClick={(e) => !disabled && onClick(e)}
     >
-      <input type='checkbox' checked={checked} onChange={() => {}} style={{ display: 'none' }} />
+      <input
+        type='checkbox'
+        checked={checked}
+        onChange={() => {}}
+        style={{ display: 'none' }}
+        {...checkboxProps}
+      />
       {isActiveAnimation ? (
         <FlexRow
           as={motion.div}
@@ -46,7 +56,7 @@ export function Checkbox({
             width: checkboxSize,
             height: checkboxSize,
             border: `1px solid ${!disabled && checked ? color : '#cccccc'}`,
-            borderRadius: '0.25rem',
+            borderRadius: 4,
             backgroundColor: disabled ? '#f5f5f5' : checked ? color : '#ffffff',
           }}
           variants={{
@@ -105,7 +115,7 @@ export function Checkbox({
                   alignItems: 'center',
                 }}
               >
-                <div style={{ width: '0.625rem', height: '0.625rem', backgroundColor: color }} />
+                <div style={{ width: 10, height: 10, backgroundColor: color }} />
               </FlexRow>
             )}
           </AnimatePresence>
@@ -147,7 +157,7 @@ export function Checkbox({
                 alignItems: 'center',
               }}
             >
-              <div style={{ width: '0.625rem', height: '0.625rem', backgroundColor: color }} />
+              <div style={{ width: 10, height: 10, backgroundColor: color }} />
             </FlexRow>
           )}
         </FlexRow>
@@ -159,6 +169,7 @@ export function Checkbox({
             fontSize: '0.9rem',
             color: disabled ? '#999999' : '#666666',
             fontWeight: 500,
+            ...labelStyle,
           }}
         >
           {label}
