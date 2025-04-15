@@ -2,7 +2,7 @@ import type { CSSProperties, ReactNode, RefObject } from 'react';
 import { useLayoutEffect, useState } from 'react';
 import { motion, useDragControls } from 'framer-motion';
 
-import CloseIcon from '@mui/icons-material/Close';
+import { LuX } from 'react-icons/lu';
 
 import { Button, FlexColumn, FlexRow, Typography } from '@/shared/ui';
 
@@ -90,11 +90,11 @@ export function ModalLayout({
           style={{ backgroundColor: '#ffffff', width: '2rem' }}
           transition={{ duration: 0.1 }}
         >
-          <CloseIcon style={{ fontSize: '1.4rem', color: '#212121' }} />
+          <LuX style={{ fontSize: '1.4rem', color: '#212121' }} />
         </Button>
       </FlexRow>
       {/*<Divider />*/}
-      <FlexColumn style={{ height: '100%', overflow: 'auto' }}>{children}</FlexColumn>
+      <FlexColumn style={{ flexGrow: 1, overflow: 'auto' }}>{children}</FlexColumn>
     </FlexColumn>
   );
 }
