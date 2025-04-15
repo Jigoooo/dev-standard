@@ -24,7 +24,7 @@ const inputStyles: Record<InputStyle, CSSProperties> = {
   },
   [InputStyle.OUTLINED]: {
     backgroundColor: '#ffffff',
-    boxShadow: `inset 0 0 0 0.8px rgba(0,27,55,0.34)`,
+    boxShadow: `inset 0 0 0 0.8px rgba(0,27,55,0.2)`,
     border: 'none',
   },
   [InputStyle.UNDERLINE]: {
@@ -66,7 +66,7 @@ export function Input({
 }: ExtendedInputProps) {
   const windowsStyle = useWindowsStyle();
 
-  const extraPadding = '1.875rem';
+  const extraPadding = '2rem';
   return (
     <div
       style={{
@@ -78,10 +78,13 @@ export function Input({
         <div
           style={{
             position: 'absolute',
+            display: 'flex',
+            alignItems: 'center',
             left: inputStyle === InputStyle.UNDERLINE ? 6 : 8,
             top: inputStyle === InputStyle.UNDERLINE ? '40%' : '50%',
-            transform: 'translateY(-40%)',
+            transform: 'translateY(-50%)',
             pointerEvents: 'none',
+            height: '100%',
           }}
         >
           {startDecorator}
@@ -123,10 +126,11 @@ export function Input({
       {endDecorator && (
         <div
           style={{
+            height: '100%',
             position: 'absolute',
             right: 8,
             top: '50%',
-            transform: 'translateY(-40%)',
+            transform: 'translateY(-50%)',
             pointerEvents: 'none',
           }}
         >
