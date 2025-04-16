@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "preinstall": "npx only-allow pnpm",
-    "dev": "vite --port 4110 --open",
+    "dev": "vite --port 44000 --open",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
