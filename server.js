@@ -19,7 +19,7 @@ app.use(
   '/api',
   createProxyMiddleware({
     // eslint-disable-next-line no-undef
-    target: process.env.VITE_DEV_API_TARGET_URL,
+    target: process.env.VITE_API_TARGET_URL,
     changeOrigin: true,
     pathRewrite: {
       '^/api': '',

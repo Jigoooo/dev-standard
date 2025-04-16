@@ -9,7 +9,7 @@ import { withRouterMenuHoc } from '@/app/providers';
 import { useRouterMenuContext } from '@/entities/router';
 
 function App() {
-  preconnect(import.meta.env.VITE_DEV_API_TARGET_URL);
+  preconnect(import.meta.env.VITE_API_TARGET_URL);
 
   useEffect(() => {
     // if (!window.location.href.includes('localhost')) {
