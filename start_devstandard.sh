@@ -1,1 +1,1 @@
-nohup pnpm start-server > output.log 2>&1 &
+nohup pnpm start > output.log 2>&1 &

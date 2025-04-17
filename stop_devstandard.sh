@@ -1,17 +1,18 @@
-var1=$(netstat -tnlp | grep 44000)
-echo process info: ${var1}
+#!/bin/bash
 
-get_pid=$(echo $var1 | awk '{print $7}' | cut -d'/' -f1)
+# 포트 44000을 사용 중인 PID 찾기
+pid=$(netstat -aon | grep 44000 | grep LISTENING | awk '{print $5}' | sort -u)
 
-echo "Process PID: $get_pid"
+echo "Found PID: $pid"
 
-if [ -n "${get_pid}" ]; then
-  kill -9 ${get_pid}
+if [ -n "$pid" ]; then
+  # 해당 PID로 프로세스 강제 종료 (Windows의 taskkill 사용)
+  taskkill //PID "$pid" //F
   if [ $? -eq 0 ]; then
     echo "Process is killed."
   else
     echo "Failed to kill the process."
   fi
 else
-  echo "Running process not found."
+  echo "No process found using port 44000."
 fi
