@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import type { CSSProperties } from 'react';
+import type { CompositionEvent, KeyboardEvent, CSSProperties } from 'react';
+import { useRef } from 'react';
 
 import type { ExtendedTextareaProps } from '../model/input-type.ts';
 import { colors } from '@/shared/constants';
@@ -23,13 +24,45 @@ const textareaDisabledStyle: CSSProperties = {
   backgroundColor: '#fafafa',
 };
 
-export function Textarea({ ref, style, ...props }: Readonly<ExtendedTextareaProps>) {
+export function Textarea({
+  ref,
+  style,
+  isFocusEffect,
+  onEnter,
+  onKeyDown,
+  ...props
+}: Readonly<ExtendedTextareaProps>) {
   const windowsStyle = useWindowsStyle();
+
+  const isComposing = useRef(false);
+
+  const handleCompositionStart = (_e: CompositionEvent<HTMLTextAreaElement>) => {
+    isComposing.current = true;
+  };
+
+  const handleCompositionEnd = (_e: CompositionEvent<HTMLTextAreaElement>) => {
+    isComposing.current = false;
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      if (isComposing.current) return;
+      e.preventDefault();
+      onEnter?.(e);
+    }
+
+    if (onKeyDown) {
+      onKeyDown(e);
+    }
+  };
 
   return (
     <motion.textarea
       ref={ref}
       className='selection-none'
+      onKeyDown={handleKeyDown}
+      onCompositionStart={handleCompositionStart}
+      onCompositionEnd={handleCompositionEnd}
       style={{
         ...windowsStyle,
         ...defaultTextareaStyle,
@@ -42,7 +75,7 @@ export function Textarea({ ref, style, ...props }: Readonly<ExtendedTextareaProp
         },
         none: {},
       }}
-      whileFocus={'focus'}
+      whileFocus={isFocusEffect ? 'focus' : 'none'}
       transition={{ duration: 0.1 }}
       {...props}
     />

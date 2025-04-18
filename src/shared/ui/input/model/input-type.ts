@@ -1,5 +1,11 @@
 import type { MotionProps } from 'framer-motion';
-import type { InputHTMLAttributes, ReactNode, Ref, TextareaHTMLAttributes } from 'react';
+import type {
+  KeyboardEvent,
+  InputHTMLAttributes,
+  ReactNode,
+  Ref,
+  TextareaHTMLAttributes,
+} from 'react';
 
 export enum InputStyle {
   SOFT = 'soft',
@@ -22,4 +28,6 @@ export type ExtendedTextareaProps = MotionProps &
     inputStyle?: InputStyle;
     startDecorator?: ReactNode;
     endDecorator?: ReactNode;
+    isFocusEffect?: boolean;
+    onEnter?: (e: KeyboardEvent<HTMLTextAreaElement>) => void;
   };
