@@ -1,5 +1,6 @@
-import { ComponentType, lazy, LazyExoticComponent } from 'react';
-import { IconType } from 'react-icons';
+import type { ComponentType, LazyExoticComponent } from 'react';
+import { lazy } from 'react';
+import type { IconType } from 'react-icons';
 
 import { RxComponent1 } from 'react-icons/rx';
 import { GoTable } from 'react-icons/go';
@@ -13,7 +14,7 @@ import { IoSettingsSharp } from 'react-icons/io5';
 import { RiListSettingsFill } from 'react-icons/ri';
 import { MdOutlineAdminPanelSettings } from 'react-icons/md';
 
-import { Router } from '@/shared/router';
+import { Router } from '@/shared/router/index.ts';
 
 const UiComponent = lazy(() =>
   import('@/pages/ui-component').then((module) => ({ default: module.UiComponent })),

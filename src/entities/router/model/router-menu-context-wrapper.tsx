@@ -1,17 +1,13 @@
-import { ReactNode, useEffect, useState } from 'react';
-import { Outlet, RouteObject } from 'react-router-dom';
+import type { ReactNode } from 'react';
+import { useEffect, useState } from 'react';
+import type { RouteObject } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
-import { TMenu, TRouterMenuContext } from './router-type.ts';
-import {
-  getLastLocation,
-  getRouterComponent,
-  getRouterMappedIcon,
-  removeLastLocation,
-  RouterMenuContext,
-  setLastLocation,
-} from './';
-import { handleAuthError, getMemberMenuListApi, RMenu, RMenuMemberAuth } from '@/shared/api';
-import { Router } from '@/shared/router';
+import type { TMenu, TRouterMenuContext } from './router-type.ts';
+import { getLastLocation, removeLastLocation, RouterMenuContext, setLastLocation } from './';
+import type { RMenu, RMenuMemberAuth } from '@/shared/api';
+import { handleAuthError, getMemberMenuListApi } from '@/shared/api';
+import { getRouterComponent, getRouterMappedIcon, Router } from '@/shared/router';
 
 function isNonIndexRoute(route: RouteObject): route is Exclude<RouteObject, { index: true }> {
   return !('index' in route);
