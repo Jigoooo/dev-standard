@@ -1,8 +1,9 @@
-import { createHeader, Input, THeader, THeaderGroup } from '@/shared/ui';
-import { RGridExample } from '@/entities/grid-example';
+import type { THeader, THeaderGroup } from '@/shared/ui';
+import { createHeader, Input } from '@/shared/ui';
+import type { GridExampleResponse } from '@/entities/grid-example';
 
 export function useGridExampleHeaders() {
-  const gridExampleHeaderGroups: THeaderGroup<RGridExample>[] = [
+  const gridExampleHeaderGroups: THeaderGroup<GridExampleResponse>[] = [
     {
       groupLabel: 'Personal Info',
       headerIds: ['name', 'age', 'address', 'email', 'phone'],
@@ -13,7 +14,7 @@ export function useGridExampleHeaders() {
     },
   ];
 
-  const gridExampleHeaders: THeader<RGridExample>[] = [
+  const gridExampleHeaders: THeader<GridExampleResponse>[] = [
     createHeader('index', '', 60, { pin: 'left', dataAlign: 'right', filter: undefined }),
     createHeader('check', '', 60, { pin: 'left', dataAlign: 'center', filter: undefined }),
     createHeader('name', '이름', 150, { pin: 'left' }),

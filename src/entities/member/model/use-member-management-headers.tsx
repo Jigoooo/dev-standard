@@ -1,21 +1,17 @@
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
-import { createHeader, dialog, ModalLayout, ModifyButton, THeader, useModal } from '@/shared/ui';
+import type { THeader } from '@/shared/ui';
+import { createHeader, dialog, ModalLayout, ModifyButton, useModal } from '@/shared/ui';
 import { MemberManagementEditModal } from '../ui';
-import {
-  handleAuthError,
-  RMember,
-  useUpdateMemberMutation,
-  getMemberInfoApi,
-  RRoleUser,
-} from '@/shared/api';
+import type { MemberResponse, RoleUserResponse } from '@/shared/api';
+import { handleAuthError, useUpdateMemberMutation, getMemberApi } from '@/shared/api';
 
 export function useMemberManagementHeaders() {
   const navigate = useNavigate();
 
   const updateMemberMutation = useUpdateMemberMutation();
-  const updateMember = (memberInfo: RMember, closeModal: () => void) => {
+  const updateMember = (memberInfo: MemberResponse, closeModal: () => void) => {
     updateMemberMutation.mutate(memberInfo, {
       onSuccess: async (data, variables) => {
         const isError = await handleAuthError({
@@ -47,7 +43,7 @@ export function useMemberManagementHeaders() {
     });
   };
 
-  const updateMemberConfirmation = (memberInfo: RMember, closeModal: () => void) => {
+  const updateMemberConfirmation = (memberInfo: MemberResponse, closeModal: () => void) => {
     dialog.info({
       title: '사용자 수정',
       contents: '사용자 정보를 수정하시겠습니까?',
@@ -59,7 +55,7 @@ export function useMemberManagementHeaders() {
 
   const userManagementEditModal = useModal();
   const openUserManagementEditModal = async (memberId: string) => {
-    let responseMemberInfo = await getMemberInfoApi({
+    let responseMemberInfo = await getMemberApi({
       memberId,
     });
 
@@ -70,7 +66,7 @@ export function useMemberManagementHeaders() {
     });
 
     if (isError) {
-      responseMemberInfo = await getMemberInfoApi({
+      responseMemberInfo = await getMemberApi({
         memberId,
       });
 
@@ -111,7 +107,7 @@ export function useMemberManagementHeaders() {
     });
   };
 
-  const userManagementHeaders: THeader<RRoleUser>[] = [
+  const userManagementHeaders: THeader<RoleUserResponse>[] = [
     createHeader('index', '', 60, { pin: 'left', dataAlign: 'right', filter: undefined }),
     createHeader('memberId', '아이디', 150),
     createHeader('memberNm', '이름', 150),
@@ -123,7 +119,7 @@ export function useMemberManagementHeaders() {
     }),
   ];
 
-  const memberInfoColumnLabelsMapping: Partial<RMember> = {
+  const memberInfoColumnLabelsMapping: Partial<MemberResponse> = {
     memberId: '아이디',
     memberNm: '이름',
     email: '이메일',

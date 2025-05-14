@@ -1,12 +1,12 @@
-import { RMember } from '@/shared/api';
+import type { MemberResponse } from '@/shared/api';
 
-export type TMemberState = {
-  memberInfo: RMember;
+export type MemberState = {
+  memberInfo: MemberResponse;
 };
 
-export type TMemberStore = {
-  state: TMemberState;
+export type MemberStore = {
+  state: MemberState;
   actions: {
-    setMemberInfo: (memberInfo: RMember) => void;
+    setMemberInfo: (memberInfo: MemberResponse) => void;
   };
 };

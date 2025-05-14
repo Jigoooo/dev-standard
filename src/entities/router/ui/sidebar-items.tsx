@@ -4,14 +4,15 @@ import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
 
 import { SidebarItem } from './sidebar-item.tsx';
 import { Divider, FlexColumn } from '@/shared/ui';
-import { TMenu, useRouterMenuContext } from '@/entities/router';
+import type { Menu } from '@/entities/router';
+import { useRouterMenuContext } from '@/entities/router';
 import { gaEventTrigger } from '@/shared/lib';
 
 export function SidebarItems({
   menus,
   sidebarBackgroundColor,
 }: {
-  menus: TMenu[];
+  menus: Menu[];
   sidebarBackgroundColor: string;
 }) {
   const navigate = useNavigate();
@@ -71,7 +72,7 @@ export function SidebarItems({
     });
   };
 
-  const onClickMenu = (menu: TMenu, isSelected: boolean) => {
+  const onClickMenu = (menu: Menu, isSelected: boolean) => {
     if (menu.isHeader) {
       toggleSecondDepthOpen(menu.menuIndex);
       return;
@@ -88,7 +89,7 @@ export function SidebarItems({
     setLastLocation(menu.fullRouterPath);
   };
 
-  const onClickSecondDepthMenu = (parentMenu: TMenu, childMenu: TMenu, isSelected: boolean) => {
+  const onClickSecondDepthMenu = (parentMenu: Menu, childMenu: Menu, isSelected: boolean) => {
     if (childMenu.isHeader) {
       return;
     }

@@ -1,10 +1,10 @@
 import type { YesNoType } from '@/shared/type';
 
-export type PMemberInfo = {
+export type MemberInfoParameter = {
   memberId?: string;
 };
 
-export type RMember = {
+export type MemberResponse = {
   memberId: string;
   memberNm: string;
   memberPw: null;
@@ -16,15 +16,15 @@ export type RMember = {
   adminYn: YesNoType;
 };
 
-export type RMemberInfo = {
-  memberInfo: RMember;
+export type MemberInfoResponse = {
+  memberInfo: MemberResponse;
 };
 
-export type PMenuMemberAuth = {
+export type MenuMemberAuthParameter = {
   menuId: string;
 };
 
-export type RMenuMemberAuth = {
+export type MenuMemberAuthResponse = {
   menuId: string;
   menuTitle: string;
   mainTitle: string;
@@ -55,23 +55,23 @@ export type MenuResponse = {
   displayYn: YesNoType;
 };
 
-export type RMenuList = {
+export type MenuListResponse = {
   menuList: MenuResponse[];
 };
 
-export type PMenuMemberAuthList = {
+export type MenuMemberAuthListParameter = {
   memberId: string;
 };
 
-export type RRoleUser = {
+export type RoleUserResponse = {
   memberId: string;
   memberNm: string;
 };
 
-export type RMemberList = {
-  memberList: RRoleUser[];
+export type MemberListResponse = {
+  memberList: RoleUserResponse[];
 };
 
-export type RMenuMemberAuthList = {
-  menuList: RMenuMemberAuth[];
+export type MenuMemberAuthListResponse = {
+  menuList: MenuMemberAuthResponse[];
 };

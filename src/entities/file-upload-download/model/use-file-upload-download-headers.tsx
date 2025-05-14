@@ -1,12 +1,13 @@
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 
-import { createHeader, dialog, FileDownloadButton, THeader } from '@/shared/ui';
-import { TFileListItem } from '@/entities/file-upload-download';
+import type { THeader } from '@/shared/ui';
+import { createHeader, dialog, FileDownloadButton } from '@/shared/ui';
+import type { FileListItem } from '@/entities/file-upload-download';
 import { thousandSeparator } from '@/shared/lib';
 import { apiRequest, downloadFileApi, handleAuthError } from '@/shared/api';
 
-export function useFileUploadDownloadHeaders(): THeader<TFileListItem>[] {
+export function useFileUploadDownloadHeaders(): THeader<FileListItem>[] {
   const navigate = useNavigate();
 
   return [

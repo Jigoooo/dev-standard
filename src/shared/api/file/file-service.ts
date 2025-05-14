@@ -2,12 +2,16 @@ import { keepPreviousData, useMutation } from '@tanstack/react-query';
 
 import { useQueryWrapper } from '../config/use-query-wrapper.ts';
 import { deleteFileApi, fileSaveApi, getFileListApi } from './file-api.ts';
-import { PDeleteFileList, PFileListItem, PFileSaveList } from './file-upload-download-type.ts';
+import type {
+  DeleteFileListParameter,
+  FileListItemParameter,
+  FileSaveListParameter,
+} from './file-upload-download-type.ts';
 import { loading } from '@/shared/ui';
 
 const GET_FILE_LIST_QUERY_KEY = 'getFileListQueryKey';
 
-export function useGetFileListQuery(params: PFileListItem) {
+export function useGetFileListQuery(params: FileListItemParameter) {
   return useQueryWrapper(
     {
       queryKey: [GET_FILE_LIST_QUERY_KEY, params],
@@ -23,7 +27,7 @@ export function useGetFileListQuery(params: PFileListItem) {
 
 export function useFileSaveMutation() {
   return useMutation({
-    mutationFn: (data: PFileSaveList) => fileSaveApi(data),
+    mutationFn: (data: FileSaveListParameter) => fileSaveApi(data),
     onSuccess: () => {},
     onMutate: () => loading.show(),
     onSettled: () => loading.hide(),
@@ -32,7 +36,7 @@ export function useFileSaveMutation() {
 
 export function useDeleteFileMutation() {
   return useMutation({
-    mutationFn: (params: PDeleteFileList) => deleteFileApi(params),
+    mutationFn: (params: DeleteFileListParameter) => deleteFileApi(params),
     onSuccess: () => {},
     onMutate: () => loading.show(),
     onSettled: () => loading.hide(),

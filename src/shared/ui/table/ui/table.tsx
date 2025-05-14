@@ -1,7 +1,7 @@
 import type { JSX, RefObject } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
-import type { TDataWithIndex } from '@/shared/ui';
+import type { DataWithIndex } from '@/shared/ui';
 import { FlexRow, Typography } from '@/shared/ui';
 import { TableHeader } from './table-header.tsx';
 import { TableBody } from './table-body.tsx';
@@ -43,7 +43,7 @@ const defaultTableStyle: TTableStyle = {
   tableBodyHoverBackgroundColor: '#eaeaea',
 };
 
-export function Table<TData extends TDataWithIndex & Record<string, any>>({
+export function Table<TData extends DataWithIndex & Record<string, any>>({
   tableHeaderGroups = [],
   tableHeaders,
   tableDataList,

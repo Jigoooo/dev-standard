@@ -1,10 +1,12 @@
-import { CSSProperties, useRef } from 'react';
+import type { CSSProperties } from 'react';
+import { useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { IoChevronDownOutline } from 'react-icons/io5';
 
 import { FlexRow, Tooltip } from '@/shared/ui';
-import { TMenu, useSidebarState } from '@/entities/router';
+import type { Menu } from '@/entities/router';
+import { useSidebarState } from '@/entities/router';
 import { useElementSize } from '@/shared/hooks';
 
 export function SidebarItem({
@@ -16,9 +18,9 @@ export function SidebarItem({
 }: {
   style?: CSSProperties;
   isSelected: boolean;
-  menu: TMenu;
+  menu: Menu;
   depthOpen?: boolean;
-  onClickMenu: (menu: TMenu) => void;
+  onClickMenu: (menu: Menu) => void;
 }) {
   const sidebarState = useSidebarState();
   const containerRef = useRef<HTMLDivElement>(null);

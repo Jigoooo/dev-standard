@@ -1,34 +1,36 @@
 import { apiRequest, customedAxios } from '../config';
-import {
-  PExcelDataList,
-  PExcelDeleteList,
-  PExcelInfoList,
-  PExcelSaveData,
-  RExcelDataList,
-  RExcelInfoList,
+import type {
+  ExcelDataListParameter,
+  ExcelDeleteListParameter,
+  ExcelInfoListParameter,
+  ExcelSaveDataParameter,
+  ExcelDataListResponse,
+  ExcelInfoListResponse,
 } from './excel-upload-download-type.ts';
 
-export async function getExcelInfoListApi(params: PExcelInfoList) {
-  return await apiRequest<RExcelInfoList>(
+export async function getExcelInfoListApi(params: ExcelInfoListParameter) {
+  return await apiRequest<ExcelInfoListResponse>(
     customedAxios.get('/v1/excels', {
       params,
     }),
   );
 }
 
-export async function getExcelDataListApi(params: PExcelDataList) {
-  return await apiRequest<RExcelDataList>(customedAxios.get(`/v1/excels/${params.idx}/data`));
+export async function getExcelDataListApi(params: ExcelDataListParameter) {
+  return await apiRequest<ExcelDataListResponse>(
+    customedAxios.get(`/v1/excels/${params.idx}/data`),
+  );
 }
 
-export async function excelSaveApi(data: PExcelSaveData) {
+export async function excelSaveApi(data: ExcelSaveDataParameter) {
   return await apiRequest<null>(customedAxios.post('/v1/excels', data));
 }
 
-export async function excelUpdateApi(data: PExcelSaveData) {
+export async function excelUpdateApi(data: ExcelSaveDataParameter) {
   return await apiRequest<null>(customedAxios.put('/v1/excels', data));
 }
 
-export async function excelDeleteApi(params: PExcelDeleteList) {
+export async function excelDeleteApi(params: ExcelDeleteListParameter) {
   return await apiRequest<null>(
     customedAxios.delete('/v1/excels', {
       params,

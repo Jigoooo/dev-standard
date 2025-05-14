@@ -1,4 +1,4 @@
-export type RExcelData = {
+export type ExcelDataResponse = {
   rowIdx?: number;
   orderNo: string;
   productCode: string;
@@ -11,13 +11,13 @@ export type RExcelData = {
   status: string;
 };
 
-export type PExcelInfoList = {
+export type ExcelInfoListParameter = {
   excelNm?: string;
   fromDate: string;
   toDate: string;
 };
 
-export type RExcelInfo = {
+export type ExcelInfoResponse = {
   idx: number;
   excelNm: string;
   insDt: string;
@@ -26,25 +26,25 @@ export type RExcelInfo = {
   updMember: string | null;
 };
 
-export type RExcelInfoList = {
-  excelInfoList: RExcelInfo[];
+export type ExcelInfoListResponse = {
+  excelInfoList: ExcelInfoResponse[];
 };
 
-export type PExcelDataList = {
+export type ExcelDataListParameter = {
   idx: number;
 };
 
-export type RExcelDataList = {
-  excelDataList: RExcelData[];
+export type ExcelDataListResponse = {
+  excelDataList: ExcelDataResponse[];
 };
 
-export type PExcelSaveData = {
+export type ExcelSaveDataParameter = {
   idx?: number;
   excelNm: string;
-  excelDataList: RExcelData[];
+  excelDataList: ExcelDataResponse[];
   deleteDataList?: number[];
 };
 
-export type PExcelDeleteList = {
+export type ExcelDeleteListParameter = {
   deleteExcelList: number[];
 };

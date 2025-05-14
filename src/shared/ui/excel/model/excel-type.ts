@@ -1,8 +1,8 @@
-import type { TDataWithIndex } from '@/shared/ui';
+import type { DataWithIndex } from '@/shared/ui';
 import type { BookType, WritingOptions } from 'xlsx-js-style';
 import type XLSX from 'xlsx-js-style';
 
-export type RData<TData extends TDataWithIndex> = Omit<TData, 'index'>;
+export type RData<TData extends DataWithIndex> = Omit<TData, 'index'>;
 
 export type TValidationRuleWithHeaderId<TData = Record<string, any>> = {
   id: Extract<keyof TData, string>;

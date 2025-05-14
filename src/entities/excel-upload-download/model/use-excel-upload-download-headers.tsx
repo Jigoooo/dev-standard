@@ -2,32 +2,27 @@ import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 
+import type { THeader, TValidationRuleWithHeaderId } from '@/shared/ui';
 import {
   createHeader,
   createHeaderFromId,
   InputNumberEditCell,
   dialog,
   ModalLayout,
-  THeader,
   useModal,
   ExcelEditModal,
-  TValidationRuleWithHeaderId,
   DeleteButton,
   ModifyButton,
   SelectEditCell,
   DateEditCell,
 } from '@/shared/ui';
-import { TExcelInfo, TExcelData } from './excel-upload-download-type.ts';
+import type { ExcelInfo, ExcelData } from './excel-upload-download-type.ts';
 import { createValidator, formatDateString, thousandSeparator } from '@/shared/lib';
-import {
-  handleAuthError,
-  getExcelDataListApi,
-  RExcelData,
-  useUpdateExcelMutation,
-} from '@/shared/api';
+import type { ExcelDataResponse } from '@/shared/api';
+import { handleAuthError, getExcelDataListApi, useUpdateExcelMutation } from '@/shared/api';
 
 export function useExcelUploadDownloadHeaders(search: () => void) {
-  const excelHeaderKeyLabels = new Map<keyof RExcelData, string>([
+  const excelHeaderKeyLabels = new Map<keyof ExcelDataResponse, string>([
     ['orderNo', '주문번호'],
     ['productCode', '상품코드'],
     ['productName', '상품명'],
@@ -39,7 +34,7 @@ export function useExcelUploadDownloadHeaders(search: () => void) {
     ['status', '상태'],
   ]);
 
-  const excelUploadValidationRules: TValidationRuleWithHeaderId<TExcelData>[] = [
+  const excelUploadValidationRules: TValidationRuleWithHeaderId<ExcelData>[] = [
     {
       id: 'quantity',
       validateFn: (value) => {
@@ -86,7 +81,7 @@ export function useExcelUploadDownloadHeaders(search: () => void) {
     },
   ];
 
-  const excelUploadDataHeaders: THeader<TExcelData>[] = [
+  const excelUploadDataHeaders: THeader<ExcelData>[] = [
     createHeader('index', '', 60, { pin: 'left', dataAlign: 'right', filter: undefined }),
     createHeaderFromId(excelHeaderKeyLabels, 'orderNo', 150),
     createHeaderFromId(excelHeaderKeyLabels, 'productCode', 150),
@@ -169,7 +164,7 @@ export function useExcelUploadDownloadHeaders(search: () => void) {
     excelUploadValidationRules,
   });
 
-  const excelUploadListHeaders: THeader<TExcelInfo>[] = [
+  const excelUploadListHeaders: THeader<ExcelInfo>[] = [
     createHeader('index', '', 60, { pin: 'left', dataAlign: 'right', filter: undefined }),
     createHeader('check', '', 60, { pin: 'left', dataAlign: 'center', filter: undefined }),
     createHeader('excelNm', '업로드 제목', 200),
@@ -218,9 +213,9 @@ function useUpdateExcel(search: () => void) {
     close,
   }: {
     excelNm: string;
-    rowData: TExcelInfo;
-    excelDataList: RExcelData[];
-    dataList: TExcelData[];
+    rowData: ExcelInfo;
+    excelDataList: ExcelDataResponse[];
+    dataList: ExcelData[];
     close: () => void;
   }) => {
     const dataListWithoutIndex = dataList.map((item) => {
@@ -284,15 +279,15 @@ function useExcelEditModal({
   excelUploadValidationRules,
 }: {
   search: () => void;
-  excelUploadDataHeaders: THeader<TExcelData>[];
-  excelUploadValidationRules: TValidationRuleWithHeaderId<TExcelData>[];
+  excelUploadDataHeaders: THeader<ExcelData>[];
+  excelUploadValidationRules: TValidationRuleWithHeaderId<ExcelData>[];
 }) {
   const navigate = useNavigate();
   const updateExcel = useUpdateExcel(search);
 
   const excelEditModal = useModal();
 
-  return async (rowData: TExcelInfo) => {
+  return async (rowData: ExcelInfo) => {
     let response = await getExcelDataListApi({
       idx: rowData.idx,
     });
@@ -318,7 +313,7 @@ function useExcelEditModal({
     }
 
     const excelDataList = response.data?.excelDataList ?? [];
-    const excelDataWithIndex: TExcelData[] = excelDataList.map((item, index) => ({
+    const excelDataWithIndex: ExcelData[] = excelDataList.map((item, index) => ({
       ...item,
       index: index + 1,
     }));

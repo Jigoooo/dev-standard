@@ -1,86 +1,33 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useLocation, useSearchParams } from 'react-router-dom';
 
-import { getToken } from '../config';
 import { useQueryWrapper } from '../config/use-query-wrapper.ts';
 import {
-  tokenCheckApi,
-  getMemberInfoApi,
+  getMemberApi,
   updateMemberApi,
   getMemberListApi,
   getMenuMemberAuthApi,
   getMenuMemberAuthListApi,
   updateMenuMemberAuthApi,
 } from './member-api.ts';
-import {
-  RMember,
-  PMemberInfo,
-  PMenuMemberAuth,
-  RMenuMemberAuth,
-  PMenuMemberAuthList,
+import type {
+  MemberResponse,
+  MemberInfoParameter,
+  MenuMemberAuthParameter,
+  MenuMemberAuthResponse,
+  MenuMemberAuthListParameter,
 } from './member-type.ts';
 import { Router } from '@/shared/router';
 import { loading } from '@/shared/ui';
 
-const TOKEN_SIGN_IN_QUERY_KEY = 'tokenSignInQueryKey';
-const TOKEN_CHECK_QUERY_KEY = 'tokenCheckQueryKey';
 const GET_MEMBER_INFO_QUERY_KEY = 'getMemberInfoQueryKey';
 const GET_MENU_MEMBER_AUTH_QUERY_KEY = 'getMenuMemberAuthQueryKey';
 const GET_MEMBER_LIST_QUERY_KEY = 'getMemberListQueryKey';
 const GET_MENU_LIST_QUERY_KEY = 'getMemberAuthListQueryKey';
 
-export function useTokenSignInQuery() {
-  const location = useLocation();
-  const [searchParams] = useSearchParams();
-  const isSignInPage = location.pathname === Router.SIGN_IN;
-  const token = getToken();
-
-  return useQueryWrapper({
-    queryKey: [TOKEN_SIGN_IN_QUERY_KEY],
-    queryFn: () => tokenCheckApi(),
-    refetchOnMount: true,
-    refetchOnReconnect: false,
-    gcTime: 0,
-    staleTime: 0,
-    enabled: !!token && isSignInPage && !searchParams.get('isLogout'),
-  });
-}
-
-export function useTokenCheckQuery() {
-  const location = useLocation();
-  const isSignInPage = location.pathname === Router.SIGN_IN;
-
-  const interval = 1000 * 60 * 3; // 3분마다 체크
-
-  // const [enabled, setEnabled] = useState(false);
-  //
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     setEnabled(true);
-  //   }, interval);
-  //
-  //   return () => {
-  //     clearTimeout(timer);
-  //   };
-  // }, []);
-
-  return useQueryWrapper({
-    queryKey: [TOKEN_CHECK_QUERY_KEY],
-    queryFn: () => tokenCheckApi(),
-    gcTime: 0,
-    staleTime: 0,
-    refetchOnMount: true,
-    refetchOnReconnect: false,
-    refetchIntervalInBackground: true,
-    refetchInterval: interval,
-    enabled: !isSignInPage,
-  });
-}
-
-export function useGetMemberInfoQuery(params: PMemberInfo = {}) {
+export function useGetMemberInfoQuery(params: MemberInfoParameter = {}) {
   return useQueryWrapper({
     queryKey: [GET_MEMBER_INFO_QUERY_KEY, params],
-    queryFn: () => getMemberInfoApi(params),
+    queryFn: () => getMemberApi(params),
   });
 }
 
@@ -88,7 +35,7 @@ export function useUpdateMemberMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: RMember) => updateMemberApi(data),
+    mutationFn: (data: MemberResponse) => updateMemberApi(data),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [GET_MEMBER_LIST_QUERY_KEY],
@@ -99,7 +46,7 @@ export function useUpdateMemberMutation() {
   });
 }
 
-export function useGetMenuMemberAuthQuery(params: PMenuMemberAuth) {
+export function useGetMenuMemberAuthQuery(params: MenuMemberAuthParameter) {
   return useQueryWrapper({
     queryKey: [GET_MENU_MEMBER_AUTH_QUERY_KEY, params],
     queryFn: () => getMenuMemberAuthApi(params),
@@ -121,7 +68,7 @@ export function useGetMemberListQuery() {
   });
 }
 
-export function useGetMenuMemberAuthListQuery(params: PMenuMemberAuthList) {
+export function useGetMenuMemberAuthListQuery(params: MenuMemberAuthListParameter) {
   return useQueryWrapper({
     queryKey: [GET_MENU_LIST_QUERY_KEY, params],
     queryFn: () => getMenuMemberAuthListApi(params),
@@ -133,7 +80,7 @@ export function useGetMenuMemberAuthListQuery(params: PMenuMemberAuthList) {
 
 export function useUpdateMenuMemberAuthMutation() {
   return useMutation({
-    mutationFn: (data: RMenuMemberAuth[]) => updateMenuMemberAuthApi(data),
+    mutationFn: (data: MenuMemberAuthResponse[]) => updateMenuMemberAuthApi(data),
     onSuccess: () => {},
     onMutate: () => loading.show(),
     onSettled: () => loading.hide(),

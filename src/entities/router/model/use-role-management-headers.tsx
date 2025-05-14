@@ -1,13 +1,14 @@
-import { Checkbox, createHeader, THeader } from '@/shared/ui';
-import { RRoleUser, RMenuMemberAuth } from '@/shared/api';
+import type { THeader } from '@/shared/ui';
+import { Checkbox, createHeader } from '@/shared/ui';
+import type { RoleUserResponse, MenuMemberAuthResponse } from '@/shared/api';
 export function useRoleManagementHeaders() {
-  const roleUserHeaders: THeader<RRoleUser>[] = [
+  const roleUserHeaders: THeader<RoleUserResponse>[] = [
     createHeader('index', '', 60, { pin: 'left', dataAlign: 'right', filter: undefined }),
     createHeader('memberId', '아이디', 150),
     createHeader('memberNm', '이름', 150),
   ];
 
-  const roleManagementHeaders: THeader<RMenuMemberAuth>[] = [
+  const roleManagementHeaders: THeader<MenuMemberAuthResponse>[] = [
     createHeader('index', '', 60, { pin: 'left', dataAlign: 'right', filter: undefined }),
     createHeader('allChecked', '', 60, {
       headerAlign: 'center',

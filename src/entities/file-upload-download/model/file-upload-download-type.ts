@@ -1,4 +1,4 @@
-import { TDataWithIndex } from '@/shared/ui';
-import { RFileListItem } from '@/shared/api';
+import type { DataWithIndex } from '@/shared/ui';
+import type { FileListItemResponse } from '@/shared/api';
 
-export type TFileListItem = TDataWithIndex & RFileListItem;
+export type FileListItem = DataWithIndex & FileListItemResponse;

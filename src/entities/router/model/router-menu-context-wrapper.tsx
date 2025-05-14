@@ -3,17 +3,17 @@ import { useEffect, useState } from 'react';
 import type { RouteObject } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
 
-import type { TMenu, TRouterMenuContext } from './router-type.ts';
+import type { Menu, RouterMenuContext } from './router-type.ts';
 import { getLastLocation, removeLastLocation, RouterMenuContext, setLastLocation } from './';
-import type { MenuResponse, RMenuMemberAuth } from '@/shared/api';
-import { handleAuthError, getMemberMenuListApi } from '@/shared/api';
+import type { MenuResponse, MenuMemberAuthResponse } from '@/shared/api';
+import { handleAuthError, getMemberMenusApi } from '@/shared/api';
 import { getRouterComponent, getRouterMappedIcon, Router } from '@/shared/router';
 
 function isNonIndexRoute(route: RouteObject): route is Exclude<RouteObject, { index: true }> {
   return !('index' in route);
 }
 
-function makeGroupMenus(responseMenus: MenuResponse[]): TMenu[] {
+function makeGroupMenus(responseMenus: MenuResponse[]): Menu[] {
   const mainGroups = new Map<number, MenuResponse[]>();
   responseMenus.forEach((menu) => {
     if (!mainGroups.has(menu.mainCd)) {
@@ -22,11 +22,11 @@ function makeGroupMenus(responseMenus: MenuResponse[]): TMenu[] {
     mainGroups.get(menu.mainCd)!.push(menu);
   });
 
-  const mainMenus: TMenu[] = [];
+  const mainMenus: Menu[] = [];
 
   for (const [mainCd, menus] of mainGroups.entries()) {
     const subGroups = new Map<number, MenuResponse[]>();
-    let mainMenu: TMenu | null = null;
+    let mainMenu: Menu | null = null;
 
     menus.forEach((menu) => {
       if (!subGroups.has(menu.sub1Cd)) {
@@ -58,7 +58,7 @@ function makeGroupMenus(responseMenus: MenuResponse[]): TMenu[] {
       }
     });
 
-    let subMenus: TMenu[] = [];
+    let subMenus: Menu[] = [];
 
     for (const [, subMenusArr] of subGroups.entries()) {
       subMenusArr.sort((a, b) => a.orderBy - b.orderBy);
@@ -87,7 +87,7 @@ function makeGroupMenus(responseMenus: MenuResponse[]): TMenu[] {
     }
 
     if (mainMenu) {
-      (mainMenu as TMenu).children = subMenus.length > 0 ? subMenus : undefined;
+      (mainMenu as Menu).children = subMenus.length > 0 ? subMenus : undefined;
       mainMenus.push(mainMenu);
     }
   }
@@ -95,7 +95,7 @@ function makeGroupMenus(responseMenus: MenuResponse[]): TMenu[] {
   return mainMenus;
 }
 
-function flattenGroupMenus(menuList: TMenu[]): MenuResponse[] {
+function flattenGroupMenus(menuList: Menu[]): MenuResponse[] {
   return menuList.reduce<MenuResponse[]>((acc, menu) => {
     const { children, ...menuWithoutChildren } = menu;
     acc.push({
@@ -116,7 +116,7 @@ function flattenGroupMenus(menuList: TMenu[]): MenuResponse[] {
   }, []);
 }
 
-function generateRoutesFromMenus(menus: TMenu[]): RouteObject[] {
+function generateRoutesFromMenus(menus: Menu[]): RouteObject[] {
   return menus.map((menu) => {
     const Component = getRouterComponent(menu.router);
     return {
@@ -133,12 +133,14 @@ export function RouterMenuContextWrapper({
   children,
 }: {
   defaultRoutes: RouteObject[];
-  defaultMenus: TMenu[];
+  defaultMenus: Menu[];
   children: ReactNode;
 }) {
   const [routes, setRoutes] = useState(defaultRoutes);
-  const [menus, setMenus] = useState<TMenu[]>(defaultMenus);
-  const [currentMenuMemberAuth, setCurrentMenuMemberAuth] = useState<RMenuMemberAuth | null>(null);
+  const [menus, setMenus] = useState<Menu[]>(defaultMenus);
+  const [currentMenuMemberAuth, setCurrentMenuMemberAuth] = useState<MenuMemberAuthResponse | null>(
+    null,
+  );
 
   const sidebarMainMenus = menus.filter((menu) => menu.router !== Router.MY_PROFILE);
   const myProfileMenu = defaultMenus[0];
@@ -201,7 +203,7 @@ export function RouterMenuContextWrapper({
   };
 
   const updateRouteName = (router: Router, newName: string) => {
-    const updateRecursively = (menus: TMenu[]): TMenu[] => {
+    const updateRecursively = (menus: Menu[]): Menu[] => {
       return menus.map((menu) => {
         let updatedMenu = menu.router === router ? { ...menu, name: newName } : menu;
 
@@ -218,7 +220,7 @@ export function RouterMenuContextWrapper({
     setMenus((prevState) => updateRecursively(prevState));
   };
 
-  function findCurrentMenu(menus: TMenu[], currentPath: string): TMenu | null {
+  function findCurrentMenu(menus: Menu[], currentPath: string): Menu | null {
     for (const menu of menus) {
       if (currentPath.startsWith(menu.fullRouterPath)) {
         if (menu.children) {
@@ -234,7 +236,7 @@ export function RouterMenuContextWrapper({
     return null;
   }
 
-  function findMenuWithFullRouterPath(menus: TMenu[], targetFullRouterPath: string): TMenu | null {
+  function findMenuWithFullRouterPath(menus: Menu[], targetFullRouterPath: string): Menu | null {
     for (const menu of menus) {
       if (targetFullRouterPath.startsWith(menu.fullRouterPath)) {
         if (menu.children) {
@@ -250,7 +252,7 @@ export function RouterMenuContextWrapper({
     return null;
   }
 
-  function findFirstNonHeaderMenu(menus: TMenu[]): TMenu | null {
+  function findFirstNonHeaderMenu(menus: Menu[]): Menu | null {
     for (const menu of menus) {
       if (!menu.isHeader) {
         return menu;
@@ -269,7 +271,7 @@ export function RouterMenuContextWrapper({
       return;
     }
 
-    getMemberMenuListApi().then((data) => {
+    getMemberMenusApi().then((data) => {
       if (window.location.pathname === Router.SIGN_IN) {
         return;
       }
@@ -317,7 +319,7 @@ export function RouterMenuContextWrapper({
           updateRouteName,
           makeGroupMenus,
           flattenGroupMenus,
-        } as TRouterMenuContext
+        } as RouterMenuContext
       }
     >
       {children}

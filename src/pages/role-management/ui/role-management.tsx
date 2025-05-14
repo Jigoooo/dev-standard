@@ -2,21 +2,13 @@ import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 
-import {
-  dialog,
-  FlexColumn,
-  FlexRow,
-  SaveButton,
-  Table,
-  TDataWithIndex,
-  useTableData,
-} from '@/shared/ui';
+import type { DataWithIndex } from '@/shared/ui';
+import { dialog, FlexColumn, FlexRow, SaveButton, Table, useTableData } from '@/shared/ui';
 import { useRoleManagementHeaders } from '@/entities/router';
 import { useMemberState } from '@/entities/member';
+import type { MenuMemberAuthResponse, RoleUserResponse } from '@/shared/api';
 import {
   handleAuthError,
-  RMenuMemberAuth,
-  RRoleUser,
   useGetMemberListQuery,
   useGetMenuMemberAuthListQuery,
   useUpdateMenuMemberAuthMutation,
@@ -28,14 +20,14 @@ export function RoleManagement() {
 
   const { roleUserHeaders, roleManagementHeaders } = useRoleManagementHeaders();
   const { dataList, setDataList, handelDataList, deleteDataList } = useTableData<
-    TDataWithIndex & RRoleUser
+    DataWithIndex & RoleUserResponse
   >([]);
   const {
     dataList: menuAuthList,
     setDataList: setMenuAuthList,
     handelDataList: handelMenuAuthList,
     deleteDataList: deleteMenuAuthList,
-  } = useTableData<TDataWithIndex & RMenuMemberAuth>([]);
+  } = useTableData<DataWithIndex & MenuMemberAuthResponse>([]);
 
   const [memberId, setMemberId] = useState('');
 
@@ -148,7 +140,7 @@ export function RoleManagement() {
   );
 }
 
-function useUpdateMenuMemberAuth({ menuAuthList }: { menuAuthList: RMenuMemberAuth[] }) {
+function useUpdateMenuMemberAuth({ menuAuthList }: { menuAuthList: MenuMemberAuthResponse[] }) {
   const navigate = useNavigate();
 
   const updateMenuMemberAuthMutation = useUpdateMenuMemberAuthMutation();

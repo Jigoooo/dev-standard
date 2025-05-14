@@ -1,4 +1,5 @@
-import { ReactNode, useEffect } from 'react';
+import type { ReactNode } from 'react';
+import { useEffect } from 'react';
 
 import { memberActions } from '@/entities/member';
 import { useTokenCheckQuery, useGetMemberInfoQuery } from '@/shared/api';

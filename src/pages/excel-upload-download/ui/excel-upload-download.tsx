@@ -18,25 +18,22 @@ import {
   writeExcelFile,
   ButtonStyle,
 } from '@/shared/ui';
-import {
-  TExcelInfo,
-  TExcelData,
-  useExcelUploadDownloadHeaders,
-} from '@/entities/excel-upload-download';
+import type { ExcelInfo, ExcelData } from '@/entities/excel-upload-download';
+import { useExcelUploadDownloadHeaders } from '@/entities/excel-upload-download';
 import { AnimatePresence, motion } from 'framer-motion';
 import { colors } from '@/shared/constants';
+import type { ExcelInfoListParameter } from '@/shared/api';
 import {
   handleAuthError,
   useExcelDeleteMutation,
   useExcelInfoListQuery,
   useSaveExcelMutation,
-  PExcelInfoList,
 } from '@/shared/api';
 
 export function ExcelUploadDownload() {
   const navigate = useNavigate();
 
-  const [excelInfoListParams, setExcelInfoListParams] = useState<PExcelInfoList>({
+  const [excelInfoListParams, setExcelInfoListParams] = useState<ExcelInfoListParameter>({
     fromDate: format(new Date(), 'yyyy-MM-dd'),
     toDate: format(addMonths(new Date(), 1), 'yyyy-MM-dd'),
   });
@@ -75,7 +72,7 @@ export function ExcelUploadDownload() {
     excelUploadListHeaders,
   } = useExcelUploadDownloadHeaders(search);
   const { dataList, setDataList, handelDataList, deleteDataList } =
-    useTableData<TExcelInfo>(excelInfoListWithIndex);
+    useTableData<ExcelInfo>(excelInfoListWithIndex);
   useEffect(() => {
     setDataList(excelInfoListWithIndex);
   }, [excelInfoListWithIndex]);
@@ -83,7 +80,7 @@ export function ExcelUploadDownload() {
   const excelDeleteMutation = useExcelDeleteMutation();
 
   const registerExcelMutation = useSaveExcelMutation();
-  const registerExcel = (excelNm: string, excelDataList: TExcelData[], close: () => void) => {
+  const registerExcel = (excelNm: string, excelDataList: ExcelData[], close: () => void) => {
     dialog.info({
       title: '등록하시겠습니까?',
       overlayClose: true,

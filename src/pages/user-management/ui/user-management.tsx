@@ -1,14 +1,16 @@
 import { useEffect } from 'react';
 
-import { FlexColumn, FlexRow, Table, TDataWithIndex, useTableData } from '@/shared/ui';
-import { RRoleUser, useGetMemberListQuery } from '@/shared/api';
+import type { DataWithIndex } from '@/shared/ui';
+import { FlexColumn, FlexRow, Table, useTableData } from '@/shared/ui';
+import type { RoleUserResponse } from '@/shared/api';
+import { useGetMemberListQuery } from '@/shared/api';
 import { useMemberManagementHeaders } from '@/entities/member';
 
 export function UserManagement() {
   const { userManagementHeaders } = useMemberManagementHeaders();
 
   const { dataList, setDataList, handelDataList, deleteDataList } = useTableData<
-    TDataWithIndex & RRoleUser
+    DataWithIndex & RoleUserResponse
   >([]);
 
   const getMemberListQuery = useGetMemberListQuery();

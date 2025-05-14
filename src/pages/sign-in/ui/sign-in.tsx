@@ -46,15 +46,15 @@ export function SignIn() {
           style={{
             display: 'flex',
             flexDirection: 'column',
-            width: 480,
+            width: '27rem',
             backgroundColor: '#ffffff',
             alignItems: 'center',
             justifyContent: 'center',
-            borderRadius: 12,
+            borderRadius: '0.8rem',
             boxShadow: '2px 2px 10px rgba(0, 0, 0, 0.06)',
-            paddingInline: 40,
-            paddingBlock: 30,
-            gap: 30,
+            paddingInline: '2.4rem',
+            paddingBlock: '1.8rem',
+            gap: '1.5rem',
           }}
           action={signIn}
         >
@@ -64,8 +64,8 @@ export function SignIn() {
             saveIdChecked={saveIdChecked}
             toggleSaveIdChecked={toggleSaveIdChecked}
           />
-          <Button type={'submit'} style={{ width: '100%', height: 48 }}>
-            <Typography style={{ fontSize: '1rem', fontWeight: 600 }}>로그인</Typography>
+          <Button type={'submit'} style={{ width: '100%', height: '2.5rem' }}>
+            <Typography style={{ fontSize: '0.9rem', fontWeight: 600 }}>로그인</Typography>
           </Button>
         </Form>
       </FlexRow>
@@ -78,10 +78,10 @@ function SignInHeader() {
     <FlexColumn
       className={'selection-none'}
       style={{
-        height: 70,
+        height: '4.375rem',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 6,
+        gap: '0.375rem',
       }}
     >
       <img src={TriphosLogo} alt={'로고'} width={120} />
@@ -107,27 +107,27 @@ function SignInForm({
         width: '100%',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 14,
+        gap: '0.9rem',
       }}
     >
-      <FlexColumn style={{ width: '100%', gap: 4 }}>
+      <FlexColumn style={{ width: '100%', gap: '0.4rem' }}>
         <Typography style={{ color: '#555555', fontWeight: 500, fontSize: '0.8rem' }}>
           아이디
         </Typography>
         <Input
           name={signInFields.id}
           defaultValue={saveId}
-          style={{ width: '100%', height: 42 }}
+          style={{ width: '100%', height: '2.4rem' }}
           autoComplete={'current-password'}
         />
       </FlexColumn>
-      <FlexColumn style={{ width: '100%', gap: 4 }}>
+      <FlexColumn style={{ width: '100%', gap: '0.4rem' }}>
         <Typography style={{ color: '#555555', fontWeight: 500, fontSize: '0.8rem' }}>
           비밀번호
         </Typography>
         <Input
           name={signInFields.password}
-          style={{ width: '100%', height: 42 }}
+          style={{ width: '100%', height: '2.4rem' }}
           type={'password'}
           autoComplete={'current-password'}
         />
@@ -183,8 +183,6 @@ function useSignIn({ saveIdChecked }: { saveIdChecked: boolean }) {
 
             return;
           }
-
-          console.log(data.data);
 
           if (data.data) {
             setToken({

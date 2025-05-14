@@ -1,5 +1,6 @@
 import { AnimatePresence, motion, Reorder, useDragControls } from 'framer-motion';
-import { createRef, RefObject, useEffect, useRef, useState } from 'react';
+import type { RefObject } from 'react';
+import { createRef, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 
@@ -7,7 +8,8 @@ import { MdOutlineEdit } from 'react-icons/md';
 import { RxDragHandleHorizontal } from 'react-icons/rx';
 
 import { dialog, Divider, FlexColumn, FlexRow, Input, SaveButton, Typography } from '@/shared/ui';
-import { TMenu, useRouterMenuContext } from '@/entities/router';
+import type { Menu } from '@/entities/router';
+import { useRouterMenuContext } from '@/entities/router';
 import { handleAuthError, useGetMenuListQuery, useUpdateMenuMutation } from '@/shared/api';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
 import { colors } from '@/shared/constants';
@@ -16,8 +18,8 @@ export function MenuSetting() {
   const navigate = useNavigate();
   const { makeGroupMenus, flattenGroupMenus } = useRouterMenuContext();
 
-  const [menuList, setMenuList] = useState<TMenu[]>([]);
-  const originalMenuListRef = useRef<TMenu[]>([]);
+  const [menuList, setMenuList] = useState<Menu[]>([]);
+  const originalMenuListRef = useRef<Menu[]>([]);
   const [hoverMenuId, setHoverMenuId] = useState<string | null>(null);
   const [editId, setEditId] = useState<string | null>(null);
   const editRef = useHandleClickOutsideRef<HTMLInputElement>({
@@ -27,14 +29,14 @@ export function MenuSetting() {
     },
   });
 
-  const updateOrderBy = (items: TMenu[]): TMenu[] => {
+  const updateOrderBy = (items: Menu[]): Menu[] => {
     return items.map((item, index) => ({
       ...item,
       orderBy: index + 1,
     }));
   };
 
-  const reorderMenuList = (mainMenu: TMenu, newChildren: TMenu[]) => {
+  const reorderMenuList = (mainMenu: Menu, newChildren: Menu[]) => {
     const updatedChildren = updateOrderBy(newChildren);
 
     setMenuList((prevMenuList) => {
@@ -48,7 +50,7 @@ export function MenuSetting() {
   };
 
   const handleMenuNameChange = (targetMenuId: string, newName: string) => {
-    const updateMenuNameInList = (menus: TMenu[]): TMenu[] => {
+    const updateMenuNameInList = (menus: Menu[]): Menu[] => {
       return menus.map((menu) => {
         if (menu.menuId === targetMenuId) {
           return { ...menu, name: newName };
@@ -266,10 +268,10 @@ function ReorderItem({
   handleMenuNameChange,
   originalMenuList,
 }: {
-  menu: TMenu;
+  menu: Menu;
   groupRef: RefObject<HTMLDivElement | null>;
   handleMenuNameChange: (menuId: string, newName: string) => void;
-  originalMenuList: TMenu[];
+  originalMenuList: Menu[];
 }) {
   const controls = useDragControls();
   const [isHover, setIsHover] = useState(false);
@@ -368,7 +370,7 @@ function ReorderItem({
 
 function findOriginalNameAndOrderBy(
   targetMenuId: string,
-  menus: TMenu[],
+  menus: Menu[],
 ): { name: string; orderBy: number } | undefined {
   for (const menu of menus) {
     if (menu.menuId === targetMenuId) {

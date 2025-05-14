@@ -4,7 +4,7 @@ import { AuthGuard, MainAuthGuard } from '@/features/auth';
 import { ModalContextWrapper, RouteErrorPage } from '@/shared/ui';
 import { SignIn } from '@/pages/sign-in';
 import { Main } from '@/pages/main';
-import type { TMenu } from '@/entities/router';
+import type { Menu } from '@/entities/router';
 import { getRouterMappedIcon, Router } from '@/shared/router';
 import { MyProfile } from '@/pages/my-profile';
 
@@ -39,7 +39,7 @@ export const defaultRoutes: RouteObject[] = [
   },
 ];
 
-export const defaultMenus: TMenu[] = [
+export const defaultMenus: Menu[] = [
   {
     menuIndex: 9999,
     isHeader: false,

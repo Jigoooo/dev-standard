@@ -1,9 +1,9 @@
 import { create } from 'zustand';
 
-import { TMemberState, TMemberStore } from './member-type.ts';
+import type { MemberState, MemberStore } from './member-type.ts';
 import { useShallow } from 'zustand/react/shallow';
 
-const initialState: TMemberState = {
+const initialState: MemberState = {
   memberInfo: {
     memberId: '',
     memberNm: '',
@@ -17,7 +17,7 @@ const initialState: TMemberState = {
   },
 };
 
-const useMemberStore = create<TMemberStore>()((setState) => {
+const useMemberStore = create<MemberStore>()((setState) => {
   return {
     state: structuredClone(initialState),
     actions: {

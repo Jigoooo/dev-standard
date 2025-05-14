@@ -17,14 +17,11 @@ import {
   useModal,
   useTableData,
 } from '@/shared/ui';
-import {
-  FileUploadModal,
-  TFileListItem,
-  useFileUploadDownloadHeaders,
-} from '@/entities/file-upload-download';
+import type { FileListItem } from '@/entities/file-upload-download';
+import { FileUploadModal, useFileUploadDownloadHeaders } from '@/entities/file-upload-download';
 import { colors } from '@/shared/constants';
+import type { FileListItemParameter } from '@/shared/api';
 import {
-  PFileListItem,
   handleAuthError,
   useDeleteFileMutation,
   useGetFileListQuery,
@@ -34,13 +31,13 @@ import {
 export function FileUploadDownload() {
   const navigate = useNavigate();
 
-  const [fileListParams, setFileListParams] = useState<PFileListItem>({
+  const [fileListParams, setFileListParams] = useState<FileListItemParameter>({
     fromDate: format(new Date(), 'yyyy-MM-dd'),
     toDate: format(addMonths(new Date(), 1), 'yyyy-MM-dd'),
   });
 
   const fileDownloadHeaders = useFileUploadDownloadHeaders();
-  const { dataList, setDataList, handelDataList, deleteDataList } = useTableData<TFileListItem>([]);
+  const { dataList, setDataList, handelDataList, deleteDataList } = useTableData<FileListItem>([]);
   const [deleteFileIdxList, setDeleteFileIdxList] = useState<number[]>([]);
   const handleDeleteFileIdxList = (checkedList: string[]) => {
     const convertedDeleteIdxList = checkedList

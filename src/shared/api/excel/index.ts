@@ -5,4 +5,8 @@ export {
   useUpdateExcelMutation,
   useExcelDeleteMutation,
 } from './excel-service.ts';
-export type { RExcelData, RExcelInfo, PExcelInfoList } from './excel-upload-download-type.ts';
+export type {
+  ExcelDataResponse,
+  ExcelInfoResponse,
+  ExcelInfoListParameter,
+} from './excel-upload-download-type.ts';

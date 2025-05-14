@@ -1,6 +1,6 @@
 import { Fragment, useState } from 'react';
 
-import { RMember } from '@/shared/api';
+import type { MemberResponse } from '@/shared/api';
 import { FlexRow, FlexColumn, Typography, Input, SaveButton } from '@/shared/ui';
 import { useMemberManagementHeaders } from '../model';
 
@@ -8,8 +8,8 @@ export function MemberManagementEditModal({
   memberInfo,
   onSave,
 }: {
-  memberInfo: RMember;
-  onSave: (memberInfo: RMember) => void;
+  memberInfo: MemberResponse;
+  onSave: (memberInfo: MemberResponse) => void;
 }) {
   const { memberInfoColumnLabelsMapping } = useMemberManagementHeaders();
   const [filteredData, setFilteredData] = useState(() =>
@@ -39,7 +39,7 @@ export function MemberManagementEditModal({
         }}
       >
         {filteredDataEntries.map(([key, value], index) => {
-          const headerLabel = memberInfoColumnLabelsMapping[key as keyof RMember];
+          const headerLabel = memberInfoColumnLabelsMapping[key as keyof MemberResponse];
 
           if (!headerLabel) {
             return;

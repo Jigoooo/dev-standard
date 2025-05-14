@@ -136,6 +136,5 @@ export function deepCamelize<T>(input: any): T {
     return result as T;
   }
 
-  // primitive 값은 그대로
   return input;
 }

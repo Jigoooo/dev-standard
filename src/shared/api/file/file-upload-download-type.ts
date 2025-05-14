@@ -1,12 +1,12 @@
-import { TDataWithIndex } from '@/shared/ui';
+import type { DataWithIndex } from '@/shared/ui';
 
-export type PFileListItem = {
+export type FileListItemParameter = {
   fileNm?: string;
   fromDate: string;
   toDate: string;
 };
 
-export type RFileListItem = {
+export type FileListItemResponse = {
   fileIdx: number;
   fileNm: string;
   fileSize: number;
@@ -14,20 +14,20 @@ export type RFileListItem = {
   insMember: string;
 };
 
-export type RFileList = {
-  fileList: RFileListItem[];
+export type FileListResponse = {
+  fileList: FileListItemResponse[];
 };
 
-export type TFileListItem = TDataWithIndex & RFileListItem;
+export type FileListItem = DataWithIndex & FileListItemResponse;
 
-export type PFileDownload = {
+export type FileDownloadParameter = {
   fileIdx: number;
 };
 
-export type PFileSaveList = {
+export type FileSaveListParameter = {
   fileList: File[];
 };
 
-export type PDeleteFileList = {
+export type DeleteFileListParameter = {
   deleteFileList: number[];
 };

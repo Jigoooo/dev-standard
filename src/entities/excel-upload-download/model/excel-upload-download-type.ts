@@ -1,6 +1,6 @@
-import { TDataWithIndex } from '@/shared/ui';
-import { RExcelData, RExcelInfo } from '@/shared/api';
+import type { DataWithIndex } from '@/shared/ui';
+import type { ExcelDataResponse, ExcelInfoResponse } from '@/shared/api';
 
-export type TExcelData = TDataWithIndex & RExcelData;
+export type ExcelData = DataWithIndex & ExcelDataResponse;
 
-export type TExcelInfo = TDataWithIndex & RExcelInfo;
+export type ExcelInfo = DataWithIndex & ExcelInfoResponse;

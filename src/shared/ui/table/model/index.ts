@@ -9,7 +9,7 @@ export type {
 export type {
   THeaderGroup,
   THeader,
-  TDataWithIndex,
+  DataWithIndex,
   TDataWithCheck,
   TDataWithIndexCheck,
 } from './table-type.ts';

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import type { TDataWithIndex, THeader, TValidationRuleWithHeaderId } from '@/shared/ui';
+import type { DataWithIndex, THeader, TValidationRuleWithHeaderId } from '@/shared/ui';
 import {
   dialog,
   ExcelExportButton,
@@ -14,7 +14,7 @@ import {
   writeExcelFile,
 } from '@/shared/ui';
 
-export function ExcelEditModal<TData extends TDataWithIndex>({
+export function ExcelEditModal<TData extends DataWithIndex>({
   excelNm,
   headers,
   validationRules,

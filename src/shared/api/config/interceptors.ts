@@ -1,10 +1,11 @@
-import axios, {
+import type {
   AxiosError,
   AxiosInstance,
   AxiosRequestConfig,
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from 'axios';
+import axios from 'axios';
 
 import { logOnDev } from '@/shared/lib';
 import { getToken } from './token-storage.ts';
@@ -21,9 +22,11 @@ const onRequest = (config: AxiosRequestConfig): Promise<InternalAxiosRequestConf
   const token = getToken();
   const accessToken = token?.accessToken;
 
-  if (accessToken && url && !url.includes('/auth/')) {
-    headers.Authorization = `Bearer ${accessToken}`;
-  }
+  headers.Authorization = `Bearer ${accessToken}`;
+
+  // if (accessToken && url && !url.includes('/auth/')) {
+  //   headers.Authorization = `Bearer ${accessToken}`;
+  // }
 
   return Promise.resolve({ ...config } as InternalAxiosRequestConfig);
 };

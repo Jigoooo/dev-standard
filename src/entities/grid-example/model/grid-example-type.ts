@@ -1,4 +1,4 @@
-export type RGridExample = {
+export type GridExampleResponse = {
   name: string;
   email: string;
   age: number;

@@ -1,7 +1,5 @@
-export { getMemberInfoApi, getMemberMenuListApi } from './member-api.ts';
+export { getMemberApi, getMemberMenusApi } from './member-api.ts';
 export {
-  useTokenSignInQuery,
-  useTokenCheckQuery,
   useGetMemberInfoQuery,
   useUpdateMemberMutation,
   useGetMenuMemberAuthQuery,
@@ -10,10 +8,10 @@ export {
   useUpdateMenuMemberAuthMutation,
 } from './member-service.ts';
 export type {
-  RMember,
-  RMemberInfo,
-  RMenuMemberAuth,
-  RRoleUser,
+  MemberResponse,
+  MemberInfoResponse,
+  MenuMemberAuthResponse,
+  RoleUserResponse,
   MenuResponse,
-  RMenuList,
+  MenuListResponse,
 } from './member-type.ts';

@@ -11,7 +11,7 @@ export type TTableContext<TData> = {
   headerGroups: THeaderGroup<TData>[];
   headers: THeader<TData>[];
   sortedHeaders: THeader<TData>[];
-  dataList: (TData & TDataWithIndex)[];
+  dataList: (TData & DataWithIndex)[];
   handelDataList: (dataIndex: number, key: string, value: any) => void;
   deleteDataList: (dataIndex: number) => void;
   editMode: boolean;
@@ -108,7 +108,7 @@ export type THeader<TData = Record<string, any>> = {
   };
 };
 
-export type TDataWithIndex = {
+export type DataWithIndex = {
   index: number;
 };
 
@@ -116,7 +116,7 @@ export type TDataWithCheck = {
   check: boolean;
 };
 
-export type TDataWithIndexCheck = TDataWithIndex & TDataWithCheck;
+export type TDataWithIndexCheck = DataWithIndex & TDataWithCheck;
 
 export type TableBodyRowProps = {
   headers: THeader[];

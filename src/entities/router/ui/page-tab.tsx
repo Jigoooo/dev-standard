@@ -1,6 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { RefObject, useEffect, useState } from 'react';
-import { KeepAliveRef } from 'keepalive-for-react';
+import type { RefObject } from 'react';
+import { useEffect, useState } from 'react';
+import type { KeepAliveRef } from 'keepalive-for-react';
 import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
 
 import { IoClose } from 'react-icons/io5';
@@ -8,7 +9,8 @@ import { IoRefreshCircleOutline } from 'react-icons/io5';
 import { IoIosCloseCircleOutline } from 'react-icons/io';
 
 import { Button, Divider, FlexColumn, FlexRow, Typography } from '@/shared/ui';
-import { TCacheNode, TMenu, useRouterMenuContext } from '@/entities/router';
+import type { CacheNode, Menu } from '@/entities/router';
+import { useRouterMenuContext } from '@/entities/router';
 
 export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undefined> }) {
   const navigate = useNavigate();
@@ -18,7 +20,7 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
 
   const activeCacheKey = location.pathname + location.search;
 
-  const [sortedCacheNodes, setSortedCacheNodes] = useState<TCacheNode[]>([]);
+  const [sortedCacheNodes, setSortedCacheNodes] = useState<CacheNode[]>([]);
   const remainingCacheNodes = sortedCacheNodes.filter((node) => node.cacheKey !== activeCacheKey);
 
   useEffect(() => {
@@ -49,7 +51,7 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
     });
   };
 
-  const toMenu = (menu: TMenu) => {
+  const toMenu = (menu: Menu) => {
     if (menu.isHeader) {
       return;
     }

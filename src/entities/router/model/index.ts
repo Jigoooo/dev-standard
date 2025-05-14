@@ -1,4 +1,4 @@
-export type { TMenu, TCacheNode } from './router-type.ts';
+export type { Menu, CacheNode } from './router-type.ts';
 export { sidebarActions, useSidebarState } from './sidebar-store.ts';
 export { RouterMenuContextWrapper } from './router-menu-context-wrapper.tsx';
 export { RouterMenuContext, useRouterMenuContext } from './router-menu-context.ts';

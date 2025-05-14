@@ -12,14 +12,14 @@ import {
   Typography,
 } from '@/shared/ui';
 import { colors } from '@/shared/constants';
-import type { EditType, TableBodyRowProps, TDataWithIndex, THeader } from '../model/table-type.ts';
+import type { EditType, TableBodyRowProps, DataWithIndex, THeader } from '../model/table-type.ts';
 import { useTableContext } from '../model/table-context.ts';
 import { validateTableDataList } from '../model/validate-table-data-list.ts';
 import { useTableScrollToFn, useVirtualRow } from '../model';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
 import { NoData } from '@/entities/main';
 
-export const TableBody = memo(function TableBody<TData extends TDataWithIndex>({
+export const TableBody = memo(function TableBody<TData extends DataWithIndex>({
   bodyXRef,
 }: {
   bodyXRef: RefObject<HTMLDivElement | null>;
