@@ -45,7 +45,7 @@ export type SidebarStore = {
   };
 };
 
-export type RouterMenuContext = {
+export type RouterMenuContextType = {
   routes: RouteObject[];
   menus: Menu[];
   sidebarMainMenus: Menu[];

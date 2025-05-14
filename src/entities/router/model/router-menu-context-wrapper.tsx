@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import type { RouteObject } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
 
-import type { Menu, RouterMenuContext } from './router-type.ts';
+import type { Menu, RouterMenuContextType } from './router-type.ts';
 import { getLastLocation, removeLastLocation, RouterMenuContext, setLastLocation } from './';
 import type { MenuResponse, MenuMemberAuthResponse } from '@/shared/api';
 import { handleAuthError, getMemberMenusApi } from '@/shared/api';
@@ -319,7 +319,7 @@ export function RouterMenuContextWrapper({
           updateRouteName,
           makeGroupMenus,
           flattenGroupMenus,
-        } as RouterMenuContext
+        } as RouterMenuContextType
       }
     >
       {children}

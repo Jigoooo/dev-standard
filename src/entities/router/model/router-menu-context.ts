@@ -1,8 +1,8 @@
 import { createContext, use } from 'react';
 
-import { RouterMenuContext } from './router-type.ts';
+import type { RouterMenuContextType } from './router-type.ts';
 
-export const RouterMenuContext = createContext<RouterMenuContext | null>(null);
+export const RouterMenuContext = createContext<RouterMenuContextType | null>(null);
 
 export const useRouterMenuContext = () => {
   const context = use(RouterMenuContext);
