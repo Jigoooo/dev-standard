@@ -1,14 +1,14 @@
 import { apiRequest, customedAxios } from '../config';
-import { PSignIn, RSignIn, RToken } from './auth-type.ts';
+import type { SignInParameter, SignInResponse, TokenResponse } from './auth-type.ts';
 
 export async function tokenRefreshApi(refreshToken: string) {
-  return await apiRequest<RToken>(
+  return await apiRequest<TokenResponse>(
     customedAxios.post('/v1/auth/refresh', {
       refreshToken,
     }),
   );
 }
 
-export async function signInApi(params: PSignIn) {
-  return await apiRequest<RSignIn>(customedAxios.post('/v1/auth/login', {}, { params }));
+export async function signInApi(data: SignInParameter) {
+  return await apiRequest<SignInResponse>(customedAxios.post('/v1/auth/login', data));
 }

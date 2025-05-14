@@ -1,9 +1,9 @@
-import { IconType } from 'react-icons';
-import { JSX, ReactElement, ReactNode } from 'react';
-import { RouteObject } from 'react-router-dom';
+import type { IconType } from 'react-icons';
+import type { JSX, ReactElement, ReactNode } from 'react';
+import type { RouteObject } from 'react-router-dom';
 
-import { RMenu, RMenuMemberAuth } from '@/shared/api';
-import { Router } from '@/shared/router';
+import type { MenuResponse, RMenuMemberAuth } from '@/shared/api';
+import type { Router } from '@/shared/router';
 
 export type TMenu = {
   isHeader: boolean;
@@ -60,9 +60,9 @@ export type TRouterMenuContext = {
   findMenuWithFullRouterPath: (menus: TMenu[], targetFullRouterPath: string) => TMenu | null;
   findFirstNonHeaderMenu: (menus: TMenu[]) => TMenu | null;
   updateRouteChildren: (parentPath: string, newChildren: RouteObject[], merge?: boolean) => void;
-  updateMainRouteChildren: (responseMenus: RMenu[]) => void;
+  updateMainRouteChildren: (responseMenus: MenuResponse[]) => void;
   updateRoutes: (updater: (prevRoutes: RouteObject[]) => RouteObject[]) => void;
   updateRouteName: (router: Router, newName: string) => void;
-  makeGroupMenus: (menus: RMenu[]) => TMenu[];
-  flattenGroupMenus: (menus: TMenu[]) => RMenu[];
+  makeGroupMenus: (menus: MenuResponse[]) => TMenu[];
+  flattenGroupMenus: (menus: TMenu[]) => MenuResponse[];
 };

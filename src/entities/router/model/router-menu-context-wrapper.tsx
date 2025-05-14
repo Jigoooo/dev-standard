@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom';
 
 import type { TMenu, TRouterMenuContext } from './router-type.ts';
 import { getLastLocation, removeLastLocation, RouterMenuContext, setLastLocation } from './';
-import type { RMenu, RMenuMemberAuth } from '@/shared/api';
+import type { MenuResponse, RMenuMemberAuth } from '@/shared/api';
 import { handleAuthError, getMemberMenuListApi } from '@/shared/api';
 import { getRouterComponent, getRouterMappedIcon, Router } from '@/shared/router';
 
@@ -13,8 +13,8 @@ function isNonIndexRoute(route: RouteObject): route is Exclude<RouteObject, { in
   return !('index' in route);
 }
 
-function makeGroupMenus(responseMenus: RMenu[]): TMenu[] {
-  const mainGroups = new Map<number, RMenu[]>();
+function makeGroupMenus(responseMenus: MenuResponse[]): TMenu[] {
+  const mainGroups = new Map<number, MenuResponse[]>();
   responseMenus.forEach((menu) => {
     if (!mainGroups.has(menu.mainCd)) {
       mainGroups.set(menu.mainCd, []);
@@ -25,7 +25,7 @@ function makeGroupMenus(responseMenus: RMenu[]): TMenu[] {
   const mainMenus: TMenu[] = [];
 
   for (const [mainCd, menus] of mainGroups.entries()) {
-    const subGroups = new Map<number, RMenu[]>();
+    const subGroups = new Map<number, MenuResponse[]>();
     let mainMenu: TMenu | null = null;
 
     menus.forEach((menu) => {
@@ -95,8 +95,8 @@ function makeGroupMenus(responseMenus: RMenu[]): TMenu[] {
   return mainMenus;
 }
 
-function flattenGroupMenus(menuList: TMenu[]): RMenu[] {
-  return menuList.reduce<RMenu[]>((acc, menu) => {
+function flattenGroupMenus(menuList: TMenu[]): MenuResponse[] {
+  return menuList.reduce<MenuResponse[]>((acc, menu) => {
     const { children, ...menuWithoutChildren } = menu;
     acc.push({
       mainCd: menuWithoutChildren.mainCd,
@@ -172,7 +172,7 @@ export function RouterMenuContextWrapper({
       });
     });
   };
-  const updateMainRouteChildren = (responseMenus: RMenu[]) => {
+  const updateMainRouteChildren = (responseMenus: MenuResponse[]) => {
     if (!responseMenus || !Array.isArray(responseMenus)) {
       return;
     }

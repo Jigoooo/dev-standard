@@ -1,7 +1,9 @@
 import { AxiosError } from 'axios';
 
 import { Adapter } from './adapter.ts';
-import { AdapterResponseType, ApiResponseType, ResponseAdapter } from './response-adapter.ts';
+import type { AdapterResponseType, ApiResponseType } from './response-adapter.ts';
+import { ResponseAdapter } from './response-adapter.ts';
+import { deepCamelize } from '@/shared/lib';
 
 export async function apiRequest<T>(
   request: Promise<any>,
@@ -23,15 +25,23 @@ export async function apiRequest<T>(
       };
     }
 
+    let adapted: AdapterResponseType<T>;
+
     if (adaptFn) {
-      return Adapter.from(response.data).to((item: ApiResponseType<T>) =>
+      adapted = Adapter.from(response.data).to((item: ApiResponseType<T>) =>
         adaptFn(item, response.status),
       );
     }
 
-    return Adapter.from(response.data).to((item: ApiResponseType<T>) =>
+    adapted = Adapter.from(response.data).to((item: ApiResponseType<T>) =>
       new ResponseAdapter(item).adapt(response.status),
     );
+
+    if (adapted.data != null) {
+      adapted.data = deepCamelize<T>(adapted.data);
+    }
+
+    return adapted;
   } catch (error: unknown) {
     let errorMessage = 'Unknown error';
     let status = -1;

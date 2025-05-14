@@ -122,22 +122,20 @@ export function toPascalCase(str: string): string {
     .join('');
 }
 
-export function toCamelCase(key: string): string {
-  return key.replace(/_([a-z])/g, (_, char) => char.toUpperCase());
-}
-
-export function toCamelCaseObject(input: any): any {
+export function deepCamelize<T>(input: any): T {
   if (Array.isArray(input)) {
-    return input.map((item) => toCamelCaseObject(item));
-  } else if (input && typeof input === 'object' && input.constructor === Object) {
-    return Object.keys(input).reduce(
-      (acc, key) => {
-        const camelCaseKey = toCamelCase(key);
-        acc[camelCaseKey] = toCamelCaseObject(input[key]);
-        return acc;
-      },
-      {} as Record<string, any>,
-    );
+    return input.map((item) => deepCamelize(item)) as any;
   }
+
+  if (input !== null && typeof input === 'object') {
+    const result: Record<string, any> = {};
+    for (const key of Object.keys(input)) {
+      const camelKey = key.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
+      result[camelKey] = deepCamelize(input[key]);
+    }
+    return result as T;
+  }
+
+  // primitive 값은 그대로
   return input;
 }

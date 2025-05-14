@@ -1,16 +1,16 @@
-import { RMenu } from '@/shared/api';
+import type { MenuResponse } from '@/shared/api';
 
-export type PSignIn = {
+export type SignInParameter = {
   id: string;
   password: string;
 };
 
-export type RToken = {
+export type TokenResponse = {
   accessToken: string;
   refreshToken: string;
-  expiresIn: string;
+  expirationDate: string;
 };
 
-export type RSignIn = RToken & {
-  menuList: RMenu[];
+export type SignInResponse = TokenResponse & {
+  menus: MenuResponse[];
 };

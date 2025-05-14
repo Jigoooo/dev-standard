@@ -14,6 +14,6 @@ export type {
   RMemberInfo,
   RMenuMemberAuth,
   RRoleUser,
-  RMenu,
+  MenuResponse,
   RMenuList,
 } from './member-type.ts';

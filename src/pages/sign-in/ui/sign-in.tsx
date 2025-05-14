@@ -15,7 +15,8 @@ import {
 } from '@/shared/ui';
 import { useToggle } from '@/shared/hooks';
 import { createValidator, getFormValues } from '@/shared/lib';
-import { setToken, PSignIn, useSignInMutation } from '@/shared/api';
+import type { SignInParameter } from '@/shared/api';
+import { setToken, useSignInMutation } from '@/shared/api';
 import { Router } from '@/shared/router';
 import { getId, removeId, setId } from '@/entities/auth';
 
@@ -150,7 +151,7 @@ function useSignIn({ saveIdChecked }: { saveIdChecked: boolean }) {
   const { updateMainRouteChildren } = useRouterMenuContext();
 
   return (formData: FormData) => {
-    const { id, password } = getFormValues<PSignIn>(formData, signInFields);
+    const { id, password } = getFormValues<SignInParameter>(formData, signInFields);
     const idWithValidated = createValidator(id)
       .required({ message: '아이디를 입력해 주세요.' })
       .validate();
@@ -183,14 +184,16 @@ function useSignIn({ saveIdChecked }: { saveIdChecked: boolean }) {
             return;
           }
 
+          console.log(data.data);
+
           if (data.data) {
             setToken({
               accessToken: data.data.accessToken,
               refreshToken: data.data.refreshToken,
-              expiresIn: data.data.expiresIn,
+              expirationDate: data.data.expirationDate,
             });
 
-            updateMainRouteChildren(data.data.menuList);
+            updateMainRouteChildren(data.data.menus);
           }
 
           if (saveIdChecked) {

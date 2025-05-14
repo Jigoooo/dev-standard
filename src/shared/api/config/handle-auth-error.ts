@@ -26,7 +26,7 @@ export async function handleAuthError(options: {
         !refreshData.success ||
         !refreshData?.data?.accessToken ||
         !refreshData?.data?.refreshToken ||
-        !refreshData?.data?.expiresIn
+        !refreshData?.data?.expirationDate
       ) {
         dialog.error({
           title: data.msg || '세션이 만료되었습니다.',
@@ -39,7 +39,7 @@ export async function handleAuthError(options: {
       setToken({
         accessToken: refreshData.data.accessToken,
         refreshToken: refreshData.data.refreshToken,
-        expiresIn: refreshData.data.expiresIn,
+        expirationDate: refreshData.data.expirationDate,
       });
       onRefreshSuccess();
     }

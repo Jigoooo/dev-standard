@@ -1,10 +1,10 @@
 import secureLocalStorage from 'react-secure-storage';
 
-import { RToken } from '@/shared/api';
+import type { TokenResponse } from '@/shared/api';
 
 const TOKEN_KEY = 'token';
 
-function isToken(token: any): token is RToken {
+function isToken(token: any): token is TokenResponse {
   return (
     token !== null &&
     typeof token === 'object' &&
@@ -13,7 +13,7 @@ function isToken(token: any): token is RToken {
   );
 }
 
-export function setToken(token: RToken) {
+export function setToken(token: TokenResponse) {
   secureLocalStorage.setItem(TOKEN_KEY, JSON.stringify(token));
 }
 export function getToken() {

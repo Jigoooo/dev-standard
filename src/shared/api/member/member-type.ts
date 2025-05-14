@@ -1,4 +1,4 @@
-import { YesNoType } from '@/shared/type';
+import type { YesNoType } from '@/shared/type';
 
 export type PMemberInfo = {
   memberId?: string;
@@ -43,7 +43,7 @@ export type RMenuMemberAuth = {
   excelExport: YesNoType;
 };
 
-export type RMenu = {
+export type MenuResponse = {
   mainCd: number;
   sub1Cd: number;
   sub2Cd: number;
@@ -56,7 +56,7 @@ export type RMenu = {
 };
 
 export type RMenuList = {
-  menuList: RMenu[];
+  menuList: MenuResponse[];
 };
 
 export type PMenuMemberAuthList = {

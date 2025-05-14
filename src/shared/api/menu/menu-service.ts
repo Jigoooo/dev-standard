@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { useQueryWrapper } from '../config/use-query-wrapper.ts';
 import { getMenuListApi, updateMenuApi } from './menu-api.ts';
-import { RMenu } from '@/shared/api';
+import type { MenuResponse } from '@/shared/api';
 import { loading } from '@/shared/ui';
 
 const GET_MENU_LIST_QUERY_KEY = 'getMenuListQueryKey';
@@ -18,7 +18,7 @@ export function useUpdateMenuMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: RMenu[]) => updateMenuApi(data),
+    mutationFn: (data: MenuResponse[]) => updateMenuApi(data),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [GET_MENU_LIST_QUERY_KEY],

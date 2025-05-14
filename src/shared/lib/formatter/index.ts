@@ -8,6 +8,5 @@ export {
   thousandSeparator,
   formatAgriculturalBusinessCheckNumber,
   toPascalCase,
-  toCamelCase,
-  toCamelCaseObject,
+  deepCamelize,
 } from './formatter-lib.ts';
