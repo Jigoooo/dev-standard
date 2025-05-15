@@ -1,12 +1,16 @@
 export type ApiResponseType<TData> = {
-  msg: string;
+  message: string;
+  dataType: string;
+  errorCode?: string;
   data?: TData | null;
   success: boolean;
 };
 
 export type AdapterResponseType<TData> = {
+  message: string;
+  dataType: string;
+  errorCode?: string;
   code: number;
-  msg: string;
   data?: TData | null;
   success: boolean;
 };
@@ -21,7 +25,9 @@ export class ResponseAdapter<TData> {
   adapt(code: number): AdapterResponseType<TData> {
     return {
       code: code,
-      msg: this.value.msg,
+      errorCode: this.value.errorCode,
+      dataType: this.value.dataType,
+      message: this.value.message,
       data: this.value.data,
       success: this.value.success,
     };

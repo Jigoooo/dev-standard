@@ -18,8 +18,9 @@ export async function apiRequest<T>(
 
     if (typeof response.data === 'string') {
       return {
+        dataType: 'OBJECT',
         code: response.status,
-        msg: response.data,
+        message: response.data,
         data: null,
         success: false,
       };
@@ -54,8 +55,9 @@ export async function apiRequest<T>(
     }
 
     return {
+      dataType: 'OBJECT',
       code: status,
-      msg: errorMessage,
+      message: errorMessage,
       data: null,
       success: false,
     };

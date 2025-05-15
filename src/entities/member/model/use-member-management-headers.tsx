@@ -20,7 +20,7 @@ export function useMemberManagementHeaders() {
           onOtherError: () => {
             dialog.error({
               title: '사용자 수정 실패',
-              contents: data?.msg ?? '관리자에게 문의해 주세요.',
+              contents: data?.message ?? '관리자에게 문의해 주세요.',
             });
           },
           onRefreshSuccess: () => {
@@ -73,7 +73,7 @@ export function useMemberManagementHeaders() {
       if (!responseMemberInfo.success) {
         dialog.error({
           title: '사용자 조회 실패',
-          contents: responseMemberInfo.msg ?? '관리자에게 문의해 주세요.',
+          contents: responseMemberInfo.message ?? '관리자에게 문의해 주세요.',
         });
         return;
       }

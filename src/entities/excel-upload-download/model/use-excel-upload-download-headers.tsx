@@ -246,7 +246,7 @@ function useUpdateExcel(search: () => void) {
             onOtherError: () => {
               dialog.error({
                 title: '엑셀 수정 실패',
-                contents: data?.msg ?? '관리자에게 문의해 주세요.',
+                contents: data?.message ?? '관리자에게 문의해 주세요.',
               });
             },
             onRefreshSuccess: () => {
@@ -306,7 +306,7 @@ function useExcelEditModal({
       if (!response.success) {
         dialog.error({
           title: '엑셀 데이터 조회 실패',
-          contents: response.msg ?? '관리자에게 문의해 주세요.',
+          contents: response.message ?? '관리자에게 문의해 주세요.',
         });
         return;
       }

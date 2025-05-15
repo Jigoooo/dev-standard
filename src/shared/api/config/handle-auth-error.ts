@@ -1,9 +1,10 @@
 import { getToken, setToken } from './token-storage.ts';
 import { dialog } from '@/shared/ui';
+import type { AdapterResponseType } from '@/shared/api';
 import { tokenRefreshApi } from '@/shared/api';
 
 export async function handleAuthError(options: {
-  data: { success: boolean; code: number; msg?: string; [key: string]: any };
+  data: AdapterResponseType<any>;
   onUnauthenticated: () => void;
   onOtherError?: () => void;
   onRefreshSuccess: () => void;
@@ -15,7 +16,7 @@ export async function handleAuthError(options: {
     const token = getToken();
     if (token === null) {
       dialog.error({
-        title: data.msg || '세션이 만료되었습니다.',
+        title: data.message || '세션이 만료되었습니다.',
         contents: '로그인을 다시 진행해 주세요.',
         onConfirm: onUnauthenticated,
         overlayClose: false,
@@ -29,7 +30,7 @@ export async function handleAuthError(options: {
         !refreshData?.data?.expirationDate
       ) {
         dialog.error({
-          title: data.msg || '세션이 만료되었습니다.',
+          title: data.message || '세션이 만료되었습니다.',
           contents: '로그인을 다시 진행해 주세요.',
           onConfirm: onUnauthenticated,
           overlayClose: false,
@@ -49,7 +50,7 @@ export async function handleAuthError(options: {
     } else {
       dialog.error({
         title: '오류가 발생하였습니다.',
-        contents: data.msg || '관리자에게 문의해 주세요.',
+        contents: data.message || '관리자에게 문의해 주세요.',
         overlayClose: false,
       });
     }

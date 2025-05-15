@@ -161,7 +161,7 @@ function useUpdateMenuMemberAuth({ menuAuthList }: { menuAuthList: MenuMemberAut
               onOtherError: () => {
                 dialog.error({
                   title: '권한 저장에 실패하였습니다.',
-                  contents: data.msg ?? '관리자에게 문의해 주세요.',
+                  contents: data.message ?? '관리자에게 문의해 주세요.',
                 });
               },
               onRefreshSuccess: () => {

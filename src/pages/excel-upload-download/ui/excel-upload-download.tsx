@@ -106,7 +106,7 @@ export function ExcelUploadDownload() {
                 onOtherError: () => {
                   dialog.error({
                     title: '엑셀 등록 실패',
-                    contents: data?.msg ?? '관리자에게 문의해 주세요.',
+                    contents: data?.message ?? '관리자에게 문의해 주세요.',
                   });
                 },
                 onRefreshSuccess: () => {
@@ -189,7 +189,7 @@ export function ExcelUploadDownload() {
             onOtherError: () => {
               dialog.error({
                 title: '엑셀데이터 삭제에 실패하였습니다.',
-                contents: data.msg ?? '관리자에게 문의해 주세요.',
+                contents: data.message ?? '관리자에게 문의해 주세요.',
               });
             },
             onRefreshSuccess: () => {
