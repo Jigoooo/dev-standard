@@ -19,7 +19,7 @@ import {
 import type { ExcelInfo, ExcelData } from './excel-upload-download-type.ts';
 import { createValidator, formatDateString, thousandSeparator } from '@/shared/lib';
 import type { ExcelDataResponse } from '@/shared/api';
-import { handleAuthError, getExcelDataListApi, useUpdateExcelMutation } from '@/shared/api';
+import { handleAuthError, getExcelDataApi, useUpdateExcelMutation } from '@/shared/api';
 
 export function useExcelUploadDownloadHeaders(search: () => void) {
   const excelHeaderKeyLabels = new Map<keyof ExcelDataResponse, string>([
@@ -288,7 +288,7 @@ function useExcelEditModal({
   const excelEditModal = useModal();
 
   return async (rowData: ExcelInfo) => {
-    let response = await getExcelDataListApi({
+    let response = await getExcelDataApi({
       idx: rowData.idx,
     });
 
@@ -299,7 +299,7 @@ function useExcelEditModal({
     });
 
     if (isError) {
-      response = await getExcelDataListApi({
+      response = await getExcelDataApi({
         idx: rowData.idx,
       });
 

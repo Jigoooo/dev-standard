@@ -1,6 +1,6 @@
-export { getExcelDataListApi } from './excel-api.ts';
+export { getExcelDataApi } from './excel-api.ts';
 export {
-  useExcelInfoListQuery,
+  useExcelsQuery,
   useSaveExcelMutation,
   useUpdateExcelMutation,
   useExcelDeleteMutation,
@@ -8,5 +8,5 @@ export {
 export type {
   ExcelDataResponse,
   ExcelInfoResponse,
-  ExcelInfoListParameter,
+  ExcelsParameter,
 } from './excel-upload-download-type.ts';

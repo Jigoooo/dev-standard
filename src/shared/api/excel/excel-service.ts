@@ -1,21 +1,21 @@
 import { keepPreviousData, useMutation } from '@tanstack/react-query';
 
-import { excelDeleteApi, excelSaveApi, excelUpdateApi, getExcelInfoListApi } from './excel-api.ts';
+import { excelDeleteApi, excelSaveApi, excelUpdateApi, getExcelsApi } from './excel-api.ts';
 import type {
-  ExcelDeleteListParameter,
-  ExcelInfoListParameter,
+  ExcelDeleteParameter,
+  ExcelsParameter,
   ExcelSaveDataParameter,
 } from './excel-upload-download-type.ts';
 import { loading } from '@/shared/ui';
 import { useQueryWrapper } from '../config/use-query-wrapper.ts';
 
-const EXCEL_INFO_LIST_QUERY_KEY = 'excelInfoListQueryKey';
+const EXCELS_QUERY_KEY = 'excelInfoListQueryKey';
 
-export function useExcelInfoListQuery(params: ExcelInfoListParameter) {
+export function useExcelsQuery(params: ExcelsParameter) {
   return useQueryWrapper(
     {
-      queryKey: [EXCEL_INFO_LIST_QUERY_KEY, params],
-      queryFn: () => getExcelInfoListApi(params),
+      queryKey: [EXCELS_QUERY_KEY, params],
+      queryFn: () => getExcelsApi(params),
       enabled: false,
       placeholderData: keepPreviousData,
     },
@@ -45,7 +45,7 @@ export function useUpdateExcelMutation() {
 
 export function useExcelDeleteMutation() {
   return useMutation({
-    mutationFn: (params: ExcelDeleteListParameter) => excelDeleteApi(params),
+    mutationFn: (params: ExcelDeleteParameter) => excelDeleteApi(params),
     onSuccess: () => {},
     onMutate: () => loading.show(),
     onSettled: () => loading.hide(),

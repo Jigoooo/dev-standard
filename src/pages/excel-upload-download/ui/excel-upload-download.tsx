@@ -22,23 +22,23 @@ import type { ExcelInfo, ExcelData } from '@/entities/excel-upload-download';
 import { useExcelUploadDownloadHeaders } from '@/entities/excel-upload-download';
 import { AnimatePresence, motion } from 'framer-motion';
 import { colors } from '@/shared/constants';
-import type { ExcelInfoListParameter } from '@/shared/api';
+import type { ExcelsParameter } from '@/shared/api';
 import {
   handleAuthError,
   useExcelDeleteMutation,
-  useExcelInfoListQuery,
+  useExcelsQuery,
   useSaveExcelMutation,
 } from '@/shared/api';
 
 export function ExcelUploadDownload() {
   const navigate = useNavigate();
 
-  const [excelInfoListParams, setExcelInfoListParams] = useState<ExcelInfoListParameter>({
+  const [excelInfoListParams, setExcelInfoListParams] = useState<ExcelsParameter>({
     fromDate: format(new Date(), 'yyyy-MM-dd'),
     toDate: format(addMonths(new Date(), 1), 'yyyy-MM-dd'),
   });
 
-  const excelInfoListQuery = useExcelInfoListQuery({
+  const excelInfoListQuery = useExcelsQuery({
     fromDate: excelInfoListParams.fromDate.replaceAll('-', ''),
     toDate: excelInfoListParams.toDate.replaceAll('-', ''),
   });

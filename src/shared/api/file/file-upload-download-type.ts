@@ -1,6 +1,6 @@
 import type { DataWithIndex } from '@/shared/ui';
 
-export type FileListItemParameter = {
+export type FilesParameter = {
   fileNm?: string;
   fromDate: string;
   toDate: string;
@@ -14,7 +14,7 @@ export type FileListItemResponse = {
   insMember: string;
 };
 
-export type FileListResponse = {
+export type FilesResponse = {
   fileList: FileListItemResponse[];
 };
 
@@ -24,10 +24,10 @@ export type FileDownloadParameter = {
   fileIdx: number;
 };
 
-export type FileSaveListParameter = {
+export type FileSaveParameter = {
   fileList: File[];
 };
 
-export type DeleteFileListParameter = {
+export type DeleteFileParameter = {
   deleteFileList: number[];
 };

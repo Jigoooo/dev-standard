@@ -37,7 +37,7 @@ export async function getMemberMenusApi() {
   return await apiRequest<MenuListResponse>(customedAxios.get(`${MEMBER_ENDPOINT}/menus`));
 }
 
-export async function getMemberListApi() {
+export async function getMembersApi() {
   return await apiRequest<MemberListResponse>(customedAxios.get(MEMBER_ENDPOINT));
 }
 

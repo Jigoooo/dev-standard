@@ -2,23 +2,25 @@ import { saveAs } from 'file-saver';
 
 import { apiRequest, customedAxios } from '../config';
 import type {
-  DeleteFileListParameter,
+  DeleteFileParameter,
   FileDownloadParameter,
-  FileListItemParameter,
-  FileSaveListParameter,
-  FileListResponse,
+  FilesParameter,
+  FileSaveParameter,
+  FilesResponse,
 } from './file-upload-download-type.ts';
 
-export async function getFileListApi(params: FileListItemParameter) {
-  return await apiRequest<FileListResponse>(
-    customedAxios.get('/v1/files', {
+const FILE_ENDPOINT = '/v1/files';
+
+export async function getFilesApi(params: FilesParameter) {
+  return await apiRequest<FilesResponse>(
+    customedAxios.get(FILE_ENDPOINT, {
       params,
     }),
   );
 }
 
 export async function downloadFileApi(params: FileDownloadParameter) {
-  const response = await customedAxios.get(`/v1/files/${params.fileIdx}/download`, {
+  const response = await customedAxios.get(`${FILE_ENDPOINT}/${params.fileIdx}/download`, {
     responseType: 'blob',
   });
 
@@ -37,7 +39,7 @@ export async function downloadFileApi(params: FileDownloadParameter) {
   return response;
 }
 
-export async function fileSaveApi(data: FileSaveListParameter) {
+export async function fileSaveApi(data: FileSaveParameter) {
   const formData = new FormData();
   data.fileList.forEach((file) => {
     formData.append('fileList', file);
@@ -52,6 +54,6 @@ export async function fileSaveApi(data: FileSaveListParameter) {
   );
 }
 
-export async function deleteFileApi(params: DeleteFileListParameter) {
-  return await apiRequest<null>(customedAxios.delete('/v1/files/info', { params }));
+export async function deleteFileApi(params: DeleteFileParameter) {
+  return await apiRequest<null>(customedAxios.delete(`${FILE_ENDPOINT}/info`, { params }));
 }

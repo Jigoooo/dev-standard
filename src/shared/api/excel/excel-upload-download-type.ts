@@ -11,7 +11,7 @@ export type ExcelDataResponse = {
   status: string;
 };
 
-export type ExcelInfoListParameter = {
+export type ExcelsParameter = {
   excelNm?: string;
   fromDate: string;
   toDate: string;
@@ -30,7 +30,7 @@ export type ExcelInfoListResponse = {
   excelInfoList: ExcelInfoResponse[];
 };
 
-export type ExcelDataListParameter = {
+export type ExcelDataParameter = {
   idx: number;
 };
 
@@ -45,6 +45,6 @@ export type ExcelSaveDataParameter = {
   deleteDataList?: number[];
 };
 
-export type ExcelDeleteListParameter = {
+export type ExcelDeleteParameter = {
   deleteExcelList: number[];
 };

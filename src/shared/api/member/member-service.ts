@@ -4,7 +4,7 @@ import { useQueryWrapper } from '../config/use-query-wrapper.ts';
 import {
   getMemberApi,
   updateMemberApi,
-  getMemberListApi,
+  getMembersApi,
   getMenuMemberAuthApi,
   getMenuMemberAuthListApi,
   updateMenuMemberAuthApi,
@@ -62,7 +62,7 @@ export function useGetMenuMemberAuthQuery(params: MenuMemberAuthParameter) {
 export function useGetMemberListQuery() {
   return useQueryWrapper({
     queryKey: [GET_MEMBER_LIST_QUERY_KEY],
-    queryFn: () => getMemberListApi(),
+    queryFn: () => getMembersApi(),
     refetchOnMount: true,
     refetchOnReconnect: false,
   });

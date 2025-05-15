@@ -1,16 +1,16 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { useQueryWrapper } from '../config/use-query-wrapper.ts';
-import { getMenuListApi, updateMenuApi } from './menu-api.ts';
+import { getMenusApi, updateMenuApi } from './menu-api.ts';
 import type { MenuResponse } from '@/shared/api';
 import { loading } from '@/shared/ui';
 
-const GET_MENU_LIST_QUERY_KEY = 'getMenuListQueryKey';
+const GET_MENUS_QUERY_KEY = 'getMenusQueryKey';
 
-export function useGetMenuListQuery() {
+export function useGetMenusQuery() {
   return useQueryWrapper({
-    queryKey: [GET_MENU_LIST_QUERY_KEY],
-    queryFn: () => getMenuListApi(),
+    queryKey: [GET_MENUS_QUERY_KEY],
+    queryFn: () => getMenusApi(),
   });
 }
 
@@ -21,7 +21,7 @@ export function useUpdateMenuMutation() {
     mutationFn: (data: MenuResponse[]) => updateMenuApi(data),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [GET_MENU_LIST_QUERY_KEY],
+        queryKey: [GET_MENUS_QUERY_KEY],
       });
     },
     onMutate: () => loading.show(),

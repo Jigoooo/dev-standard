@@ -20,18 +20,18 @@ import {
 import type { FileListItem } from '@/entities/file-upload-download';
 import { FileUploadModal, useFileUploadDownloadHeaders } from '@/entities/file-upload-download';
 import { colors } from '@/shared/constants';
-import type { FileListItemParameter } from '@/shared/api';
+import type { FilesParameter } from '@/shared/api';
 import {
   handleAuthError,
   useDeleteFileMutation,
-  useGetFileListQuery,
+  useGetFilesQuery,
   useFileSaveMutation,
 } from '@/shared/api';
 
 export function FileUploadDownload() {
   const navigate = useNavigate();
 
-  const [fileListParams, setFileListParams] = useState<FileListItemParameter>({
+  const [fileListParams, setFileListParams] = useState<FilesParameter>({
     fromDate: format(new Date(), 'yyyy-MM-dd'),
     toDate: format(addMonths(new Date(), 1), 'yyyy-MM-dd'),
   });
@@ -53,7 +53,7 @@ export function FileUploadDownload() {
 
   const deleteFileMutation = useDeleteFileMutation();
 
-  const getFileListQuery = useGetFileListQuery({
+  const getFileListQuery = useGetFilesQuery({
     fromDate: fileListParams.fromDate.replaceAll('-', ''),
     toDate: fileListParams.toDate.replaceAll('-', ''),
   });

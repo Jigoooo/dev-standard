@@ -3,7 +3,7 @@ import { apiRequest, customedAxios } from '@/shared/api';
 
 const MENU_ENDPOINT = '/v1/menus';
 
-export async function getMenuListApi() {
+export async function getMenusApi() {
   return await apiRequest<MenuListResponse>(customedAxios.get(MENU_ENDPOINT));
 }
 
