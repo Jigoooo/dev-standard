@@ -17,10 +17,6 @@ export type MemberResponse = {
   isAdmin: boolean;
 };
 
-export type MenuMemberAuthParameter = {
-  menuId: string;
-};
-
 export type MenuMemberAuthResponse = {
   menuId: string;
   menuTitle: string;
@@ -38,6 +34,16 @@ export type MenuMemberAuthResponse = {
   authSearch: YesNoType;
   authMod: YesNoType;
   excelExport: YesNoType;
+
+  // canDelete: boolean;
+  // canExport: boolean;
+  // canInsert: boolean;
+  // canModify: boolean;
+  // canSearch: boolean;
+  // memberId: string;
+  // menuId: Router;
+  // orderBy: number;
+  // title: string;
 };
 
 export type MenuResponse = {
@@ -51,8 +57,9 @@ export type MenuResponse = {
   children: MenuResponse[];
 };
 
-export type MenuMemberAuthListParameter = {
-  id: string;
+export type MenuMemberAuthsParameter = {
+  memberId: string;
+  menuId?: string;
 };
 
 export type RoleUserResponse = {

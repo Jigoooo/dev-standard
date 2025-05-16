@@ -30,6 +30,8 @@ export function RouterMenuContextWrapper({
     null,
   );
 
+  // console.log(routes);
+
   const sidebarMainMenus = menus.filter((menu) => menu.id !== Router.MY_PROFILE);
   const myProfileMenu = defaultMenus[0];
   const excludeCacheMenuRouters = [
@@ -41,7 +43,8 @@ export function RouterMenuContextWrapper({
 
   const generateRoutesFromMenus = useCallback((menus: Menu[]): RouteObject[] => {
     return menus.map((menu) => {
-      const Component = getRouterComponent(menu.id);
+      const Component = getRouterComponent(menu.id, menu.componentName);
+      console.log(Component);
       return {
         path: menu.id,
         element: menu.isDisplay && Component ? <Component /> : <Outlet />,

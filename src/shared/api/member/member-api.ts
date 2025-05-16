@@ -2,9 +2,8 @@ import { apiRequest, customedAxios } from '../config';
 import type {
   MembersParameter,
   MemberResponse,
-  MenuMemberAuthParameter,
   MenuMemberAuthResponse,
-  MenuMemberAuthListParameter,
+  MenuMemberAuthsParameter,
   MenuResponse,
 } from './member-type.ts';
 
@@ -28,21 +27,17 @@ export async function updateMemberApi(data: MemberResponse) {
   return await apiRequest<null>(customedAxios.put(MEMBER_ENDPOINT, data));
 }
 
-export async function getMenuMemberAuthApi(params: MenuMemberAuthParameter) {
-  return await apiRequest<{ menuMemberAuth: MenuMemberAuthResponse }>(
-    customedAxios.get(`${MEMBER_ENDPOINT}/menu-auth/${params.menuId}`),
-  );
-}
-
 export async function getMemberMenusApi() {
   return await apiRequest<MenuResponse[]>(customedAxios.get(`${MEMBER_ENDPOINT}/menus`));
 }
 
-export async function getMenuMemberAuthListApi(params: MenuMemberAuthListParameter) {
-  const path = params?.id ? `/${params.id}` : '';
-
+export async function getMenuMemberAuthsApi(params: MenuMemberAuthsParameter) {
   return await apiRequest<MenuMemberAuthResponse[]>(
-    customedAxios.get(`${MEMBER_ENDPOINT}${path}/menu-auth`),
+    customedAxios.get(`${MEMBER_ENDPOINT}/${params.memberId}/menu-auths`, {
+      params: {
+        menuId: params.menuId,
+      },
+    }),
   );
 }
 

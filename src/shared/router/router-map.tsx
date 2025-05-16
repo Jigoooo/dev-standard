@@ -51,8 +51,10 @@ export function getRouterComponent(
 
   return lazy(async () => {
     const mod = await loader();
-    const Component = (mod as any)[router];
-    console.log(Component);
+    const Component = (mod as any)[componentName] as ComponentType<any>;
+    if (!Component) {
+      throw new Error(`Could not find component "${componentName}" in ${importPath}`);
+    }
     return { default: Component };
   });
 }

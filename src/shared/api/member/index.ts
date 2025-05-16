@@ -2,9 +2,8 @@ export { getMemberApi, getMemberMenusApi } from './member-api.ts';
 export {
   useGetMemberQuery,
   useUpdateMemberMutation,
-  useGetMenuMemberAuthQuery,
   useGetMembersQuery,
-  useGetMenuMemberAuthListQuery,
+  useGetMenuMemberAuthsQuery,
   useUpdateMenuMemberAuthMutation,
 } from './member-service.ts';
 export type {

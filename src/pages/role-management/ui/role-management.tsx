@@ -10,7 +10,7 @@ import type { MenuMemberAuthResponse, RoleUserResponse } from '@/shared/api';
 import {
   handleAuthError,
   useGetMembersQuery,
-  useGetMenuMemberAuthListQuery,
+  useGetMenuMemberAuthsQuery,
   useUpdateMenuMemberAuthMutation,
 } from '@/shared/api';
 import { Router } from '@/shared/router';
@@ -32,8 +32,8 @@ export function RoleManagement() {
   const [memberId, setMemberId] = useState('');
 
   const getMemberListQuery = useGetMembersQuery();
-  const getMenuMemberAuthListQuery = useGetMenuMemberAuthListQuery({
-    id: memberId,
+  const getMenuMemberAuthListQuery = useGetMenuMemberAuthsQuery({
+    memberId: memberId,
   });
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export function RoleManagement() {
       });
       setDataList(dataWithIndex);
     }
-  }, [getMemberListQuery.data?.data]);
+  }, [getMemberListQuery.data?.data, setDataList]);
 
   useEffect(() => {
     if (getMenuMemberAuthListQuery.data?.data) {
@@ -82,7 +82,7 @@ export function RoleManagement() {
         });
       setMenuAuthList(dataWithIndex);
     }
-  }, [memberState.id, getMenuMemberAuthListQuery.data?.data]);
+  }, [memberState.id, getMenuMemberAuthListQuery.data?.data, memberId, setMenuAuthList]);
 
   const updateMenuMemberAuth = useUpdateMenuMemberAuth({
     menuAuthList,

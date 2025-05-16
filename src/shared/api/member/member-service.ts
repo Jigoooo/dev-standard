@@ -5,22 +5,19 @@ import {
   getMemberApi,
   updateMemberApi,
   getMembersApi,
-  getMenuMemberAuthApi,
-  getMenuMemberAuthListApi,
+  getMenuMemberAuthsApi,
   updateMenuMemberAuthApi,
 } from './member-api.ts';
 import type {
   MemberResponse,
   MembersParameter,
-  MenuMemberAuthParameter,
   MenuMemberAuthResponse,
-  MenuMemberAuthListParameter,
+  MenuMemberAuthsParameter,
 } from './member-type.ts';
 import { Router } from '@/shared/router';
 import { loading } from '@/shared/ui';
 
 const GET_MEMBER_QUERY_KEY = 'getMemberQueryKey';
-const GET_MENU_MEMBER_AUTH_QUERY_KEY = 'getMenuMemberAuthQueryKey';
 const GET_MEMBER_LIST_QUERY_KEY = 'getMemberListQueryKey';
 const GET_MENU_LIST_QUERY_KEY = 'getMemberAuthListQueryKey';
 
@@ -56,26 +53,13 @@ export function useUpdateMemberMutation() {
   });
 }
 
-export function useGetMenuMemberAuthQuery(params: MenuMemberAuthParameter) {
-  return useQueryWrapper({
-    queryKey: [GET_MENU_MEMBER_AUTH_QUERY_KEY, params],
-    queryFn: () => getMenuMemberAuthApi(params),
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-    enabled:
-      params.menuId !== '' &&
-      params.menuId !== Router.MAIN.slice(1) &&
-      params.menuId !== Router.MY_PROFILE,
-  });
-}
-
-export function useGetMenuMemberAuthListQuery(params: MenuMemberAuthListParameter) {
+export function useGetMenuMemberAuthsQuery(params: MenuMemberAuthsParameter) {
   return useQueryWrapper({
     queryKey: [GET_MENU_LIST_QUERY_KEY, params],
-    queryFn: () => getMenuMemberAuthListApi(params),
+    queryFn: () => getMenuMemberAuthsApi(params),
     refetchOnMount: true,
     refetchOnReconnect: false,
-    enabled: params.id !== '',
+    enabled: params.menuId !== Router.MAIN.slice(1) && params.menuId !== Router.MY_PROFILE,
   });
 }
 
