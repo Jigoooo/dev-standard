@@ -67,7 +67,7 @@ export function AlertDialog() {
                 userSelect: 'none',
               }}
             >
-              <AlertDialogHeader title={dialogInfos.title} />
+              <AlertDialogHeader title={dialogInfos.title} contents={dialogInfos.contents} />
               <AlertDialogContents contents={dialogInfos.contents} />
               <AlertDialogActions dialogInfos={dialogInfos} />
             </FlexColumn>
@@ -97,13 +97,14 @@ export function AlertDialog() {
   );
 }
 
-function AlertDialogHeader({ title }: { title?: string }) {
+function AlertDialogHeader({ title, contents }: { title?: string; contents?: ReactNode }) {
   return (
     <FlexRow
       style={{
         justifyContent: 'space-between',
         width: '100%',
         alignItems: 'center',
+        marginBottom: contents ? 0 : '0.8rem',
       }}
     >
       <Typography style={{ fontSize: '1.1rem', fontWeight: 700, whiteSpace: 'pre-line' }}>
@@ -167,7 +168,7 @@ function AlertDialogActions({ dialogInfos }: { dialogInfos: DialogInfoStates }) 
             }
           }}
         >
-          <Typography style={{ color: '#555555', fontSize: '0.9rem', fontWeight: 500 }}>
+          <Typography style={{ color: '#555555', fontSize: '0.84rem', fontWeight: 500 }}>
             {dialogInfos.cancelText}
           </Typography>
         </Button>
@@ -175,7 +176,7 @@ function AlertDialogActions({ dialogInfos }: { dialogInfos: DialogInfoStates }) 
       <Button
         style={{
           minWidth: '5rem',
-          fontSize: '0.9rem',
+          fontSize: '0.84rem',
           fontWeight: 500,
           backgroundColor: dialogColor,
         }}

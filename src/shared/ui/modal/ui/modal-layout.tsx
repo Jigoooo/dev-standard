@@ -4,7 +4,7 @@ import { motion, useDragControls } from 'framer-motion';
 
 import { LuX } from 'react-icons/lu';
 
-import { Button, FlexColumn, FlexRow, Typography } from '@/shared/ui';
+import { FlexColumn, FlexRow, Typography } from '@/shared/ui';
 
 const modalContainerDefaultStyle: CSSProperties = {
   backgroundColor: '#ffffff',
@@ -21,6 +21,7 @@ export function ModalLayout({
   close,
   drag = true,
   title = '',
+  subTitle = '',
   containerStyle,
   children,
 }: {
@@ -28,6 +29,7 @@ export function ModalLayout({
   close: () => void;
   drag?: boolean;
   title?: string;
+  subTitle?: string;
   containerStyle?: CSSProperties;
   withHeader?: boolean;
   children: ReactNode;
@@ -78,20 +80,34 @@ export function ModalLayout({
         as={motion.div}
         onPointerDown={(e) => dragControls.start(e)}
       >
-        <Typography style={{ fontSize: '1.2rem', fontWeight: 700 }}>{title}</Typography>
-        <Button
-          onPointerDown={(event) => {
-            event.stopPropagation();
-          }}
-          onClick={(event) => {
-            event.stopPropagation();
-            close();
-          }}
-          style={{ backgroundColor: '#ffffff', width: '2rem' }}
-          transition={{ duration: 0.1 }}
-        >
-          <LuX style={{ fontSize: '1.4rem', color: '#212121' }} />
-        </Button>
+        <FlexColumn style={{ gap: '0.2rem' }}>
+          <Typography style={{ fontSize: '1.2rem', fontWeight: 700 }}>{title}</Typography>
+          <Typography style={{ fontSize: '0.9rem', color: '#888888' }}>{subTitle}</Typography>
+        </FlexColumn>
+        <FlexColumn style={{ height: '100%', justifyContent: 'flex-start' }}>
+          <FlexRow
+            as={motion.div}
+            style={{
+              width: '1.8rem',
+              height: '1.8rem',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: '0.375rem',
+              cursor: 'pointer',
+            }}
+            whileTap={{ border: '0.1rem solid #aaaaaa' }}
+            transition={{ duration: 0.04 }}
+            onPointerDown={(event) => {
+              event.stopPropagation();
+            }}
+            onClick={(event) => {
+              event.stopPropagation();
+              close();
+            }}
+          >
+            <LuX style={{ fontSize: '1.3rem', color: '#212121' }} />
+          </FlexRow>
+        </FlexColumn>
       </FlexRow>
       {/*<Divider />*/}
       <FlexColumn style={{ flexGrow: 1, overflow: 'auto' }}>{children}</FlexColumn>
