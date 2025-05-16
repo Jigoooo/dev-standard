@@ -8,7 +8,6 @@ export async function tokenCheckApi() {
 }
 
 export async function tokenRefreshApi(refreshToken: string) {
-  console.log(refreshToken);
   return await apiRequest<TokenResponse>(
     customedAxios.post(`${AUTH_ENDPOINT}/refresh`, {
       refreshToken,
