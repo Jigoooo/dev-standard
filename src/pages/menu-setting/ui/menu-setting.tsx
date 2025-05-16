@@ -97,7 +97,7 @@ export function MenuSetting() {
     //       onRefreshSuccess: () => {
     //         updateMenuMutation.mutate(variables, {
     //           onSuccess: (data) => {
-    //             if (data.success) {
+    //             if (data.isSuccess) {
     //               toast.success('메뉴 수정 성공');
     //               close();
     //             }

@@ -176,7 +176,7 @@ function useSignIn({ saveIdChecked }: { saveIdChecked: boolean }) {
       { id: idWithValidated.value, password: passwordWithValidated.value },
       {
         onSuccess: (data) => {
-          if (!data.success) {
+          if (!data.isSuccess) {
             dialog.warning({
               title: '로그인 실패',
               contents: data?.message ?? '아이디 비밀번호를 다시 확인해 주세요.',

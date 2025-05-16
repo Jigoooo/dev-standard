@@ -26,7 +26,7 @@ export function useMemberManagementHeaders() {
           onRefreshSuccess: () => {
             updateMemberMutation.mutate(variables, {
               onSuccess: (data) => {
-                if (data.success) {
+                if (data.isSuccess) {
                   toast.success('사용자 수정 성공');
                   closeModal();
                 }
@@ -70,7 +70,7 @@ export function useMemberManagementHeaders() {
         memberId,
       });
 
-      if (!responseMemberInfo.success) {
+      if (!responseMemberInfo.isSuccess) {
         dialog.error({
           title: '사용자 조회 실패',
           contents: responseMemberInfo.message ?? '관리자에게 문의해 주세요.',
@@ -79,9 +79,9 @@ export function useMemberManagementHeaders() {
       }
     }
 
-    const memberInfo = responseMemberInfo.data?.memberInfo;
+    const member = responseMemberInfo.data;
 
-    if (!memberInfo) {
+    if (!member) {
       dialog.error({
         overlayClose: true,
         title: '사용자 정보 조회 실패',
@@ -99,7 +99,7 @@ export function useMemberManagementHeaders() {
           containerStyle={{ width: 600, height: 300 }}
         >
           <MemberManagementEditModal
-            memberInfo={memberInfo}
+            member={member}
             onSave={(memberInfo) => updateMemberConfirmation(memberInfo, close)}
           />
         </ModalLayout>

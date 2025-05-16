@@ -16,8 +16,8 @@ export function UserManagement() {
   const getMemberListQuery = useGetMembersQuery();
 
   useEffect(() => {
-    if (getMemberListQuery.data?.data?.members) {
-      const dataWithIndex = getMemberListQuery.data.data.members.map((item, index) => {
+    if (getMemberListQuery.data?.data) {
+      const dataWithIndex = getMemberListQuery.data.data.map((item, index) => {
         return {
           ...item,
           index: index + 1,
@@ -25,7 +25,7 @@ export function UserManagement() {
       });
       setDataList(dataWithIndex);
     }
-  }, [getMemberListQuery.data?.data?.members]);
+  }, [getMemberListQuery.data?.data]);
 
   return (
     <FlexColumn

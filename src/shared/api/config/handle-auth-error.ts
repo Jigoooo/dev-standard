@@ -11,7 +11,7 @@ export async function handleAuthError(options: {
 }): Promise<boolean> {
   const { data, onUnauthenticated, onOtherError, onRefreshSuccess } = options;
 
-  if (data.success) return false;
+  if (data.isSuccess) return false;
   if (data.code === 401 || data.code === 403) {
     const token = getToken();
     if (token === null) {
@@ -24,7 +24,7 @@ export async function handleAuthError(options: {
     } else {
       const refreshData = await tokenRefreshApi(token.refreshToken);
       if (
-        !refreshData.success ||
+        !refreshData.isSuccess ||
         !refreshData?.data?.accessToken ||
         !refreshData?.data?.refreshToken ||
         !refreshData?.data?.expirationDate

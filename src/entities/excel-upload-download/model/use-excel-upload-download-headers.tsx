@@ -252,7 +252,7 @@ function useUpdateExcel(search: () => void) {
             onRefreshSuccess: () => {
               updateExcelMutation.mutate(variables, {
                 onSuccess: (data) => {
-                  if (data.success) {
+                  if (data.isSuccess) {
                     toast.success('엑셀 수정 성공');
                     close();
                     search();
@@ -303,7 +303,7 @@ function useExcelEditModal({
         idx: rowData.idx,
       });
 
-      if (!response.success) {
+      if (!response.isSuccess) {
         dialog.error({
           title: '엑셀 데이터 조회 실패',
           contents: response.message ?? '관리자에게 문의해 주세요.',

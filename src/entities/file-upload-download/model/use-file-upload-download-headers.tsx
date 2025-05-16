@@ -53,7 +53,7 @@ export function useFileUploadDownloadHeaders(): THeader<FileListItem>[] {
                   }),
                 );
 
-                if (!response.success) {
+                if (!response.isSuccess) {
                   dialog.error({
                     title: '다운로드 실패',
                     contents: response.message ?? '관리자에게 문의해 주세요.',

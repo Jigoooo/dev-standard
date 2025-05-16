@@ -22,7 +22,7 @@ export async function apiRequest<T>(
         code: response.status,
         message: response.data,
         data: null,
-        success: false,
+        isSuccess: false,
       };
     }
 
@@ -59,7 +59,7 @@ export async function apiRequest<T>(
       code: status,
       message: errorMessage,
       data: null,
-      success: false,
+      isSuccess: false,
     };
   }
 }

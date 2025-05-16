@@ -112,7 +112,7 @@ export function ExcelUploadDownload() {
                 onRefreshSuccess: () => {
                   registerExcelMutation.mutate(variables, {
                     onSuccess: (data) => {
-                      if (data.success) {
+                      if (data.isSuccess) {
                         toast.success('엑셀 수정 성공');
                         close();
                         search();
@@ -195,7 +195,7 @@ export function ExcelUploadDownload() {
             onRefreshSuccess: () => {
               excelDeleteMutation.mutate(variables, {
                 onSuccess: (data) => {
-                  if (data.success) {
+                  if (data.isSuccess) {
                     toast.success('엑셀데이터가 삭제되었습니다.');
                     search();
                   }

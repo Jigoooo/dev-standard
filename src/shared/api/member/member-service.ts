@@ -19,15 +19,16 @@ import type {
 import { Router } from '@/shared/router';
 import { loading } from '@/shared/ui';
 
-const GET_MEMBER_INFO_QUERY_KEY = 'getMemberInfoQueryKey';
+const GET_MEMBER_QUERY_KEY = 'getMemberQueryKey';
 const GET_MENU_MEMBER_AUTH_QUERY_KEY = 'getMenuMemberAuthQueryKey';
 const GET_MEMBER_LIST_QUERY_KEY = 'getMemberListQueryKey';
 const GET_MENU_LIST_QUERY_KEY = 'getMemberAuthListQueryKey';
 
 export function useGetMemberQuery(params: MembersParameter) {
   return useQueryWrapper({
-    queryKey: [GET_MEMBER_INFO_QUERY_KEY, params],
+    queryKey: [GET_MEMBER_QUERY_KEY, params],
     queryFn: () => getMemberApi(params),
+    enabled: !!params.memberId,
   });
 }
 

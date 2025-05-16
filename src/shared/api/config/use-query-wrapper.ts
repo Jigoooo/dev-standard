@@ -1,14 +1,14 @@
-import {
+import type {
   DefaultError,
   QueryKey,
-  useQuery,
   UseQueryOptions,
   UseQueryResult,
 } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { AdapterResponseType } from './';
+import type { AdapterResponseType } from './';
 import { handleAuthError } from './handle-auth-error.ts';
 import { loading } from '@/shared/ui';
 
@@ -37,7 +37,7 @@ export function useQueryWrapper<
   const query = useQuery(options);
 
   useEffect(() => {
-    if (query.data && !query.data.success) {
+    if (query.data && !query.data.isSuccess) {
       handleAuthError({
         data: query.data,
         onUnauthenticated: () => navigate('/', { replace: true }),

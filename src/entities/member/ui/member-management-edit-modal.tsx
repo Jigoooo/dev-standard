@@ -5,16 +5,16 @@ import { FlexRow, FlexColumn, Typography, Input, SaveButton } from '@/shared/ui'
 import { useMemberManagementHeaders } from '../model';
 
 export function MemberManagementEditModal({
-  memberInfo,
+  member,
   onSave,
 }: {
-  memberInfo: MemberResponse;
+  member: MemberResponse;
   onSave: (memberInfo: MemberResponse) => void;
 }) {
   const { memberInfoColumnLabelsMapping } = useMemberManagementHeaders();
   const [filteredData, setFilteredData] = useState(() =>
     Object.fromEntries(
-      Object.entries(memberInfo).filter(([key]) => key in memberInfoColumnLabelsMapping),
+      Object.entries(member).filter(([key]) => key in memberInfoColumnLabelsMapping),
     ),
   );
 
@@ -93,7 +93,7 @@ export function MemberManagementEditModal({
           style={{ paddingInline: 18 }}
           onClick={() =>
             onSave({
-              ...memberInfo,
+              ...member,
               ...filteredData,
             })
           }

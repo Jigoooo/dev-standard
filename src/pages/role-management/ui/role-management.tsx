@@ -167,7 +167,7 @@ function useUpdateMenuMemberAuth({ menuAuthList }: { menuAuthList: MenuMemberAut
               onRefreshSuccess: () => {
                 updateMenuMemberAuthMutation.mutate(variables, {
                   onSuccess: (data) => {
-                    if (data.success) {
+                    if (data.isSuccess) {
                       toast.success('권한이 수정되었습니다.');
                     }
                   },

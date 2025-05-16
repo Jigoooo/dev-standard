@@ -98,7 +98,7 @@ export function FileUploadDownload() {
                 onRefreshSuccess: () => {
                   fileSaveMutation.mutate(variables, {
                     onSuccess: (data) => {
-                      if (data.success) {
+                      if (data.isSuccess) {
                         toast.success('파일 업로드 성공');
                         close();
                         search();
@@ -160,7 +160,7 @@ export function FileUploadDownload() {
             onRefreshSuccess: () => {
               deleteFileMutation.mutate(variables, {
                 onSuccess: (data) => {
-                  if (data.success) {
+                  if (data.isSuccess) {
                     toast.success('파일이 삭제되었습니다.');
                     search();
                   }

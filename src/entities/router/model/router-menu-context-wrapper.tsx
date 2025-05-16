@@ -94,16 +94,50 @@ export function RouterMenuContextWrapper({
     (responseMenus: MenuResponse[]) => {
       const groupMenus: Menu[] = responseMenusToMenus(responseMenus);
 
-      setMenus((prevState) => {
-        const updatedMenus = prevState.map((menu) => {
-          const matching = groupMenus.find((m) => m.id === menu.id);
-          return matching ? matching : menu;
-        });
+      const mergeMenus = (prevMenus: Menu[], newMenus: Menu[]) => {
+        const updateMap = new Map<string, Menu>();
+        function buildMap(menus: Menu[]) {
+          for (const m of menus) {
+            updateMap.set(m.id, m);
+            if (m.children) buildMap(m.children);
+          }
+        }
+        buildMap(newMenus);
 
-        const newEntries = groupMenus.filter((m) => !prevState.some((menu) => menu.id === m.id));
+        function recurse(prevMenus: Menu[]) {
+          return prevMenus.map((menu): Menu => {
+            const updateMenu = updateMap.get(menu.id);
+            const prevChildren = menu.children ?? [];
+            const updateChildren = updateMenu?.children ?? [];
 
-        return [...updatedMenus, ...newEntries];
-      });
+            const mergedChildren = recurse(prevChildren);
+
+            const prevChildIds = new Set(prevChildren.map((children) => children.id));
+            const newChildren = updateChildren.filter((children) => !prevChildIds.has(children.id));
+
+            if (updateMenu) {
+              return {
+                ...updateMenu,
+                children: updateMenu.children ? recurse(updateMenu.children) : [],
+              };
+            }
+
+            return {
+              ...(updateMenu ?? menu),
+              children: [...mergedChildren, ...newChildren].filter(Boolean),
+            };
+          });
+        }
+
+        const mergedTree = recurse(prevMenus);
+
+        const prevIds = new Set(prevMenus.map((m) => m.id));
+        const newTop = newMenus.filter((m) => !prevIds.has(m.id));
+
+        return [...mergedTree, ...newTop];
+      };
+
+      setMenus((prevState) => mergeMenus(prevState, groupMenus));
 
       const newRoutes = generateRoutesFromMenus(groupMenus);
 
@@ -168,7 +202,7 @@ export function RouterMenuContextWrapper({
     }
 
     getMemberMenusApi().then((data) => {
-      if (!data.success) {
+      if (!data.isSuccess) {
         handleAuthError({
           data,
           onUnauthenticated: () => window.location.replace('/'),
@@ -178,7 +212,7 @@ export function RouterMenuContextWrapper({
         return;
       }
 
-      if (data.success && data.data) {
+      if (data.isSuccess && data.data) {
         updateMainRouteChildren(data.data);
       }
     });
@@ -207,7 +241,8 @@ export function RouterMenuContextWrapper({
     responseMenusToMenus,
   };
 
-  console.log(routes);
+  // console.log(routes);
+  // console.log(menus);
 
   return <RouterMenuContext value={contextValue}>{children}</RouterMenuContext>;
 }

@@ -7,7 +7,7 @@ import { Router } from '@/shared/router';
 export function AuthGuard({ children }: { children: ReactNode }) {
   const [searchParams] = useSearchParams();
   const tokenSignInQuery = useTokenSignInQuery();
-  if (!searchParams.get('isLogout') && tokenSignInQuery.data && tokenSignInQuery.data?.success) {
+  if (!searchParams.get('isLogout') && tokenSignInQuery.data && tokenSignInQuery.data?.isSuccess) {
     return <Navigate to={Router.MAIN} replace />;
   }
 
