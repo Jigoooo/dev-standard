@@ -7,11 +7,11 @@ import type {
 } from 'axios';
 import axios from 'axios';
 
-import { logOnDev } from '@/shared/lib';
+import { deepSnakeize, logOnDev } from '@/shared/lib';
 import { getToken } from './token-storage.ts';
 
 const onRequest = (config: AxiosRequestConfig): Promise<InternalAxiosRequestConfig> => {
-  const { method, url, headers } = config;
+  const { method, url, headers, params, data } = config;
 
   logOnDev(`onRequest [API] ${method?.toUpperCase()} ${url} | Request`);
 
@@ -26,9 +26,13 @@ const onRequest = (config: AxiosRequestConfig): Promise<InternalAxiosRequestConf
     headers.Authorization = `Bearer ${accessToken}`;
   }
 
-  // if (accessToken && url && !url.includes('/auth/')) {
-  //   headers.Authorization = `Bearer ${accessToken}`;
-  // }
+  if (params) {
+    config.params = deepSnakeize(params);
+  }
+
+  if (data) {
+    config.data = deepSnakeize(data);
+  }
 
   return Promise.resolve({ ...config } as InternalAxiosRequestConfig);
 };

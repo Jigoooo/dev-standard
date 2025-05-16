@@ -138,3 +138,25 @@ export function deepCamelize<T>(input: any): T {
 
   return input;
 }
+
+export function deepSnakeize<T>(input: any): T {
+  if (Array.isArray(input)) {
+    return input.map((item) => deepSnakeize(item)) as any;
+  }
+
+  if (input !== null && typeof input === 'object') {
+    const result: Record<string, any> = {};
+    for (const key of Object.keys(input)) {
+      // Camel → snake: fooBarBaz → foo_bar_baz
+      const snakeKey = key
+        .replace(/([a-z0-9])([A-Z])/g, '$1_$2') // 소문자/숫자 + 대문자 사이에 _
+        .replace(/([A-Z])([A-Z][a-z])/g, '$1_$2') // 연속된 대문자 처리
+        .toLowerCase();
+
+      result[snakeKey] = deepSnakeize(input[key]);
+    }
+    return result as T;
+  }
+
+  return input;
+}

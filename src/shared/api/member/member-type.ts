@@ -10,8 +10,8 @@ export type MeResponse = {
   name: string;
   password: null;
   newPassword: null;
-  email: string;
-  phone: string;
+  email?: string;
+  phone?: string;
   type: string;
   isDeleted: boolean;
   isAdmin: boolean;
@@ -20,13 +20,8 @@ export type MeResponse = {
 export type MemberResponse = {
   id: string;
   name: string;
-  password: null;
-  newPassword: null;
-  email: string;
-  phone: string;
-  type: string;
-  isDeleted: boolean;
-  isAdmin: boolean;
+  email?: string;
+  phone?: string;
 };
 
 export type MenuMemberAuthResponse = {

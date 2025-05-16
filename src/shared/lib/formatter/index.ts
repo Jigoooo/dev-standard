@@ -9,4 +9,5 @@ export {
   formatAgriculturalBusinessCheckNumber,
   toPascalCase,
   deepCamelize,
+  deepSnakeize,
 } from './formatter-lib.ts';
