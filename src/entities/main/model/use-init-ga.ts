@@ -4,13 +4,13 @@ import ReactGA from 'react-ga4';
 
 import { gaPageView } from '@/shared/lib';
 import { useRouterMenuContext } from '@/entities/router';
-import { useMemberState } from '@/entities/member';
+import { useMeState } from '@/entities/member';
 
 export function useInitGa() {
   const location = useLocation();
   const { findCurrentMenu } = useRouterMenuContext();
   const currentMenu = findCurrentMenu(location.pathname);
-  const memberInfo = useMemberState();
+  const memberInfo = useMeState();
 
   useEffect(() => {
     // if (!window.location.href.includes('localhost')) {

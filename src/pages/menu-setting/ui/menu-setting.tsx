@@ -8,7 +8,7 @@ import { RxDragHandleHorizontal } from 'react-icons/rx';
 import { dialog, Divider, FlexColumn, FlexRow, Input, SaveButton, Typography } from '@/shared/ui';
 import type { Menu } from '@/entities/router';
 import { useRouterMenuContext } from '@/entities/router';
-import { useGetMenusQuery } from '@/shared/api';
+import { useGetMemberMenusQuery } from '@/shared/api';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
 import { colors } from '@/shared/constants';
 import type { Router } from '@/shared/router';
@@ -69,7 +69,7 @@ export function MenuSetting() {
     setMenuList((prevMenuList) => updateMenuNameInList(prevMenuList));
   };
 
-  const getMenuListQuery = useGetMenusQuery();
+  const getMenuListQuery = useGetMemberMenusQuery();
   // const updateMenuMutation = useUpdateMenuMutation();
 
   useEffect(() => {

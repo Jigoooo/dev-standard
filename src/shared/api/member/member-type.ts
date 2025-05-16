@@ -5,6 +5,18 @@ export type MembersParameter = {
   memberId: string;
 };
 
+export type MeResponse = {
+  id: string;
+  name: string;
+  password: null;
+  newPassword: null;
+  email: string;
+  phone: string;
+  type: string;
+  isDeleted: boolean;
+  isAdmin: boolean;
+};
+
 export type MemberResponse = {
   id: string;
   name: string;

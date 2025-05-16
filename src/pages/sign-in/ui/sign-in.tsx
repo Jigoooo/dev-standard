@@ -19,7 +19,6 @@ import type { SignInParameter } from '@/shared/api';
 import { setToken, useSignInMutation } from '@/shared/api';
 import { Router } from '@/shared/router';
 import { getId, removeId, setId } from '@/entities/auth';
-import { memberActions } from '@/entities/member';
 
 const signInFields: Record<
   keyof {
@@ -184,8 +183,6 @@ function useSignIn({ saveIdChecked }: { saveIdChecked: boolean }) {
 
             return;
           }
-
-          memberActions.setMemberId(id);
 
           if (data.data) {
             setToken({

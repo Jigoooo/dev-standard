@@ -8,7 +8,7 @@ import {
   QueryProvider,
   ThemeProvider,
 } from '@/app/providers';
-import { defaultRoutes, defaultMenus } from './default-router-config.tsx';
+import { defaultRoutes, defaultMenus, excludeCacheMenuRouters } from './default-router-config.tsx';
 
 export function withRouterMenuHoc<P extends object>(
   WrappedComponent: ComponentType<P>,
@@ -20,7 +20,11 @@ export function withRouterMenuHoc<P extends object>(
         <AlertProvider />
         <QueryProvider>
           <ErrorProvider>
-            <RouterMenuContextWrapper defaultRoutes={defaultRoutes} defaultMenus={defaultMenus}>
+            <RouterMenuContextWrapper
+              defaultRoutes={defaultRoutes}
+              defaultMenus={defaultMenus}
+              excludeCacheMenuRouters={excludeCacheMenuRouters}
+            >
               <WrappedComponent {...props} />
             </RouterMenuContextWrapper>
           </ErrorProvider>

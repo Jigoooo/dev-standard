@@ -17,10 +17,12 @@ function isNonIndexRoute(route: RouteObject): route is Exclude<RouteObject, { in
 export function RouterMenuContextWrapper({
   defaultRoutes,
   defaultMenus,
+  excludeCacheMenuRouters = [],
   children,
 }: {
   defaultRoutes: RouteObject[];
   defaultMenus: Menu[];
+  excludeCacheMenuRouters?: string[];
   children: ReactNode;
 }) {
   const [routes, setRoutes] = useState(defaultRoutes);
@@ -30,21 +32,13 @@ export function RouterMenuContextWrapper({
     null,
   );
 
-  // console.log(routes);
-
   const sidebarMainMenus = menus.filter((menu) => menu.id !== Router.MY_PROFILE);
   const myProfileMenu = defaultMenus[0];
-  const excludeCacheMenuRouters = [
-    `${Router.MAIN}/${Router.COMPONENT}`,
-    `${Router.MAIN}/${Router.FILE}`,
-    `${Router.MAIN}/${Router.MY_PROFILE}`,
-  ];
   const lastLocation = getLastLocation();
 
   const generateRoutesFromMenus = useCallback((menus: Menu[]): RouteObject[] => {
     return menus.map((menu) => {
       const Component = getRouterComponent(menu.id, menu.componentName);
-      console.log(Component);
       return {
         path: menu.id,
         element: menu.isDisplay && Component ? <Component /> : <Outlet />,
@@ -97,48 +91,16 @@ export function RouterMenuContextWrapper({
     (responseMenus: MenuResponse[]) => {
       const groupMenus: Menu[] = responseMenusToMenus(responseMenus);
 
-      const mergeMenus = (prevMenus: Menu[], newMenus: Menu[]) => {
-        const updateMap = new Map<string, Menu>();
-        function buildMap(menus: Menu[]) {
-          for (const m of menus) {
-            updateMap.set(m.id, m);
-            if (m.children) buildMap(m.children);
-          }
-        }
-        buildMap(newMenus);
-
-        function recurse(prevMenus: Menu[]) {
-          return prevMenus.map((menu): Menu => {
-            const updateMenu = updateMap.get(menu.id);
-            const prevChildren = menu.children ?? [];
-            const updateChildren = updateMenu?.children ?? [];
-
-            const mergedChildren = recurse(prevChildren);
-
-            const prevChildIds = new Set(prevChildren.map((children) => children.id));
-            const newChildren = updateChildren.filter((children) => !prevChildIds.has(children.id));
-
-            if (updateMenu) {
-              return {
-                ...updateMenu,
-                children: updateMenu.children ? recurse(updateMenu.children) : [],
-              };
-            }
-
-            return {
-              ...(updateMenu ?? menu),
-              children: [...mergedChildren, ...newChildren].filter(Boolean),
-            };
-          });
-        }
-
-        const mergedTree = recurse(prevMenus);
-
-        const prevIds = new Set(prevMenus.map((m) => m.id));
-        const newTop = newMenus.filter((m) => !prevIds.has(m.id));
-
-        return [...mergedTree, ...newTop];
-      };
+      function mergeMenus(prev: Menu[], next: Menu[]): Menu[] {
+        const prevMap = new Map(prev.map((m) => [m.id, m]));
+        return next.map((m) => {
+          const old = prevMap.get(m.id);
+          return {
+            ...m,
+            children: m.children ? mergeMenus(old?.children || [], m.children) : [],
+          };
+        });
+      }
 
       setMenus((prevState) => mergeMenus(prevState, groupMenus));
 
@@ -243,9 +205,6 @@ export function RouterMenuContextWrapper({
     updateMainRouteChildren,
     responseMenusToMenus,
   };
-
-  // console.log(routes);
-  // console.log(menus);
 
   return <RouterMenuContext value={contextValue}>{children}</RouterMenuContext>;
 }

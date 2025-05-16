@@ -3,4 +3,3 @@ export * from './auth';
 export * from './excel';
 export * from './file';
 export * from './member';
-export * from './menu';

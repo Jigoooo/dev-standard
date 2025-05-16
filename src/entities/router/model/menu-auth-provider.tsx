@@ -4,10 +4,10 @@ import { useLocation } from 'react-router-dom';
 
 import { useGetMenuMemberAuthsQuery } from '@/shared/api';
 import { useRouterMenuContext } from './';
-import { useMemberState } from '@/entities/member';
+import { useMeState } from '@/entities/member';
 
 export function MenuAuthProvider({ children }: { children: ReactNode }) {
-  const memberState = useMemberState();
+  const memberState = useMeState();
   const location = useLocation();
   const menuId = location.pathname.split('/').pop();
 
@@ -26,7 +26,6 @@ export function MenuAuthProvider({ children }: { children: ReactNode }) {
     ) {
       return;
     }
-    console.log(menuAuthResponse.data.data[0]);
 
     setCurrentMenuMemberAuth(menuAuthResponse.data.data[0]);
   }, [menuAuthResponse.data, menuAuthResponse.isFetching, setCurrentMenuMemberAuth]);

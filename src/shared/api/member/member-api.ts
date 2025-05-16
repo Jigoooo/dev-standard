@@ -9,6 +9,10 @@ import type {
 
 const MEMBER_ENDPOINT = '/v1/members';
 
+export async function getMeApi() {
+  return await apiRequest<MemberResponse>(customedAxios.get(`${MEMBER_ENDPOINT}/me`));
+}
+
 export async function getMemberApi(params: MembersParameter) {
   return await apiRequest<MemberResponse>(
     customedAxios.get(`${MEMBER_ENDPOINT}/${params.memberId}`),
@@ -31,7 +35,12 @@ export async function getMemberMenusApi() {
   return await apiRequest<MenuResponse[]>(customedAxios.get(`${MEMBER_ENDPOINT}/menus`));
 }
 
+export async function updateMenuApi(data: MenuResponse[]) {
+  return await apiRequest<null>(customedAxios.put(`${MEMBER_ENDPOINT}/menus`, data));
+}
+
 export async function getMenuMemberAuthsApi(params: MenuMemberAuthsParameter) {
+  console.log(params);
   return await apiRequest<MenuMemberAuthResponse[]>(
     customedAxios.get(`${MEMBER_ENDPOINT}/${params.memberId}/menu-auths`, {
       params: {

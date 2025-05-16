@@ -8,10 +8,10 @@ import { AnchorPicker, Button, Divider, FlexColumn, FlexRow, Typography } from '
 import { useRouterMenuContext } from '@/entities/router';
 import { useSidebarState } from '@/entities/router';
 import { Router } from '@/shared/router';
-import { useMemberState } from '@/entities/member';
+import { useMeState } from '@/entities/member';
 
 export function SidebarFooter() {
-  const memberState = useMemberState();
+  const memberState = useMeState();
   const sidebarState = useSidebarState();
   const { myProfileMenu } = useRouterMenuContext();
 

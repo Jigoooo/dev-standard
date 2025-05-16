@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import type { DataWithIndex } from '@/shared/ui';
 import { dialog, FlexColumn, FlexRow, SaveButton, Table, useTableData } from '@/shared/ui';
 import { useRoleManagementHeaders } from '@/entities/router';
-import { useMemberState } from '@/entities/member';
+import { useMeState } from '@/entities/member';
 import type { MenuMemberAuthResponse, RoleUserResponse } from '@/shared/api';
 import {
   handleAuthError,
@@ -16,7 +16,7 @@ import {
 import { Router } from '@/shared/router';
 
 export function RoleManagement() {
-  const memberState = useMemberState();
+  const memberState = useMeState();
 
   const { roleUserHeaders, roleManagementHeaders } = useRoleManagementHeaders();
   const { dataList, setDataList, handelDataList, deleteDataList } = useTableData<

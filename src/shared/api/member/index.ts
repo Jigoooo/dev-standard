@@ -1,5 +1,8 @@
 export { getMemberApi, getMemberMenusApi } from './member-api.ts';
 export {
+  useGetMeQuery,
+  useGetMemberMenusQuery,
+  useUpdateMemberMenuMutation,
   useGetMemberQuery,
   useUpdateMemberMutation,
   useGetMembersQuery,
@@ -7,6 +10,7 @@ export {
   useUpdateMenuMemberAuthMutation,
 } from './member-service.ts';
 export type {
+  MeResponse,
   MemberResponse,
   MenuMemberAuthResponse,
   RoleUserResponse,

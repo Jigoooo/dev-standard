@@ -1,25 +1,23 @@
 import type { ReactNode } from 'react';
 import { useEffect } from 'react';
 
-import { memberActions, useMemberState } from '@/entities/member';
-import { useTokenCheckQuery, useGetMemberQuery } from '@/shared/api';
-import { useInitGa } from '@/entities/main';
+import { meActions } from '@/entities/member';
+import { useTokenCheckQuery, useGetMeQuery } from '@/shared/api';
+import { useInitGa, useInitLocation } from '@/entities/main';
 
 export function MainAuthGuard({ children }: { children: ReactNode }) {
-  const memberState = useMemberState();
-  const getMemberQuery = useGetMemberQuery({
-    memberId: memberState.id,
-  });
+  const getMeQuery = useGetMeQuery();
+
   useTokenCheckQuery();
-  // useInitLocation();
+  useInitLocation();
   useInitGa();
 
   useEffect(() => {
-    const member = getMemberQuery?.data?.data;
-    if (member) {
-      memberActions.setMember(member);
+    const me = getMeQuery?.data?.data;
+    if (me) {
+      meActions.setMe(me);
     }
-  }, [getMemberQuery.data?.data]);
+  }, [getMeQuery.data?.data]);
 
   return <>{children}</>;
 }
