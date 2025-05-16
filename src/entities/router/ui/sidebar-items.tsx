@@ -7,6 +7,7 @@ import { Divider, FlexColumn } from '@/shared/ui';
 import type { Menu } from '@/entities/router';
 import { useRouterMenuContext } from '@/entities/router';
 import { gaEventTrigger } from '@/shared/lib';
+import type { Router } from '@/shared/router';
 
 export function SidebarItems({
   menus,
@@ -20,47 +21,42 @@ export function SidebarItems({
 
   const { findFirstNonHeaderMenu, lastLocation, setLastLocation } = useRouterMenuContext();
 
-  const [secondDepthOpen, setSecondDepthOpen] = useState<{ menuIndex: number; open: boolean }[]>(
-    [],
-  );
+  const [secondDepthOpen, setSecondDepthOpen] = useState<{ router: Router; open: boolean }[]>([]);
   useEffect(() => {
     const openState = menus
-      .filter((menu) => menu.isHeader)
+      .filter((menu) => menu.isGroup)
       .map((menu) => {
         const firstNonHeaderMenu = findFirstNonHeaderMenu(menus);
 
-        if (lastLocation && lastLocation.includes(menu.fullRouterPath)) {
+        if (lastLocation && lastLocation.includes(menu.link)) {
           return {
-            menuIndex: menu.menuIndex,
+            router: menu.id,
             open: true,
           };
-        } else if (
-          firstNonHeaderMenu &&
-          firstNonHeaderMenu.fullRouterPath.includes(menu.fullRouterPath)
-        ) {
+        } else if (firstNonHeaderMenu && firstNonHeaderMenu.link.includes(menu.link)) {
           return {
-            menuIndex: menu.menuIndex,
+            router: menu.id,
             open: true,
           };
         }
 
         return {
-          menuIndex: menu.menuIndex,
+          router: menu.id,
           open: false,
         };
       });
 
     setSecondDepthOpen(openState);
-  }, [lastLocation, menus]);
+  }, [findFirstNonHeaderMenu, lastLocation, menus]);
 
-  const getSecondDepthOpen = (menuIndex: number) => {
-    return secondDepthOpen.find((openState) => openState.menuIndex === menuIndex)?.open ?? false;
+  const getSecondDepthOpen = (router: Router) => {
+    return secondDepthOpen.find((openState) => openState.router === router)?.open ?? false;
   };
 
-  const toggleSecondDepthOpen = (menuIndex: number) => {
+  const toggleSecondDepthOpen = (router: Router) => {
     setSecondDepthOpen((prevState) => {
       return prevState.map((openState) => {
-        if (openState.menuIndex === menuIndex) {
+        if (openState.router === router) {
           return {
             ...openState,
             open: !openState.open,
@@ -73,8 +69,8 @@ export function SidebarItems({
   };
 
   const onClickMenu = (menu: Menu, isSelected: boolean) => {
-    if (menu.isHeader) {
-      toggleSecondDepthOpen(menu.menuIndex);
+    if (menu.isGroup) {
+      toggleSecondDepthOpen(menu.id);
       return;
     }
 
@@ -83,14 +79,14 @@ export function SidebarItems({
     gaEventTrigger({
       action: 'click',
       category: 'sidebar',
-      label: menu.name,
+      label: menu.title,
     });
-    navigate(menu.router);
-    setLastLocation(menu.fullRouterPath);
+    navigate(menu.id);
+    setLastLocation(menu.link);
   };
 
   const onClickSecondDepthMenu = (parentMenu: Menu, childMenu: Menu, isSelected: boolean) => {
-    if (childMenu.isHeader) {
+    if (childMenu.isGroup) {
       return;
     }
 
@@ -99,35 +95,35 @@ export function SidebarItems({
     gaEventTrigger({
       action: 'click',
       category: 'sidebar',
-      label: childMenu.name,
+      label: childMenu.title,
     });
-    navigate(`${parentMenu.router}/${childMenu.router}`);
-    setLastLocation(childMenu.fullRouterPath);
+    navigate(`${parentMenu.id}/${childMenu.id}`);
+    setLastLocation(childMenu.link);
   };
 
   return (
     <LayoutGroup>
       <FlexColumn style={{ width: '100%', alignItems: 'center' }}>
         {menus.map((menu, menuIndex) => {
-          if (!menu.display) {
+          if (!menu.isDisplay) {
             return null;
           }
 
-          const isSelected = menu.router ? location.pathname.includes(menu.router) : false;
+          const isSelected = menu.id ? location.pathname.includes(menu.id) : false;
           const secondDepthMenus = menu.children;
 
           return (
-            <FlexColumn style={{ width: '100%', overflow: 'hidden' }} key={menu.router}>
+            <FlexColumn style={{ width: '100%', overflow: 'hidden' }} key={menu.id}>
               <SidebarItem
                 style={{ backgroundColor: sidebarBackgroundColor }}
                 isSelected={isSelected}
                 menu={menu}
-                depthOpen={getSecondDepthOpen(menu.menuIndex)}
+                depthOpen={getSecondDepthOpen(menu.id)}
                 onClickMenu={(menu) => onClickMenu(menu, isSelected)}
               />
 
               <AnimatePresence initial={false}>
-                {secondDepthMenus && getSecondDepthOpen(menu.menuIndex) && (
+                {secondDepthMenus && getSecondDepthOpen(menu.id) && (
                   <FlexColumn
                     as={motion.div}
                     style={{ width: '100%', marginTop: 4 }}
@@ -136,17 +132,17 @@ export function SidebarItems({
                     exit={{ opacity: 0, height: 0 }}
                   >
                     {secondDepthMenus.map((secondDepthMenu) => {
-                      if (!secondDepthMenu.display) {
+                      if (!secondDepthMenu.isDisplay) {
                         return null;
                       }
 
-                      const isSelected = secondDepthMenu.router
-                        ? location.pathname.includes(secondDepthMenu.router)
+                      const isSelected = secondDepthMenu.id
+                        ? location.pathname.includes(secondDepthMenu.id)
                         : false;
 
                       return (
                         <SidebarItem
-                          key={secondDepthMenu.router}
+                          key={secondDepthMenu.id}
                           style={{ paddingLeft: 32, backgroundColor: sidebarBackgroundColor }}
                           isSelected={isSelected}
                           menu={secondDepthMenu}

@@ -37,7 +37,7 @@ function MainContainer() {
 
   const { findCurrentMenu, excludeCacheMenuRouters } = useRouterMenuContext();
   const currentMenu = findCurrentMenu(location.pathname);
-  const isMatchedExcludeMenu = excludeCacheMenuRouters.includes(currentMenu?.fullRouterPath ?? '');
+  const isMatchedExcludeMenu = excludeCacheMenuRouters.includes(currentMenu?.link ?? '');
 
   return (
     <FlexRow style={{ width: '100%', overflowY: 'hidden', overflowX: 'auto' }}>
@@ -61,7 +61,7 @@ function MainContainer() {
         }}
       >
         {isMatchedExcludeMenu ? (
-          <MainHeader title={currentMenu?.name ?? ''} />
+          <MainHeader title={currentMenu?.title ?? ''} />
         ) : (
           <PageTab aliveRef={aliveRef} />
         )}

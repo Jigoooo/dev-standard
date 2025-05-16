@@ -33,7 +33,7 @@ export function SidebarItem({
       maxWidth -= Number(style.paddingLeft);
     }
 
-    if (menu.isHeader) {
+    if (menu.isGroup) {
       maxWidth -= 58;
     }
     return maxWidth;
@@ -43,7 +43,7 @@ export function SidebarItem({
     <Tooltip
       style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
       placement={'right'}
-      content={menu.name}
+      content={menu.title}
       disabled={!sidebarState.sidebarCollapsed}
     >
       <FlexRow
@@ -100,13 +100,13 @@ export function SidebarItem({
                   maxWidth: getTextMaxWidth(),
                 }}
               >
-                {menu.name}
+                {menu.title}
               </motion.span>
             )}
           </AnimatePresence>
         </FlexRow>
 
-        {menu.isHeader && !sidebarState.delayedSidebarCollapsed && (
+        {menu.isGroup && !sidebarState.delayedSidebarCollapsed && (
           <IoChevronDownOutline
             style={{
               color: '#ffffff',

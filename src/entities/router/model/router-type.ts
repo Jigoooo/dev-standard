@@ -1,26 +1,12 @@
 import type { IconType } from 'react-icons';
 import type { JSX, ReactElement, ReactNode } from 'react';
-import type { RouteObject } from 'react-router-dom';
+import type { RouteObject, DataRouter } from 'react-router-dom';
 
 import type { MenuResponse, MenuMemberAuthResponse } from '@/shared/api';
-import type { Router } from '@/shared/router';
 
-export type Menu = {
-  isHeader: boolean;
-  menuIndex: number;
-  name: string;
+export type Menu = Omit<MenuResponse, 'children'> & {
   icon?: IconType;
-  router: Router;
-  fullRouterPath: string;
-  display: boolean;
-  orderBy: number;
-  children?: Menu[];
-  mainCd: number;
-  sub1Cd: number;
-  sub2Cd: number;
-  menuId: string;
-  menuLink: string;
-  menuLinkDev: string;
+  children: Menu[];
 };
 
 export type CacheNode = {
@@ -46,6 +32,7 @@ export type SidebarStore = {
 };
 
 export type RouterMenuContextType = {
+  router: DataRouter;
   routes: RouteObject[];
   menus: Menu[];
   sidebarMainMenus: Menu[];
@@ -59,10 +46,6 @@ export type RouterMenuContextType = {
   findCurrentMenu: (currentPath: string) => Menu | null;
   findMenuWithFullRouterPath: (menus: Menu[], targetFullRouterPath: string) => Menu | null;
   findFirstNonHeaderMenu: (menus: Menu[]) => Menu | null;
-  updateRouteChildren: (parentPath: string, newChildren: RouteObject[], merge?: boolean) => void;
   updateMainRouteChildren: (responseMenus: MenuResponse[]) => void;
-  updateRoutes: (updater: (prevRoutes: RouteObject[]) => RouteObject[]) => void;
-  updateRouteName: (router: Router, newName: string) => void;
-  makeGroupMenus: (menus: MenuResponse[]) => Menu[];
-  flattenGroupMenus: (menus: Menu[]) => MenuResponse[];
+  responseMenusToMenus: (responseMenus: MenuResponse[]) => Menu[];
 };

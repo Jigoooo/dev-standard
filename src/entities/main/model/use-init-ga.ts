@@ -14,12 +14,12 @@ export function useInitGa() {
 
   useEffect(() => {
     // if (!window.location.href.includes('localhost')) {
-    if (!memberInfo.memberId) {
+    if (!memberInfo.id) {
       return;
     }
 
     ReactGA.set({
-      userId: memberInfo.memberId ?? 'none member id',
+      userId: memberInfo.id ?? 'none member id',
       // userName: memberInfo.memberNm ?? 'none member name',
     });
     // }
@@ -29,8 +29,8 @@ export function useInitGa() {
     // if (!window.location.href.includes('localhost')) {
     gaPageView({
       page: location.pathname,
-      title: currentMenu?.name ?? 'unknown title',
+      title: currentMenu?.title ?? 'unknown title',
     });
     // }
-  }, [currentMenu?.name, location.pathname, location.search]);
+  }, [currentMenu?.title, location.pathname, location.search]);
 }

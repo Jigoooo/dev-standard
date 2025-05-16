@@ -18,7 +18,7 @@ export function useInitLocation() {
         const firstNonHeaderMenu = findFirstNonHeaderMenu(sidebarMainMenus);
 
         if (firstNonHeaderMenu !== null) {
-          navigate(firstNonHeaderMenu.fullRouterPath);
+          navigate(firstNonHeaderMenu.link);
         } else {
           window.location.reload();
         }
@@ -26,7 +26,7 @@ export function useInitLocation() {
     } else {
       window.location.reload();
     }
-  }, [lastLocation, sidebarMainMenus]);
+  }, [findFirstNonHeaderMenu, lastLocation, navigate, sidebarMainMenus]);
 
   useBeforeUnload(() => {
     if (window.location.pathname !== Router.MAIN) {

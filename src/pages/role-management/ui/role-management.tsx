@@ -9,7 +9,7 @@ import { useMemberState } from '@/entities/member';
 import type { MenuMemberAuthResponse, RoleUserResponse } from '@/shared/api';
 import {
   handleAuthError,
-  useGetMemberListQuery,
+  useGetMembersQuery,
   useGetMenuMemberAuthListQuery,
   useUpdateMenuMemberAuthMutation,
 } from '@/shared/api';
@@ -31,14 +31,14 @@ export function RoleManagement() {
 
   const [memberId, setMemberId] = useState('');
 
-  const getMemberListQuery = useGetMemberListQuery();
+  const getMemberListQuery = useGetMembersQuery();
   const getMenuMemberAuthListQuery = useGetMenuMemberAuthListQuery({
-    memberId,
+    id: memberId,
   });
 
   useEffect(() => {
-    if (getMemberListQuery.data?.data?.memberList) {
-      const dataWithIndex = getMemberListQuery.data.data.memberList.map((item, index) => {
+    if (getMemberListQuery.data?.data) {
+      const dataWithIndex = getMemberListQuery.data.data.map((item, index) => {
         return {
           ...item,
           index: index + 1,
@@ -46,13 +46,13 @@ export function RoleManagement() {
       });
       setDataList(dataWithIndex);
     }
-  }, [getMemberListQuery.data?.data?.memberList]);
+  }, [getMemberListQuery.data?.data]);
 
   useEffect(() => {
-    if (getMenuMemberAuthListQuery.data?.data?.menuList) {
-      const isOwnRole = memberState.memberId === memberId;
+    if (getMenuMemberAuthListQuery.data?.data) {
+      const isOwnRole = memberState.id === memberId;
 
-      const menuList = getMenuMemberAuthListQuery.data.data.menuList;
+      const menuList = getMenuMemberAuthListQuery.data.data;
 
       const dataWithIndex = menuList
         .filter((menuItem) => {
@@ -82,7 +82,7 @@ export function RoleManagement() {
         });
       setMenuAuthList(dataWithIndex);
     }
-  }, [memberState.memberId, getMenuMemberAuthListQuery.data?.data?.menuList]);
+  }, [memberState.id, getMenuMemberAuthListQuery.data?.data]);
 
   const updateMenuMemberAuth = useUpdateMenuMemberAuth({
     menuAuthList,
@@ -117,7 +117,7 @@ export function RoleManagement() {
             showVerticalLines: true,
           }}
           tableRowClick={(data) => {
-            setMemberId(data.memberId);
+            setMemberId(data.id);
           }}
           tableHeaders={roleUserHeaders}
           tableDataList={dataList}

@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import type { DataWithIndex } from '@/shared/ui';
 import { FlexColumn, FlexRow, Table, useTableData } from '@/shared/ui';
 import type { RoleUserResponse } from '@/shared/api';
-import { useGetMemberListQuery } from '@/shared/api';
+import { useGetMembersQuery } from '@/shared/api';
 import { useMemberManagementHeaders } from '@/entities/member';
 
 export function UserManagement() {
@@ -13,11 +13,11 @@ export function UserManagement() {
     DataWithIndex & RoleUserResponse
   >([]);
 
-  const getMemberListQuery = useGetMemberListQuery();
+  const getMemberListQuery = useGetMembersQuery();
 
   useEffect(() => {
-    if (getMemberListQuery.data?.data?.memberList) {
-      const dataWithIndex = getMemberListQuery.data.data.memberList.map((item, index) => {
+    if (getMemberListQuery.data?.data?.members) {
+      const dataWithIndex = getMemberListQuery.data.data.members.map((item, index) => {
         return {
           ...item,
           index: index + 1,
@@ -25,7 +25,7 @@ export function UserManagement() {
       });
       setDataList(dataWithIndex);
     }
-  }, [getMemberListQuery.data?.data?.memberList]);
+  }, [getMemberListQuery.data?.data?.members]);
 
   return (
     <FlexColumn

@@ -4,8 +4,8 @@ import type { RoleUserResponse, MenuMemberAuthResponse } from '@/shared/api';
 export function useRoleManagementHeaders() {
   const roleUserHeaders: THeader<RoleUserResponse>[] = [
     createHeader('index', '', 60, { pin: 'left', dataAlign: 'right', filter: undefined }),
-    createHeader('memberId', '아이디', 150),
-    createHeader('memberNm', '이름', 150),
+    createHeader('id', '아이디', 150),
+    createHeader('name', '이름', 150),
   ];
 
   const roleManagementHeaders: THeader<MenuMemberAuthResponse>[] = [

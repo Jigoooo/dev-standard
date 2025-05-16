@@ -1,8 +1,6 @@
 import { AnimatePresence, motion, Reorder, useDragControls } from 'framer-motion';
 import type { RefObject } from 'react';
 import { createRef, useEffect, useRef, useState } from 'react';
-import { toast } from 'sonner';
-import { useNavigate } from 'react-router-dom';
 
 import { MdOutlineEdit } from 'react-icons/md';
 import { RxDragHandleHorizontal } from 'react-icons/rx';
@@ -10,13 +8,14 @@ import { RxDragHandleHorizontal } from 'react-icons/rx';
 import { dialog, Divider, FlexColumn, FlexRow, Input, SaveButton, Typography } from '@/shared/ui';
 import type { Menu } from '@/entities/router';
 import { useRouterMenuContext } from '@/entities/router';
-import { handleAuthError, useGetMenusQuery, useUpdateMenuMutation } from '@/shared/api';
+import { useGetMenusQuery } from '@/shared/api';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
 import { colors } from '@/shared/constants';
+import type { Router } from '@/shared/router';
 
 export function MenuSetting() {
-  const navigate = useNavigate();
-  const { makeGroupMenus, flattenGroupMenus } = useRouterMenuContext();
+  // const navigate = useNavigate();
+  const { responseMenusToMenus } = useRouterMenuContext();
 
   const [menuList, setMenuList] = useState<Menu[]>([]);
   const originalMenuListRef = useRef<Menu[]>([]);
@@ -36,23 +35,27 @@ export function MenuSetting() {
     }));
   };
 
-  const reorderMenuList = (mainMenu: Menu, newChildren: Menu[]) => {
+  const reorderMenuList = (mainMenuId: Router, newChildren: Menu[]) => {
     const updatedChildren = updateOrderBy(newChildren);
 
-    setMenuList((prevMenuList) => {
-      const updatedList = [...prevMenuList];
-      updatedList[mainMenu.menuIndex] = {
-        ...updatedList[mainMenu.menuIndex],
-        children: updatedChildren,
-      };
-      return updatedList;
+    setMenuList((prevState) => {
+      return prevState.map((menu) => {
+        if (menu.id === mainMenuId) {
+          return {
+            ...menu,
+            children: updatedChildren,
+          };
+        }
+
+        return menu;
+      });
     });
   };
 
   const handleMenuNameChange = (targetMenuId: string, newName: string) => {
     const updateMenuNameInList = (menus: Menu[]): Menu[] => {
       return menus.map((menu) => {
-        if (menu.menuId === targetMenuId) {
+        if (menu.id === targetMenuId) {
           return { ...menu, name: newName };
         }
 
@@ -67,51 +70,51 @@ export function MenuSetting() {
   };
 
   const getMenuListQuery = useGetMenusQuery();
-  const updateMenuMutation = useUpdateMenuMutation();
+  // const updateMenuMutation = useUpdateMenuMutation();
 
   useEffect(() => {
-    if (getMenuListQuery.data?.data?.menuList) {
-      const newMenuList = getMenuListQuery.data?.data?.menuList ?? [];
-      const grouped = makeGroupMenus(newMenuList);
+    if (getMenuListQuery.data?.data) {
+      const newMenuList = getMenuListQuery.data?.data ?? [];
+      const grouped = responseMenusToMenus(newMenuList);
       setMenuList(grouped);
 
       originalMenuListRef.current = grouped;
     }
-  }, [getMenuListQuery.data?.data?.menuList]);
+  }, [getMenuListQuery.data?.data, responseMenusToMenus]);
 
   const updateMenu = () => {
-    updateMenuMutation.mutate(flattenGroupMenus(menuList), {
-      onSuccess: async (data, variables) => {
-        const isError = await handleAuthError({
-          data,
-          onUnauthenticated: () => navigate('/', { replace: true }),
-          onOtherError: () => {
-            dialog.error({
-              title: '메뉴 수정 실패',
-              contents: data?.message ?? '관리자에게 문의해 주세요.',
-            });
-          },
-          onRefreshSuccess: () => {
-            updateMenuMutation.mutate(variables, {
-              onSuccess: (data) => {
-                if (data.success) {
-                  toast.success('메뉴 수정 성공');
-                  close();
-                }
-              },
-            });
-          },
-        });
-
-        if (!isError) {
-          toast.success('메뉴 수정 성공');
-          close();
-        }
-      },
-    });
+    // updateMenuMutation.mutate(flattenGroupMenus(menuList), {
+    //   onSuccess: async (data, variables) => {
+    //     const isError = await handleAuthError({
+    //       data,
+    //       onUnauthenticated: () => navigate('/', { replace: true }),
+    //       onOtherError: () => {
+    //         dialog.error({
+    //           title: '메뉴 수정 실패',
+    //           contents: data?.message ?? '관리자에게 문의해 주세요.',
+    //         });
+    //       },
+    //       onRefreshSuccess: () => {
+    //         updateMenuMutation.mutate(variables, {
+    //           onSuccess: (data) => {
+    //             if (data.success) {
+    //               toast.success('메뉴 수정 성공');
+    //               close();
+    //             }
+    //           },
+    //         });
+    //       },
+    //     });
+    //
+    //     if (!isError) {
+    //       toast.success('메뉴 수정 성공');
+    //       close();
+    //     }
+    //   },
+    // });
   };
 
-  const groupRefs = useRef<Record<number, RefObject<HTMLDivElement | null>>>({});
+  const groupRefs = useRef<Record<string, RefObject<HTMLDivElement | null>>>({});
 
   const updateMenuConfirmation = () => {
     dialog.info({
@@ -162,29 +165,29 @@ export function MenuSetting() {
         }}
       >
         {menuList.map((mainMenu) => {
-          if (!groupRefs.current[mainMenu.menuIndex]) {
-            groupRefs.current[mainMenu.menuIndex] = createRef<HTMLDivElement>();
+          if (!groupRefs.current[mainMenu.id]) {
+            groupRefs.current[mainMenu.id] = createRef<HTMLDivElement>();
           }
 
           const originalValue = findOriginalNameAndOrderBy(
-            mainMenu.menuId,
+            mainMenu.id,
             originalMenuListRef.current,
           );
           let isModified = false;
           if (originalValue) {
             const { name: originalName } = originalValue;
-            isModified = originalName !== mainMenu.name;
+            isModified = originalName !== mainMenu.title;
           }
 
           return (
-            <FlexColumn key={mainMenu.menuId} style={{ paddingInline: 20, gap: 8 }}>
+            <FlexColumn key={mainMenu.id} style={{ paddingInline: 20, gap: 8 }}>
               <div style={{ height: 26 }}>
-                {editId === mainMenu.menuId ? (
+                {editId === mainMenu.id ? (
                   <Input
                     ref={editRef}
-                    value={mainMenu.name}
+                    value={mainMenu.title}
                     onChange={(event) => {
-                      handleMenuNameChange(mainMenu.menuId, event.target.value);
+                      handleMenuNameChange(mainMenu.id, event.target.value);
                     }}
                     onKeyDown={(event) => {
                       if (event.key === 'Enter') {
@@ -195,7 +198,7 @@ export function MenuSetting() {
                 ) : (
                   <FlexRow
                     style={{ alignItems: 'center', gap: 6 }}
-                    onMouseEnter={() => setHoverMenuId(mainMenu.menuId)}
+                    onMouseEnter={() => setHoverMenuId(mainMenu.id)}
                     onMouseLeave={() => setHoverMenuId(null)}
                   >
                     <Typography
@@ -204,10 +207,10 @@ export function MenuSetting() {
                         color: isModified ? colors.error[400] : 'inherit',
                       }}
                     >
-                      {mainMenu.name}
+                      {mainMenu.title}
                     </Typography>
                     <AnimatePresence initial={false}>
-                      {hoverMenuId === mainMenu.menuId && (
+                      {hoverMenuId === mainMenu.id && (
                         <motion.div
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
@@ -217,7 +220,7 @@ export function MenuSetting() {
                           <MdOutlineEdit
                             style={{ cursor: 'pointer' }}
                             onClick={() => {
-                              setEditId(mainMenu.menuId);
+                              setEditId(mainMenu.id);
                               setTimeout(() => {
                                 if (editRef.current) {
                                   editRef.current.focus();
@@ -235,17 +238,17 @@ export function MenuSetting() {
               <Divider />
               {mainMenu.children && (
                 <Reorder.Group
-                  ref={groupRefs.current[mainMenu.menuIndex]}
+                  ref={groupRefs.current[mainMenu.id]}
                   values={mainMenu.children}
                   onReorder={(newChildren) => {
-                    reorderMenuList(mainMenu, newChildren);
+                    reorderMenuList(mainMenu.id, newChildren);
                   }}
                 >
                   {mainMenu.children.map((submenu) => {
                     return (
                       <ReorderItem
-                        key={submenu.menuId}
-                        groupRef={groupRefs.current[mainMenu.menuIndex]}
+                        key={submenu.id}
+                        groupRef={groupRefs.current[mainMenu.id]}
                         menu={submenu}
                         handleMenuNameChange={handleMenuNameChange}
                         originalMenuList={originalMenuListRef.current}
@@ -285,11 +288,11 @@ function ReorderItem({
     },
   });
 
-  const findValue = findOriginalNameAndOrderBy(menu.menuId, originalMenuList);
+  const findValue = findOriginalNameAndOrderBy(menu.id, originalMenuList);
   const originalName = findValue?.name;
   const originalOrderBy = findValue?.orderBy;
   const isModified =
-    (originalName !== undefined && originalName !== menu.name) ||
+    (originalName !== undefined && originalName !== menu.title) ||
     (originalOrderBy !== undefined && originalOrderBy !== menu.orderBy);
 
   return (
@@ -311,9 +314,9 @@ function ReorderItem({
       {isEdit ? (
         <Input
           ref={editRef}
-          value={menu.name}
+          value={menu.title}
           onChange={(event) => {
-            handleMenuNameChange(menu.menuId, event.target.value);
+            handleMenuNameChange(menu.id, event.target.value);
           }}
           onKeyDown={(event) => {
             if (event.key === 'Enter') {
@@ -335,7 +338,7 @@ function ReorderItem({
               color: isModified ? colors.error[400] : 'inherit',
             }}
           >
-            {menu.name}
+            {menu.title}
           </Typography>
           <AnimatePresence initial={false}>
             {isHover && (
@@ -373,9 +376,9 @@ function findOriginalNameAndOrderBy(
   menus: Menu[],
 ): { name: string; orderBy: number } | undefined {
   for (const menu of menus) {
-    if (menu.menuId === targetMenuId) {
+    if (menu.id === targetMenuId) {
       return {
-        name: menu.name,
+        name: menu.title,
         orderBy: menu.orderBy,
       };
     }

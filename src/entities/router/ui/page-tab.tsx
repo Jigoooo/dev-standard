@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import type { RefObject } from 'react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import type { KeepAliveRef } from 'keepalive-for-react';
 import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
 
@@ -23,15 +23,15 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
   const [sortedCacheNodes, setSortedCacheNodes] = useState<CacheNode[]>([]);
   const remainingCacheNodes = sortedCacheNodes.filter((node) => node.cacheKey !== activeCacheKey);
 
-  useEffect(() => {
-    const nodes = aliveRef?.current?.getCacheNodes() ?? [];
-    const sorted = [...nodes].sort((a, b) => {
-      const menuA = sidebarMainMenus.find((menu) => a.cacheKey.includes(menu.router));
-      const menuB = sidebarMainMenus.find((menu) => b.cacheKey.includes(menu.router));
-      return (menuA?.menuIndex ?? 0) - (menuB?.menuIndex ?? 0);
-    });
-    setSortedCacheNodes(sorted);
-  }, [aliveRef, location]);
+  // useEffect(() => {
+  //   const nodes = aliveRef?.current?.getCacheNodes() ?? [];
+  //   const sorted = [...nodes].sort((a, b) => {
+  //     const menuA = sidebarMainMenus.find((menu) => a.cacheKey.includes(menu.id));
+  //     const menuB = sidebarMainMenus.find((menu) => b.cacheKey.includes(menu.id));
+  //     return (menuA?.menuIndex ?? 0) - (menuB?.menuIndex ?? 0);
+  //   });
+  //   setSortedCacheNodes(sorted);
+  // }, [aliveRef, location, sidebarMainMenus]);
 
   const refreshCacheNode = () => {
     aliveRef?.current?.refresh();
@@ -52,11 +52,11 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
   };
 
   const toMenu = (menu: Menu) => {
-    if (menu.isHeader) {
+    if (menu.isGroup) {
       return;
     }
 
-    navigate(menu.fullRouterPath);
+    navigate(menu.link);
   };
 
   return (
@@ -102,7 +102,7 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
                 whiteSpace: 'nowrap',
               }}
             >
-              {currentMenu?.name}
+              {currentMenu?.title}
             </Typography>
           </FlexRow>
           <FlexRow
@@ -164,7 +164,7 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
                         whiteSpace: 'nowrap',
                       }}
                     >
-                      {findCacheMenu.name}
+                      {findCacheMenu.title}
                     </Typography>
                     <Button
                       style={{

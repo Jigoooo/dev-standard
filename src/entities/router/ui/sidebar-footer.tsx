@@ -147,7 +147,7 @@ export function SidebarFooter() {
                     textOverflow: 'ellipsis',
                   }}
                 >
-                  {memberState.memberNm}({memberState.memberId})
+                  {memberState.name}({memberState.id})
                 </Typography>
                 <Typography style={{ fontSize: '0.8rem', color: '#eeeeee', lineHeight: 1.4 }}>
                   {memberState.email}

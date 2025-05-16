@@ -1,23 +1,20 @@
 import type { YesNoType } from '@/shared/type';
+import type { Router } from '@/shared/router';
 
-export type MemberInfoParameter = {
-  memberId?: string;
+export type MembersParameter = {
+  memberId: string;
 };
 
 export type MemberResponse = {
-  memberId: string;
-  memberNm: string;
-  memberPw: null;
-  newMemberPw: null;
+  id: string;
+  name: string;
+  password: null;
+  newPassword: null;
   email: string;
   phone: string;
-  memberType: string;
-  delYn: YesNoType;
-  adminYn: YesNoType;
-};
-
-export type MemberInfoResponse = {
-  memberInfo: MemberResponse;
+  type: string;
+  isDeleted: boolean;
+  isAdmin: boolean;
 };
 
 export type MenuMemberAuthParameter = {
@@ -44,34 +41,21 @@ export type MenuMemberAuthResponse = {
 };
 
 export type MenuResponse = {
-  mainCd: number;
-  sub1Cd: number;
-  sub2Cd: number;
+  id: Router;
+  title: string;
+  link: string;
+  componentName?: string;
+  isDisplay: boolean;
+  isGroup: boolean;
   orderBy: number;
-  menuTitle: string;
-  menuId: string;
-  menuLink: string;
-  menuLinkDev: string;
-  displayYn: YesNoType;
-};
-
-export type MenuListResponse = {
-  menuList: MenuResponse[];
+  children: MenuResponse[];
 };
 
 export type MenuMemberAuthListParameter = {
-  memberId: string;
+  id: string;
 };
 
 export type RoleUserResponse = {
-  memberId: string;
-  memberNm: string;
-};
-
-export type MemberListResponse = {
-  memberList: RoleUserResponse[];
-};
-
-export type MenuMemberAuthListResponse = {
-  menuList: MenuMemberAuthResponse[];
+  id: string;
+  name: string;
 };

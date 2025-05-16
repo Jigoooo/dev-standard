@@ -109,19 +109,19 @@ export function useMemberManagementHeaders() {
 
   const userManagementHeaders: THeader<RoleUserResponse>[] = [
     createHeader('index', '', 60, { pin: 'left', dataAlign: 'right', filter: undefined }),
-    createHeader('memberId', '아이디', 150),
-    createHeader('memberNm', '이름', 150),
+    createHeader('id', '아이디', 150),
+    createHeader('name', '이름', 150),
     createHeader('button', '', 80, {
       filter: undefined,
       cell: ({ rowData }) => {
-        return <ModifyButton onClick={() => openUserManagementEditModal(rowData.memberId)} />;
+        return <ModifyButton onClick={() => openUserManagementEditModal(rowData.id)} />;
       },
     }),
   ];
 
   const memberInfoColumnLabelsMapping: Partial<MemberResponse> = {
-    memberId: '아이디',
-    memberNm: '이름',
+    id: '아이디',
+    name: '이름',
     email: '이메일',
     phone: '전화번호',
   };

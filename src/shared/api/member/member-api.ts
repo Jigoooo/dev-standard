@@ -1,22 +1,23 @@
 import { apiRequest, customedAxios } from '../config';
 import type {
-  MemberInfoParameter,
+  MembersParameter,
   MemberResponse,
-  MemberInfoResponse,
   MenuMemberAuthParameter,
-  MenuListResponse,
   MenuMemberAuthResponse,
-  MenuMemberAuthListResponse,
   MenuMemberAuthListParameter,
-  MemberListResponse,
+  MenuResponse,
 } from './member-type.ts';
 
 const MEMBER_ENDPOINT = '/v1/members';
 
-export async function getMemberApi(params: MemberInfoParameter) {
-  const path = params.memberId ? `/${params.memberId}` : '';
+export async function getMemberApi(params: MembersParameter) {
+  return await apiRequest<MemberResponse>(
+    customedAxios.get(`${MEMBER_ENDPOINT}/${params.memberId}`),
+  );
+}
 
-  return await apiRequest<MemberInfoResponse>(customedAxios.get(`${MEMBER_ENDPOINT}${path}`));
+export async function getMembersApi() {
+  return await apiRequest<MemberResponse[]>(customedAxios.get(MEMBER_ENDPOINT));
 }
 
 export async function updateSelfApi(data: MemberResponse) {
@@ -34,17 +35,13 @@ export async function getMenuMemberAuthApi(params: MenuMemberAuthParameter) {
 }
 
 export async function getMemberMenusApi() {
-  return await apiRequest<MenuListResponse>(customedAxios.get(`${MEMBER_ENDPOINT}/menus`));
-}
-
-export async function getMembersApi() {
-  return await apiRequest<MemberListResponse>(customedAxios.get(MEMBER_ENDPOINT));
+  return await apiRequest<MenuResponse[]>(customedAxios.get(`${MEMBER_ENDPOINT}/menus`));
 }
 
 export async function getMenuMemberAuthListApi(params: MenuMemberAuthListParameter) {
-  const path = params?.memberId ? `/${params.memberId}` : '';
+  const path = params?.id ? `/${params.id}` : '';
 
-  return await apiRequest<MenuMemberAuthListResponse>(
+  return await apiRequest<MenuMemberAuthResponse[]>(
     customedAxios.get(`${MEMBER_ENDPOINT}${path}/menu-auth`),
   );
 }

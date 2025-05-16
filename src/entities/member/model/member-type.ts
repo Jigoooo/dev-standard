@@ -1,12 +1,13 @@
 import type { MemberResponse } from '@/shared/api';
 
 export type MemberState = {
-  memberInfo: MemberResponse;
+  member: MemberResponse;
 };
 
 export type MemberStore = {
   state: MemberState;
   actions: {
-    setMemberInfo: (memberInfo: MemberResponse) => void;
+    setMemberId: (id: string) => void;
+    setMember: (member: MemberResponse) => void;
   };
 };

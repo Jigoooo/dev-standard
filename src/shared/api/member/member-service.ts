@@ -11,7 +11,7 @@ import {
 } from './member-api.ts';
 import type {
   MemberResponse,
-  MemberInfoParameter,
+  MembersParameter,
   MenuMemberAuthParameter,
   MenuMemberAuthResponse,
   MenuMemberAuthListParameter,
@@ -24,10 +24,19 @@ const GET_MENU_MEMBER_AUTH_QUERY_KEY = 'getMenuMemberAuthQueryKey';
 const GET_MEMBER_LIST_QUERY_KEY = 'getMemberListQueryKey';
 const GET_MENU_LIST_QUERY_KEY = 'getMemberAuthListQueryKey';
 
-export function useGetMemberInfoQuery(params: MemberInfoParameter = {}) {
+export function useGetMemberQuery(params: MembersParameter) {
   return useQueryWrapper({
     queryKey: [GET_MEMBER_INFO_QUERY_KEY, params],
     queryFn: () => getMemberApi(params),
+  });
+}
+
+export function useGetMembersQuery() {
+  return useQueryWrapper({
+    queryKey: [GET_MEMBER_LIST_QUERY_KEY],
+    queryFn: () => getMembersApi(),
+    refetchOnMount: true,
+    refetchOnReconnect: false,
   });
 }
 
@@ -59,22 +68,13 @@ export function useGetMenuMemberAuthQuery(params: MenuMemberAuthParameter) {
   });
 }
 
-export function useGetMemberListQuery() {
-  return useQueryWrapper({
-    queryKey: [GET_MEMBER_LIST_QUERY_KEY],
-    queryFn: () => getMembersApi(),
-    refetchOnMount: true,
-    refetchOnReconnect: false,
-  });
-}
-
 export function useGetMenuMemberAuthListQuery(params: MenuMemberAuthListParameter) {
   return useQueryWrapper({
     queryKey: [GET_MENU_LIST_QUERY_KEY, params],
     queryFn: () => getMenuMemberAuthListApi(params),
     refetchOnMount: true,
     refetchOnReconnect: false,
-    enabled: params.memberId !== '',
+    enabled: params.id !== '',
   });
 }
 

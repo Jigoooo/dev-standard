@@ -41,19 +41,13 @@ export const defaultRoutes: RouteObject[] = [
 
 export const defaultMenus: Menu[] = [
   {
-    menuIndex: 9999,
-    isHeader: false,
-    name: '내정보',
+    id: Router.MY_PROFILE,
+    title: '내정보',
     icon: getRouterMappedIcon(Router.MY_PROFILE),
-    router: Router.MY_PROFILE,
-    fullRouterPath: `${Router.MAIN}/${Router.MY_PROFILE}`,
-    display: true,
+    link: `${Router.MAIN}/${Router.MY_PROFILE}`,
+    isDisplay: true,
     orderBy: 0,
-    mainCd: 9999,
-    sub1Cd: 0,
-    sub2Cd: 0,
-    menuId: Router.MY_PROFILE,
-    menuLink: `${Router.MAIN}/${Router.MY_PROFILE}`,
-    menuLinkDev: '',
+    isGroup: false,
+    children: [],
   },
 ];
