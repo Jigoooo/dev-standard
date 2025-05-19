@@ -46,6 +46,6 @@ export type RouterMenuContextType = {
   findCurrentMenu: (currentPath: string) => Menu | null;
   findMenuWithFullRouterPath: (menus: Menu[], targetFullRouterPath: string) => Menu | null;
   findFirstNonHeaderMenu: (menus: Menu[]) => Menu | null;
-  updateMainRouteChildren: (responseMenus: MenuResponse[]) => void;
+  updateMainRouteChildren: (responseMenus?: MenuResponse[]) => void;
   responseMenusToMenus: (responseMenus: MenuResponse[]) => Menu[];
 };

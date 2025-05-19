@@ -88,7 +88,9 @@ export function RouterMenuContextWrapper({
   };
 
   const updateMainRouteChildren = useCallback(
-    (responseMenus: MenuResponse[]) => {
+    (responseMenus?: MenuResponse[]) => {
+      if (!responseMenus || responseMenus.length === 0) return;
+
       const groupMenus: Menu[] = responseMenusToMenus(responseMenus);
 
       function mergeMenus(prev: Menu[], next: Menu[]): Menu[] {
