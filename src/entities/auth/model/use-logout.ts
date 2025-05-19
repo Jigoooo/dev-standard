@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { useRouterMenuContext } from '@/entities/router';
 import { dialog } from '@/shared/ui';
-import { removeToken } from '@/shared/api';
+import { logoutApi, removeToken } from '@/shared/api';
 import { Router } from '@/shared/router';
 
 export function useLogout() {
@@ -17,7 +17,10 @@ export function useLogout() {
       cancelText: '아니요',
       confirmText: '로그아웃',
       onConfirm: () => {
-        removeToken();
+        logoutApi().then(() => {
+          removeToken();
+        });
+
         removeLastLocation();
         navigate(`${Router.SIGN_IN}?isLogout=true`, { replace: true });
       },
