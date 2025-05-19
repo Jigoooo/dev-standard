@@ -6,6 +6,7 @@ import type {
   MenuMemberAuthsParameter,
   MenuResponse,
   MeResponse,
+  MemberData,
 } from './member-type.ts';
 
 const MEMBER_ENDPOINT = '/v1/members';
@@ -24,11 +25,7 @@ export async function getMembersApi() {
   return await apiRequest<MemberResponse[]>(customedAxios.get(MEMBER_ENDPOINT));
 }
 
-export async function updateSelfApi(data: MemberResponse) {
-  return await apiRequest<null>(customedAxios.put(`${MEMBER_ENDPOINT}/my-info`, data));
-}
-
-export async function updateMemberApi(data: MemberResponse) {
+export async function updateMemberApi(data: MemberData) {
   return await apiRequest<null>(customedAxios.put(MEMBER_ENDPOINT, data));
 }
 

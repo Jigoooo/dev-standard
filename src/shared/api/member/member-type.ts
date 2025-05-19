@@ -21,7 +21,16 @@ export type MemberResponse = {
   id: string;
   name: string;
   email?: string;
-  phone?: string;
+  phoneNumber?: string;
+};
+
+export type MemberData = {
+  id: string;
+  name?: string;
+  email?: string;
+  phoneNumber?: string;
+  newPassword?: string;
+  currentPassword?: string;
 };
 
 export type MenuMemberAuthResponse = {

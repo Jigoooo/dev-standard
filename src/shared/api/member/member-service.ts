@@ -12,7 +12,7 @@ import {
   getMeApi,
 } from './member-api.ts';
 import type {
-  MemberResponse,
+  MemberData,
   MembersParameter,
   MenuMemberAuthResponse,
   MenuMemberAuthsParameter,
@@ -77,7 +77,7 @@ export function useUpdateMemberMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: MemberResponse) => updateMemberApi(data),
+    mutationFn: (data: MemberData) => updateMemberApi(data),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [GET_MEMBER_LIST_QUERY_KEY],
