@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import type { RefObject } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { KeepAliveRef } from 'keepalive-for-react';
 import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
 
@@ -23,15 +23,21 @@ export function PageTab({ aliveRef }: { aliveRef: RefObject<KeepAliveRef | undef
   const [sortedCacheNodes, setSortedCacheNodes] = useState<CacheNode[]>([]);
   const remainingCacheNodes = sortedCacheNodes.filter((node) => node.cacheKey !== activeCacheKey);
 
-  // useEffect(() => {
-  //   const nodes = aliveRef?.current?.getCacheNodes() ?? [];
-  //   const sorted = [...nodes].sort((a, b) => {
-  //     const menuA = sidebarMainMenus.find((menu) => a.cacheKey.includes(menu.id));
-  //     const menuB = sidebarMainMenus.find((menu) => b.cacheKey.includes(menu.id));
-  //     return (menuA?.menuIndex ?? 0) - (menuB?.menuIndex ?? 0);
-  //   });
-  //   setSortedCacheNodes(sorted);
-  // }, [aliveRef, location, sidebarMainMenus]);
+  useEffect(() => {
+    const nodes = aliveRef?.current?.getCacheNodes() ?? [];
+    const sortedByTitle = [...nodes].sort((a, b) => {
+      const menuA = sidebarMainMenus.find((menu) => a.cacheKey.includes(menu.id));
+      const menuB = sidebarMainMenus.find((menu) => b.cacheKey.includes(menu.id));
+
+      const titleA = (menuA?.title ?? '').trim();
+      const titleB = (menuB?.title ?? '').trim();
+      return titleA.localeCompare(titleB, ['ko', 'en'], {
+        sensitivity: 'base',
+        numeric: true,
+      });
+    });
+    setSortedCacheNodes(sortedByTitle);
+  }, [aliveRef, location, sidebarMainMenus]);
 
   const refreshCacheNode = () => {
     aliveRef?.current?.refresh();
