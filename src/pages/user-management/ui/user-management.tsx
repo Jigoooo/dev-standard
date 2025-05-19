@@ -25,7 +25,7 @@ export function UserManagement() {
       });
       setDataList(dataWithIndex);
     }
-  }, [getMemberListQuery.data?.data]);
+  }, [getMemberListQuery.data?.data, setDataList]);
 
   return (
     <FlexColumn

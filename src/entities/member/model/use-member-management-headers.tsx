@@ -4,15 +4,15 @@ import { toast } from 'sonner';
 import type { THeader } from '@/shared/ui';
 import { createHeader, dialog, ModalLayout, ModifyButton, useModal } from '@/shared/ui';
 import { MemberManagementEditModal } from '../ui';
-import type { MemberResponse, RoleUserResponse } from '@/shared/api';
+import type { MemberResponse, MemberData, RoleUserResponse } from '@/shared/api';
 import { handleAuthError, useUpdateMemberMutation, getMemberApi } from '@/shared/api';
 
 export function useMemberManagementHeaders() {
   const navigate = useNavigate();
 
   const updateMemberMutation = useUpdateMemberMutation();
-  const updateMember = (memberInfo: MemberResponse, closeModal: () => void) => {
-    updateMemberMutation.mutate(memberInfo, {
+  const updateMember = (memberData: MemberData, closeModal: () => void) => {
+    updateMemberMutation.mutate(memberData, {
       onSuccess: async (data, variables) => {
         const isError = await handleAuthError({
           data,
@@ -43,13 +43,13 @@ export function useMemberManagementHeaders() {
     });
   };
 
-  const updateMemberConfirmation = (memberInfo: MemberResponse, closeModal: () => void) => {
+  const updateMemberConfirmation = (member: MemberData, closeModal: () => void) => {
     dialog.info({
       title: '사용자 수정',
       contents: '사용자 정보를 수정하시겠습니까?',
       withCancel: true,
       overlayClose: true,
-      onConfirm: () => updateMember(memberInfo, closeModal),
+      onConfirm: () => updateMember(member, closeModal),
     });
   };
 
@@ -100,7 +100,7 @@ export function useMemberManagementHeaders() {
         >
           <MemberManagementEditModal
             member={member}
-            onSave={(memberInfo) => updateMemberConfirmation(memberInfo, close)}
+            onSave={(member) => updateMemberConfirmation(member, close)}
           />
         </ModalLayout>
       );
@@ -123,7 +123,7 @@ export function useMemberManagementHeaders() {
     id: '아이디',
     name: '이름',
     email: '이메일',
-    phone: '전화번호',
+    phoneNumber: '전화번호',
   };
 
   return { userManagementHeaders, memberInfoColumnLabelsMapping };

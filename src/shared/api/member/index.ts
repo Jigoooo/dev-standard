@@ -12,6 +12,7 @@ export {
 export type {
   MeResponse,
   MemberResponse,
+  MemberData,
   MenuMemberAuthResponse,
   RoleUserResponse,
   MenuResponse,
