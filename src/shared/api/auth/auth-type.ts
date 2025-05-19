@@ -14,3 +14,15 @@ export type TokenResponse = {
 export type SignInResponse = TokenResponse & {
   menus: MenuResponse[];
 };
+
+export type CheckIdParameter = {
+  id: string;
+};
+
+export type JoinData = {
+  id: string;
+  name: string;
+  password: string;
+  phoneNumber?: string;
+  email?: string;
+};
