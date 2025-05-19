@@ -10,7 +10,7 @@ const initialState: MeState = {
     password: null,
     newPassword: null,
     email: '',
-    phone: '',
+    phoneNumber: '',
     type: '',
     isDeleted: false,
     isAdmin: false,

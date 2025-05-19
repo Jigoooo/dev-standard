@@ -27,13 +27,6 @@ const GET_MEMBER_QUERY_KEY = 'getMemberQueryKey';
 const GET_MEMBER_LIST_QUERY_KEY = 'getMemberListQueryKey';
 const GET_MENU_LIST_QUERY_KEY = 'getMemberAuthListQueryKey';
 
-export function useGetMeQuery() {
-  return useQueryWrapper({
-    queryKey: [GET_ME_QUERY_KEY],
-    queryFn: () => getMeApi(),
-  });
-}
-
 export function useGetMemberMenusQuery() {
   return useQueryWrapper({
     queryKey: [GET_MEMBER_MENUS_QUERY_KEY],
@@ -53,6 +46,13 @@ export function useUpdateMemberMenuMutation() {
     },
     onMutate: () => loading.show(),
     onSettled: () => loading.hide(),
+  });
+}
+
+export function useGetMeQuery() {
+  return useQueryWrapper({
+    queryKey: [GET_ME_QUERY_KEY],
+    queryFn: () => getMeApi(),
   });
 }
 

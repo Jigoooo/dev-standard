@@ -101,7 +101,7 @@ export function useMemberManagementHeaders() {
         >
           <MemberManagementEditModal
             member={member}
-            onSave={(member) => updateMemberConfirmation(member, close)}
+            onSave={(updateMember) => updateMemberConfirmation(updateMember, close)}
           />
         </ModalLayout>
       );

@@ -11,7 +11,7 @@ export type MeResponse = {
   password: null;
   newPassword: null;
   email?: string;
-  phone?: string;
+  phoneNumber?: string;
   type: string;
   isDeleted: boolean;
   isAdmin: boolean;

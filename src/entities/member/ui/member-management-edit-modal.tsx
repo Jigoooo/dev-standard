@@ -91,12 +91,14 @@ export function MemberManagementEditModal({
       <FlexRow style={{ alignItems: 'center', justifyContent: 'flex-end', gap: 6 }}>
         <SaveButton
           style={{ paddingInline: 18 }}
-          onClick={() =>
+          onClick={() => {
+            console.log(member);
+            console.log(filteredData);
             onSave({
               ...member,
               ...filteredData,
-            })
-          }
+            });
+          }}
         />
       </FlexRow>
     </FlexColumn>
