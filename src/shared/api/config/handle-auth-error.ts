@@ -1,4 +1,4 @@
-import { getToken, setToken } from './token-storage.ts';
+import { getToken, removeToken, setToken } from './token-storage.ts';
 import { dialog } from '@/shared/ui';
 import type { AdapterResponseType } from '@/shared/api';
 import { tokenRefreshApi } from '@/shared/api';
@@ -18,7 +18,10 @@ export async function handleAuthError(options: {
       dialog.error({
         title: data.message || '세션이 만료되었습니다.',
         contents: '로그인을 다시 진행해 주세요.',
-        onConfirm: onUnauthenticated,
+        onConfirm: () => {
+          onUnauthenticated();
+          removeToken();
+        },
         overlayClose: false,
       });
     } else {
@@ -32,7 +35,10 @@ export async function handleAuthError(options: {
         dialog.error({
           title: data.message || '세션이 만료되었습니다.',
           contents: '로그인을 다시 진행해 주세요.',
-          onConfirm: onUnauthenticated,
+          onConfirm: () => {
+            onUnauthenticated();
+            removeToken();
+          },
           overlayClose: false,
         });
         return true;

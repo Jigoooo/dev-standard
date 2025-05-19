@@ -6,6 +6,7 @@ import { createHeader, dialog, ModalLayout, ModifyButton, useModal } from '@/sha
 import { MemberManagementEditModal } from '../ui';
 import type { MemberResponse, MemberData, RoleUserResponse } from '@/shared/api';
 import { handleAuthError, useUpdateMemberMutation, getMemberApi } from '@/shared/api';
+import { Router } from '@/shared/router';
 
 export function useMemberManagementHeaders() {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ export function useMemberManagementHeaders() {
       onSuccess: async (data, variables) => {
         const isError = await handleAuthError({
           data,
-          onUnauthenticated: () => navigate('/', { replace: true }),
+          onUnauthenticated: () => navigate(Router.SIGN_IN, { replace: true }),
           onOtherError: () => {
             dialog.error({
               title: '사용자 수정 실패',
@@ -61,7 +62,7 @@ export function useMemberManagementHeaders() {
 
     const isError = await handleAuthError({
       data: responseMemberInfo,
-      onUnauthenticated: () => navigate('/', { replace: true }),
+      onUnauthenticated: () => navigate(Router.SIGN_IN, { replace: true }),
       onRefreshSuccess: () => {},
     });
 

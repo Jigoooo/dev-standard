@@ -27,6 +27,7 @@ import {
   useGetFilesQuery,
   useFileSaveMutation,
 } from '@/shared/api';
+import { Router } from '@/shared/router';
 
 export function FileUploadDownload() {
   const navigate = useNavigate();
@@ -88,7 +89,7 @@ export function FileUploadDownload() {
             onSuccess: async (data, variables) => {
               const isError = await handleAuthError({
                 data,
-                onUnauthenticated: () => navigate('/', { replace: true }),
+                onUnauthenticated: () => navigate(Router.SIGN_IN, { replace: true }),
                 onOtherError: () => {
                   dialog.error({
                     title: '파일 업로드 실패',
@@ -150,7 +151,7 @@ export function FileUploadDownload() {
         onSuccess: async (data, variables) => {
           const isError = await handleAuthError({
             data,
-            onUnauthenticated: () => navigate('/', { replace: true }),
+            onUnauthenticated: () => navigate(Router.SIGN_IN, { replace: true }),
             onOtherError: () => {
               dialog.error({
                 title: '파일 삭제에 실패하였습니다.',

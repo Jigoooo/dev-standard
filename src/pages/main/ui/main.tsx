@@ -19,7 +19,7 @@ export function Main() {
         width: '100vw',
         height: '100vh',
         maxHeight: '100vh',
-        minHeight: 600,
+        minHeight: '37.5rem',
         backgroundColor: '#eaeaea',
       }}
     >
@@ -52,12 +52,12 @@ function MainContainer() {
           maxHeight: '98vh',
           height: '100%',
           overflow: 'hidden',
-          paddingBlock: 16,
-          paddingLeft: 16,
-          paddingRight: 8,
-          marginInline: 12,
+          paddingBlock: '1rem',
+          paddingLeft: '1rem',
+          paddingRight: '0.5rem',
+          marginInline: '0.75rem',
           marginBlock: '1vh',
-          borderRadius: 8,
+          borderRadius: '0.5rem',
         }}
       >
         {isMatchedExcludeMenu ? (

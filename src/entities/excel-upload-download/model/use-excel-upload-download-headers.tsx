@@ -20,6 +20,7 @@ import type { ExcelInfo, ExcelData } from './excel-upload-download-type.ts';
 import { createValidator, formatDateString, thousandSeparator } from '@/shared/lib';
 import type { ExcelDataResponse } from '@/shared/api';
 import { handleAuthError, getExcelDataApi, useUpdateExcelMutation } from '@/shared/api';
+import { Router } from '@/shared/router';
 
 export function useExcelUploadDownloadHeaders(search: () => void) {
   const excelHeaderKeyLabels = new Map<keyof ExcelDataResponse, string>([
@@ -242,7 +243,7 @@ function useUpdateExcel(search: () => void) {
         onSuccess: async (data, variables) => {
           const isError = await handleAuthError({
             data,
-            onUnauthenticated: () => navigate('/', { replace: true }),
+            onUnauthenticated: () => navigate(Router.SIGN_IN, { replace: true }),
             onOtherError: () => {
               dialog.error({
                 title: '엑셀 수정 실패',
@@ -294,7 +295,7 @@ function useExcelEditModal({
 
     const isError = await handleAuthError({
       data: response,
-      onUnauthenticated: () => navigate('/', { replace: true }),
+      onUnauthenticated: () => navigate(Router.SIGN_IN, { replace: true }),
       onRefreshSuccess: () => {},
     });
 

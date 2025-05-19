@@ -28,7 +28,7 @@ export function Sidebar({ headerTitle }: { headerTitle: string }) {
               left: 0,
               zIndex: 10,
               height: '100%',
-              width: 40,
+              width: '2.5rem',
               backgroundColor: 'rgba(0, 0, 0, 0.0)',
             }}
             whileHover={{ backgroundColor: 'rgba(0, 0, 0, 0.2)' }}
@@ -41,8 +41,8 @@ export function Sidebar({ headerTitle }: { headerTitle: string }) {
             position: 'relative',
             backgroundColor: sidebarState.sidebarBackgroundColor,
             height: '100%',
-            paddingTop: 16,
-            gap: 30,
+            paddingTop: '1rem',
+            gap: '1.8rem',
           }}
         >
           <SidebarHeader title={headerTitle} />

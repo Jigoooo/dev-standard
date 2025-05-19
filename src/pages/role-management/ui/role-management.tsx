@@ -157,7 +157,7 @@ function useUpdateMenuMemberAuth({ menuAuthList }: { menuAuthList: MenuMemberAut
           onSuccess: async (data, variables) => {
             const isError = await handleAuthError({
               data,
-              onUnauthenticated: () => navigate('/', { replace: true }),
+              onUnauthenticated: () => navigate(Router.SIGN_IN, { replace: true }),
               onOtherError: () => {
                 dialog.error({
                   title: '권한 저장에 실패하였습니다.',

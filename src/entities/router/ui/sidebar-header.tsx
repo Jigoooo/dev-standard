@@ -13,13 +13,17 @@ export function SidebarHeader({ title }: { title: string }) {
       style={{
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingInline: 12,
-        paddingBlock: 4,
-        height: 42,
+        paddingInline: '0.75rem',
+        paddingBlock: '0.25rem',
+        height: '2.625rem',
       }}
     >
       <div
-        style={{ width: sidebarState.sidebarCollapsed ? 0 : 150, flexGrow: 1, overflow: 'hidden' }}
+        style={{
+          width: sidebarState.sidebarCollapsed ? 0 : '9.375rem',
+          flexGrow: 1,
+          overflow: 'hidden',
+        }}
       >
         <AnimatePresence>
           {!sidebarState.sidebarCollapsed && (

@@ -33,12 +33,12 @@ export function SidebarFooter() {
       style={{
         position: 'absolute',
         left: 0,
-        bottom: 12,
+        bottom: '0.75rem',
         width: '100%',
-        gap: 6,
-        height: 52,
-        paddingLeft: 4,
-        paddingRight: 8,
+        gap: '0.375rem',
+        height: '3.25rem',
+        paddingLeft: '0.25rem',
+        paddingRight: '0.5rem',
       }}
     >
       <motion.div
@@ -63,12 +63,12 @@ export function SidebarFooter() {
         <FlexRow
           style={{
             flexGrow: 1,
-            gap: 4,
+            gap: '0.25rem',
             cursor: 'pointer',
             width: '70%',
-            borderRadius: 8,
-            paddingInline: 4,
-            paddingBlock: 4,
+            borderRadius: '0.5rem',
+            paddingInline: '0.25rem',
+            paddingBlock: '0.25rem',
           }}
           onClick={!sidebarState.sidebarCollapsed ? goMyProfile : undefined}
         >
@@ -79,10 +79,10 @@ export function SidebarFooter() {
             contents={
               <FlexColumn
                 style={{
-                  padding: 8,
-                  width: 200,
+                  padding: '0.5rem',
+                  width: '12.5rem',
                   backgroundColor: '#ffffff',
-                  borderRadius: 6,
+                  borderRadius: '0.375rem',
                 }}
                 onClick={(event) => {
                   event.stopPropagation();
@@ -91,9 +91,9 @@ export function SidebarFooter() {
               >
                 <motion.span
                   style={{
-                    padding: 8,
+                    padding: '0.5rem',
                     backgroundColor: '#ffffff',
-                    borderRadius: 6,
+                    borderRadius: '0.375rem',
                     fontWeight: 500,
                   }}
                   whileHover={{ backgroundColor: '#eeeeee' }}
@@ -104,9 +104,9 @@ export function SidebarFooter() {
                 </motion.span>
                 <motion.span
                   style={{
-                    padding: 8,
+                    padding: '0.5rem',
                     backgroundColor: '#ffffff',
-                    borderRadius: 6,
+                    borderRadius: '0.375rem',
                     fontWeight: 500,
                   }}
                   whileHover={{ backgroundColor: '#eeeeee' }}

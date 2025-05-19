@@ -6,6 +6,7 @@ import { createHeader, dialog, FileDownloadButton } from '@/shared/ui';
 import type { FileListItem } from '@/entities/file-upload-download';
 import { thousandSeparator } from '@/shared/lib';
 import { apiRequest, downloadFileApi, handleAuthError } from '@/shared/api';
+import { Router } from '@/shared/router';
 
 export function useFileUploadDownloadHeaders(): THeader<FileListItem>[] {
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ export function useFileUploadDownloadHeaders(): THeader<FileListItem>[] {
 
               const isError = await handleAuthError({
                 data: response,
-                onUnauthenticated: () => navigate('/', { replace: true }),
+                onUnauthenticated: () => navigate(Router.SIGN_IN, { replace: true }),
                 onRefreshSuccess: () => {},
               });
 

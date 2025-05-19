@@ -87,7 +87,7 @@ export function MenuSetting() {
     //   onSuccess: async (data, variables) => {
     //     const isError = await handleAuthError({
     //       data,
-    //       onUnauthenticated: () => navigate('/', { replace: true }),
+    //       onUnauthenticated: () => navigate(Router.SIGN_IN, { replace: true }),
     //       onOtherError: () => {
     //         dialog.error({
     //           title: '메뉴 수정 실패',

@@ -55,14 +55,14 @@ export function SidebarItem({
             width: '100%',
             justifyContent: 'space-between',
             alignItems: 'center',
-            paddingBlock: 4,
-            paddingInline: 14,
+            paddingBlock: '0.25rem',
+            paddingInline: '0.875rem',
             cursor: 'pointer',
             color: isSelected ? '#4ba7ff' : '#999999',
             transition: 'all 0.1s',
-            minHeight: 42,
-            height: 42,
-            maxHeight: 42,
+            minHeight: '2.625rem',
+            height: '2.625rem',
+            maxHeight: '2.625rem',
             overflow: 'hidden',
           },
           ...style,
@@ -78,7 +78,7 @@ export function SidebarItem({
           onClickMenu(menu);
         }}
       >
-        <FlexRow style={{ gap: 12 }}>
+        <FlexRow style={{ gap: '0.75rem' }}>
           {menu.icon && (
             <menu.icon style={{ color: 'inherit', fontSize: '1.2rem', flexShrink: 0 }} />
           )}

@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import type { AdapterResponseType } from './';
 import { handleAuthError } from './handle-auth-error.ts';
 import { loading } from '@/shared/ui';
+import { Router } from '@/shared/router';
 
 export function useQueryWrapper<
   TData,
@@ -40,7 +41,7 @@ export function useQueryWrapper<
     if (query.data && !query.data.isSuccess) {
       handleAuthError({
         data: query.data,
-        onUnauthenticated: () => navigate('/', { replace: true }),
+        onUnauthenticated: () => navigate(Router.SIGN_IN, { replace: true }),
         onOtherError,
         onRefreshSuccess: () => query.refetch(),
       });

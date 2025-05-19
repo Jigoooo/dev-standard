@@ -29,6 +29,7 @@ import {
   useExcelsQuery,
   useSaveExcelMutation,
 } from '@/shared/api';
+import { Router } from '@/shared/router';
 
 export function ExcelUploadDownload() {
   const navigate = useNavigate();
@@ -102,7 +103,7 @@ export function ExcelUploadDownload() {
             onSuccess: async (data, variables) => {
               const isError = await handleAuthError({
                 data,
-                onUnauthenticated: () => navigate('/', { replace: true }),
+                onUnauthenticated: () => navigate(Router.SIGN_IN, { replace: true }),
                 onOtherError: () => {
                   dialog.error({
                     title: '엑셀 등록 실패',
@@ -185,7 +186,7 @@ export function ExcelUploadDownload() {
         onSuccess: async (data, variables) => {
           const isError = await handleAuthError({
             data,
-            onUnauthenticated: () => navigate('/', { replace: true }),
+            onUnauthenticated: () => navigate(Router.SIGN_IN, { replace: true }),
             onOtherError: () => {
               dialog.error({
                 title: '엑셀데이터 삭제에 실패하였습니다.',

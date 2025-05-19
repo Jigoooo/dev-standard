@@ -170,7 +170,7 @@ export function RouterMenuContextWrapper({
       if (!data.isSuccess) {
         handleAuthError({
           data,
-          onUnauthenticated: () => window.location.replace('/'),
+          onUnauthenticated: () => window.location.replace(Router.SIGN_IN),
           onRefreshSuccess: () => window.location.reload(),
         });
 
