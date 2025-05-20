@@ -87,24 +87,47 @@ export function RouterMenuContextWrapper({
     return enrichMenus(responseMenus);
   };
 
+  const menusToResponseMenus = (menus: Menu[]): MenuResponse[] => {
+    function enrichResponseMenus(menus: Menu[]): MenuResponse[] {
+      return menus.map((menu) => {
+        const children = menu.children ? enrichResponseMenus(menu.children) : [];
+
+        return {
+          ...menu,
+          children,
+        };
+      });
+    }
+
+    return enrichResponseMenus(menus);
+  };
+
   const updateMainRouteChildren = useCallback(
     (responseMenus?: MenuResponse[]) => {
       if (!responseMenus || responseMenus.length === 0) return;
 
       const groupMenus: Menu[] = responseMenusToMenus(responseMenus);
 
-      function mergeMenus(prev: Menu[], next: Menu[]): Menu[] {
+      function mergeMenusPreserve(prev: Menu[], next: Menu[]): Menu[] {
         const prevMap = new Map(prev.map((m) => [m.id, m]));
-        return next.map((m) => {
-          const old = prevMap.get(m.id);
-          return {
-            ...m,
-            children: m.children ? mergeMenus(old?.children || [], m.children) : [],
-          };
+
+        const merged = next.map((m) => ({
+          ...m,
+          children: m.children
+            ? mergeMenusPreserve(prevMap.get(m.id)?.children || [], m.children)
+            : (prevMap.get(m.id)?.children ?? []),
+        }));
+
+        prev.forEach((m) => {
+          if (!merged.find((x) => x.id === m.id)) {
+            merged.push(m);
+          }
         });
+
+        return merged;
       }
 
-      setMenus((prevState) => mergeMenus(prevState, groupMenus));
+      setMenus((prevState) => mergeMenusPreserve(prevState, groupMenus));
 
       const newRoutes = generateRoutesFromMenus(groupMenus);
 
@@ -206,6 +229,7 @@ export function RouterMenuContextWrapper({
     findFirstNonHeaderMenu,
     updateMainRouteChildren,
     responseMenusToMenus,
+    menusToResponseMenus,
   };
 
   return <RouterMenuContext value={contextValue}>{children}</RouterMenuContext>;
