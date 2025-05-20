@@ -55,5 +55,6 @@ export const defaultMenus: Menu[] = [
 export const excludeCacheMenuRouters = [
   `${Router.MAIN}/${Router.COMPONENT}`,
   `${Router.MAIN}/${Router.FILE}`,
+  `${Router.MAIN}/${Router.MANAGER}`,
   `${Router.MAIN}/${Router.MY_PROFILE}`,
 ];
