@@ -13,7 +13,9 @@ export type {
   MeResponse,
   MemberResponse,
   MemberData,
+  MenuMemberAuthPathVariable,
   MenuMemberAuthResponse,
+  MenuMemberAuthRequestConfig,
   RoleUserResponse,
   MenuResponse,
 } from './member-type.ts';

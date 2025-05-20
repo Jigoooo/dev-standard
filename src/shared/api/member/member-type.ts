@@ -1,4 +1,3 @@
-import type { YesNoType } from '@/shared/type';
 import type { Router } from '@/shared/router';
 
 export type MembersParameter = {
@@ -33,33 +32,27 @@ export type MemberData = {
   currentPassword?: string;
 };
 
-export type MenuMemberAuthResponse = {
-  menuId: string;
-  menuTitle: string;
-  mainTitle: string;
-  subTitle: string;
-  mainCd: number;
-  sub2Cd: number;
-  sub1Cd: number;
-  orderBy: number;
+export type MenuMemberAuthPathVariable = {
   memberId: string;
-  allChecked: boolean;
-  useYn: YesNoType;
-  authIns: YesNoType;
-  authDel: YesNoType;
-  authSearch: YesNoType;
-  authMod: YesNoType;
-  excelExport: YesNoType;
+};
 
-  // canDelete: boolean;
-  // canExport: boolean;
-  // canInsert: boolean;
-  // canModify: boolean;
-  // canSearch: boolean;
-  // memberId: string;
-  // menuId: Router;
-  // orderBy: number;
-  // title: string;
+export type MenuMemberAuthResponse = {
+  canUse: boolean;
+  canDelete: boolean;
+  canExport: boolean;
+  canInsert: boolean;
+  canModify: boolean;
+  canSearch: boolean;
+  memberId: string;
+  menuId: Router;
+  orderBy: number;
+  parentTitle: string;
+  title: string;
+};
+
+export type MenuMemberAuthRequestConfig = {
+  pathVariable: MenuMemberAuthPathVariable;
+  data: MenuMemberAuthResponse[];
 };
 
 export type MenuResponse = {

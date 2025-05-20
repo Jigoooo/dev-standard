@@ -1,4 +1,8 @@
-import type { MeResponse } from '@/shared/api';
+import type { MenuMemberAuthResponse, MeResponse } from '@/shared/api';
+
+export type MenuMemberAuthType = MenuMemberAuthResponse & {
+  allChecked: boolean;
+};
 
 export type MeState = {
   me: MeResponse;

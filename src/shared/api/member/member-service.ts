@@ -14,7 +14,7 @@ import {
 import type {
   MemberData,
   MembersParameter,
-  MenuMemberAuthResponse,
+  MenuMemberAuthRequestConfig,
   MenuMemberAuthsParameter,
   MenuResponse,
 } from './member-type.ts';
@@ -103,7 +103,8 @@ export function useGetMenuMemberAuthsQuery(params: MenuMemberAuthsParameter) {
 
 export function useUpdateMenuMemberAuthMutation() {
   return useMutation({
-    mutationFn: (data: MenuMemberAuthResponse[]) => updateMenuMemberAuthApi(data),
+    mutationFn: ({ pathVariable, data }: MenuMemberAuthRequestConfig) =>
+      updateMenuMemberAuthApi(pathVariable, data),
     onSuccess: () => {},
     onMutate: () => loading.show(),
     onSettled: () => loading.hide(),

@@ -48,4 +48,5 @@ export type RouterMenuContextType = {
   findFirstNonHeaderMenu: (menus: Menu[]) => Menu | null;
   updateMainRouteChildren: (responseMenus?: MenuResponse[]) => void;
   responseMenusToMenus: (responseMenus: MenuResponse[]) => Menu[];
+  menusToResponseMenus: (menus: Menu[]) => MenuResponse[];
 };

@@ -19,7 +19,7 @@ import { Router } from '@/shared/router/index.ts';
 export function getRouterMappedIcon(router: Router): IconType | undefined {
   const mapping: Record<string, IconType> = {
     [Router.COMPONENT]: FaUikit,
-    [Router.UI]: RxComponent1,
+    [Router.UI_COMPONENT]: RxComponent1,
     [Router.GRID_EXAMPLE]: GoTable,
     [Router.FILE]: HiArrowsUpDown,
     [Router.FILE_UPLOAD_DOWNLOAD]: FaRegFile,

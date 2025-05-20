@@ -47,6 +47,13 @@ export async function getMenuMemberAuthsApi(params: MenuMemberAuthsParameter) {
   );
 }
 
-export async function updateMenuMemberAuthApi(data: MenuMemberAuthResponse[]) {
-  return await apiRequest<null>(customedAxios.put(`${MEMBER_ENDPOINT}/menu-auth`, data));
+export async function updateMenuMemberAuthApi(
+  pathVariable: {
+    memberId: string;
+  },
+  data: MenuMemberAuthResponse[],
+) {
+  return await apiRequest<null>(
+    customedAxios.put(`${MEMBER_ENDPOINT}/${pathVariable.memberId}/menu-auths`, data),
+  );
 }

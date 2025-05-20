@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import type { DataWithIndex } from '@/shared/ui';
 import { dialog, FlexColumn, FlexRow, SaveButton, Table, useTableData } from '@/shared/ui';
 import { useRoleManagementHeaders } from '@/entities/router';
+import type { MenuMemberAuthType } from '@/entities/member';
 import { useMeState } from '@/entities/member';
 import type { MenuMemberAuthResponse, RoleUserResponse } from '@/shared/api';
 import {
@@ -23,22 +24,22 @@ export function RoleManagement() {
     DataWithIndex & RoleUserResponse
   >([]);
   const {
-    dataList: menuAuthList,
-    setDataList: setMenuAuthList,
-    handelDataList: handelMenuAuthList,
-    deleteDataList: deleteMenuAuthList,
-  } = useTableData<DataWithIndex & MenuMemberAuthResponse>([]);
+    dataList: menuAuths,
+    setDataList: setMenuAuths,
+    handelDataList: handelMenuAuths,
+    deleteDataList: deleteMenuAuths,
+  } = useTableData<DataWithIndex & MenuMemberAuthType>([]);
 
   const [memberId, setMemberId] = useState('');
 
-  const getMemberListQuery = useGetMembersQuery();
-  const getMenuMemberAuthListQuery = useGetMenuMemberAuthsQuery({
-    memberId: memberId,
+  const getMembersQuery = useGetMembersQuery();
+  const getMenuMemberAuthsQuery = useGetMenuMemberAuthsQuery({
+    memberId,
   });
 
   useEffect(() => {
-    if (getMemberListQuery.data?.data) {
-      const dataWithIndex = getMemberListQuery.data.data.map((item, index) => {
+    if (getMembersQuery.data?.data) {
+      const dataWithIndex = getMembersQuery.data.data.map((item, index) => {
         return {
           ...item,
           index: index + 1,
@@ -46,15 +47,15 @@ export function RoleManagement() {
       });
       setDataList(dataWithIndex);
     }
-  }, [getMemberListQuery.data?.data, setDataList]);
+  }, [getMembersQuery.data?.data, setDataList]);
 
   useEffect(() => {
-    if (getMenuMemberAuthListQuery.data?.data) {
+    if (getMenuMemberAuthsQuery.data?.data) {
       const isOwnRole = memberState.id === memberId;
 
-      const menuList = getMenuMemberAuthListQuery.data.data;
+      const menuAuths = getMenuMemberAuthsQuery.data.data;
 
-      const dataWithIndex = menuList
+      const dataWithIndex = menuAuths
         .filter((menuItem) => {
           if (
             isOwnRole &&
@@ -65,27 +66,29 @@ export function RoleManagement() {
 
           return true;
         })
-        .map((menuItem, index) => {
+        .map((menuAuth, index) => {
           const isAllChecked =
-            menuItem.useYn === 'Y' &&
-            menuItem.authIns === 'Y' &&
-            menuItem.authDel === 'Y' &&
-            menuItem.authSearch === 'Y' &&
-            menuItem.authMod === 'Y' &&
-            menuItem.excelExport === 'Y';
+            menuAuth.canUse &&
+            menuAuth.canInsert &&
+            menuAuth.canDelete &&
+            menuAuth.canSearch &&
+            menuAuth.canModify &&
+            menuAuth.canExport;
 
           return {
-            ...menuItem,
+            ...menuAuth,
             index: index + 1,
             allChecked: isAllChecked,
           };
         });
-      setMenuAuthList(dataWithIndex);
+
+      setMenuAuths(dataWithIndex);
     }
-  }, [memberState.id, getMenuMemberAuthListQuery.data?.data, memberId, setMenuAuthList]);
+  }, [memberState.id, getMenuMemberAuthsQuery.data?.data, memberId, setMenuAuths]);
 
   const updateMenuMemberAuth = useUpdateMenuMemberAuth({
-    menuAuthList,
+    memberId,
+    menuAuths,
   });
 
   return (
@@ -131,16 +134,22 @@ export function RoleManagement() {
           }}
           tableHeaders={roleManagementHeaders}
           filterRowEnabled={false}
-          tableDataList={menuAuthList}
-          handelDataList={handelMenuAuthList}
-          deleteDataList={deleteMenuAuthList}
+          tableDataList={menuAuths}
+          handelDataList={handelMenuAuths}
+          deleteDataList={deleteMenuAuths}
         />
       </FlexRow>
     </FlexColumn>
   );
 }
 
-function useUpdateMenuMemberAuth({ menuAuthList }: { menuAuthList: MenuMemberAuthResponse[] }) {
+function useUpdateMenuMemberAuth({
+  memberId,
+  menuAuths,
+}: {
+  memberId: string;
+  menuAuths: MenuMemberAuthResponse[];
+}) {
   const navigate = useNavigate();
 
   const updateMenuMemberAuthMutation = useUpdateMenuMemberAuthMutation();
@@ -153,33 +162,41 @@ function useUpdateMenuMemberAuth({ menuAuthList }: { menuAuthList: MenuMemberAut
       cancelText: '아니요',
       confirmText: '수정',
       onConfirm: () => {
-        updateMenuMemberAuthMutation.mutate(menuAuthList, {
-          onSuccess: async (data, variables) => {
-            const isError = await handleAuthError({
-              data,
-              onUnauthenticated: () => navigate(Router.SIGN_IN, { replace: true }),
-              onOtherError: () => {
-                dialog.error({
-                  title: '권한 저장에 실패하였습니다.',
-                  contents: data.message ?? '관리자에게 문의해 주세요.',
-                });
-              },
-              onRefreshSuccess: () => {
-                updateMenuMemberAuthMutation.mutate(variables, {
-                  onSuccess: (data) => {
-                    if (data.isSuccess) {
-                      toast.success('권한이 수정되었습니다.');
-                    }
-                  },
-                });
-              },
-            });
-
-            if (!isError) {
-              toast.success('권한 수정 성공');
-            }
+        updateMenuMemberAuthMutation.mutate(
+          {
+            pathVariable: {
+              memberId,
+            },
+            data: menuAuths,
           },
-        });
+          {
+            onSuccess: async (data, variables) => {
+              const isError = await handleAuthError({
+                data,
+                onUnauthenticated: () => navigate(Router.SIGN_IN, { replace: true }),
+                onOtherError: () => {
+                  dialog.error({
+                    title: '권한 저장에 실패하였습니다.',
+                    contents: data.message ?? '관리자에게 문의해 주세요.',
+                  });
+                },
+                onRefreshSuccess: () => {
+                  updateMenuMemberAuthMutation.mutate(variables, {
+                    onSuccess: (data) => {
+                      if (data.isSuccess) {
+                        toast.success('권한이 수정되었습니다.');
+                      }
+                    },
+                  });
+                },
+              });
+
+              if (!isError) {
+                toast.success('권한 수정 성공');
+              }
+            },
+          },
+        );
       },
     });
   };

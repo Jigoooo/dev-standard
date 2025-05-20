@@ -3,7 +3,7 @@ export enum Router {
   MAIN = '/main',
   MY_PROFILE = 'my-profile',
   COMPONENT = 'component',
-  UI = 'ui',
+  UI_COMPONENT = 'ui-component',
   GRID_EXAMPLE = 'grid-example',
   FILE = 'file',
   FILE_UPLOAD_DOWNLOAD = 'file-upload-download',

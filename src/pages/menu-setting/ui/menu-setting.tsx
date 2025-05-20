@@ -1,6 +1,8 @@
 import { AnimatePresence, motion, Reorder, useDragControls } from 'framer-motion';
 import type { RefObject } from 'react';
 import { createRef, useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 import { MdOutlineEdit } from 'react-icons/md';
 import { RxDragHandleHorizontal } from 'react-icons/rx';
@@ -8,17 +10,17 @@ import { RxDragHandleHorizontal } from 'react-icons/rx';
 import { dialog, Divider, FlexColumn, FlexRow, Input, SaveButton, Typography } from '@/shared/ui';
 import type { Menu } from '@/entities/router';
 import { useRouterMenuContext } from '@/entities/router';
-import { useGetMemberMenusQuery } from '@/shared/api';
+import { handleAuthError, useGetMemberMenusQuery, useUpdateMemberMenuMutation } from '@/shared/api';
 import { useHandleClickOutsideRef } from '@/shared/hooks';
 import { colors } from '@/shared/constants';
-import type { Router } from '@/shared/router';
+import { Router } from '@/shared/router';
 
 export function MenuSetting() {
-  // const navigate = useNavigate();
-  const { responseMenusToMenus } = useRouterMenuContext();
+  const navigate = useNavigate();
+  const { responseMenusToMenus, menusToResponseMenus } = useRouterMenuContext();
 
-  const [menuList, setMenuList] = useState<Menu[]>([]);
-  const originalMenuListRef = useRef<Menu[]>([]);
+  const [menus, setMenus] = useState<Menu[]>([]);
+  const originalMenusRef = useRef<Menu[]>([]);
   const [hoverMenuId, setHoverMenuId] = useState<string | null>(null);
   const [editId, setEditId] = useState<string | null>(null);
   const editRef = useHandleClickOutsideRef<HTMLInputElement>({
@@ -31,14 +33,14 @@ export function MenuSetting() {
   const updateOrderBy = (items: Menu[]): Menu[] => {
     return items.map((item, index) => ({
       ...item,
-      orderBy: index + 1,
+      orderBy: index,
     }));
   };
 
   const reorderMenuList = (mainMenuId: Router, newChildren: Menu[]) => {
     const updatedChildren = updateOrderBy(newChildren);
 
-    setMenuList((prevState) => {
+    setMenus((prevState) => {
       return prevState.map((menu) => {
         if (menu.id === mainMenuId) {
           return {
@@ -52,66 +54,66 @@ export function MenuSetting() {
     });
   };
 
-  const handleMenuNameChange = (targetMenuId: string, newName: string) => {
-    const updateMenuNameInList = (menus: Menu[]): Menu[] => {
+  const handleMenuTitleChange = (targetMenuId: string, newTitle: string) => {
+    const updateMenuTitleInList = (menus: Menu[]): Menu[] => {
       return menus.map((menu) => {
         if (menu.id === targetMenuId) {
-          return { ...menu, name: newName };
+          return { ...menu, title: newTitle };
         }
 
         if (menu.children) {
-          return { ...menu, children: updateMenuNameInList(menu.children) };
+          return { ...menu, children: updateMenuTitleInList(menu.children) };
         }
         return menu;
       });
     };
 
-    setMenuList((prevMenuList) => updateMenuNameInList(prevMenuList));
+    setMenus((prevMenuList) => updateMenuTitleInList(prevMenuList));
   };
 
   const getMenuListQuery = useGetMemberMenusQuery();
-  // const updateMenuMutation = useUpdateMenuMutation();
+  const updateMemberMenuMutation = useUpdateMemberMenuMutation();
 
   useEffect(() => {
     if (getMenuListQuery.data?.data) {
       const newMenuList = getMenuListQuery.data?.data ?? [];
       const grouped = responseMenusToMenus(newMenuList);
-      setMenuList(grouped);
+      setMenus(grouped);
 
-      originalMenuListRef.current = grouped;
+      originalMenusRef.current = grouped;
     }
   }, [getMenuListQuery.data?.data, responseMenusToMenus]);
 
   const updateMenu = () => {
-    // updateMenuMutation.mutate(flattenGroupMenus(menuList), {
-    //   onSuccess: async (data, variables) => {
-    //     const isError = await handleAuthError({
-    //       data,
-    //       onUnauthenticated: () => navigate(Router.SIGN_IN, { replace: true }),
-    //       onOtherError: () => {
-    //         dialog.error({
-    //           title: '메뉴 수정 실패',
-    //           contents: data?.message ?? '관리자에게 문의해 주세요.',
-    //         });
-    //       },
-    //       onRefreshSuccess: () => {
-    //         updateMenuMutation.mutate(variables, {
-    //           onSuccess: (data) => {
-    //             if (data.isSuccess) {
-    //               toast.success('메뉴 수정 성공');
-    //               close();
-    //             }
-    //           },
-    //         });
-    //       },
-    //     });
-    //
-    //     if (!isError) {
-    //       toast.success('메뉴 수정 성공');
-    //       close();
-    //     }
-    //   },
-    // });
+    updateMemberMenuMutation.mutate(menusToResponseMenus(menus), {
+      onSuccess: async (data, variables) => {
+        const isError = await handleAuthError({
+          data,
+          onUnauthenticated: () => navigate(Router.SIGN_IN, { replace: true }),
+          onOtherError: () => {
+            dialog.error({
+              title: '메뉴 수정 실패',
+              contents: data?.message ?? '관리자에게 문의해 주세요.',
+            });
+          },
+          onRefreshSuccess: () => {
+            updateMemberMenuMutation.mutate(variables, {
+              onSuccess: (data) => {
+                if (data.isSuccess) {
+                  toast.success('메뉴 수정 성공');
+                  close();
+                }
+              },
+            });
+          },
+        });
+
+        if (!isError) {
+          toast.success('메뉴 수정 성공');
+          close();
+        }
+      },
+    });
   };
 
   const groupRefs = useRef<Record<string, RefObject<HTMLDivElement | null>>>({});
@@ -136,7 +138,7 @@ export function MenuSetting() {
         gap: 6,
       }}
     >
-      {menuList.length > 0 && (
+      {menus.length > 0 && (
         <FlexRow
           style={{
             width: '50%',
@@ -164,19 +166,16 @@ export function MenuSetting() {
           gap: 16,
         }}
       >
-        {menuList.map((mainMenu) => {
+        {menus.map((mainMenu) => {
           if (!groupRefs.current[mainMenu.id]) {
             groupRefs.current[mainMenu.id] = createRef<HTMLDivElement>();
           }
 
-          const originalValue = findOriginalNameAndOrderBy(
-            mainMenu.id,
-            originalMenuListRef.current,
-          );
+          const originalValue = findOriginalTitleAndOrderBy(mainMenu.id, originalMenusRef.current);
           let isModified = false;
           if (originalValue) {
-            const { name: originalName } = originalValue;
-            isModified = originalName !== mainMenu.title;
+            const { title: originalTitle } = originalValue;
+            isModified = originalTitle !== mainMenu.title;
           }
 
           return (
@@ -187,7 +186,7 @@ export function MenuSetting() {
                     ref={editRef}
                     value={mainMenu.title}
                     onChange={(event) => {
-                      handleMenuNameChange(mainMenu.id, event.target.value);
+                      handleMenuTitleChange(mainMenu.id, event.target.value);
                     }}
                     onKeyDown={(event) => {
                       if (event.key === 'Enter') {
@@ -250,8 +249,8 @@ export function MenuSetting() {
                         key={submenu.id}
                         groupRef={groupRefs.current[mainMenu.id]}
                         menu={submenu}
-                        handleMenuNameChange={handleMenuNameChange}
-                        originalMenuList={originalMenuListRef.current}
+                        handleMenuTitleChange={handleMenuTitleChange}
+                        originalMenuList={originalMenusRef.current}
                       />
                     );
                   })}
@@ -268,12 +267,12 @@ export function MenuSetting() {
 function ReorderItem({
   menu,
   groupRef,
-  handleMenuNameChange,
+  handleMenuTitleChange,
   originalMenuList,
 }: {
   menu: Menu;
   groupRef: RefObject<HTMLDivElement | null>;
-  handleMenuNameChange: (menuId: string, newName: string) => void;
+  handleMenuTitleChange: (menuId: string, newTitle: string) => void;
   originalMenuList: Menu[];
 }) {
   const controls = useDragControls();
@@ -288,11 +287,11 @@ function ReorderItem({
     },
   });
 
-  const findValue = findOriginalNameAndOrderBy(menu.id, originalMenuList);
-  const originalName = findValue?.name;
+  const findValue = findOriginalTitleAndOrderBy(menu.id, originalMenuList);
+  const originalTitle = findValue?.title;
   const originalOrderBy = findValue?.orderBy;
   const isModified =
-    (originalName !== undefined && originalName !== menu.title) ||
+    (originalTitle !== undefined && originalTitle !== menu.title) ||
     (originalOrderBy !== undefined && originalOrderBy !== menu.orderBy);
 
   return (
@@ -316,7 +315,7 @@ function ReorderItem({
           ref={editRef}
           value={menu.title}
           onChange={(event) => {
-            handleMenuNameChange(menu.id, event.target.value);
+            handleMenuTitleChange(menu.id, event.target.value);
           }}
           onKeyDown={(event) => {
             if (event.key === 'Enter') {
@@ -371,22 +370,22 @@ function ReorderItem({
   );
 }
 
-function findOriginalNameAndOrderBy(
+function findOriginalTitleAndOrderBy(
   targetMenuId: string,
   menus: Menu[],
-): { name: string; orderBy: number } | undefined {
+): Pick<Menu, 'title' | 'orderBy'> | undefined {
   for (const menu of menus) {
     if (menu.id === targetMenuId) {
       return {
-        name: menu.title,
+        title: menu.title,
         orderBy: menu.orderBy,
       };
     }
     if (menu.children) {
-      const found = findOriginalNameAndOrderBy(targetMenuId, menu.children);
+      const found = findOriginalTitleAndOrderBy(targetMenuId, menu.children);
       if (found !== undefined) {
         return {
-          name: found.name,
+          title: found.title,
           orderBy: found.orderBy,
         };
       }

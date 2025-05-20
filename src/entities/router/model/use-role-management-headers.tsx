@@ -1,6 +1,7 @@
 import type { THeader } from '@/shared/ui';
 import { Checkbox, createHeader } from '@/shared/ui';
-import type { RoleUserResponse, MenuMemberAuthResponse } from '@/shared/api';
+import type { RoleUserResponse } from '@/shared/api';
+import type { MenuMemberAuthType } from '@/entities/member';
 export function useRoleManagementHeaders() {
   const roleUserHeaders: THeader<RoleUserResponse>[] = [
     createHeader('index', '', 60, { pin: 'left', dataAlign: 'right', filter: undefined }),
@@ -8,32 +9,28 @@ export function useRoleManagementHeaders() {
     createHeader('name', '이름', 150),
   ];
 
-  const roleManagementHeaders: THeader<MenuMemberAuthResponse>[] = [
+  const roleManagementHeaders: THeader<MenuMemberAuthType>[] = [
     createHeader('index', '', 60, { pin: 'left', dataAlign: 'right', filter: undefined }),
     createHeader('allChecked', '', 60, {
       headerAlign: 'center',
       dataAlign: 'center',
       filter: undefined,
       cell: ({ cellData, rowData, handleRowData, setCellData }) => {
-        if (rowData.sub2Cd === 0) {
-          return '';
-        }
-
         const isAllChecked =
-          rowData.useYn === 'Y' &&
-          rowData.authIns === 'Y' &&
-          rowData.authDel === 'Y' &&
-          rowData.authSearch === 'Y' &&
-          rowData.authMod === 'Y' &&
-          rowData.excelExport === 'Y';
+          rowData.canUse &&
+          rowData.canInsert &&
+          rowData.canDelete &&
+          rowData.canSearch &&
+          rowData.canModify &&
+          rowData.canExport;
 
         const isNoneChecked =
-          rowData.useYn !== 'Y' &&
-          rowData.authIns !== 'Y' &&
-          rowData.authDel !== 'Y' &&
-          rowData.authSearch !== 'Y' &&
-          rowData.authMod !== 'Y' &&
-          rowData.excelExport !== 'Y';
+          !rowData.canUse &&
+          !rowData.canInsert &&
+          !rowData.canDelete &&
+          !rowData.canSearch &&
+          !rowData.canModify &&
+          !rowData.canExport;
         const isPartiallyChecked = !isAllChecked && !isNoneChecked;
 
         return (
@@ -42,127 +39,106 @@ export function useRoleManagementHeaders() {
             isPartial={isPartiallyChecked}
             onClick={() => {
               const newAllChecked = !cellData;
-              const newAllCheckedValue = newAllChecked ? 'Y' : 'N';
               setCellData(newAllChecked);
 
-              handleRowData('useYn', newAllCheckedValue);
-              handleRowData('authIns', newAllCheckedValue);
-              handleRowData('authDel', newAllCheckedValue);
-              handleRowData('authSearch', newAllCheckedValue);
-              handleRowData('authMod', newAllCheckedValue);
-              handleRowData('excelExport', newAllCheckedValue);
+              handleRowData('canUse', newAllChecked);
+              handleRowData('canInsert', newAllChecked);
+              handleRowData('canDelete', newAllChecked);
+              handleRowData('canSearch', newAllChecked);
+              handleRowData('canModify', newAllChecked);
+              handleRowData('canExport', newAllChecked);
             }}
           />
         );
       },
     }),
-    createHeader('mainTitle', '메인메뉴', 150),
-    createHeader('subTitle', '서브메뉴', 150),
-    createHeader('useYn', '사용', 80, {
+    createHeader('parentTitle', '상위메뉴', 150),
+    createHeader('title', '메뉴', 150),
+    createHeader('canUse', '사용', 80, {
       headerAlign: 'center',
       dataAlign: 'center',
       filter: undefined,
       cell: ({ cellData, setCellData }) => {
         return (
           <Checkbox
-            checked={cellData === 'Y'}
+            checked={cellData}
             onClick={() => {
-              setCellData(cellData === 'Y' ? 'N' : 'Y');
+              setCellData(!cellData);
             }}
           />
         );
       },
     }),
-    createHeader('authSearch', '조회', 80, {
+    createHeader('canSearch', '조회', 80, {
       headerAlign: 'center',
       dataAlign: 'center',
       filter: undefined,
-      cell: ({ cellData, rowData, setCellData }) => {
-        if (rowData.sub2Cd === 0) {
-          return '';
-        }
-
+      cell: ({ cellData, setCellData }) => {
         return (
           <Checkbox
-            checked={cellData === 'Y'}
+            checked={cellData}
             onClick={() => {
-              setCellData(cellData === 'Y' ? 'N' : 'Y');
+              setCellData(!cellData);
             }}
           />
         );
       },
     }),
-    createHeader('authIns', '생성', 80, {
+    createHeader('canInsert', '생성', 80, {
       headerAlign: 'center',
       dataAlign: 'center',
       filter: undefined,
-      cell: ({ cellData, rowData, setCellData }) => {
-        if (rowData.sub2Cd === 0) {
-          return '';
-        }
-
+      cell: ({ cellData, setCellData }) => {
         return (
           <Checkbox
-            checked={cellData === 'Y'}
+            checked={cellData}
             onClick={() => {
-              setCellData(cellData === 'Y' ? 'N' : 'Y');
+              setCellData(!cellData);
             }}
           />
         );
       },
     }),
-    createHeader('authMod', '수정', 80, {
+    createHeader('canModify', '수정', 80, {
       headerAlign: 'center',
       dataAlign: 'center',
       filter: undefined,
-      cell: ({ cellData, rowData, setCellData }) => {
-        if (rowData.sub2Cd === 0) {
-          return '';
-        }
-
+      cell: ({ cellData, setCellData }) => {
         return (
           <Checkbox
-            checked={cellData === 'Y'}
+            checked={cellData}
             onClick={() => {
-              setCellData(cellData === 'Y' ? 'N' : 'Y');
+              setCellData(!cellData);
             }}
           />
         );
       },
     }),
-    createHeader('authDel', '삭제', 80, {
+    createHeader('canDelete', '삭제', 80, {
       headerAlign: 'center',
       dataAlign: 'center',
       filter: undefined,
-      cell: ({ cellData, rowData, setCellData }) => {
-        if (rowData.sub2Cd === 0) {
-          return '';
-        }
-
+      cell: ({ cellData, setCellData }) => {
         return (
           <Checkbox
-            checked={cellData === 'Y'}
+            checked={cellData}
             onClick={() => {
-              setCellData(cellData === 'Y' ? 'N' : 'Y');
+              setCellData(!cellData);
             }}
           />
         );
       },
     }),
-    createHeader('excelExport', '엑셀', 80, {
+    createHeader('canExport', '엑셀', 80, {
       headerAlign: 'center',
       dataAlign: 'center',
       filter: undefined,
-      cell: ({ cellData, rowData, setCellData }) => {
-        if (rowData.sub2Cd === 0) {
-          return '';
-        }
-
+      cell: ({ cellData, setCellData }) => {
         return (
           <Checkbox
-            checked={cellData === 'Y'}
+            checked={cellData}
             onClick={() => {
-              setCellData(cellData === 'Y' ? 'N' : 'Y');
+              setCellData(!cellData);
             }}
           />
         );
