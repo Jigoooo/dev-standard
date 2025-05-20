@@ -104,19 +104,19 @@ export const TableBody = memo(function TableBody<TData extends DataWithIndex>({
           maxHeight: bodyMaxHeight,
         }}
       >
-        <AnimatePresence initial={false}>
-          {memoizedItems.length === 0 && (
-            <FlexRow
-              as={motion.div}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
-            >
-              <NoData emptyMessage={'데이터가 없습니다.'} />
-            </FlexRow>
-          )}
-        </AnimatePresence>
+        {/*<AnimatePresence initial={false}>*/}
+        {memoizedItems.length === 0 && (
+          <FlexRow
+            // as={motion.div}
+            // initial={{ opacity: 0 }}
+            // animate={{ opacity: 1 }}
+            // exit={{ opacity: 0 }}
+            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+          >
+            <NoData emptyMessage={'데이터가 없습니다.'} />
+          </FlexRow>
+        )}
+        {/*</AnimatePresence>*/}
 
         <TableBodyPin
           position={'left'}
