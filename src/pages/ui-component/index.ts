@@ -1,1 +1,1 @@
-export * from './ui';
+export { UiComponent } from './ui/ui-component.tsx';

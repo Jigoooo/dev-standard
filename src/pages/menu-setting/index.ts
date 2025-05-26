@@ -1,1 +1,1 @@
-export * from './ui';
+export { MenuSetting } from './ui/menu-setting.tsx';

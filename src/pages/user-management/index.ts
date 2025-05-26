@@ -1,1 +1,1 @@
-export * from './ui';
+export { UserManagement } from './ui/user-management.tsx';

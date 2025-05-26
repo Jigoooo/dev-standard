@@ -1,1 +1,1 @@
-export * from './ui';
+export { RoleManagement } from './ui/role-management.tsx';

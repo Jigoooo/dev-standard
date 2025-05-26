@@ -1,1 +1,1 @@
-export * from './ui';
+export { MyProfile } from './ui/my-profile.tsx';
